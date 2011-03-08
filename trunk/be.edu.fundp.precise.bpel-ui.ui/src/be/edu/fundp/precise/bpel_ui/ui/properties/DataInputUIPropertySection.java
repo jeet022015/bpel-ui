@@ -41,7 +41,6 @@ public class DataInputUIPropertySection  extends BPELPropertySection {
 			fCreteInstanceController.setFeature(ModelPackage.eINSTANCE.getDataInputUI_UserValidation());
 			fCreteInstanceController.setInput(newInput);
 		} else {
-			System.out.println("KABUMMMM");
 			fCreteInstanceController.setFeature( null );		
 			fCreteInstanceController.setInput(newInput);
 		}
@@ -80,7 +79,6 @@ public class DataInputUIPropertySection  extends BPELPropertySection {
 	 */
 	@Override
 	public Object getUserContext() {
-		System.out.println("KABUMMMM22222222");
 		return null;
 	}
 	
