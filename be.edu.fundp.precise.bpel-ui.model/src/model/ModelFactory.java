@@ -26,6 +26,24 @@ public interface ModelFactory extends EFactory {
 	ModelFactory eINSTANCE = model.impl.ModelFactoryImpl.init();
 
 	/**
+	 * Returns a new object of class '<em>User Role</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>User Role</em>'.
+	 * @generated
+	 */
+	UserRole createUserRole();
+
+	/**
+	 * Returns a new object of class '<em>Data Output UI</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Data Output UI</em>'.
+	 * @generated
+	 */
+	DataOutputUI createDataOutputUI();
+
+	/**
 	 * Returns a new object of class '<em>Data Input UI</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -33,6 +51,69 @@ public interface ModelFactory extends EFactory {
 	 * @generated
 	 */
 	DataInputUI createDataInputUI();
+
+	/**
+	 * Returns a new object of class '<em>Data Selection UI</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Data Selection UI</em>'.
+	 * @generated
+	 */
+	DataSelectionUI createDataSelectionUI();
+
+	/**
+	 * Returns a new object of class '<em>Decision UI</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Decision UI</em>'.
+	 * @generated
+	 */
+	DecisionUI createDecisionUI();
+
+	/**
+	 * Returns a new object of class '<em>Choice</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Choice</em>'.
+	 * @generated
+	 */
+	Choice createChoice();
+
+	/**
+	 * Returns a new object of class '<em>User Event</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>User Event</em>'.
+	 * @generated
+	 */
+	UserEvent createUserEvent();
+
+	/**
+	 * Returns a new object of class '<em>On User Event</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>On User Event</em>'.
+	 * @generated
+	 */
+	OnUserEvent createOnUserEvent();
+
+	/**
+	 * Returns a new object of class '<em>New Pick</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>New Pick</em>'.
+	 * @generated
+	 */
+	NewPick createNewPick();
+
+	/**
+	 * Returns a new object of class '<em>new Event Handler</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>new Event Handler</em>'.
+	 * @generated
+	 */
+	newEventHandler createnewEventHandler();
 
 	/**
 	 * Returns the package supported by this factory.

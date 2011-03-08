@@ -12,8 +12,10 @@ import javax.wsdl.extensions.ElementExtensible;
 import model.*;
 
 import org.eclipse.bpel.model.Activity;
+import org.eclipse.bpel.model.EventHandler;
 import org.eclipse.bpel.model.ExtensionActivity;
 
+import org.eclipse.bpel.model.Pick;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
@@ -81,8 +83,48 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 	protected ModelSwitch<Adapter> modelSwitch =
 		new ModelSwitch<Adapter>() {
 			@Override
+			public Adapter caseUserInteraction(UserInteraction object) {
+				return createUserInteractionAdapter();
+			}
+			@Override
+			public Adapter caseUserRole(UserRole object) {
+				return createUserRoleAdapter();
+			}
+			@Override
+			public Adapter caseDataOutputUI(DataOutputUI object) {
+				return createDataOutputUIAdapter();
+			}
+			@Override
 			public Adapter caseDataInputUI(DataInputUI object) {
 				return createDataInputUIAdapter();
+			}
+			@Override
+			public Adapter caseDataSelectionUI(DataSelectionUI object) {
+				return createDataSelectionUIAdapter();
+			}
+			@Override
+			public Adapter caseDecisionUI(DecisionUI object) {
+				return createDecisionUIAdapter();
+			}
+			@Override
+			public Adapter caseChoice(Choice object) {
+				return createChoiceAdapter();
+			}
+			@Override
+			public Adapter caseUserEvent(UserEvent object) {
+				return createUserEventAdapter();
+			}
+			@Override
+			public Adapter caseOnUserEvent(OnUserEvent object) {
+				return createOnUserEventAdapter();
+			}
+			@Override
+			public Adapter caseNewPick(NewPick object) {
+				return createNewPickAdapter();
+			}
+			@Override
+			public Adapter casenewEventHandler(newEventHandler object) {
+				return createnewEventHandlerAdapter();
 			}
 			@Override
 			public Adapter caseWSDLElement(WSDLElement object) {
@@ -113,6 +155,14 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 				return createExtensionActivityAdapter();
 			}
 			@Override
+			public Adapter casePick(Pick object) {
+				return createPickAdapter();
+			}
+			@Override
+			public Adapter caseEventHandler(EventHandler object) {
+				return createEventHandlerAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -134,6 +184,48 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 
 
 	/**
+	 * Creates a new adapter for an object of class '{@link model.UserInteraction <em>User Interaction</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see model.UserInteraction
+	 * @generated
+	 */
+	public Adapter createUserInteractionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link model.UserRole <em>User Role</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see model.UserRole
+	 * @generated
+	 */
+	public Adapter createUserRoleAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link model.DataOutputUI <em>Data Output UI</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see model.DataOutputUI
+	 * @generated
+	 */
+	public Adapter createDataOutputUIAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link model.DataInputUI <em>Data Input UI</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -144,6 +236,104 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createDataInputUIAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link model.DataSelectionUI <em>Data Selection UI</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see model.DataSelectionUI
+	 * @generated
+	 */
+	public Adapter createDataSelectionUIAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link model.DecisionUI <em>Decision UI</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see model.DecisionUI
+	 * @generated
+	 */
+	public Adapter createDecisionUIAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link model.Choice <em>Choice</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see model.Choice
+	 * @generated
+	 */
+	public Adapter createChoiceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link model.UserEvent <em>User Event</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see model.UserEvent
+	 * @generated
+	 */
+	public Adapter createUserEventAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link model.OnUserEvent <em>On User Event</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see model.OnUserEvent
+	 * @generated
+	 */
+	public Adapter createOnUserEventAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link model.NewPick <em>New Pick</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see model.NewPick
+	 * @generated
+	 */
+	public Adapter createNewPickAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link model.newEventHandler <em>new Event Handler</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see model.newEventHandler
+	 * @generated
+	 */
+	public Adapter createnewEventHandlerAdapter() {
 		return null;
 	}
 
@@ -242,6 +432,34 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createExtensionActivityAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.bpel.model.Pick <em>Pick</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.bpel.model.Pick
+	 * @generated
+	 */
+	public Adapter createPickAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.bpel.model.EventHandler <em>Event Handler</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.bpel.model.EventHandler
+	 * @generated
+	 */
+	public Adapter createEventHandlerAdapter() {
 		return null;
 	}
 

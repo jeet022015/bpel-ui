@@ -14,8 +14,10 @@ import javax.wsdl.extensions.ElementExtensible;
 import model.*;
 
 import org.eclipse.bpel.model.Activity;
+import org.eclipse.bpel.model.EventHandler;
 import org.eclipse.bpel.model.ExtensionActivity;
 
+import org.eclipse.bpel.model.Pick;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
@@ -96,9 +98,43 @@ public class ModelSwitch<T> {
 	 */
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
+			case ModelPackage.USER_INTERACTION: {
+				UserInteraction userInteraction = (UserInteraction)theEObject;
+				T result = caseUserInteraction(userInteraction);
+				if (result == null) result = caseExtensionActivity(userInteraction);
+				if (result == null) result = caseActivity(userInteraction);
+				if (result == null) result = caseBPEL_ExtensibleElement(userInteraction);
+				if (result == null) result = caseExtensibleElement(userInteraction);
+				if (result == null) result = caseWSDLElement(userInteraction);
+				if (result == null) result = caseIElementExtensible(userInteraction);
+				if (result == null) result = caseIAttributeExtensible(userInteraction);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ModelPackage.USER_ROLE: {
+				UserRole userRole = (UserRole)theEObject;
+				T result = caseUserRole(userRole);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ModelPackage.DATA_OUTPUT_UI: {
+				DataOutputUI dataOutputUI = (DataOutputUI)theEObject;
+				T result = caseDataOutputUI(dataOutputUI);
+				if (result == null) result = caseUserInteraction(dataOutputUI);
+				if (result == null) result = caseExtensionActivity(dataOutputUI);
+				if (result == null) result = caseActivity(dataOutputUI);
+				if (result == null) result = caseBPEL_ExtensibleElement(dataOutputUI);
+				if (result == null) result = caseExtensibleElement(dataOutputUI);
+				if (result == null) result = caseWSDLElement(dataOutputUI);
+				if (result == null) result = caseIElementExtensible(dataOutputUI);
+				if (result == null) result = caseIAttributeExtensible(dataOutputUI);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case ModelPackage.DATA_INPUT_UI: {
 				DataInputUI dataInputUI = (DataInputUI)theEObject;
 				T result = caseDataInputUI(dataInputUI);
+				if (result == null) result = caseUserInteraction(dataInputUI);
 				if (result == null) result = caseExtensionActivity(dataInputUI);
 				if (result == null) result = caseActivity(dataInputUI);
 				if (result == null) result = caseBPEL_ExtensibleElement(dataInputUI);
@@ -109,8 +145,125 @@ public class ModelSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case ModelPackage.DATA_SELECTION_UI: {
+				DataSelectionUI dataSelectionUI = (DataSelectionUI)theEObject;
+				T result = caseDataSelectionUI(dataSelectionUI);
+				if (result == null) result = caseDataInputUI(dataSelectionUI);
+				if (result == null) result = caseUserInteraction(dataSelectionUI);
+				if (result == null) result = caseExtensionActivity(dataSelectionUI);
+				if (result == null) result = caseActivity(dataSelectionUI);
+				if (result == null) result = caseBPEL_ExtensibleElement(dataSelectionUI);
+				if (result == null) result = caseExtensibleElement(dataSelectionUI);
+				if (result == null) result = caseWSDLElement(dataSelectionUI);
+				if (result == null) result = caseIElementExtensible(dataSelectionUI);
+				if (result == null) result = caseIAttributeExtensible(dataSelectionUI);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ModelPackage.DECISION_UI: {
+				DecisionUI decisionUI = (DecisionUI)theEObject;
+				T result = caseDecisionUI(decisionUI);
+				if (result == null) result = caseUserInteraction(decisionUI);
+				if (result == null) result = caseExtensionActivity(decisionUI);
+				if (result == null) result = caseActivity(decisionUI);
+				if (result == null) result = caseBPEL_ExtensibleElement(decisionUI);
+				if (result == null) result = caseExtensibleElement(decisionUI);
+				if (result == null) result = caseWSDLElement(decisionUI);
+				if (result == null) result = caseIElementExtensible(decisionUI);
+				if (result == null) result = caseIAttributeExtensible(decisionUI);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ModelPackage.CHOICE: {
+				Choice choice = (Choice)theEObject;
+				T result = caseChoice(choice);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ModelPackage.USER_EVENT: {
+				UserEvent userEvent = (UserEvent)theEObject;
+				T result = caseUserEvent(userEvent);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ModelPackage.ON_USER_EVENT: {
+				OnUserEvent onUserEvent = (OnUserEvent)theEObject;
+				T result = caseOnUserEvent(onUserEvent);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ModelPackage.NEW_PICK: {
+				NewPick newPick = (NewPick)theEObject;
+				T result = caseNewPick(newPick);
+				if (result == null) result = casePick(newPick);
+				if (result == null) result = caseActivity(newPick);
+				if (result == null) result = caseBPEL_ExtensibleElement(newPick);
+				if (result == null) result = caseExtensibleElement(newPick);
+				if (result == null) result = caseWSDLElement(newPick);
+				if (result == null) result = caseIElementExtensible(newPick);
+				if (result == null) result = caseIAttributeExtensible(newPick);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ModelPackage.NEW_EVENT_HANDLER: {
+				newEventHandler newEventHandler = (newEventHandler)theEObject;
+				T result = casenewEventHandler(newEventHandler);
+				if (result == null) result = caseEventHandler(newEventHandler);
+				if (result == null) result = caseBPEL_ExtensibleElement(newEventHandler);
+				if (result == null) result = caseExtensibleElement(newEventHandler);
+				if (result == null) result = caseWSDLElement(newEventHandler);
+				if (result == null) result = caseIElementExtensible(newEventHandler);
+				if (result == null) result = caseIAttributeExtensible(newEventHandler);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>User Interaction</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>User Interaction</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseUserInteraction(UserInteraction object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>User Role</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>User Role</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseUserRole(UserRole object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Data Output UI</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Data Output UI</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDataOutputUI(DataOutputUI object) {
+		return null;
 	}
 
 	/**
@@ -125,6 +278,111 @@ public class ModelSwitch<T> {
 	 * @generated
 	 */
 	public T caseDataInputUI(DataInputUI object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Data Selection UI</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Data Selection UI</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDataSelectionUI(DataSelectionUI object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Decision UI</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Decision UI</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDecisionUI(DecisionUI object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Choice</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Choice</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseChoice(Choice object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>User Event</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>User Event</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseUserEvent(UserEvent object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>On User Event</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>On User Event</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseOnUserEvent(OnUserEvent object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>New Pick</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>New Pick</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNewPick(NewPick object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>new Event Handler</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>new Event Handler</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casenewEventHandler(newEventHandler object) {
 		return null;
 	}
 
@@ -230,6 +488,36 @@ public class ModelSwitch<T> {
 	 * @generated
 	 */
 	public T caseExtensionActivity(ExtensionActivity object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Pick</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Pick</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePick(Pick object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Event Handler</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Event Handler</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEventHandler(EventHandler object) {
 		return null;
 	}
 
