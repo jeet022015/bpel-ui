@@ -13,7 +13,7 @@ import be.edu.fundp.precise.bpel_ui.ui.ExtensionSampleUIConstants;
 public class BPEL_UI_UIObjectFactory extends AbstractUIObjectFactory implements IExtensionUIObjectFactory{
 
 	private EClass modelType;
-	private EClass[] classArray = { ModelPackage.eINSTANCE.getDataInputUI()};
+	private EClass[] classArray = { ModelPackage.eINSTANCE.getDataInputUI(), ModelPackage.eINSTANCE.getDataOutputUI()};
 
 	public BPEL_UI_UIObjectFactory(EClass modelType) {
 		super();
@@ -39,22 +39,47 @@ public class BPEL_UI_UIObjectFactory extends AbstractUIObjectFactory implements 
 
 	@Override
 	public ImageDescriptor getSmallImageDescriptor() {
-		return Activator.getDefault().getImageDescriptor(ExtensionSampleUIConstants.DEFAULT_ICON_16);
+		String iconReference = ExtensionSampleUIConstants.DEFAULT_ICON_16;
+		if (modelType.getName().equals("DataInputUI"))
+			iconReference = ExtensionSampleUIConstants.DATAINPUT_ICON_16;
+		
+		if (modelType.getName().equals("DataOutputUI"))
+			iconReference = ExtensionSampleUIConstants.DATAOUTPUT_ICON_16;
+		
+		return Activator.getDefault().getImageDescriptor(iconReference);
 	}
 
 	@Override
 	public ImageDescriptor getLargeImageDescriptor() {
-		return Activator.getDefault().getImageDescriptor(ExtensionSampleUIConstants.DEFAULT_ICON_20);
+		String iconReference = ExtensionSampleUIConstants.DEFAULT_ICON_20;
+		if (modelType.getName().equals("DataInputUI"))
+			iconReference = ExtensionSampleUIConstants.DATAINPUT_ICON_20;
+		
+		if (modelType.getName().equals("DataOutputUI"))
+			iconReference = ExtensionSampleUIConstants.DATAOUTPUT_ICON_20;
+		return Activator.getDefault().getImageDescriptor(iconReference);
 	}
 
 	@Override
 	public Image getSmallImage() {
-		return Activator.getDefault().getImageRegistry().get(ExtensionSampleUIConstants.DEFAULT_ICON_16);
+		String iconReference = ExtensionSampleUIConstants.DEFAULT_ICON_16;
+		if (modelType.getName().equals("DataInputUI"))
+			iconReference = ExtensionSampleUIConstants.DATAINPUT_ICON_16;
+		
+		if (modelType.getName().equals("DataOutputUI"))
+			iconReference = ExtensionSampleUIConstants.DATAOUTPUT_ICON_16;
+		return Activator.getDefault().getImageRegistry().get(iconReference);
 	}
 
 	@Override
 	public Image getLargeImage() {
-		return Activator.getDefault().getImageRegistry().get(ExtensionSampleUIConstants.DEFAULT_ICON_20);
+		String iconReference = ExtensionSampleUIConstants.DEFAULT_ICON_20;
+		if (modelType.getName().equals("DataInputUI"))
+			iconReference = ExtensionSampleUIConstants.DATAINPUT_ICON_20;
+		
+		if (modelType.getName().equals("DataOutputUI"))
+			iconReference = ExtensionSampleUIConstants.DATAOUTPUT_ICON_20;
+		return Activator.getDefault().getImageRegistry().get(iconReference);
 	}
 
 	@Override

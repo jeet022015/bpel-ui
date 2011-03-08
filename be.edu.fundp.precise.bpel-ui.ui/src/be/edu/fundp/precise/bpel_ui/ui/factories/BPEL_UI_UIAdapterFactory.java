@@ -3,6 +3,7 @@ package be.edu.fundp.precise.bpel_ui.ui.factories;
 import org.eclipse.emf.common.notify.Adapter;
 
 import be.edu.fundp.precise.bpel_ui.ui.adapters.DataInputUIAdapter;
+import be.edu.fundp.precise.bpel_ui.ui.adapters.DataOutputUIAdapter;
 
 import model.util.ModelAdapterFactory;
 
@@ -10,7 +11,8 @@ import model.util.ModelAdapterFactory;
 public class BPEL_UI_UIAdapterFactory  extends ModelAdapterFactory{
 	// Bugzilla 324115
 	private static BPEL_UI_UIAdapterFactory instance;
-	private DataInputUIAdapter sampleSimpleActivityAdapter;
+	private DataInputUIAdapter dataInputUIAdapter;
+	private DataOutputUIAdapter dataOutputUIAdapter;
 	private BPEL_UI_UIAdapterFactory() {
 		super();
 	}
@@ -24,10 +26,19 @@ public class BPEL_UI_UIAdapterFactory  extends ModelAdapterFactory{
 		
 	@Override
 	public Adapter createDataInputUIAdapter() {
-		if (this.sampleSimpleActivityAdapter == null) {
-			this.sampleSimpleActivityAdapter = new DataInputUIAdapter();
+		if (this.dataInputUIAdapter == null) {
+			this.dataInputUIAdapter = new DataInputUIAdapter();
 		}
-		return this.sampleSimpleActivityAdapter;
+		return this.dataInputUIAdapter;
+	}
+	
+	
+	@Override
+	public Adapter createDataOutputUIAdapter() {
+		if (this.dataOutputUIAdapter == null) {
+			this.dataOutputUIAdapter = new DataOutputUIAdapter();
+		}
+		return this.dataOutputUIAdapter;
 	}
 
 
