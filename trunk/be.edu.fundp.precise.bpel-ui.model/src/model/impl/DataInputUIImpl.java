@@ -6,11 +6,12 @@
  */
 package model.impl;
 
+import javax.wsdl.extensions.ExtensibilityElement;
+
 import model.DataInputUI;
 import model.ModelPackage;
 
 import org.eclipse.bpel.model.Variable;
-import org.eclipse.bpel.model.impl.ExtensionActivityImpl;
 import org.eclipse.bpel.model.util.ReconciliationHelper;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
@@ -32,7 +33,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class DataInputUIImpl extends ExtensionActivityImpl implements DataInputUI {
+public class DataInputUIImpl extends UserInteractionImpl implements DataInputUI {
 	/**
 	 * The default value of the '{@link #isUserValidation() <em>User Validation</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -126,7 +127,9 @@ public class DataInputUIImpl extends ExtensionActivityImpl implements DataInputU
 		Variable oldInputVariable = inputVariable;
 		
 		if (!isReconciling) {
-			ReconciliationHelper.replaceChild(this, oldInputVariable, newInputVariable);
+			ReconciliationHelper.replaceAttribute(this, ModelPackage.eINSTANCE
+					.getDataInputUI_InputVariable().getName(),
+					newInputVariable.getName());
 		}
 		
 		inputVariable = newInputVariable;
@@ -255,6 +258,12 @@ public class DataInputUIImpl extends ExtensionActivityImpl implements DataInputU
 			ReconciliationHelper.orphanChild(this, (Variable)obj);
 		}
 		super.orphanContent(reference, obj);
+	}
+
+	public ExtensibilityElement removeExtensibilityElement(
+			ExtensibilityElement arg0) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 } //DataInputUIImpl

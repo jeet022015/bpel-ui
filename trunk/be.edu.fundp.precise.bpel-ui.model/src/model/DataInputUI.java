@@ -26,9 +26,10 @@ import org.eclipse.bpel.model.Variable;
  * @model
  * @generated
  */
-public interface DataInputUI extends ExtensionActivity {
+public interface DataInputUI extends UserInteraction {
 	/**
 	 * Returns the value of the '<em><b>User Validation</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>User Validation</em>' attribute isn't clear,
@@ -38,7 +39,7 @@ public interface DataInputUI extends ExtensionActivity {
 	 * @return the value of the '<em>User Validation</em>' attribute.
 	 * @see #setUserValidation(boolean)
 	 * @see model.ModelPackage#getDataInputUI_UserValidation()
-	 * @model
+	 * @model default="false"
 	 * @generated
 	 */
 	boolean isUserValidation();
