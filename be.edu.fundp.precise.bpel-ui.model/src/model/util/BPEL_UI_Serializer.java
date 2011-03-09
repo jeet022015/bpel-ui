@@ -17,11 +17,22 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class BPEL_UI_Serializer implements BPELActivitySerializer{
+	
+	private Element activityElement;
 
 	public void marshall(QName elementType, Activity activity, Node parentNode,
 			Process process, BPELWriter bpelWriter) {
 		Document document = parentNode.getOwnerDocument();
 
+		activityElement = null;
+		/*
+		 * DataSelectionUI
+		 */
+		//TODO user strategy pattern here
+		if (activity instanceof DataSelectionUI) {
+			dataSelectionUISerialization(elementType, activity, parentNode,
+					process, document);
+		}
 		/*
 		 * DataInputUI
 		 */
@@ -38,24 +49,17 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 			dataOutputUISerialization(elementType, activity, parentNode,
 					process, document);
 		}
-		
-		/*
-		 * DataOutputUI
-		 */
-		//TODO user strategy pattern here
-		if (activity instanceof DataSelectionUI) {
-			dataSelectionUISerialization(elementType, activity, parentNode,
-					process, document);
-		}
 	}
 
 	private void dataSelectionUISerialization(QName elementType,
 			Activity activity, Node parentNode, Process process,
 			Document document) {
-		// create a new DOM element for our Activity
-		Element activityElement = document.createElementNS(elementType.getNamespaceURI(),
-				ExtensionsampleConstants.ND_DATA_SELECTION_UI);
-		activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
+		if(activityElement == null){
+			// create a new DOM element for our Activity
+			activityElement = document.createElementNS(elementType.getNamespaceURI(),
+					ExtensionsampleConstants.ND_DATA_SELECTION_UI);
+			activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
+		}
 		
 		// handle the Selectable
 		Variable outputVar = ((DataSelectionUI) activity).getSelectable();
@@ -89,10 +93,12 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 	private void dataOutputUISerialization(QName elementType,
 			Activity activity, Node parentNode, Process process,
 			Document document) {
-		// create a new DOM element for our Activity
-		Element activityElement = document.createElementNS(elementType.getNamespaceURI(),
-				ExtensionsampleConstants.ND_DATA_OUTPUT_UI);
-		activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
+		if(activityElement == null){
+			// create a new DOM element for our Activity
+			Element activityElement = document.createElementNS(elementType.getNamespaceURI(),
+					ExtensionsampleConstants.ND_DATA_OUTPUT_UI);
+			activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
+		}
 		
 		// handle the InputVariable
 		Variable outputVar = ((DataOutputUI) activity).getOutputVariable();
@@ -109,10 +115,12 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 
 	private void dataInputUISerialization(QName elementType, Activity activity,
 			Node parentNode, Process process, Document document) {
-		// create a new DOM element for our Activity
-		Element activityElement = document.createElementNS(elementType.getNamespaceURI(),
-				ExtensionsampleConstants.ND_DATA_INPUT_UI);
-		activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
+		if(activityElement == null){
+			// create a new DOM element for our Activity
+			Element activityElement = document.createElementNS(elementType.getNamespaceURI(),
+					ExtensionsampleConstants.ND_DATA_INPUT_UI);
+			activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
+		}
 
 		// handle the userValidation
 		String attName = ModelPackage.eINSTANCE
