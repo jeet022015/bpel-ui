@@ -27,6 +27,14 @@ public class BPEL_UIDeserializer implements BPELActivityDeserializer{
 	public Activity unmarshall(QName elementType, Node node, Activity activity,
 			Process process, Map nsMap, ExtensionRegistry extReg, URI uri,
 			BPELReader bpelReader) {
+		
+		//TODO merge with DataInput
+		if (ExtensionsampleConstants.ND_DATA_SELECTION_UI.equals(elementType.getLocalPart())) {
+			DataSelectionUI aDataSelectionUI = deserializeDataSelectionUI(node, activity,
+					process);
+			return aDataSelectionUI;
+		}
+
 		if (ExtensionsampleConstants.ND_DATA_INPUT_UI.equals(elementType.getLocalPart())) {
 			DataInputUI aDataInputUI = deserializeDataInputUI(node, activity,
 					process);
@@ -38,14 +46,6 @@ public class BPEL_UIDeserializer implements BPELActivityDeserializer{
 					process);
 			return aDataOutputtUI;
 		}
-		
-		//TODO terminate from here
-		if (ExtensionsampleConstants.ND_DATA_SELECTION_UI.equals(elementType.getLocalPart())) {
-			DataSelectionUI aDataSelectionUI = deserializeDataSelectionUI(node, activity,
-					process);
-			return aDataSelectionUI;
-		}
-		
 		System.err.println("Cannot handle this kind of element");
 		return null;
 	}
@@ -55,7 +55,7 @@ public class BPEL_UIDeserializer implements BPELActivityDeserializer{
 		// create a new aDataInputUI model object if not already created
 		DataSelectionUI aDataSelectionUI;
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
-		if (activity instanceof DataInputUI) {
+		if (activity instanceof DataSelectionUI) {
 			aDataSelectionUI = (DataSelectionUI)activity;
 		}
 		else {
@@ -93,6 +93,31 @@ public class BPEL_UIDeserializer implements BPELActivityDeserializer{
 			for (Variable var : vars) {
 				if (var.getName().equals(varName)){
 					aDataSelectionUI.setSelectable(var);
+				}
+				
+			}
+			
+		}
+		
+		// handle the userValidation
+		attName2 = ModelPackage.eINSTANCE
+			.getDataInputUI_UserValidation().getName();
+		if (((Element) node).getAttribute(attName2) != null) {
+			aDataSelectionUI.setUserValidation(Boolean.parseBoolean(((Element) node)
+					.getAttribute(attName2)));
+		}
+		
+		// handle the child activity
+		//TODO make in conformance with Invoke
+		attName2 = ModelPackage.eINSTANCE
+			.getDataInputUI_InputVariable().getName();
+		varName = ((Element) node).getAttribute(attName2);
+		if (varName != null) {
+			//TODO this code don't consider the Scope variables
+			EList<Variable> vars = process.getVariables().getChildren();
+			for (Variable var : vars) {
+				if (var.getName().equals(varName)){
+					aDataSelectionUI.setInputVariable(var);
 				}
 				
 			}
