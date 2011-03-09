@@ -4,6 +4,7 @@ import org.eclipse.emf.common.notify.Adapter;
 
 import be.edu.fundp.precise.bpel_ui.ui.adapters.DataInputUIAdapter;
 import be.edu.fundp.precise.bpel_ui.ui.adapters.DataOutputUIAdapter;
+import be.edu.fundp.precise.bpel_ui.ui.adapters.DataSelectionUIAdapter;
 
 import model.util.ModelAdapterFactory;
 
@@ -13,6 +14,7 @@ public class BPEL_UI_UIAdapterFactory  extends ModelAdapterFactory{
 	private static BPEL_UI_UIAdapterFactory instance;
 	private DataInputUIAdapter dataInputUIAdapter;
 	private DataOutputUIAdapter dataOutputUIAdapter;
+	private DataSelectionUIAdapter dataSelectionUIAdapter;
 	private BPEL_UI_UIAdapterFactory() {
 		super();
 	}
@@ -39,6 +41,15 @@ public class BPEL_UI_UIAdapterFactory  extends ModelAdapterFactory{
 			this.dataOutputUIAdapter = new DataOutputUIAdapter();
 		}
 		return this.dataOutputUIAdapter;
+	}
+	
+	@Override
+	public Adapter createDataSelectionUIAdapter() {
+		if (this.dataSelectionUIAdapter == null) {
+			System.out.println("aqui criiou8!!!!!");
+			this.dataSelectionUIAdapter = new DataSelectionUIAdapter();
+		}
+		return this.dataSelectionUIAdapter;
 	}
 
 

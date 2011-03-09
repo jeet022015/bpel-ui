@@ -66,6 +66,10 @@ public class Activator extends AbstractUIPlugin {
 		URL baseURL = getBundle().getEntry("/");
 		createImageDescriptor(ExtensionSampleUIConstants.DEFAULT_ICON_16, baseURL);
 		createImageDescriptor(ExtensionSampleUIConstants.DEFAULT_ICON_20, baseURL);
+		createImageDescriptor(ExtensionSampleUIConstants.DATAINPUT_ICON_16, baseURL);
+		createImageDescriptor(ExtensionSampleUIConstants.DATAINPUT_ICON_20, baseURL);
+		createImageDescriptor(ExtensionSampleUIConstants.DATAOUTPUT_ICON_16, baseURL);
+		createImageDescriptor(ExtensionSampleUIConstants.DATAOUTPUT_ICON_20, baseURL);
 	}
 
 	private void createImageDescriptor(String id, URL baseURL) {
