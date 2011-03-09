@@ -116,7 +116,7 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @customized
 	 */
 	public void setMinCardinality(int newMinCardinality) {
 		int oldMinCardinality = minCardinality;
@@ -189,7 +189,7 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @customized
 	 */
 	public void setSelectable(Variable newSelectable) {
 		Variable oldSelectable = selectable;
