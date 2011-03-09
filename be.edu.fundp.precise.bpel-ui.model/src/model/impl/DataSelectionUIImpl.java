@@ -10,6 +10,7 @@ import model.DataSelectionUI;
 import model.ModelPackage;
 
 import org.eclipse.bpel.model.Variable;
+import org.eclipse.bpel.model.util.ReconciliationHelper;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -119,6 +120,13 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	 */
 	public void setMinCardinality(int newMinCardinality) {
 		int oldMinCardinality = minCardinality;
+		
+		if (!isReconciling) {
+			ReconciliationHelper.replaceAttribute(this, ModelPackage.eINSTANCE
+					.getDataSelectionUI_MinCardinality().getName(),
+					Integer.toString(newMinCardinality));
+		}
+		
 		minCardinality = newMinCardinality;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.DATA_SELECTION_UI__MIN_CARDINALITY, oldMinCardinality, minCardinality));
@@ -136,10 +144,17 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @customized
 	 */
 	public void setMaxCardinality(int newMaxCardinality) {
 		int oldMaxCardinality = maxCardinality;
+		
+		if (!isReconciling) {
+			ReconciliationHelper.replaceAttribute(this, ModelPackage.eINSTANCE
+					.getDataSelectionUI_MaxCardinality().getName(),
+					Integer.toString(newMaxCardinality));
+		}
+		
 		maxCardinality = newMaxCardinality;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.DATA_SELECTION_UI__MAX_CARDINALITY, oldMaxCardinality, maxCardinality));
@@ -178,6 +193,13 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	 */
 	public void setSelectable(Variable newSelectable) {
 		Variable oldSelectable = selectable;
+		
+		if (!isReconciling) {
+			ReconciliationHelper.replaceAttribute(this, ModelPackage.eINSTANCE
+					.getDataSelectionUI_Selectable().getName(),
+					newSelectable.getName());
+		}
+		
 		selectable = newSelectable;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.DATA_SELECTION_UI__SELECTABLE, oldSelectable, selectable));

@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 
 import model.DataInputUI;
 import model.DataOutputUI;
+import model.DataSelectionUI;
 import model.ModelPackage;
 
 import org.eclipse.bpel.model.Activity;
@@ -37,6 +38,52 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 			dataOutputUISerialization(elementType, activity, parentNode,
 					process, document);
 		}
+		
+		/*
+		 * DataOutputUI
+		 */
+		//TODO user strategy pattern here
+		if (activity instanceof DataSelectionUI) {
+			dataSelectionUISerialization(elementType, activity, parentNode,
+					process, document);
+		}
+	}
+
+	private void dataSelectionUISerialization(QName elementType,
+			Activity activity, Node parentNode, Process process,
+			Document document) {
+		// create a new DOM element for our Activity
+		Element activityElement = document.createElementNS(elementType.getNamespaceURI(),
+				ExtensionsampleConstants.ND_DATA_SELECTION_UI);
+		activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
+		
+		// handle the Selectable
+		Variable outputVar = ((DataSelectionUI) activity).getSelectable();
+		String attName2 = ModelPackage.eINSTANCE
+			.getDataSelectionUI_Selectable().getName();
+		if (outputVar != null) {
+			//TODO get the Variable from someplace
+			activityElement.setAttribute(attName2, outputVar.getName());
+		}
+		
+		// handle the maxCardinality
+		int maxCardinality = ((DataSelectionUI) activity).getMaxCardinality();
+		attName2 = ModelPackage.eINSTANCE
+			.getDataSelectionUI_MaxCardinality().getName();
+		if (outputVar != null) {
+			activityElement.setAttribute(attName2, Integer.toString(maxCardinality));
+		}
+		
+		// handle the minCardinality
+		int minCardinality = ((DataSelectionUI) activity).getMinCardinality();
+		attName2 = ModelPackage.eINSTANCE
+			.getDataSelectionUI_MinCardinality().getName();
+		if (outputVar != null) {
+			activityElement.setAttribute(attName2, Integer.toString(minCardinality));
+		}
+
+		// insert the DOM element into the DOM tree
+		parentNode.appendChild(activityElement);
 	}
 
 	private void dataOutputUISerialization(QName elementType,
