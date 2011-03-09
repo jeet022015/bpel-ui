@@ -30,8 +30,9 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 		 */
 		//TODO user strategy pattern here
 		if (activity instanceof DataSelectionUI) {
-				dataSelectionUISerialization(elementType, activity, parentNode,
-								process, document);
+			System.out.println("serialize");
+			dataSelectionUISerialization(elementType, activity, parentNode,
+					process, document);
 		}
 		/*
 		 * DataInputUI

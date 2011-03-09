@@ -30,6 +30,7 @@ public class BPEL_UIDeserializer implements BPELActivityDeserializer{
 		
 		//TODO merge with DataInput
 		if (ExtensionsampleConstants.ND_DATA_SELECTION_UI.equals(elementType.getLocalPart())) {
+			System.out.println("essa porra");
 			DataSelectionUI aDataSelectionUI = deserializeDataSelectionUI(node, activity,
 					process);
 			return aDataSelectionUI;
@@ -132,7 +133,7 @@ public class BPEL_UIDeserializer implements BPELActivityDeserializer{
 		// create a new aDataInputUI model object if not already created
 		DataOutputUI aDataOutputUI;
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
-		if (activity instanceof DataOutputUI) {
+		if (activity instanceof DataInputUI) {
 			aDataOutputUI = (DataOutputUI)activity;
 		}
 		else {
