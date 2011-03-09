@@ -29,10 +29,10 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 		 * DataSelectionUI
 		 */
 		//TODO user strategy pattern here
-		if (activity instanceof DataSelectionUI) {
-			dataSelectionUISerialization(elementType, activity, parentNode,
-					process, document);
-		}
+		//if (activity instanceof DataSelectionUI) {
+			//	dataSelectionUISerialization(elementType, activity, parentNode,
+					//			process, document);
+		//}
 		/*
 		 * DataInputUI
 		 */
@@ -93,12 +93,12 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 	private void dataOutputUISerialization(QName elementType,
 			Activity activity, Node parentNode, Process process,
 			Document document) {
-		if(activityElement == null){
+		//if(activityElement == null){
 			// create a new DOM element for our Activity
 			Element activityElement = document.createElementNS(elementType.getNamespaceURI(),
 					ExtensionsampleConstants.ND_DATA_OUTPUT_UI);
 			activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
-		}
+		//}
 		
 		// handle the InputVariable
 		Variable outputVar = ((DataOutputUI) activity).getOutputVariable();
@@ -115,12 +115,12 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 
 	private void dataInputUISerialization(QName elementType, Activity activity,
 			Node parentNode, Process process, Document document) {
-		if(activityElement == null){
+		//if(activityElement == null){
 			// create a new DOM element for our Activity
 			Element activityElement = document.createElementNS(elementType.getNamespaceURI(),
 					ExtensionsampleConstants.ND_DATA_INPUT_UI);
 			activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
-		}
+		//}
 
 		// handle the userValidation
 		String attName = ModelPackage.eINSTANCE
