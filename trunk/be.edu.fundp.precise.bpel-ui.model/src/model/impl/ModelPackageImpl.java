@@ -267,11 +267,11 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 				serializer);
 		
 		// DataSelectionUI
-		name = DataSelectionUI.class.getSimpleName();
-		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
-				ExtensionsampleConstants.ND_DATA_SELECTION_UI), deserializer);
-		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
-				serializer);
+		//name = DataSelectionUI.class.getSimpleName();
+		//extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
+		//		ExtensionsampleConstants.ND_DATA_SELECTION_UI), deserializer);
+		//extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
+		//		serializer);
 	}
 
 	/**
