@@ -46,7 +46,6 @@ public class BPEL_UI_UIAdapterFactory  extends ModelAdapterFactory{
 	@Override
 	public Adapter createDataSelectionUIAdapter() {
 		if (this.dataSelectionUIAdapter == null) {
-			System.out.println("aqui criiou8!!!!!");
 			this.dataSelectionUIAdapter = new DataSelectionUIAdapter();
 		}
 		return this.dataSelectionUIAdapter;
