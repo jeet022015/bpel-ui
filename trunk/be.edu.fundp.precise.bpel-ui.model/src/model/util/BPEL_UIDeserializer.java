@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 
 import model.DataInputUI;
 import model.DataOutputUI;
+import model.DataSelectionUI;
 import model.ModelFactory;
 import model.ModelPackage;
 
@@ -38,8 +39,67 @@ public class BPEL_UIDeserializer implements BPELActivityDeserializer{
 			return aDataOutputtUI;
 		}
 		
+		//TODO terminate from here
+		if (ExtensionsampleConstants.ND_DATA_SELECTION_UI.equals(elementType.getLocalPart())) {
+			DataSelectionUI aDataSelectionUI = deserializeDataSelectionUI(node, activity,
+					process);
+			return aDataSelectionUI;
+		}
+		
 		System.err.println("Cannot handle this kind of element");
 		return null;
+	}
+
+	private DataSelectionUI deserializeDataSelectionUI(Node node,
+			Activity activity, Process process) {
+		// create a new aDataInputUI model object if not already created
+		DataSelectionUI aDataSelectionUI;
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
+		if (activity instanceof DataInputUI) {
+			aDataSelectionUI = (DataSelectionUI)activity;
+		}
+		else {
+			aDataSelectionUI = ModelFactory.eINSTANCE
+				.createDataSelectionUI();
+
+			// attach the DOM node to our new activity
+			aDataSelectionUI.setElement((Element) node);
+		}
+		
+		// handle the MaxCardinality
+		String attName2 = ModelPackage.eINSTANCE
+			.getDataSelectionUI_MaxCardinality().getName();
+		String varName = ((Element) node).getAttribute(attName2);
+		if (varName != null) {
+			aDataSelectionUI.setMaxCardinality(Integer.parseInt(varName));
+		}
+		
+		// handle the MinCardinality
+		attName2 = ModelPackage.eINSTANCE
+			.getDataSelectionUI_MinCardinality().getName();
+		varName = ((Element) node).getAttribute(attName2);
+		if (varName != null) {
+			aDataSelectionUI.setMinCardinality(Integer.parseInt(varName));
+		}
+		
+		// handle the selectable 
+		//TODO make in conformance with Invoke
+		attName2 = ModelPackage.eINSTANCE
+			.getDataSelectionUI_Selectable().getName();
+		varName = ((Element) node).getAttribute(attName2);
+		if (varName != null) {
+			//TODO this code don't consider the Scope variables
+			EList<Variable> vars = process.getVariables().getChildren();
+			for (Variable var : vars) {
+				if (var.getName().equals(varName)){
+					aDataSelectionUI.setSelectable(var);
+				}
+				
+			}
+			
+		}
+		
+		return aDataSelectionUI;
 	}
 
 	private DataOutputUI deserializeDataOutputUI(Node node, Activity activity,
