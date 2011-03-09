@@ -29,11 +29,11 @@ public class BPEL_UIDeserializer implements BPELActivityDeserializer{
 			BPELReader bpelReader) {
 		
 		//TODO merge with DataInput
-		//if (ExtensionsampleConstants.ND_DATA_SELECTION_UI.equals(elementType.getLocalPart())) {
-		//	DataSelectionUI aDataSelectionUI = deserializeDataSelectionUI(node, activity,
-		//			process);
-		//	return aDataSelectionUI;
-		//}
+		if (ExtensionsampleConstants.ND_DATA_SELECTION_UI.equals(elementType.getLocalPart())) {
+			DataSelectionUI aDataSelectionUI = deserializeDataSelectionUI(node, activity,
+					process);
+			return aDataSelectionUI;
+		}
 
 		if (ExtensionsampleConstants.ND_DATA_INPUT_UI.equals(elementType.getLocalPart())) {
 			DataInputUI aDataInputUI = deserializeDataInputUI(node, activity,
