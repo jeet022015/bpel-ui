@@ -47,6 +47,9 @@ public class BPEL_UI_UIObjectFactory extends AbstractUIObjectFactory implements 
 		if (modelType.getName().equals("DataOutputUI"))
 			iconReference = ExtensionSampleUIConstants.DATAOUTPUT_ICON_16;
 		
+		if (modelType.getName().equals("DataSelectionUI"))
+			iconReference = ExtensionSampleUIConstants.DATASELECTION_ICON_16;
+		
 		return Activator.getDefault().getImageDescriptor(iconReference);
 	}
 
@@ -58,6 +61,10 @@ public class BPEL_UI_UIObjectFactory extends AbstractUIObjectFactory implements 
 		
 		if (modelType.getName().equals("DataOutputUI"))
 			iconReference = ExtensionSampleUIConstants.DATAOUTPUT_ICON_20;
+		
+		if (modelType.getName().equals("DataSelectionUI"))
+			iconReference = ExtensionSampleUIConstants.DATASELECTION_ICON_20;
+		
 		return Activator.getDefault().getImageDescriptor(iconReference);
 	}
 
@@ -69,6 +76,10 @@ public class BPEL_UI_UIObjectFactory extends AbstractUIObjectFactory implements 
 		
 		if (modelType.getName().equals("DataOutputUI"))
 			iconReference = ExtensionSampleUIConstants.DATAOUTPUT_ICON_16;
+		
+		if (modelType.getName().equals("DataSelectionUI"))
+			iconReference = ExtensionSampleUIConstants.DATASELECTION_ICON_16;
+		
 		return Activator.getDefault().getImageRegistry().get(iconReference);
 	}
 
@@ -80,6 +91,10 @@ public class BPEL_UI_UIObjectFactory extends AbstractUIObjectFactory implements 
 		
 		if (modelType.getName().equals("DataOutputUI"))
 			iconReference = ExtensionSampleUIConstants.DATAOUTPUT_ICON_20;
+		
+		if (modelType.getName().equals("DataSelectionUI"))
+			iconReference = ExtensionSampleUIConstants.DATASELECTION_ICON_20;
+		
 		return Activator.getDefault().getImageRegistry().get(iconReference);
 	}
 

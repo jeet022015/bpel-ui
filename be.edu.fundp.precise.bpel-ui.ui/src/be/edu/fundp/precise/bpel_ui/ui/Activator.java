@@ -70,6 +70,8 @@ public class Activator extends AbstractUIPlugin {
 		createImageDescriptor(ExtensionSampleUIConstants.DATAINPUT_ICON_20, baseURL);
 		createImageDescriptor(ExtensionSampleUIConstants.DATAOUTPUT_ICON_16, baseURL);
 		createImageDescriptor(ExtensionSampleUIConstants.DATAOUTPUT_ICON_20, baseURL);
+		createImageDescriptor(ExtensionSampleUIConstants.DATASELECTION_ICON_16, baseURL);
+		createImageDescriptor(ExtensionSampleUIConstants.DATASELECTION_ICON_16, baseURL);
 	}
 
 	private void createImageDescriptor(String id, URL baseURL) {

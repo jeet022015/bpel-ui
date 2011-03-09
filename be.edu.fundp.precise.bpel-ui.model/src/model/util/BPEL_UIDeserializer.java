@@ -71,7 +71,7 @@ public class BPEL_UIDeserializer implements BPELActivityDeserializer{
 		String attName2 = ModelPackage.eINSTANCE
 			.getDataSelectionUI_MaxCardinality().getName();
 		String varName = ((Element) node).getAttribute(attName2);
-		if (varName != null) {
+		if (varName != null && !varName.equals("")) {
 			aDataSelectionUI.setMaxCardinality(Integer.parseInt(varName));
 		}
 		
@@ -79,7 +79,7 @@ public class BPEL_UIDeserializer implements BPELActivityDeserializer{
 		attName2 = ModelPackage.eINSTANCE
 			.getDataSelectionUI_MinCardinality().getName();
 		varName = ((Element) node).getAttribute(attName2);
-		if (varName != null) {
+		if (varName != null && !varName.equals("")) {
 			aDataSelectionUI.setMinCardinality(Integer.parseInt(varName));
 		}
 		
@@ -88,7 +88,7 @@ public class BPEL_UIDeserializer implements BPELActivityDeserializer{
 		attName2 = ModelPackage.eINSTANCE
 			.getDataSelectionUI_Selectable().getName();
 		varName = ((Element) node).getAttribute(attName2);
-		if (varName != null) {
+		if (varName != null && !varName.equals("")) {
 			//TODO this code don't consider the Scope variables
 			EList<Variable> vars = process.getVariables().getChildren();
 			for (Variable var : vars) {
