@@ -48,8 +48,9 @@
     <eLiterals name="onImplicitInteracion" value="5"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OnUserEvent" eSuperTypes="../../org.eclipse.bpel.model/src/model/bpel.ecore#//ExtensibleElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="container" eType="ecore:EClass ../../org.eclipse.bpel.model/src/model/bpel.ecore#//Activity"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="inVar" eType="ecore:EClass ../../org.eclipse.bpel.model/src/model/bpel.ecore#//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="activity" lowerBound="1"
+        eType="ecore:EClass ../../org.eclipse.bpel.model/src/model/bpel.ecore#//Activity"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" eType="ecore:EClass ../../org.eclipse.bpel.model/src/model/bpel.ecore#//Variable"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="userRole" eType="#//UserRole"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//EventType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
