@@ -13,5 +13,8 @@ public class ExtensionSampleUIConstants {
 	
 	public static final String DATASELECTION_ICON_16 = "dataSelectionIcon16/extensionactivity.gif";
 	public static final String DATASELECTION_ICON_20 = "dataSelectionIcon20/extensionactivity.png";
+	
+	public static final String ONUSEREVENT_ICON_16 = "dataSelectionIcon16/extensionactivity.gif";
+	public static final String ONUSEREVENT_ICON_20 = "dataSelectionIcon20/extensionactivity.png";
 
 }
