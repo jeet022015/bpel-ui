@@ -6,17 +6,22 @@ import model.DataInputUI;
 import model.DataOutputUI;
 import model.DataSelectionUI;
 import model.ModelPackage;
+import model.NewPick;
+import model.OnUserEvent;
 
 import org.eclipse.bpel.model.Activity;
+import org.eclipse.bpel.model.OnAlarm;
+import org.eclipse.bpel.model.OnMessage;
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.extensions.BPELActivitySerializer;
 import org.eclipse.bpel.model.resource.BPELWriter;
+import org.eclipse.bpel.model.util.BPELUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public class BPEL_UI_Serializer implements BPELActivitySerializer{
+public class BPEL_UI_Serializer extends BPELWriter implements BPELActivitySerializer{
 	
 	private Element activityElement;
 
@@ -29,8 +34,15 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 		 * DataSelectionUI
 		 */
 		//TODO user strategy pattern here
+		if (activity instanceof NewPick) {
+			newPickSerialization(elementType, (NewPick) activity, parentNode,
+					process, document);
+		}
+		/*
+		 * DataSelectionUI
+		 */
+		//TODO user strategy pattern here
 		if (activity instanceof DataSelectionUI) {
-			System.out.println("serialize");
 			dataSelectionUISerialization(elementType, activity, parentNode,
 					process, document);
 		}
@@ -50,6 +62,64 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 			dataOutputUISerialization(elementType, activity, parentNode,
 					process, document);
 		}
+	}
+	
+	private void newPickSerialization(QName elementType, NewPick activity,
+			Node parentNode, Process process, Document document) {
+		if(activityElement == null){
+			// create a new DOM element for our Activity
+			activityElement = document.createElementNS(elementType.getNamespaceURI(),
+					BPEL_UI_Constants.ND_NEW_PICK);
+			activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
+		}
+		
+		if (activity.isSetCreateInstance()) {
+			activityElement.setAttribute("createInstance", BPELUtils
+					.boolean2XML(activity.getCreateInstance()));
+		}
+		for (Object next : activity.getMessages()) {
+			activityElement.appendChild(onMessage2XML((OnMessage) next));
+		}
+		for (Object next : activity.getAlarm()) {
+			activityElement.appendChild(onAlarm2XML((OnAlarm) next));
+		}
+		for (Object next : activity.getUserInteracion()) {
+			activityElement.appendChild(onUserInteracion2XML((OnUserEvent) next, document, elementType, process));
+		}
+		addCommonActivityItems(activityElement, activity);
+	}
+
+	private Node onUserInteracion2XML(OnUserEvent onMsg, Document document, QName elementType, Process process) {
+		//Element onMessageElement = createBPELElement("onMessage");
+		// create a new DOM element for our Activity
+		//TODO I don't know how it works
+		Element onMessageElement = document.createElementNS(elementType.getNamespaceURI(),
+					BPEL_UI_Constants.ND_NEW_PICK);
+		activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
+		if (onMsg.getVariable() != null
+				&& onMsg.getVariable().getName() != null) {
+			onMessageElement.setAttribute("variable", onMsg.getVariable()
+					.getName());
+		}
+		if (onMsg.getActivity() != null) {
+			onMessageElement.appendChild(activity2XML(onMsg.getActivity()));
+		}
+		// handle the SampleExtensionAttribute
+		if (onMsg.getID() != null) {
+			String attName = ModelPackage.eINSTANCE
+					.getOnUserEvent_ID().getName();
+			onMessageElement.setAttribute(attName, onMsg.getID());
+		}
+		// handle the SampleExtensionAttribute
+		if (onMsg.getType() != null) {
+			String attName = ModelPackage.eINSTANCE
+					.getOnUserEvent_Type().getName();
+			onMessageElement.setAttribute(attName, onMsg.getType().getLiteral());
+		}
+		//TODO USER ROLE
+		// TODO: Why do we have this? I don't think OnMessage is extensible.
+		extensibleElement2XML(onMsg, onMessageElement);
+		return onMessageElement;
 	}
 
 	private void dataSelectionUISerialization(QName elementType,
