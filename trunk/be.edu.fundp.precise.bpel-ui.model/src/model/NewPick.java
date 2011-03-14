@@ -6,6 +6,7 @@
  */
 package model;
 
+import org.eclipse.bpel.model.ExtensionActivity;
 import org.eclipse.bpel.model.Pick;
 
 import org.eclipse.emf.common.util.EList;
@@ -26,7 +27,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface NewPick extends Pick {
+public interface NewPick extends ExtensionActivity, Pick {
 	/**
 	 * Returns the value of the '<em><b>User Interacion</b></em>' reference list.
 	 * The list contents are of type {@link model.OnUserEvent}.

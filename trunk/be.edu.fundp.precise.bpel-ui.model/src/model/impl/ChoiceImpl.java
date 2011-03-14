@@ -14,6 +14,7 @@ import model.ModelPackage;
 import org.eclipse.bpel.model.Activity;
 import org.eclipse.bpel.model.Variable;
 
+import org.eclipse.bpel.model.impl.ExtensibleElementImpl;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
@@ -41,7 +42,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class ChoiceImpl extends EObjectImpl implements Choice {
+public class ChoiceImpl extends ExtensibleElementImpl implements Choice {
 	/**
 	 * The default value of the '{@link #isIsDefault() <em>Is Default</em>}' attribute.
 	 * <!-- begin-user-doc -->

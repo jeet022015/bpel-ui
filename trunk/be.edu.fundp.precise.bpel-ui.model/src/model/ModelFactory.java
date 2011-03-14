@@ -80,15 +80,6 @@ public interface ModelFactory extends EFactory {
 	Choice createChoice();
 
 	/**
-	 * Returns a new object of class '<em>User Event</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>User Event</em>'.
-	 * @generated
-	 */
-	UserEvent createUserEvent();
-
-	/**
 	 * Returns a new object of class '<em>On User Event</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -107,13 +98,13 @@ public interface ModelFactory extends EFactory {
 	NewPick createNewPick();
 
 	/**
-	 * Returns a new object of class '<em>new Event Handler</em>'.
+	 * Returns a new object of class '<em>New Event Handler</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>new Event Handler</em>'.
+	 * @return a new object of class '<em>New Event Handler</em>'.
 	 * @generated
 	 */
-	newEventHandler createnewEventHandler();
+	NewEventHandler createNewEventHandler();
 
 	/**
 	 * Returns the package supported by this factory.

@@ -173,13 +173,49 @@ public interface ModelPackage extends EPackage {
 	int USER_ROLE = 1;
 
 	/**
+	 * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_ROLE__DOCUMENTATION_ELEMENT = BPELPackage.EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_ROLE__ELEMENT = BPELPackage.EXTENSIBLE_ELEMENT__ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_ROLE__EEXTENSIBILITY_ELEMENTS = BPELPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS;
+
+	/**
+	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_ROLE__DOCUMENTATION = BPELPackage.EXTENSIBLE_ELEMENT__DOCUMENTATION;
+
+	/**
 	 * The feature id for the '<em><b>ID</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int USER_ROLE__ID = 0;
+	int USER_ROLE__ID = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>User Role</em>' class.
@@ -188,7 +224,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int USER_ROLE_FEATURE_COUNT = 1;
+	int USER_ROLE_FEATURE_COUNT = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link model.impl.DataOutputUIImpl <em>Data Output UI</em>}' class.
@@ -683,13 +719,49 @@ public interface ModelPackage extends EPackage {
 	int CHOICE = 6;
 
 	/**
+	 * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CHOICE__DOCUMENTATION_ELEMENT = BPELPackage.EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CHOICE__ELEMENT = BPELPackage.EXTENSIBLE_ELEMENT__ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CHOICE__EEXTENSIBILITY_ELEMENTS = BPELPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS;
+
+	/**
+	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CHOICE__DOCUMENTATION = BPELPackage.EXTENSIBLE_ELEMENT__DOCUMENTATION;
+
+	/**
 	 * The feature id for the '<em><b>Is Default</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CHOICE__IS_DEFAULT = 0;
+	int CHOICE__IS_DEFAULT = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Arguments</b></em>' reference list.
@@ -698,7 +770,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CHOICE__ARGUMENTS = 1;
+	int CHOICE__ARGUMENTS = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Container</b></em>' reference.
@@ -707,7 +779,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CHOICE__CONTAINER = 2;
+	int CHOICE__CONTAINER = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Choice</em>' class.
@@ -716,35 +788,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CHOICE_FEATURE_COUNT = 3;
-
-	/**
-	 * The meta object id for the '{@link model.impl.UserEventImpl <em>User Event</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see model.impl.UserEventImpl
-	 * @see model.impl.ModelPackageImpl#getUserEvent()
-	 * @generated
-	 */
-	int USER_EVENT = 7;
-
-	/**
-	 * The feature id for the '<em><b>Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_EVENT__TYPE = 0;
-
-	/**
-	 * The number of structural features of the '<em>User Event</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_EVENT_FEATURE_COUNT = 1;
+	int CHOICE_FEATURE_COUNT = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link model.impl.OnUserEventImpl <em>On User Event</em>}' class.
@@ -754,16 +798,88 @@ public interface ModelPackage extends EPackage {
 	 * @see model.impl.ModelPackageImpl#getOnUserEvent()
 	 * @generated
 	 */
-	int ON_USER_EVENT = 8;
+	int ON_USER_EVENT = 7;
 
 	/**
-	 * The feature id for the '<em><b>Container</b></em>' reference.
+	 * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ON_USER_EVENT__CONTAINER = 0;
+	int ON_USER_EVENT__DOCUMENTATION_ELEMENT = BPELPackage.EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__ELEMENT = BPELPackage.EXTENSIBLE_ELEMENT__ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__EEXTENSIBILITY_ELEMENTS = BPELPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS;
+
+	/**
+	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__DOCUMENTATION = BPELPackage.EXTENSIBLE_ELEMENT__DOCUMENTATION;
+
+	/**
+	 * The feature id for the '<em><b>Activity</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__ACTIVITY = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Variable</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__VARIABLE = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>User Role</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__USER_ROLE = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__TYPE = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__ID = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>On User Event</em>' class.
@@ -772,7 +888,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ON_USER_EVENT_FEATURE_COUNT = 1;
+	int ON_USER_EVENT_FEATURE_COUNT = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link model.impl.NewPickImpl <em>New Pick</em>}' class.
@@ -782,7 +898,7 @@ public interface ModelPackage extends EPackage {
 	 * @see model.impl.ModelPackageImpl#getNewPick()
 	 * @generated
 	 */
-	int NEW_PICK = 9;
+	int NEW_PICK = 8;
 
 	/**
 	 * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
@@ -791,7 +907,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK__DOCUMENTATION_ELEMENT = BPELPackage.PICK__DOCUMENTATION_ELEMENT;
+	int NEW_PICK__DOCUMENTATION_ELEMENT = BPELPackage.EXTENSION_ACTIVITY__DOCUMENTATION_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Element</b></em>' attribute.
@@ -800,7 +916,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK__ELEMENT = BPELPackage.PICK__ELEMENT;
+	int NEW_PICK__ELEMENT = BPELPackage.EXTENSION_ACTIVITY__ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
@@ -809,7 +925,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK__EEXTENSIBILITY_ELEMENTS = BPELPackage.PICK__EEXTENSIBILITY_ELEMENTS;
+	int NEW_PICK__EEXTENSIBILITY_ELEMENTS = BPELPackage.EXTENSION_ACTIVITY__EEXTENSIBILITY_ELEMENTS;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
@@ -818,7 +934,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK__DOCUMENTATION = BPELPackage.PICK__DOCUMENTATION;
+	int NEW_PICK__DOCUMENTATION = BPELPackage.EXTENSION_ACTIVITY__DOCUMENTATION;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -827,7 +943,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK__NAME = BPELPackage.PICK__NAME;
+	int NEW_PICK__NAME = BPELPackage.EXTENSION_ACTIVITY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Suppress Join Failure</b></em>' attribute.
@@ -836,7 +952,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK__SUPPRESS_JOIN_FAILURE = BPELPackage.PICK__SUPPRESS_JOIN_FAILURE;
+	int NEW_PICK__SUPPRESS_JOIN_FAILURE = BPELPackage.EXTENSION_ACTIVITY__SUPPRESS_JOIN_FAILURE;
 
 	/**
 	 * The feature id for the '<em><b>Targets</b></em>' containment reference.
@@ -845,7 +961,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK__TARGETS = BPELPackage.PICK__TARGETS;
+	int NEW_PICK__TARGETS = BPELPackage.EXTENSION_ACTIVITY__TARGETS;
 
 	/**
 	 * The feature id for the '<em><b>Sources</b></em>' containment reference.
@@ -854,7 +970,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK__SOURCES = BPELPackage.PICK__SOURCES;
+	int NEW_PICK__SOURCES = BPELPackage.EXTENSION_ACTIVITY__SOURCES;
 
 	/**
 	 * The feature id for the '<em><b>Create Instance</b></em>' attribute.
@@ -863,7 +979,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK__CREATE_INSTANCE = BPELPackage.PICK__CREATE_INSTANCE;
+	int NEW_PICK__CREATE_INSTANCE = BPELPackage.EXTENSION_ACTIVITY_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Messages</b></em>' containment reference list.
@@ -872,7 +988,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK__MESSAGES = BPELPackage.PICK__MESSAGES;
+	int NEW_PICK__MESSAGES = BPELPackage.EXTENSION_ACTIVITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Alarm</b></em>' containment reference list.
@@ -881,7 +997,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK__ALARM = BPELPackage.PICK__ALARM;
+	int NEW_PICK__ALARM = BPELPackage.EXTENSION_ACTIVITY_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>User Interacion</b></em>' reference list.
@@ -890,7 +1006,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK__USER_INTERACION = BPELPackage.PICK_FEATURE_COUNT + 0;
+	int NEW_PICK__USER_INTERACION = BPELPackage.EXTENSION_ACTIVITY_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>New Pick</em>' class.
@@ -899,17 +1015,17 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NEW_PICK_FEATURE_COUNT = BPELPackage.PICK_FEATURE_COUNT + 1;
+	int NEW_PICK_FEATURE_COUNT = BPELPackage.EXTENSION_ACTIVITY_FEATURE_COUNT + 4;
 
 	/**
-	 * The meta object id for the '{@link model.impl.newEventHandlerImpl <em>new Event Handler</em>}' class.
+	 * The meta object id for the '{@link model.impl.NewEventHandlerImpl <em>New Event Handler</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see model.impl.newEventHandlerImpl
-	 * @see model.impl.ModelPackageImpl#getnewEventHandler()
+	 * @see model.impl.NewEventHandlerImpl
+	 * @see model.impl.ModelPackageImpl#getNewEventHandler()
 	 * @generated
 	 */
-	int NEW_EVENT_HANDLER = 10;
+	int NEW_EVENT_HANDLER = 9;
 
 	/**
 	 * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
@@ -975,7 +1091,7 @@ public interface ModelPackage extends EPackage {
 	int NEW_EVENT_HANDLER__USER_INTERACION = BPELPackage.EVENT_HANDLER_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>new Event Handler</em>' class.
+	 * The number of structural features of the '<em>New Event Handler</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -991,7 +1107,7 @@ public interface ModelPackage extends EPackage {
 	 * @see model.impl.ModelPackageImpl#getEventType()
 	 * @generated
 	 */
-	int EVENT_TYPE = 11;
+	int EVENT_TYPE = 10;
 
 
 	/**
@@ -1197,27 +1313,6 @@ public interface ModelPackage extends EPackage {
 	EReference getChoice_Container();
 
 	/**
-	 * Returns the meta object for class '{@link model.UserEvent <em>User Event</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>User Event</em>'.
-	 * @see model.UserEvent
-	 * @generated
-	 */
-	EClass getUserEvent();
-
-	/**
-	 * Returns the meta object for the attribute '{@link model.UserEvent#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Type</em>'.
-	 * @see model.UserEvent#getType()
-	 * @see #getUserEvent()
-	 * @generated
-	 */
-	EAttribute getUserEvent_Type();
-
-	/**
 	 * Returns the meta object for class '{@link model.OnUserEvent <em>On User Event</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1228,15 +1323,59 @@ public interface ModelPackage extends EPackage {
 	EClass getOnUserEvent();
 
 	/**
-	 * Returns the meta object for the reference '{@link model.OnUserEvent#getContainer <em>Container</em>}'.
+	 * Returns the meta object for the reference '{@link model.OnUserEvent#getActivity <em>Activity</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Container</em>'.
-	 * @see model.OnUserEvent#getContainer()
+	 * @return the meta object for the reference '<em>Activity</em>'.
+	 * @see model.OnUserEvent#getActivity()
 	 * @see #getOnUserEvent()
 	 * @generated
 	 */
-	EReference getOnUserEvent_Container();
+	EReference getOnUserEvent_Activity();
+
+	/**
+	 * Returns the meta object for the reference '{@link model.OnUserEvent#getVariable <em>Variable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Variable</em>'.
+	 * @see model.OnUserEvent#getVariable()
+	 * @see #getOnUserEvent()
+	 * @generated
+	 */
+	EReference getOnUserEvent_Variable();
+
+	/**
+	 * Returns the meta object for the reference '{@link model.OnUserEvent#getUserRole <em>User Role</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>User Role</em>'.
+	 * @see model.OnUserEvent#getUserRole()
+	 * @see #getOnUserEvent()
+	 * @generated
+	 */
+	EReference getOnUserEvent_UserRole();
+
+	/**
+	 * Returns the meta object for the attribute '{@link model.OnUserEvent#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see model.OnUserEvent#getType()
+	 * @see #getOnUserEvent()
+	 * @generated
+	 */
+	EAttribute getOnUserEvent_Type();
+
+	/**
+	 * Returns the meta object for the attribute '{@link model.OnUserEvent#getID <em>ID</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>ID</em>'.
+	 * @see model.OnUserEvent#getID()
+	 * @see #getOnUserEvent()
+	 * @generated
+	 */
+	EAttribute getOnUserEvent_ID();
 
 	/**
 	 * Returns the meta object for class '{@link model.NewPick <em>New Pick</em>}'.
@@ -1260,25 +1399,25 @@ public interface ModelPackage extends EPackage {
 	EReference getNewPick_UserInteracion();
 
 	/**
-	 * Returns the meta object for class '{@link model.newEventHandler <em>new Event Handler</em>}'.
+	 * Returns the meta object for class '{@link model.NewEventHandler <em>New Event Handler</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>new Event Handler</em>'.
-	 * @see model.newEventHandler
+	 * @return the meta object for class '<em>New Event Handler</em>'.
+	 * @see model.NewEventHandler
 	 * @generated
 	 */
-	EClass getnewEventHandler();
+	EClass getNewEventHandler();
 
 	/**
-	 * Returns the meta object for the reference list '{@link model.newEventHandler#getUserInteracion <em>User Interacion</em>}'.
+	 * Returns the meta object for the reference list '{@link model.NewEventHandler#getUserInteracion <em>User Interacion</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference list '<em>User Interacion</em>'.
-	 * @see model.newEventHandler#getUserInteracion()
-	 * @see #getnewEventHandler()
+	 * @see model.NewEventHandler#getUserInteracion()
+	 * @see #getNewEventHandler()
 	 * @generated
 	 */
-	EReference getnewEventHandler_UserInteracion();
+	EReference getNewEventHandler_UserInteracion();
 
 	/**
 	 * Returns the meta object for enum '{@link model.EventType <em>Event Type</em>}'.
@@ -1479,24 +1618,6 @@ public interface ModelPackage extends EPackage {
 		EReference CHOICE__CONTAINER = eINSTANCE.getChoice_Container();
 
 		/**
-		 * The meta object literal for the '{@link model.impl.UserEventImpl <em>User Event</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see model.impl.UserEventImpl
-		 * @see model.impl.ModelPackageImpl#getUserEvent()
-		 * @generated
-		 */
-		EClass USER_EVENT = eINSTANCE.getUserEvent();
-
-		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute USER_EVENT__TYPE = eINSTANCE.getUserEvent_Type();
-
-		/**
 		 * The meta object literal for the '{@link model.impl.OnUserEventImpl <em>On User Event</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1507,12 +1628,44 @@ public interface ModelPackage extends EPackage {
 		EClass ON_USER_EVENT = eINSTANCE.getOnUserEvent();
 
 		/**
-		 * The meta object literal for the '<em><b>Container</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Activity</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference ON_USER_EVENT__CONTAINER = eINSTANCE.getOnUserEvent_Container();
+		EReference ON_USER_EVENT__ACTIVITY = eINSTANCE.getOnUserEvent_Activity();
+
+		/**
+		 * The meta object literal for the '<em><b>Variable</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ON_USER_EVENT__VARIABLE = eINSTANCE.getOnUserEvent_Variable();
+
+		/**
+		 * The meta object literal for the '<em><b>User Role</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ON_USER_EVENT__USER_ROLE = eINSTANCE.getOnUserEvent_UserRole();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ON_USER_EVENT__TYPE = eINSTANCE.getOnUserEvent_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>ID</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ON_USER_EVENT__ID = eINSTANCE.getOnUserEvent_ID();
 
 		/**
 		 * The meta object literal for the '{@link model.impl.NewPickImpl <em>New Pick</em>}' class.
@@ -1533,14 +1686,14 @@ public interface ModelPackage extends EPackage {
 		EReference NEW_PICK__USER_INTERACION = eINSTANCE.getNewPick_UserInteracion();
 
 		/**
-		 * The meta object literal for the '{@link model.impl.newEventHandlerImpl <em>new Event Handler</em>}' class.
+		 * The meta object literal for the '{@link model.impl.NewEventHandlerImpl <em>New Event Handler</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see model.impl.newEventHandlerImpl
-		 * @see model.impl.ModelPackageImpl#getnewEventHandler()
+		 * @see model.impl.NewEventHandlerImpl
+		 * @see model.impl.ModelPackageImpl#getNewEventHandler()
 		 * @generated
 		 */
-		EClass NEW_EVENT_HANDLER = eINSTANCE.getnewEventHandler();
+		EClass NEW_EVENT_HANDLER = eINSTANCE.getNewEventHandler();
 
 		/**
 		 * The meta object literal for the '<em><b>User Interacion</b></em>' reference list feature.
@@ -1548,7 +1701,7 @@ public interface ModelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference NEW_EVENT_HANDLER__USER_INTERACION = eINSTANCE.getnewEventHandler_UserInteracion();
+		EReference NEW_EVENT_HANDLER__USER_INTERACION = eINSTANCE.getNewEventHandler_UserInteracion();
 
 		/**
 		 * The meta object literal for the '{@link model.EventType <em>Event Type</em>}' enum.

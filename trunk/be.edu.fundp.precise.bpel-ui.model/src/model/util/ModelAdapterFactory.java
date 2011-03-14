@@ -111,10 +111,6 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 				return createChoiceAdapter();
 			}
 			@Override
-			public Adapter caseUserEvent(UserEvent object) {
-				return createUserEventAdapter();
-			}
-			@Override
 			public Adapter caseOnUserEvent(OnUserEvent object) {
 				return createOnUserEventAdapter();
 			}
@@ -123,8 +119,8 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 				return createNewPickAdapter();
 			}
 			@Override
-			public Adapter casenewEventHandler(newEventHandler object) {
-				return createnewEventHandlerAdapter();
+			public Adapter caseNewEventHandler(NewEventHandler object) {
+				return createNewEventHandlerAdapter();
 			}
 			@Override
 			public Adapter caseWSDLElement(WSDLElement object) {
@@ -282,20 +278,6 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link model.UserEvent <em>User Event</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see model.UserEvent
-	 * @generated
-	 */
-	public Adapter createUserEventAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link model.OnUserEvent <em>On User Event</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -324,16 +306,16 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link model.newEventHandler <em>new Event Handler</em>}'.
+	 * Creates a new adapter for an object of class '{@link model.NewEventHandler <em>New Event Handler</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see model.newEventHandler
+	 * @see model.NewEventHandler
 	 * @generated
 	 */
-	public Adapter createnewEventHandlerAdapter() {
+	public Adapter createNewEventHandlerAdapter() {
 		return null;
 	}
 

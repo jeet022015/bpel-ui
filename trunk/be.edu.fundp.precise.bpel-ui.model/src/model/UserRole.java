@@ -6,6 +6,7 @@
  */
 package model;
 
+import org.eclipse.bpel.model.ExtensibleElement;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -24,7 +25,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface UserRole extends EObject {
+public interface UserRole extends ExtensibleElement {
 	/**
 	 * Returns the value of the '<em><b>ID</b></em>' attribute.
 	 * <!-- begin-user-doc -->

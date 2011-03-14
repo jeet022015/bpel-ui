@@ -114,6 +114,11 @@ public class ModelSwitch<T> {
 			case ModelPackage.USER_ROLE: {
 				UserRole userRole = (UserRole)theEObject;
 				T result = caseUserRole(userRole);
+				if (result == null) result = caseBPEL_ExtensibleElement(userRole);
+				if (result == null) result = caseExtensibleElement(userRole);
+				if (result == null) result = caseWSDLElement(userRole);
+				if (result == null) result = caseIElementExtensible(userRole);
+				if (result == null) result = caseIAttributeExtensible(userRole);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -177,24 +182,29 @@ public class ModelSwitch<T> {
 			case ModelPackage.CHOICE: {
 				Choice choice = (Choice)theEObject;
 				T result = caseChoice(choice);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case ModelPackage.USER_EVENT: {
-				UserEvent userEvent = (UserEvent)theEObject;
-				T result = caseUserEvent(userEvent);
+				if (result == null) result = caseBPEL_ExtensibleElement(choice);
+				if (result == null) result = caseExtensibleElement(choice);
+				if (result == null) result = caseWSDLElement(choice);
+				if (result == null) result = caseIElementExtensible(choice);
+				if (result == null) result = caseIAttributeExtensible(choice);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ModelPackage.ON_USER_EVENT: {
 				OnUserEvent onUserEvent = (OnUserEvent)theEObject;
 				T result = caseOnUserEvent(onUserEvent);
+				if (result == null) result = caseBPEL_ExtensibleElement(onUserEvent);
+				if (result == null) result = caseExtensibleElement(onUserEvent);
+				if (result == null) result = caseWSDLElement(onUserEvent);
+				if (result == null) result = caseIElementExtensible(onUserEvent);
+				if (result == null) result = caseIAttributeExtensible(onUserEvent);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ModelPackage.NEW_PICK: {
 				NewPick newPick = (NewPick)theEObject;
 				T result = caseNewPick(newPick);
+				if (result == null) result = caseExtensionActivity(newPick);
 				if (result == null) result = casePick(newPick);
 				if (result == null) result = caseActivity(newPick);
 				if (result == null) result = caseBPEL_ExtensibleElement(newPick);
@@ -206,8 +216,8 @@ public class ModelSwitch<T> {
 				return result;
 			}
 			case ModelPackage.NEW_EVENT_HANDLER: {
-				newEventHandler newEventHandler = (newEventHandler)theEObject;
-				T result = casenewEventHandler(newEventHandler);
+				NewEventHandler newEventHandler = (NewEventHandler)theEObject;
+				T result = caseNewEventHandler(newEventHandler);
 				if (result == null) result = caseEventHandler(newEventHandler);
 				if (result == null) result = caseBPEL_ExtensibleElement(newEventHandler);
 				if (result == null) result = caseExtensibleElement(newEventHandler);
@@ -327,21 +337,6 @@ public class ModelSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>User Event</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>User Event</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseUserEvent(UserEvent object) {
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>On User Event</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -372,17 +367,17 @@ public class ModelSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>new Event Handler</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>New Event Handler</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>new Event Handler</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>New Event Handler</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T casenewEventHandler(newEventHandler object) {
+	public T caseNewEventHandler(NewEventHandler object) {
 		return null;
 	}
 

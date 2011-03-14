@@ -9,6 +9,7 @@ package model.impl;
 import model.ModelPackage;
 import model.UserRole;
 
+import org.eclipse.bpel.model.impl.ExtensibleElementImpl;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
@@ -29,7 +30,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *
  * @generated
  */
-public class UserRoleImpl extends EObjectImpl implements UserRole {
+public class UserRoleImpl extends ExtensibleElementImpl implements UserRole {
 	/**
 	 * The default value of the '{@link #getID() <em>ID</em>}' attribute.
 	 * <!-- begin-user-doc -->
