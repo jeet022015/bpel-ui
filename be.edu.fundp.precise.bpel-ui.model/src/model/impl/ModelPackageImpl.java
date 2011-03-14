@@ -16,12 +16,11 @@ import model.DecisionUI;
 import model.EventType;
 import model.ModelFactory;
 import model.ModelPackage;
+import model.NewEventHandler;
 import model.NewPick;
 import model.OnUserEvent;
-import model.UserEvent;
 import model.UserInteraction;
 import model.UserRole;
-import model.newEventHandler;
 import model.util.BPEL_UIDeserializer;
 import model.util.BPEL_UI_Serializer;
 import model.util.ExtensionsampleConstants;
@@ -39,7 +38,6 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -92,12 +90,6 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @generated
 	 */
 	private EClass choiceEClass = null;
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass userEventEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -396,24 +388,6 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getUserEvent() {
-		return userEventEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getUserEvent_Type() {
-		return (EAttribute)userEventEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getOnUserEvent() {
 		return onUserEventEClass;
 	}
@@ -423,8 +397,44 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getOnUserEvent_Container() {
+	public EReference getOnUserEvent_Activity() {
 		return (EReference)onUserEventEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getOnUserEvent_Variable() {
+		return (EReference)onUserEventEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getOnUserEvent_UserRole() {
+		return (EReference)onUserEventEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getOnUserEvent_Type() {
+		return (EAttribute)onUserEventEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getOnUserEvent_ID() {
+		return (EAttribute)onUserEventEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -450,7 +460,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getnewEventHandler() {
+	public EClass getNewEventHandler() {
 		return newEventHandlerEClass;
 	}
 
@@ -459,7 +469,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getnewEventHandler_UserInteracion() {
+	public EReference getNewEventHandler_UserInteracion() {
 		return (EReference)newEventHandlerEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -526,11 +536,12 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		createEReference(choiceEClass, CHOICE__ARGUMENTS);
 		createEReference(choiceEClass, CHOICE__CONTAINER);
 
-		userEventEClass = createEClass(USER_EVENT);
-		createEAttribute(userEventEClass, USER_EVENT__TYPE);
-
 		onUserEventEClass = createEClass(ON_USER_EVENT);
-		createEReference(onUserEventEClass, ON_USER_EVENT__CONTAINER);
+		createEReference(onUserEventEClass, ON_USER_EVENT__ACTIVITY);
+		createEReference(onUserEventEClass, ON_USER_EVENT__VARIABLE);
+		createEReference(onUserEventEClass, ON_USER_EVENT__USER_ROLE);
+		createEAttribute(onUserEventEClass, ON_USER_EVENT__TYPE);
+		createEAttribute(onUserEventEClass, ON_USER_EVENT__ID);
 
 		newPickEClass = createEClass(NEW_PICK);
 		createEReference(newPickEClass, NEW_PICK__USER_INTERACION);
@@ -574,10 +585,14 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
 		// Add supertypes to classes
 		userInteractionEClass.getESuperTypes().add(theBPELPackage.getExtensionActivity());
+		userRoleEClass.getESuperTypes().add(theBPELPackage.getExtensibleElement());
 		dataOutputUIEClass.getESuperTypes().add(this.getUserInteraction());
 		dataInputUIEClass.getESuperTypes().add(this.getUserInteraction());
 		dataSelectionUIEClass.getESuperTypes().add(this.getDataInputUI());
 		decisionUIEClass.getESuperTypes().add(this.getUserInteraction());
+		choiceEClass.getESuperTypes().add(theBPELPackage.getExtensibleElement());
+		onUserEventEClass.getESuperTypes().add(theBPELPackage.getExtensibleElement());
+		newPickEClass.getESuperTypes().add(theBPELPackage.getExtensionActivity());
 		newPickEClass.getESuperTypes().add(theBPELPackage.getPick());
 		newEventHandlerEClass.getESuperTypes().add(theBPELPackage.getEventHandler());
 
@@ -608,17 +623,18 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		initEReference(getChoice_Arguments(), theBPELPackage.getVariable(), null, "arguments", null, 0, -1, Choice.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getChoice_Container(), theBPELPackage.getActivity(), null, "container", null, 1, 1, Choice.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(userEventEClass, UserEvent.class, "UserEvent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getUserEvent_Type(), this.getEventType(), "type", null, 1, 1, UserEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(onUserEventEClass, OnUserEvent.class, "OnUserEvent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getOnUserEvent_Container(), theBPELPackage.getActivity(), null, "container", null, 1, 1, OnUserEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getOnUserEvent_Activity(), theBPELPackage.getActivity(), null, "activity", null, 1, 1, OnUserEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getOnUserEvent_Variable(), theBPELPackage.getVariable(), null, "variable", null, 0, 1, OnUserEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getOnUserEvent_UserRole(), this.getUserRole(), null, "userRole", null, 0, 1, OnUserEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getOnUserEvent_Type(), this.getEventType(), "type", null, 0, 1, OnUserEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getOnUserEvent_ID(), ecorePackage.getEString(), "ID", null, 0, 1, OnUserEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(newPickEClass, NewPick.class, "NewPick", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getNewPick_UserInteracion(), this.getOnUserEvent(), null, "userInteracion", null, 0, -1, NewPick.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(newEventHandlerEClass, newEventHandler.class, "newEventHandler", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getnewEventHandler_UserInteracion(), this.getOnUserEvent(), null, "userInteracion", null, 0, -1, newEventHandler.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(newEventHandlerEClass, NewEventHandler.class, "NewEventHandler", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getNewEventHandler_UserInteracion(), this.getOnUserEvent(), null, "userInteracion", null, 0, -1, NewEventHandler.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(eventTypeEEnum, EventType.class, "EventType");

@@ -7,6 +7,7 @@
 package model;
 
 import org.eclipse.bpel.model.Activity;
+import org.eclipse.bpel.model.ExtensibleElement;
 import org.eclipse.bpel.model.Variable;
 
 import org.eclipse.emf.common.util.EList;
@@ -31,7 +32,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface Choice extends EObject {
+public interface Choice extends ExtensibleElement {
 	/**
 	 * Returns the value of the '<em><b>Is Default</b></em>' attribute.
 	 * The default value is <code>"false"</code>.
