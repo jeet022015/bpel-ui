@@ -23,7 +23,7 @@ import model.UserInteraction;
 import model.UserRole;
 import model.util.BPEL_UIDeserializer;
 import model.util.BPEL_UI_Serializer;
-import model.util.ExtensionsampleConstants;
+import model.util.BPEL_UI_Constants;
 
 import org.eclipse.bpel.model.BPELPackage;
 
@@ -247,21 +247,21 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		// DataInputUI
 		String name = DataInputUI.class.getSimpleName();
 		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
-				ExtensionsampleConstants.ND_DATA_INPUT_UI), deserializer);
+				BPEL_UI_Constants.ND_DATA_INPUT_UI), deserializer);
 		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
 				serializer);
 		
 		// DataOutputUI
 		name = DataOutputUI.class.getSimpleName();
 		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
-				ExtensionsampleConstants.ND_DATA_OUTPUT_UI), deserializer);
+				BPEL_UI_Constants.ND_DATA_OUTPUT_UI), deserializer);
 		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
 				serializer);
 		
 		// DataSelectionUI
 		name = DataSelectionUI.class.getSimpleName();
 		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
-				ExtensionsampleConstants.ND_DATA_SELECTION_UI), deserializer);
+				BPEL_UI_Constants.ND_DATA_SELECTION_UI), deserializer);
 		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
 				serializer);
 	}
