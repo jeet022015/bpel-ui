@@ -58,7 +58,7 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 		if(activityElement == null){
 			// create a new DOM element for our Activity
 			activityElement = document.createElementNS(elementType.getNamespaceURI(),
-					ExtensionsampleConstants.ND_DATA_SELECTION_UI);
+					BPEL_UI_Constants.ND_DATA_SELECTION_UI);
 			activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
 		}
 		
@@ -97,7 +97,7 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 		if(activityElement == null){
 			// create a new DOM element for our Activity
 			activityElement = document.createElementNS(elementType.getNamespaceURI(),
-					ExtensionsampleConstants.ND_DATA_OUTPUT_UI);
+					BPEL_UI_Constants.ND_DATA_OUTPUT_UI);
 			activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
 		}
 		
@@ -119,7 +119,7 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer{
 		if(activityElement == null){
 			// create a new DOM element for our Activity
 			activityElement = document.createElementNS(elementType.getNamespaceURI(),
-					ExtensionsampleConstants.ND_DATA_INPUT_UI);
+					BPEL_UI_Constants.ND_DATA_INPUT_UI);
 			activityElement.setPrefix(ExtensionSampleUtils.addNamespace(process));
 		}
 
