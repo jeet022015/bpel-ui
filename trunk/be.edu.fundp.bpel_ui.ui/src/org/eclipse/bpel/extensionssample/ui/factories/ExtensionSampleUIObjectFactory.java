@@ -13,7 +13,7 @@ import be.edu.fundp.bpel_ui.model.ModelPackage;
 public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory implements IExtensionUIObjectFactory {
 
 	private EClass modelType;
-	private EClass[] classArray = { ModelPackage.eINSTANCE.getNewPick()};
+	private EClass[] classArray = { ModelPackage.eINSTANCE.getNewPick(), ModelPackage.eINSTANCE.getOnUserEvent()};
 
 	public ExtensionSampleUIObjectFactory(EClass modelType) {
 		super();
