@@ -23,6 +23,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.osgi.util.NLS;
 import org.w3c.dom.Node;
 
+import be.edu.fundp.bpel_ui.model.OnUserEvent;
+
 
 /** 
  * This command is used to add a child into a parent object which supports IContainer. 
@@ -74,9 +76,6 @@ public class InsertInContainerCommand extends AutoUndoCommand {
 	public void doExecute() {
 		
 		IContainer container = BPELUtil.adapt(parent, IContainer.class);
-		System.out.println("parent = "+ parent);
-		System.out.println("child = "+ child);
-		System.out.println("container = "+ container);
 		container.addChild(parent, child, before);
 
 		Node parentElement = getRealParentElement(child, parent);
@@ -110,7 +109,7 @@ public class InsertInContainerCommand extends AutoUndoCommand {
 	 * @return
 	 */
 	private static Node getRealParentElement(EObject child, EObject parent) {
-		if (ReconciliationHelper.isSingleActivityContainer(parent) && child instanceof Activity && child != ReconciliationHelper.getActivity(parent)) {
+		if (ReconciliationHelper.isSingleActivityContainer(parent) && !(child instanceof OnUserEvent) && child instanceof Activity && child != ReconciliationHelper.getActivity(parent)) {
 	    	return org.eclipse.bpel.ui.util.BPELEditorUtil.getInstance().getElementForObject(ReconciliationHelper.getActivity(parent));
 	    } else if (BPELUtils.isTransparent(parent.eContainer(), parent)) {
 	    	EObject container = parent.eContainer();
