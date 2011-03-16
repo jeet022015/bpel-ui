@@ -589,7 +589,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		dataSelectionUIEClass.getESuperTypes().add(this.getDataInputUI());
 		decisionUIEClass.getESuperTypes().add(this.getUserInteraction());
 		choiceEClass.getESuperTypes().add(theBPELPackage.getExtensibleElement());
-		onUserEventEClass.getESuperTypes().add(theBPELPackage.getExtensibleElement());
+		onUserEventEClass.getESuperTypes().add(theBPELPackage.getExtensionActivity());
 		newPickEClass.getESuperTypes().add(theBPELPackage.getExtensionActivity());
 		newPickEClass.getESuperTypes().add(theBPELPackage.getPick());
 		newEventHandlerEClass.getESuperTypes().add(theBPELPackage.getEventHandler());

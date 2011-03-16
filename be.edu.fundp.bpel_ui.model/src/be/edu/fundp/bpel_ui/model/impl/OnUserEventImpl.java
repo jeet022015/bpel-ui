@@ -14,6 +14,7 @@ import be.edu.fundp.bpel_ui.model.UserRole;
 import org.eclipse.bpel.model.Activity;
 import org.eclipse.bpel.model.Variable;
 
+import org.eclipse.bpel.model.impl.ExtensionActivityImpl;
 import org.eclipse.bpel.model.impl.ExtensibleElementImpl;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -40,7 +41,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class OnUserEventImpl extends ExtensibleElementImpl implements OnUserEvent {
+public class OnUserEventImpl extends ExtensionActivityImpl implements OnUserEvent {
 	/**
 	 * The cached value of the '{@link #getActivity() <em>Activity</em>}' reference.
 	 * <!-- begin-user-doc -->
