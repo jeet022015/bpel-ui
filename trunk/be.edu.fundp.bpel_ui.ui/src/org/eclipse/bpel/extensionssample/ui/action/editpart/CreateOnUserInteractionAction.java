@@ -46,13 +46,9 @@ public class CreateOnUserInteractionAction extends AbstractAction {
 		ExtensionSampleUIObjectFactory e = new ExtensionSampleUIObjectFactory();
 		e.setModelType(ModelPackage.eINSTANCE.getOnUserEvent());
 		EObject child = e.createInstance();
-		System.out.println("super1 test3 "+child.eResource());
-		System.out.println("super1 test4 "+child);
-		//EObject child = ModelPackage.eINSTANCE.getUserInteraction();
 		command.add(new InsertInContainerCommand((EObject)modelObject, child, null));
 		command.add(new SetNameAndDirectEditCommand(child, viewer));
 		BPELEditor bpelEditor = ModelHelper.getBPELEditor(modelObject);
-		System.out.println("bpelEditor = "+bpelEditor);
 		bpelEditor.getCommandStack().execute(command);
 		return true;
 	}

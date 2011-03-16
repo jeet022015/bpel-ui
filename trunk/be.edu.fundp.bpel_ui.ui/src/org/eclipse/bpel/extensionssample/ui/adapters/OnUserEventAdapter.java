@@ -44,7 +44,6 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 	
 	@Override
 	public IContainer createContainerDelegate() {
-		System.out.println("ai aia aia aiaia ia aia i");
 		return new ActivityContainer(ModelPackage.eINSTANCE.getOnUserEvent_Activity());
 	}
 
@@ -59,7 +58,7 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 	}	
 	
 	public String getTypeLabel(Object object) {
-		return Messages.OnEventAdapter_OnEvent_1; 
+		return "OnUserEvent"; 
 	}	
 	
 	public String getLabel(Object object) {
@@ -78,10 +77,7 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 	/* EditPartFactory */
 	
 	public EditPart createEditPart(EditPart context, Object model) {
-		System.out.println("OnUserEvent - model "+model);
-		System.out.println("OnUserEvent - context "+context);
 		Resource r = ((EObject)model).eResource();
-		System.out.println("OnUserEvent Resource = "+r);
 		EditPart result = new ElseIfEditPart();
 		result.setModel(model);
 		return result;
