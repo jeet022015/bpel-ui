@@ -33,6 +33,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.wsdl.Operation;
 
 import be.edu.fundp.bpel_ui.model.ModelPackage;
+import be.edu.fundp.bpel_ui.model.OnUserEvent;
 
 
 public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElement,
@@ -65,11 +66,11 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 		String s = ModelHelper.getDisplayName(object);
 		if (s != null && !("".equals(s))) return s; //$NON-NLS-1$
 
-		OnEvent onEvent = (OnEvent)object;
+		OnUserEvent onEvent = (OnUserEvent)object;
 		// If it has an operation, use the operation's name as the label
-		Operation operation = onEvent.getOperation();
+		String operation = onEvent.getName();
 		if (operation != null) {
-			return operation.getName();
+			return operation;
 		}
 		return getTypeLabel(object);
 	}	
