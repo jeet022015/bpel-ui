@@ -99,7 +99,7 @@ public class NewPickImpl extends ExtensionActivityImpl implements NewPick {
 	protected EList<OnAlarm> alarm;
 
 	/**
-	 * The cached value of the '{@link #getUserInteracion() <em>User Interacion</em>}' reference list.
+	 * The cached value of the '{@link #getUserInteracion() <em>User Interacion</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getUserInteracion()
@@ -187,7 +187,6 @@ public class NewPickImpl extends ExtensionActivityImpl implements NewPick {
 		if (messages == null) {
 			messages = new EObjectContainmentEList<OnMessage>(OnMessage.class, this, ModelPackage.NEW_PICK__MESSAGES);
 		}
-		System.out.println("Messages mandei aqui = "+messages);
 		return messages;
 	}
 
@@ -200,7 +199,6 @@ public class NewPickImpl extends ExtensionActivityImpl implements NewPick {
 		if (alarm == null) {
 			alarm = new EObjectContainmentEList<OnAlarm>(OnAlarm.class, this, ModelPackage.NEW_PICK__ALARM);
 		}
-		System.out.println("Alarm mandei aqui = "+alarm);
 		return alarm;
 	}
 
@@ -211,9 +209,8 @@ public class NewPickImpl extends ExtensionActivityImpl implements NewPick {
 	 */
 	public EList<OnUserEvent> getUserInteracion() {
 		if (userInteracion == null) {
-			userInteracion = new EObjectResolvingEList<OnUserEvent>(OnUserEvent.class, this, ModelPackage.NEW_PICK__USER_INTERACION);
+			userInteracion = new EObjectContainmentEList<OnUserEvent>(OnUserEvent.class, this, ModelPackage.NEW_PICK__USER_INTERACION);
 		}
-		System.out.println("User Interacion mandei aqui = "+userInteracion);
 		return userInteracion;
 	}
 
@@ -248,10 +245,8 @@ public class NewPickImpl extends ExtensionActivityImpl implements NewPick {
 			case ModelPackage.NEW_PICK__MESSAGES:
 				return getMessages();
 			case ModelPackage.NEW_PICK__ALARM:
-				System.out.println("Meu alarm aqui = "+featureID);
 				return getAlarm();
 			case ModelPackage.NEW_PICK__USER_INTERACION:
-				System.out.println("cheguei aqui = "+featureID);
 				return getUserInteracion();
 		}
 		return super.eGet(featureID, resolve, coreType);

@@ -5,7 +5,8 @@
     modelPluginID="be.edu.fundp.bpel_ui.model" modelName="Test" importerID="org.eclipse.emf.importer.ecore"
     complianceLevel="6.0" copyrightFields="false" usedGenPackages="../../org.eclipse.bpel.model/src/model/bpel.genmodel#//model ../../org.eclipse.bpel.model/src/model/bpel.genmodel#//partnerlinktype ../../org.eclipse.bpel.model/src/model/bpel.genmodel#//messageproperties platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/org.eclipse.wst.wsdl/model/WSDL.genmodel#//wsdl platform:/plugin/org.eclipse.xsd/model/XSD.genmodel#//xsd">
   <foreignModel>bpel-ui.ecore</foreignModel>
-  <genPackages prefix="Model" disposableProviderFactory="true" ecorePackage="bpel-ui.ecore#/">
+  <genPackages prefix="Model" basePackage="be.edu.fundp.bpel_ui" disposableProviderFactory="true"
+      ecorePackage="bpel-ui.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="bpel-ui.ecore#//EventType">
       <genEnumLiterals ecoreEnumLiteral="bpel-ui.ecore#//EventType/onDataInput"/>
       <genEnumLiterals ecoreEnumLiteral="bpel-ui.ecore#//EventType/onDataOutput"/>
