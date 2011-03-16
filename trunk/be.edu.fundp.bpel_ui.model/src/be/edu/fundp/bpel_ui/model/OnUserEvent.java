@@ -7,6 +7,7 @@
 package be.edu.fundp.bpel_ui.model;
 
 import org.eclipse.bpel.model.Activity;
+import org.eclipse.bpel.model.ExtensionActivity;
 import org.eclipse.bpel.model.ExtensibleElement;
 import org.eclipse.bpel.model.Variable;
 
@@ -30,7 +31,7 @@ import org.eclipse.bpel.model.Variable;
  * @model
  * @generated
  */
-public interface OnUserEvent extends ExtensibleElement {
+public interface OnUserEvent extends ExtensionActivity {
 	/**
 	 * Returns the value of the '<em><b>Activity</b></em>' reference.
 	 * <!-- begin-user-doc -->

@@ -193,6 +193,8 @@ public class ModelSwitch<T> {
 			case ModelPackage.ON_USER_EVENT: {
 				OnUserEvent onUserEvent = (OnUserEvent)theEObject;
 				T result = caseOnUserEvent(onUserEvent);
+				if (result == null) result = caseExtensionActivity(onUserEvent);
+				if (result == null) result = caseActivity(onUserEvent);
 				if (result == null) result = caseBPEL_ExtensibleElement(onUserEvent);
 				if (result == null) result = caseExtensibleElement(onUserEvent);
 				if (result == null) result = caseWSDLElement(onUserEvent);

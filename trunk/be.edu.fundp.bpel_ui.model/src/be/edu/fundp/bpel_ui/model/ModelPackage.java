@@ -806,7 +806,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ON_USER_EVENT__DOCUMENTATION_ELEMENT = BPELPackage.EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT;
+	int ON_USER_EVENT__DOCUMENTATION_ELEMENT = BPELPackage.EXTENSION_ACTIVITY__DOCUMENTATION_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Element</b></em>' attribute.
@@ -815,7 +815,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ON_USER_EVENT__ELEMENT = BPELPackage.EXTENSIBLE_ELEMENT__ELEMENT;
+	int ON_USER_EVENT__ELEMENT = BPELPackage.EXTENSION_ACTIVITY__ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
@@ -824,7 +824,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ON_USER_EVENT__EEXTENSIBILITY_ELEMENTS = BPELPackage.EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS;
+	int ON_USER_EVENT__EEXTENSIBILITY_ELEMENTS = BPELPackage.EXTENSION_ACTIVITY__EEXTENSIBILITY_ELEMENTS;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
@@ -833,7 +833,43 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ON_USER_EVENT__DOCUMENTATION = BPELPackage.EXTENSIBLE_ELEMENT__DOCUMENTATION;
+	int ON_USER_EVENT__DOCUMENTATION = BPELPackage.EXTENSION_ACTIVITY__DOCUMENTATION;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__NAME = BPELPackage.EXTENSION_ACTIVITY__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Suppress Join Failure</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__SUPPRESS_JOIN_FAILURE = BPELPackage.EXTENSION_ACTIVITY__SUPPRESS_JOIN_FAILURE;
+
+	/**
+	 * The feature id for the '<em><b>Targets</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__TARGETS = BPELPackage.EXTENSION_ACTIVITY__TARGETS;
+
+	/**
+	 * The feature id for the '<em><b>Sources</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__SOURCES = BPELPackage.EXTENSION_ACTIVITY__SOURCES;
 
 	/**
 	 * The feature id for the '<em><b>Activity</b></em>' reference.
@@ -842,7 +878,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ON_USER_EVENT__ACTIVITY = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
+	int ON_USER_EVENT__ACTIVITY = BPELPackage.EXTENSION_ACTIVITY_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Variable</b></em>' reference.
@@ -851,7 +887,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ON_USER_EVENT__VARIABLE = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
+	int ON_USER_EVENT__VARIABLE = BPELPackage.EXTENSION_ACTIVITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>User Role</b></em>' reference.
@@ -860,7 +896,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ON_USER_EVENT__USER_ROLE = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
+	int ON_USER_EVENT__USER_ROLE = BPELPackage.EXTENSION_ACTIVITY_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -869,7 +905,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ON_USER_EVENT__TYPE = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
+	int ON_USER_EVENT__TYPE = BPELPackage.EXTENSION_ACTIVITY_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>ID</b></em>' attribute.
@@ -878,7 +914,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ON_USER_EVENT__ID = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 4;
+	int ON_USER_EVENT__ID = BPELPackage.EXTENSION_ACTIVITY_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>On User Event</em>' class.
@@ -887,7 +923,7 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ON_USER_EVENT_FEATURE_COUNT = BPELPackage.EXTENSIBLE_ELEMENT_FEATURE_COUNT + 5;
+	int ON_USER_EVENT_FEATURE_COUNT = BPELPackage.EXTENSION_ACTIVITY_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link be.edu.fundp.bpel_ui.model.impl.NewPickImpl <em>New Pick</em>}' class.
