@@ -57,7 +57,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NewPick" eSuperTypes="../../org.eclipse.bpel.model/src/model/bpel.ecore#//ExtensionActivity ../../org.eclipse.bpel.model/src/model/bpel.ecore#//Pick">
     <eStructuralFeatures xsi:type="ecore:EReference" name="userInteracion" upperBound="-1"
-        eType="#//OnUserEvent"/>
+        eType="#//OnUserEvent" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NewEventHandler" eSuperTypes="../../org.eclipse.bpel.model/src/model/bpel.ecore#//EventHandler">
     <eStructuralFeatures xsi:type="ecore:EReference" name="userInteracion" upperBound="-1"

@@ -187,6 +187,7 @@ public class NewPickImpl extends ExtensionActivityImpl implements NewPick {
 		if (messages == null) {
 			messages = new EObjectContainmentEList<OnMessage>(OnMessage.class, this, ModelPackage.NEW_PICK__MESSAGES);
 		}
+		System.out.println("Messages mandei aqui = "+messages);
 		return messages;
 	}
 
@@ -199,6 +200,7 @@ public class NewPickImpl extends ExtensionActivityImpl implements NewPick {
 		if (alarm == null) {
 			alarm = new EObjectContainmentEList<OnAlarm>(OnAlarm.class, this, ModelPackage.NEW_PICK__ALARM);
 		}
+		System.out.println("Alarm mandei aqui = "+alarm);
 		return alarm;
 	}
 
@@ -211,6 +213,7 @@ public class NewPickImpl extends ExtensionActivityImpl implements NewPick {
 		if (userInteracion == null) {
 			userInteracion = new EObjectResolvingEList<OnUserEvent>(OnUserEvent.class, this, ModelPackage.NEW_PICK__USER_INTERACION);
 		}
+		System.out.println("User Interacion mandei aqui = "+userInteracion);
 		return userInteracion;
 	}
 
@@ -245,8 +248,10 @@ public class NewPickImpl extends ExtensionActivityImpl implements NewPick {
 			case ModelPackage.NEW_PICK__MESSAGES:
 				return getMessages();
 			case ModelPackage.NEW_PICK__ALARM:
+				System.out.println("Meu alarm aqui = "+featureID);
 				return getAlarm();
 			case ModelPackage.NEW_PICK__USER_INTERACION:
+				System.out.println("cheguei aqui = "+featureID);
 				return getUserInteracion();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -378,6 +383,7 @@ public class NewPickImpl extends ExtensionActivityImpl implements NewPick {
 	
 	@Override
 	protected void adoptContent(EReference reference, Object object) {
+		System.out.println("e agora adotou????");
 		if (object instanceof OnMessage) {
 			ReconciliationHelper.adoptChild(this, messages, (OnMessage) object,
 					BPELConstants.ND_ON_MESSAGE);
@@ -387,7 +393,7 @@ public class NewPickImpl extends ExtensionActivityImpl implements NewPick {
 					BPELConstants.ND_ON_ALARM);
 		}
 		if (object instanceof OnUserEvent) {
-			ReconciliationHelper.adoptChild(this, alarm, (OnUserEvent) object,
+			ReconciliationHelper.adoptChild(this, userInteracion, (OnUserEvent) object,
 					BPEL_UI_Constants.ND_USER_INTERACTION);
 		}
 		super.adoptContent(reference, object);

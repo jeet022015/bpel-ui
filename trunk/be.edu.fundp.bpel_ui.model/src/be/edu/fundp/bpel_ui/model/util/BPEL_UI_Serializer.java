@@ -26,7 +26,7 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer {
 			BPELWriter bpelWriter) {
 
 		Document document = parentNode.getOwnerDocument();
-		
+		System.out.println("aquii passou");
 		/*
 		 * NewPick
 		 */
@@ -53,6 +53,27 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer {
 				//activityElement.appendChild(onUserInteracion2XML(next));
 			}
 			//addCommonActivityItems(activityElement, activityPick);
+
+			// insert the DOM element into the DOM tree
+			parentNode.appendChild(activityElement);
+		}
+		
+		/*
+		 * NewPick
+		 */
+		if (activity instanceof OnUserEvent) {
+
+			// create a new DOM element for our Activity
+			Element activityElement = document.createElementNS(elementType.getNamespaceURI(),
+					BPEL_UI_Constants.ND_USER_INTERACTION);
+			activityElement.setPrefix(BPEL_UI_Utils.addNamespace(process));
+			
+			OnUserEvent onUserEvent = (OnUserEvent) activity;
+			
+			if (onUserEvent.getID() != null) {
+				//onEventElement.setAttribute("partnerLink", onEvent.getPartnerLink()
+				//		.getName());
+			}
 
 			// insert the DOM element into the DOM tree
 			parentNode.appendChild(activityElement);
