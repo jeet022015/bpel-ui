@@ -29,7 +29,7 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface NewPick extends ExtensionActivity, Pick {
 	/**
-	 * Returns the value of the '<em><b>User Interacion</b></em>' reference list.
+	 * Returns the value of the '<em><b>User Interacion</b></em>' containment reference list.
 	 * The list contents are of type {@link be.edu.fundp.bpel_ui.model.OnUserEvent}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -37,9 +37,9 @@ public interface NewPick extends ExtensionActivity, Pick {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>User Interacion</em>' reference list.
+	 * @return the value of the '<em>User Interacion</em>' containment reference list.
 	 * @see be.edu.fundp.bpel_ui.model.ModelPackage#getNewPick_UserInteracion()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<OnUserEvent> getUserInteracion();

@@ -999,7 +999,7 @@ public interface ModelPackage extends EPackage {
 	int NEW_PICK__ALARM = BPELPackage.EXTENSION_ACTIVITY_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>User Interacion</b></em>' reference list.
+	 * The feature id for the '<em><b>User Interacion</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1387,10 +1387,10 @@ public interface ModelPackage extends EPackage {
 	EClass getNewPick();
 
 	/**
-	 * Returns the meta object for the reference list '{@link be.edu.fundp.bpel_ui.model.NewPick#getUserInteracion <em>User Interacion</em>}'.
+	 * Returns the meta object for the containment reference list '{@link be.edu.fundp.bpel_ui.model.NewPick#getUserInteracion <em>User Interacion</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>User Interacion</em>'.
+	 * @return the meta object for the containment reference list '<em>User Interacion</em>'.
 	 * @see be.edu.fundp.bpel_ui.model.NewPick#getUserInteracion()
 	 * @see #getNewPick()
 	 * @generated
@@ -1677,7 +1677,7 @@ public interface ModelPackage extends EPackage {
 		EClass NEW_PICK = eINSTANCE.getNewPick();
 
 		/**
-		 * The meta object literal for the '<em><b>User Interacion</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>User Interacion</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
