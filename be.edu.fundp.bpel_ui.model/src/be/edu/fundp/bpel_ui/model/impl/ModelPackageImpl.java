@@ -156,7 +156,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
-	 * @generated
+	 * @cutomized
 	 */
 	public static ModelPackage init() {
 		if (isInited) return (ModelPackage)EPackage.Registry.INSTANCE.getEPackage(ModelPackage.eNS_URI);
@@ -199,6 +199,13 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		String name = NewPick.class.getSimpleName();
 		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
 				BPEL_UI_Constants.ND_NEW_PICK), deserializer);
+		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
+				serializer);
+		
+		// NewPick
+		name = OnUserEvent.class.getSimpleName();
+		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
+				BPEL_UI_Constants.ND_USER_INTERACTION), deserializer);
 		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
 				serializer);
 	}
