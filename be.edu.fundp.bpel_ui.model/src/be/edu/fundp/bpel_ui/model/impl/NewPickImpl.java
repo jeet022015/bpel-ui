@@ -377,7 +377,6 @@ public class NewPickImpl extends ExtensionActivityImpl implements NewPick {
 	
 	@Override
 	protected void adoptContent(EReference reference, Object object) {
-		System.out.println("e agora adotou????");
 		if (object instanceof OnMessage) {
 			ReconciliationHelper.adoptChild(this, messages, (OnMessage) object,
 					BPELConstants.ND_ON_MESSAGE);
