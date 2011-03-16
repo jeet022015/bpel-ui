@@ -26,7 +26,6 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer {
 			BPELWriter bpelWriter) {
 
 		Document document = parentNode.getOwnerDocument();
-		System.out.println("aquii passou");
 		/*
 		 * NewPick
 		 */
