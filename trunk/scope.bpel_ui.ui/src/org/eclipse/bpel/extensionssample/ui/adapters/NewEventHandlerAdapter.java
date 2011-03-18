@@ -1,6 +1,5 @@
 package org.eclipse.bpel.extensionssample.ui.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.bpel.extensionssample.ui.action.editpart.CreateOnUserInteractionAction;
@@ -25,7 +24,7 @@ public class NewEventHandlerAdapter extends EventHandlerAdapter {
 		MultiContainer omc = new MultiContainer();
 		omc.add(new ReferenceContainer(BPELPackage.eINSTANCE.getEventHandler_Events()));
 		omc.add(new ReferenceContainer(BPELPackage.eINSTANCE.getEventHandler_Alarm()));
-		//omc.add(new ReferenceContainer(ModelPackage.eINSTANCE.getNewEventHandler_UserInteracion()));
+		omc.add(new ReferenceContainer(ModelPackage.eINSTANCE.getNewEventHandler_UserInteracion()));
 		System.out.println("aqui tah blz2?");
 		return omc;
 	}
