@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.bpel.extensionssample.ui.adapters;
 
-import org.eclipse.bpel.model.OnEvent;
 import org.eclipse.bpel.ui.BPELUIPlugin;
 import org.eclipse.bpel.ui.IBPELUIConstants;
-import org.eclipse.bpel.ui.Messages;
 import org.eclipse.bpel.ui.adapters.ContainerAdapter;
 import org.eclipse.bpel.ui.adapters.IContainer;
 import org.eclipse.bpel.ui.adapters.IExtensionFactory;
@@ -23,14 +21,12 @@ import org.eclipse.bpel.ui.adapters.IOutlineEditPartFactory;
 import org.eclipse.bpel.ui.adapters.delegates.ActivityContainer;
 import org.eclipse.bpel.ui.editparts.ElseIfEditPart;
 import org.eclipse.bpel.ui.editparts.OutlineTreeEditPart;
-import org.eclipse.bpel.ui.uiextensionmodel.UiextensionmodelFactory;
 import org.eclipse.bpel.ui.util.ModelHelper;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.wst.wsdl.Operation;
 
 import be.edu.fundp.bpel_ui.model.ModelPackage;
 import be.edu.fundp.bpel_ui.model.OnUserEvent;
@@ -44,7 +40,6 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 	
 	@Override
 	public IContainer createContainerDelegate() {
-		System.out.println("aqui tah blz3333?");
 		return new ActivityContainer(ModelPackage.eINSTANCE.getOnUserEvent_Activity());
 	}
 
