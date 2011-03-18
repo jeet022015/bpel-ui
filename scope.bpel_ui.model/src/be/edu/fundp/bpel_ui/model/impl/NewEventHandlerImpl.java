@@ -162,7 +162,7 @@ public class NewEventHandlerImpl extends EventHandlerImpl implements NewEventHan
 	@Override
 	protected void adoptContent(EReference reference, Object object) {
 		if (object instanceof OnUserEvent) {
-			ReconciliationHelper.adoptChild(this, events, (OnUserEvent) object,
+			ReconciliationHelper.adoptChild(this, userInteracion, (OnUserEvent) object,
 					BPEL_UI_Constants.ND_USER_INTERACTION);
 		}
 		super.adoptContent(reference, object);
