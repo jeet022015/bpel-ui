@@ -158,6 +158,7 @@ public class ModelSwitch<T> {
 				DataSelectionUI dataSelectionUI = (DataSelectionUI)theEObject;
 				T result = caseDataSelectionUI(dataSelectionUI);
 				if (result == null) result = caseDataInputUI(dataSelectionUI);
+				if (result == null) result = caseDataOutputUI(dataSelectionUI);
 				if (result == null) result = caseUserInteraction(dataSelectionUI);
 				if (result == null) result = caseExtensionActivity(dataSelectionUI);
 				if (result == null) result = caseBPEL_UI_Entity(dataSelectionUI);

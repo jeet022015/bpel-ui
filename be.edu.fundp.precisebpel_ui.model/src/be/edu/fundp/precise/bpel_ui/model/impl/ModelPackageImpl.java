@@ -208,6 +208,13 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 				BPEL_UI_Constants.ND_DATA_OUTPUT_UI), deserializer);
 		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
 				serializer);
+		
+		// DataSelectionUI
+		name = DataSelectionUI.class.getSimpleName();
+		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
+				BPEL_UI_Constants.ND_DATA_SELECTION_UI), deserializer);
+		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
+				serializer);
 	}
 
 	/**
@@ -287,17 +294,8 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDataSelectionUI_Selectable() {
-		return (EReference)dataSelectionUIEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getDataSelectionUI_MinCardinality() {
-		return (EAttribute)dataSelectionUIEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)dataSelectionUIEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -306,7 +304,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @generated
 	 */
 	public EAttribute getDataSelectionUI_MaxCardinality() {
-		return (EAttribute)dataSelectionUIEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)dataSelectionUIEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -466,7 +464,6 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		createEReference(dataOutputUIEClass, DATA_OUTPUT_UI__OUTPUT_VARIABLE);
 
 		dataSelectionUIEClass = createEClass(DATA_SELECTION_UI);
-		createEReference(dataSelectionUIEClass, DATA_SELECTION_UI__SELECTABLE);
 		createEAttribute(dataSelectionUIEClass, DATA_SELECTION_UI__MIN_CARDINALITY);
 		createEAttribute(dataSelectionUIEClass, DATA_SELECTION_UI__MAX_CARDINALITY);
 
@@ -528,6 +525,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		dataInputUIEClass.getESuperTypes().add(this.getUserInteraction());
 		dataOutputUIEClass.getESuperTypes().add(this.getUserInteraction());
 		dataSelectionUIEClass.getESuperTypes().add(this.getDataInputUI());
+		dataSelectionUIEClass.getESuperTypes().add(this.getDataOutputUI());
 		pickUIEClass.getESuperTypes().add(theBPELPackage.getPick());
 		pickUIEClass.getESuperTypes().add(this.getBPEL_UI_Entity());
 		eventHandlerUIEClass.getESuperTypes().add(theBPELPackage.getEventHandler());
@@ -550,7 +548,6 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		initEReference(getDataOutputUI_OutputVariable(), theBPELPackage.getVariable(), null, "outputVariable", null, 1, 1, DataOutputUI.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(dataSelectionUIEClass, DataSelectionUI.class, "DataSelectionUI", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getDataSelectionUI_Selectable(), this.getDataOutputUI(), null, "selectable", null, 1, 1, DataSelectionUI.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDataSelectionUI_MinCardinality(), ecorePackage.getEInt(), "minCardinality", null, 0, 1, DataSelectionUI.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDataSelectionUI_MaxCardinality(), ecorePackage.getEInt(), "maxCardinality", null, 0, 1, DataSelectionUI.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

@@ -536,13 +536,13 @@ public interface ModelPackage extends EPackage {
 	int DATA_SELECTION_UI__INPUT_VARIABLE = DATA_INPUT_UI__INPUT_VARIABLE;
 
 	/**
-	 * The feature id for the '<em><b>Selectable</b></em>' containment reference.
+	 * The feature id for the '<em><b>Output Variable</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DATA_SELECTION_UI__SELECTABLE = DATA_INPUT_UI_FEATURE_COUNT + 0;
+	int DATA_SELECTION_UI__OUTPUT_VARIABLE = DATA_INPUT_UI_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Min Cardinality</b></em>' attribute.
@@ -1220,17 +1220,6 @@ public interface ModelPackage extends EPackage {
 	EClass getDataSelectionUI();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link be.edu.fundp.precise.bpel_ui.model.DataSelectionUI#getSelectable <em>Selectable</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Selectable</em>'.
-	 * @see be.edu.fundp.precise.bpel_ui.model.DataSelectionUI#getSelectable()
-	 * @see #getDataSelectionUI()
-	 * @generated
-	 */
-	EReference getDataSelectionUI_Selectable();
-
-	/**
 	 * Returns the meta object for the attribute '{@link be.edu.fundp.precise.bpel_ui.model.DataSelectionUI#getMinCardinality <em>Min Cardinality</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1484,14 +1473,6 @@ public interface ModelPackage extends EPackage {
 		 * @generated
 		 */
 		EClass DATA_SELECTION_UI = eINSTANCE.getDataSelectionUI();
-
-		/**
-		 * The meta object literal for the '<em><b>Selectable</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference DATA_SELECTION_UI__SELECTABLE = eINSTANCE.getDataSelectionUI_Selectable();
 
 		/**
 		 * The meta object literal for the '<em><b>Min Cardinality</b></em>' attribute feature.
