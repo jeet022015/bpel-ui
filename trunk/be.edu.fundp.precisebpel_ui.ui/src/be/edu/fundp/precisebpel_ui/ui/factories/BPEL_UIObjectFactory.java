@@ -13,7 +13,8 @@ import be.edu.fundp.precisebpel_ui.ui.BPEL_UIConstants;
 public class BPEL_UIObjectFactory extends AbstractUIObjectFactory implements IExtensionUIObjectFactory {
 
 	private EClass modelType;
-	private EClass[] classArray = { ModelPackage.eINSTANCE.getDataInputUI(), ModelPackage.eINSTANCE.getDataOutputUI()};
+	private EClass[] classArray = { ModelPackage.eINSTANCE.getDataInputUI(), ModelPackage.eINSTANCE.getDataOutputUI(), 
+			ModelPackage.eINSTANCE.getDataSelectionUI()};
 
 	public BPEL_UIObjectFactory(EClass modelType) {
 		super();
