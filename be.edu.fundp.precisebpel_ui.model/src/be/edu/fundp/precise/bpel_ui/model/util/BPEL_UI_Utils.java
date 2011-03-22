@@ -6,7 +6,7 @@ import org.eclipse.bpel.model.util.BPELUtils;
 
 import be.edu.fundp.precise.bpel_ui.model.ModelPackage;
 
-public class ExtensionSampleUtils {
+public class BPEL_UI_Utils {
 
 	/**
 	 * Adds the extensionsample namespace to the given process

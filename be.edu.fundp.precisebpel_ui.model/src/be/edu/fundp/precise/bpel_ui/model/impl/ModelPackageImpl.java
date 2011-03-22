@@ -195,10 +195,17 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		BPEL_UI_Deserializer deserializer = new BPEL_UI_Deserializer();
 		BPEL_UI_Serializer serializer = new BPEL_UI_Serializer();
 
-		// SampleSimpleActivity
+		// DataInputUI
 		String name = DataInputUI.class.getSimpleName();
 		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
 				BPEL_UI_Constants.ND_DATA_INPUT_UI), deserializer);
+		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
+				serializer);
+		
+		// DataOutputUI
+		name = DataOutputUI.class.getSimpleName();
+		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
+				BPEL_UI_Constants.ND_DATA_OUTPUT_UI), deserializer);
 		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
 				serializer);
 	}
