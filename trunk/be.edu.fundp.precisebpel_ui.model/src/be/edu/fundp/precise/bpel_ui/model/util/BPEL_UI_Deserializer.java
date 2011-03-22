@@ -20,7 +20,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import be.edu.fundp.precise.bpel_ui.model.DataInputUI;
+import be.edu.fundp.precise.bpel_ui.model.DataOutputUI;
 import be.edu.fundp.precise.bpel_ui.model.ModelFactory;
+import be.edu.fundp.precise.bpel_ui.model.ModelPackage;
 
 /*
  * Bug 120110 - this class has been updated to include a Variable
@@ -60,6 +62,43 @@ public class BPEL_UI_Deserializer implements BPELActivityDeserializer {
 				for (int i=vars.length-1; i>=0; --i) {
 					if (value.equals(vars[i].getName())) {
 						sa.setInputVariable(vars[i]);
+						break;
+					}
+				}
+			}
+			
+			//TODO UserRole
+
+			return sa;
+		}
+		
+		/*
+		 * DataOutputUI
+		 */
+		if (BPEL_UI_Constants.ND_DATA_OUTPUT_UI.equals(elementType.getLocalPart())) {
+
+			// create a new DataOutputUI model object if not already created
+			DataOutputUI sa;
+			Element saElement = (Element)node;
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
+			if (activity instanceof DataOutputUI) {
+				sa = (DataOutputUI)activity;
+			}
+			else {
+				sa = ModelFactory.eINSTANCE
+					.createDataOutputUI();
+
+				// attach the DOM node to our new activity
+				sa.setElement(saElement);
+			}
+			
+			// handle variable name: find this variable is in a visible scope
+			String value = saElement.getAttribute("outputVariable");
+			if (value!=null && !"".equals(value.trim())) {
+				Variable[] vars = ModelHelper.getVisibleVariables(activity);
+				for (int i=vars.length-1; i>=0; --i) {
+					if (value.equals(vars[i].getName())) {
+						sa.setOutputVariable(vars[i]);
 						break;
 					}
 				}
