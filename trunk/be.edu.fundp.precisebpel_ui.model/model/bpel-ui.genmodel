@@ -25,7 +25,6 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference bpel-ui.ecore#//DataOutputUI/outputVariable"/>
     </genClasses>
     <genClasses ecoreClass="bpel-ui.ecore#//DataSelectionUI">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bpel-ui.ecore#//DataSelectionUI/selectable"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bpel-ui.ecore#//DataSelectionUI/minCardinality"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bpel-ui.ecore#//DataSelectionUI/maxCardinality"/>
     </genClasses>

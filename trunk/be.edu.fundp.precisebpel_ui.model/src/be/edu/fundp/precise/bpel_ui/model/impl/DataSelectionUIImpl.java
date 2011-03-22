@@ -6,18 +6,16 @@
  */
 package be.edu.fundp.precise.bpel_ui.model.impl;
 
+import org.eclipse.bpel.model.Variable;
+import org.eclipse.bpel.model.util.ReconciliationHelper;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import be.edu.fundp.precise.bpel_ui.model.DataOutputUI;
 import be.edu.fundp.precise.bpel_ui.model.DataSelectionUI;
 import be.edu.fundp.precise.bpel_ui.model.ModelPackage;
-
-import org.eclipse.bpel.model.util.ReconciliationHelper;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +24,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link be.edu.fundp.precise.bpel_ui.model.impl.DataSelectionUIImpl#getSelectable <em>Selectable</em>}</li>
+ *   <li>{@link be.edu.fundp.precise.bpel_ui.model.impl.DataSelectionUIImpl#getOutputVariable <em>Output Variable</em>}</li>
  *   <li>{@link be.edu.fundp.precise.bpel_ui.model.impl.DataSelectionUIImpl#getMinCardinality <em>Min Cardinality</em>}</li>
  *   <li>{@link be.edu.fundp.precise.bpel_ui.model.impl.DataSelectionUIImpl#getMaxCardinality <em>Max Cardinality</em>}</li>
  * </ul>
@@ -36,14 +34,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectionUI {
 	/**
-	 * The cached value of the '{@link #getSelectable() <em>Selectable</em>}' containment reference.
+	 * The cached value of the '{@link #getOutputVariable() <em>Output Variable</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getSelectable()
+	 * @see #getOutputVariable()
 	 * @generated
 	 * @ordered
 	 */
-	protected DataOutputUI selectable;
+	protected Variable outputVariable;
 
 	/**
 	 * The default value of the '{@link #getMinCardinality() <em>Min Cardinality</em>}' attribute.
@@ -109,27 +107,16 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DataOutputUI getSelectable() {
-		return selectable;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @customized
-	 */
-	public NotificationChain basicSetSelectable(DataOutputUI newSelectable, NotificationChain msgs) {
-		DataOutputUI oldSelectable = selectable;
-		if (!isReconciling) {
-			ReconciliationHelper.replaceChild(this, oldSelectable, newSelectable);
+	public Variable getOutputVariable() {
+		if (outputVariable != null && outputVariable.eIsProxy()) {
+			InternalEObject oldOutputVariable = (InternalEObject)outputVariable;
+			outputVariable = (Variable)eResolveProxy(oldOutputVariable);
+			if (outputVariable != oldOutputVariable) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ModelPackage.DATA_SELECTION_UI__OUTPUT_VARIABLE, oldOutputVariable, outputVariable));
+			}
 		}
-		selectable = newSelectable;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, 
-					ModelPackage.DATA_SELECTION_UI__SELECTABLE, oldSelectable, newSelectable);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
+		return outputVariable;
 	}
 
 	/**
@@ -137,18 +124,36 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setSelectable(DataOutputUI newSelectable) {
-		if (newSelectable != selectable) {
-			NotificationChain msgs = null;
-			if (selectable != null)
-				msgs = ((InternalEObject)selectable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ModelPackage.DATA_SELECTION_UI__SELECTABLE, null, msgs);
-			if (newSelectable != null)
-				msgs = ((InternalEObject)newSelectable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ModelPackage.DATA_SELECTION_UI__SELECTABLE, null, msgs);
-			msgs = basicSetSelectable(newSelectable, msgs);
-			if (msgs != null) msgs.dispatch();
+	public Variable basicGetOutputVariable() {
+		return outputVariable;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @customized
+	 */
+	public void setOutputVariable(Variable newOutputVariable) {
+		if (newOutputVariable != outputVariable) {
+			ENotificationImpl notification = null;
+			Variable oldVariable = outputVariable;
+			if (!isReconciling) {
+				ReconciliationHelper.replaceAttribute(this,
+						//Is it working?
+						ModelPackage.eINSTANCE.getDataOutputUI_OutputVariable().getName(),
+						newOutputVariable == null ? null : newOutputVariable.getName());
+			}
+			outputVariable = newOutputVariable;
+			if (eNotificationRequired()) {
+				notification = new ENotificationImpl(this,
+						Notification.SET,
+						ModelPackage.DATA_SELECTION_UI__OUTPUT_VARIABLE, oldVariable,
+						newOutputVariable);
+				notification.dispatch();
+			}
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.DATA_SELECTION_UI__SELECTABLE, newSelectable, newSelectable));
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.DATA_SELECTION_UI__OUTPUT_VARIABLE, newOutputVariable, newOutputVariable));
 	}
 
 	/**
@@ -209,24 +214,11 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case ModelPackage.DATA_SELECTION_UI__SELECTABLE:
-				return basicSetSelectable(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ModelPackage.DATA_SELECTION_UI__SELECTABLE:
-				return getSelectable();
+			case ModelPackage.DATA_SELECTION_UI__OUTPUT_VARIABLE:
+				if (resolve) return getOutputVariable();
+				return basicGetOutputVariable();
 			case ModelPackage.DATA_SELECTION_UI__MIN_CARDINALITY:
 				return getMinCardinality();
 			case ModelPackage.DATA_SELECTION_UI__MAX_CARDINALITY:
@@ -243,8 +235,8 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ModelPackage.DATA_SELECTION_UI__SELECTABLE:
-				setSelectable((DataOutputUI)newValue);
+			case ModelPackage.DATA_SELECTION_UI__OUTPUT_VARIABLE:
+				setOutputVariable((Variable)newValue);
 				return;
 			case ModelPackage.DATA_SELECTION_UI__MIN_CARDINALITY:
 				setMinCardinality((Integer)newValue);
@@ -264,8 +256,8 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ModelPackage.DATA_SELECTION_UI__SELECTABLE:
-				setSelectable((DataOutputUI)null);
+			case ModelPackage.DATA_SELECTION_UI__OUTPUT_VARIABLE:
+				setOutputVariable((Variable)null);
 				return;
 			case ModelPackage.DATA_SELECTION_UI__MIN_CARDINALITY:
 				setMinCardinality(MIN_CARDINALITY_EDEFAULT);
@@ -285,14 +277,46 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ModelPackage.DATA_SELECTION_UI__SELECTABLE:
-				return selectable != null;
+			case ModelPackage.DATA_SELECTION_UI__OUTPUT_VARIABLE:
+				return outputVariable != null;
 			case ModelPackage.DATA_SELECTION_UI__MIN_CARDINALITY:
 				return minCardinality != MIN_CARDINALITY_EDEFAULT;
 			case ModelPackage.DATA_SELECTION_UI__MAX_CARDINALITY:
 				return maxCardinality != MAX_CARDINALITY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+		if (baseClass == DataOutputUI.class) {
+			switch (derivedFeatureID) {
+				case ModelPackage.DATA_SELECTION_UI__OUTPUT_VARIABLE: return ModelPackage.DATA_OUTPUT_UI__OUTPUT_VARIABLE;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == DataOutputUI.class) {
+			switch (baseFeatureID) {
+				case ModelPackage.DATA_OUTPUT_UI__OUTPUT_VARIABLE: return ModelPackage.DATA_SELECTION_UI__OUTPUT_VARIABLE;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**

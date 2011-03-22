@@ -15,7 +15,6 @@ package be.edu.fundp.precise.bpel_ui.model;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link be.edu.fundp.precise.bpel_ui.model.DataSelectionUI#getSelectable <em>Selectable</em>}</li>
  *   <li>{@link be.edu.fundp.precise.bpel_ui.model.DataSelectionUI#getMinCardinality <em>Min Cardinality</em>}</li>
  *   <li>{@link be.edu.fundp.precise.bpel_ui.model.DataSelectionUI#getMaxCardinality <em>Max Cardinality</em>}</li>
  * </ul>
@@ -25,33 +24,7 @@ package be.edu.fundp.precise.bpel_ui.model;
  * @model
  * @generated
  */
-public interface DataSelectionUI extends DataInputUI {
-	/**
-	 * Returns the value of the '<em><b>Selectable</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Selectable</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Selectable</em>' containment reference.
-	 * @see #setSelectable(DataOutputUI)
-	 * @see be.edu.fundp.precise.bpel_ui.model.ModelPackage#getDataSelectionUI_Selectable()
-	 * @model containment="true" required="true"
-	 * @generated
-	 */
-	DataOutputUI getSelectable();
-
-	/**
-	 * Sets the value of the '{@link be.edu.fundp.precise.bpel_ui.model.DataSelectionUI#getSelectable <em>Selectable</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Selectable</em>' containment reference.
-	 * @see #getSelectable()
-	 * @generated
-	 */
-	void setSelectable(DataOutputUI value);
-
+public interface DataSelectionUI extends DataInputUI, DataOutputUI {
 	/**
 	 * Returns the value of the '<em><b>Min Cardinality</b></em>' attribute.
 	 * <!-- begin-user-doc -->

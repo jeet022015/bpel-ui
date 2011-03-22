@@ -16,9 +16,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="outputVariable" lowerBound="1"
         eType="ecore:EClass ../../org.eclipse.bpel.model/src/model/bpel.ecore#//Variable"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="DataSelectionUI" eSuperTypes="#//DataInputUI">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="selectable" lowerBound="1"
-        eType="#//DataOutputUI" containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DataSelectionUI" eSuperTypes="#//DataInputUI #//DataOutputUI">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="minCardinality" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxCardinality" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
