@@ -26,5 +26,13 @@
 				<input type="be.edu.fundp.precise.bpel_ui.model.DataInputUI" />
 			</propertySection>
 		</propertySections>
+		<propertySections contributorId="org.eclipse.bpel.ui.bpeleditor">
+			<propertySection
+				class="be.edu.fundp.precisebpel_ui.ui.properties.DataOutputUIPropertySection"
+				tab="org.eclipse.bpel.ui.tabs.details"
+				id="be.edu.fundp.precisebpel_ui.ui.properties.DataOutputUIPropertySection">
+				<input type="be.edu.fundp.precise.bpel_ui.model.DataOutputUI" />
+			</propertySection>
+		</propertySections>
 	</extension>
 </plugin>
