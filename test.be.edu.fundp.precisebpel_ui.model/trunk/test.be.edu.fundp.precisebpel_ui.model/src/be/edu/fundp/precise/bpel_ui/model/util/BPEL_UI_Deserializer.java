@@ -70,8 +70,9 @@ public class BPEL_UI_Deserializer implements BPELActivityDeserializer {
 	           	   	  continue;
 	           	   	             	
 	               pickInstanceElement = (Element)pickElements.item(i);
+	               //System.out.println("pickInstanceElement = "+pickInstanceElement.getLocalName());
 	               
-					if (pickInstanceElement.getLocalName().equals("userInteraction")) {
+					if (pickInstanceElement.getLocalName().equals(BPEL_UI_Constants.ND_ON_USER_EVENT)) {
 	     					OnUserEvent onUserEvent = xml2OnUserEvent(pickInstanceElement, activity, bpelReader);
 	     					sa.getUserInteraction().add(onUserEvent);
 	     			}     

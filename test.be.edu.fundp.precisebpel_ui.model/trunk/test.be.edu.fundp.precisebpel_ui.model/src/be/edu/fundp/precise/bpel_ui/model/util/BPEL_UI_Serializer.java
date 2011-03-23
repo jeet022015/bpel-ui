@@ -7,6 +7,7 @@ import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.extensions.BPELActivitySerializer;
 import org.eclipse.bpel.model.resource.BPELWriter;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.wst.wsdl.WSDLElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -54,17 +55,6 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer {
 			
 		}
 		
-		/*
-		 * PickUI
-		 */
-		if (activity instanceof OnUserEvent) {
-			OnUserEvent sa = (OnUserEvent)activity;
-			//it works?
-			saElement = (Element) onUserEvent2XML(sa,document,elementType,process,bpelWriter);
-
-			
-		}
-		
 		// insert the DOM element into the DOM tree
 		//parentNode.appendChild(saElement);
 		return saElement;
@@ -73,7 +63,7 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer {
 	private Node onUserEvent2XML(OnUserEvent onUserEvent, Document document, QName elementType, Process process, BPELWriter bpelWriter) {
 		// create a new DOM element for our Activity
 		Element saElement = document.createElementNS(elementType.getNamespaceURI(),
-				BPEL_UI_Constants.ND_PICK_UI);
+				BPEL_UI_Constants.ND_ON_USER_EVENT);
 		saElement.setPrefix(BPEL_UI_Utils.addNamespace(process));
 		
 		if (onUserEvent.getVariable() != null
@@ -101,6 +91,25 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer {
 		if(activity instanceof BPEL_UI_Entity)
 			return true;
 		return false;
+	}
+
+	@Override
+	public Element marshallInternalElement(QName qName, Node parentNode,
+			WSDLElement element, Process process, BPELWriter bpelWriter) {
+		Element saElement = null;
+		/*
+		 * PickUI
+		 */
+		if (element instanceof OnUserEvent) {
+			OnUserEvent sa = (OnUserEvent)element;
+			Document document = parentNode.getOwnerDocument();
+			//it works?
+			saElement = (Element) onUserEvent2XML(sa,document,qName,process,bpelWriter);
+			return saElement;
+
+			
+		}
+		return null;
 	}
 
 }
