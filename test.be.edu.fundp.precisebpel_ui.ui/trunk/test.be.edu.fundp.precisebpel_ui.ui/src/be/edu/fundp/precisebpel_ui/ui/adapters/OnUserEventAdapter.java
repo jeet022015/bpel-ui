@@ -54,7 +54,7 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 		OnUserEvent onEvent = (OnUserEvent)object;
 		// If it has an operation, use the operation's name as the label
 		String operation = onEvent.getId();
-		if (operation != null) {
+		if (operation != null && !operation.equals("")) {
 			return operation;
 		}
 		return getTypeLabel(object);
