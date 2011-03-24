@@ -17,6 +17,10 @@ public class BPEL_UI_PaletteProvider implements IPaletteProvider {
 		category.setCategoryId("BPEL-UI");
 		category.setOrder(40);
 
+		category.add(new BPELCreationToolEntry("Scope UI", "Scope UI",
+				new BPEL_UIObjectFactory(ModelPackage.eINSTANCE
+						.getScopeUI())));
+		
 		category.add(new BPELCreationToolEntry("Pick UI", "Pick UI",
 				new BPEL_UIObjectFactory(ModelPackage.eINSTANCE
 						.getPickUI())));

@@ -6,6 +6,8 @@ import be.edu.fundp.precise.bpel_ui.model.util.ModelAdapterFactory;
 import be.edu.fundp.precisebpel_ui.ui.adapters.DataInputUIAdapter;
 import be.edu.fundp.precisebpel_ui.ui.adapters.DataOutputUIAdapter;
 import be.edu.fundp.precisebpel_ui.ui.adapters.DataSelectionUIAdapter;
+import be.edu.fundp.precisebpel_ui.ui.adapters.EventHandlerUIAdapter;
+import be.edu.fundp.precisebpel_ui.ui.adapters.ScopeUIAdapter;
 import be.edu.fundp.precisebpel_ui.ui.adapters.OnUserEventAdapter;
 import be.edu.fundp.precisebpel_ui.ui.adapters.PickUIAdapter;
 
@@ -16,8 +18,10 @@ public class BPEL_UIAdapterFactory extends ModelAdapterFactory {
 	private PickUIAdapter pickUIAdapter;
 	private OnUserEventAdapter onUserEventAdapter;
 	private DataInputUIAdapter dataInputUIAdapter;
-	private DataOutputUIAdapter dataOutputUIAdapter;
 	private DataSelectionUIAdapter dataSelectionUIAdapter;
+	private DataOutputUIAdapter dataOutputUIAdapter;
+	private ScopeUIAdapter scopeUIAdapter;
+	private EventHandlerUIAdapter eventHandlerUIAdapter;
 	
 	private BPEL_UIAdapterFactory() {
 		super();
@@ -68,6 +72,22 @@ public class BPEL_UIAdapterFactory extends ModelAdapterFactory {
 			this.dataSelectionUIAdapter = new DataSelectionUIAdapter();
 		}
 		return this.dataSelectionUIAdapter;
+	}
+	
+	@Override
+	public Adapter createScopeUIAdapter() {
+		if (this.scopeUIAdapter == null) {
+			this.scopeUIAdapter = new ScopeUIAdapter();
+		}
+		return this.scopeUIAdapter;
+	}
+	
+	@Override
+	public Adapter createEventHandlerUIAdapter() {
+		if (this.eventHandlerUIAdapter == null) {
+			this.eventHandlerUIAdapter = new EventHandlerUIAdapter();
+		}
+		return this.eventHandlerUIAdapter;
 	}
 	
 }

@@ -15,7 +15,8 @@ public class BPEL_UIObjectFactory extends AbstractUIObjectFactory implements IEx
 	private EClass modelType;
 	private EClass[] classArray = { ModelPackage.eINSTANCE.getPickUI(), ModelPackage.eINSTANCE.getOnUserEvent(),
 			ModelPackage.eINSTANCE.getDataInputUI(), ModelPackage.eINSTANCE.getDataOutputUI(),
-			ModelPackage.eINSTANCE.getDataSelectionUI()};
+			ModelPackage.eINSTANCE.getDataSelectionUI(), ModelPackage.eINSTANCE.getScopeUI(),
+			ModelPackage.eINSTANCE.getEventHandlerUI()};
 
 	public BPEL_UIObjectFactory(EClass modelType) {
 		super();
