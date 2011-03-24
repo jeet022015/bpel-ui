@@ -21,6 +21,18 @@ public class BPEL_UI_PaletteProvider implements IPaletteProvider {
 				new BPEL_UIObjectFactory(ModelPackage.eINSTANCE
 						.getPickUI())));
 		
+		category.add(new BPELCreationToolEntry("Data Input UI", "Data Input UI",
+				new BPEL_UIObjectFactory(ModelPackage.eINSTANCE
+						.getDataInputUI())));
+		
+		category.add(new BPELCreationToolEntry("Data Output UI", "Data Output UI",
+				new BPEL_UIObjectFactory(ModelPackage.eINSTANCE
+						.getDataOutputUI())));
+		
+		category.add(new BPELCreationToolEntry("Data Selection UI", "Data Selection UI",
+				new BPEL_UIObjectFactory(ModelPackage.eINSTANCE
+						.getDataSelectionUI())));
+		
 		paletteRoot.add(category);
 	}
 }
