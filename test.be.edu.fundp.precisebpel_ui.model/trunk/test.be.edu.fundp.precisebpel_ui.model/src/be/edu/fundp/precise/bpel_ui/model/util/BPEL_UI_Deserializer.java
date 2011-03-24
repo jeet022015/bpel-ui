@@ -41,6 +41,130 @@ public class BPEL_UI_Deserializer implements BPELActivityDeserializer {
 	@Override
 	public Activity unmarshall(QName elementType, Node node, Activity activity, Process process,
 			Map nsMap, ExtensionRegistry extReg, URI uri, BPELReader bpelReader) {
+		
+		/*
+		 * DataInputUI
+		 */
+		if (BPEL_UI_Constants.ND_DATA_SELECTION_UI.equals(elementType.getLocalPart())) {
+
+			// create a new DataInputUI model object if not already created
+			DataSelectionUI sa;
+			Element saElement = (Element)node;
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
+			if (activity instanceof DataSelectionUI) {
+				sa = (DataSelectionUI)activity;
+			}
+			else {
+				sa = ModelFactory.eINSTANCE
+					.createDataSelectionUI();
+
+				// attach the DOM node to our new activity
+				sa.setElement(saElement);
+			}
+			
+			// handle variable name: find this variable is in a visible scope
+			String value = saElement.getAttribute("inputVariable");
+			if (value!=null && !"".equals(value.trim())) {
+				Variable[] vars = ModelHelper.getVisibleVariables(activity);
+				for (int i=vars.length-1; i>=0; --i) {
+					if (value.equals(vars[i].getName())) {
+						sa.setInputVariable(vars[i]);
+						break;
+					}
+				}
+			}
+			
+			// handle variable name: find this variable is in a visible scope
+			value = saElement.getAttribute("outputVariable");
+			if (value!=null && !"".equals(value.trim())) {
+				Variable[] vars = ModelHelper.getVisibleVariables(activity);
+				for (int i=vars.length-1; i>=0; --i) {
+					if (value.equals(vars[i].getName())) {
+						sa.setOutputVariable(vars[i]);
+						break;
+					}
+				}
+			}
+			
+			//TODO UserRole
+
+			return sa;
+		}
+		
+		/*
+		 * DataInputUI
+		 */
+		if (BPEL_UI_Constants.ND_DATA_INPUT_UI.equals(elementType.getLocalPart())) {
+
+			// create a new DataInputUI model object if not already created
+			DataInputUI sa;
+			Element saElement = (Element)node;
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
+			if (activity instanceof DataInputUI) {
+				sa = (DataInputUI)activity;
+			}
+			else {
+				sa = ModelFactory.eINSTANCE
+					.createDataInputUI();
+
+				// attach the DOM node to our new activity
+				sa.setElement(saElement);
+			}
+			
+			// handle variable name: find this variable is in a visible scope
+			String value = saElement.getAttribute("inputVariable");
+			if (value!=null && !"".equals(value.trim())) {
+				Variable[] vars = ModelHelper.getVisibleVariables(activity);
+				for (int i=vars.length-1; i>=0; --i) {
+					if (value.equals(vars[i].getName())) {
+						sa.setInputVariable(vars[i]);
+						break;
+					}
+				}
+			}
+			
+			//TODO UserRole
+
+			return sa;
+		}
+		
+		/*
+		 * DataOutputUI
+		 */
+		if (BPEL_UI_Constants.ND_DATA_OUTPUT_UI.equals(elementType.getLocalPart())) {
+
+			// create a new DataOutputUI model object if not already created
+			DataOutputUI sa;
+			Element saElement = (Element)node;
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
+			if (activity instanceof DataOutputUI) {
+				sa = (DataOutputUI)activity;
+			}
+			else {
+				sa = ModelFactory.eINSTANCE
+					.createDataOutputUI();
+
+				// attach the DOM node to our new activity
+				sa.setElement(saElement);
+			}
+			
+			// handle variable name: find this variable is in a visible scope
+			String value = saElement.getAttribute("outputVariable");
+			if (value!=null && !"".equals(value.trim())) {
+				Variable[] vars = ModelHelper.getVisibleVariables(activity);
+				for (int i=vars.length-1; i>=0; --i) {
+					if (value.equals(vars[i].getName())) {
+						sa.setOutputVariable(vars[i]);
+						break;
+					}
+				}
+			}
+			
+			//TODO UserRole
+
+			return sa;
+		}
+		
 		/*
 		 * PickUI
 		 */

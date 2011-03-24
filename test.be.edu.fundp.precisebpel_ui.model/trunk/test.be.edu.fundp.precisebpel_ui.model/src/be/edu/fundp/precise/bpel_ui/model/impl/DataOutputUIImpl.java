@@ -12,6 +12,7 @@ import be.edu.fundp.precise.bpel_ui.model.DataOutputUI;
 import be.edu.fundp.precise.bpel_ui.model.ModelPackage;
 
 import org.eclipse.bpel.model.Variable;
+import org.eclipse.bpel.model.util.ReconciliationHelper;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -92,13 +93,30 @@ public class DataOutputUIImpl extends UserInteractionImpl implements DataOutputU
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @customized
 	 */
 	public void setOutputVariable(Variable newOutputVariable) {
-		Variable oldOutputVariable = outputVariable;
-		outputVariable = newOutputVariable;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.DATA_OUTPUT_UI__OUTPUT_VARIABLE, oldOutputVariable, outputVariable));
+		if (newOutputVariable != outputVariable) {
+			ENotificationImpl notification = null;
+			Variable oldVariable = outputVariable;
+			if (!isReconciling) {
+				ReconciliationHelper.replaceAttribute(this,
+						//Is it working?
+						ModelPackage.eINSTANCE.getDataOutputUI_OutputVariable().getName(),
+						newOutputVariable == null ? null : newOutputVariable.getName());
+			}
+			outputVariable = newOutputVariable;
+			if (eNotificationRequired()) {
+				notification = new ENotificationImpl(this,
+						Notification.SET,
+						ModelPackage.DATA_OUTPUT_UI__OUTPUT_VARIABLE, oldVariable,
+						newOutputVariable);
+				notification.dispatch();
+			}
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, 
+					ModelPackage.DATA_OUTPUT_UI__OUTPUT_VARIABLE, newOutputVariable, newOutputVariable));
 	}
 
 	/**

@@ -12,6 +12,7 @@ import be.edu.fundp.precise.bpel_ui.model.DataInputUI;
 import be.edu.fundp.precise.bpel_ui.model.ModelPackage;
 
 import org.eclipse.bpel.model.Variable;
+import org.eclipse.bpel.model.util.ReconciliationHelper;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -92,13 +93,30 @@ public class DataInputUIImpl extends UserInteractionImpl implements DataInputUI 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @customized
 	 */
 	public void setInputVariable(Variable newInputVariable) {
-		Variable oldInputVariable = inputVariable;
-		inputVariable = newInputVariable;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.DATA_INPUT_UI__INPUT_VARIABLE, oldInputVariable, inputVariable));
+		if (newInputVariable != inputVariable) {
+			ENotificationImpl notification = null;
+			Variable oldVariable = inputVariable;
+			if (!isReconciling) {
+				ReconciliationHelper.replaceAttribute(this,
+						//Is it working?
+						ModelPackage.eINSTANCE.getDataInputUI_InputVariable().getName(),
+						newInputVariable == null ? null : newInputVariable.getName());
+			}
+			inputVariable = newInputVariable;
+			if (eNotificationRequired()) {
+				notification = new ENotificationImpl(this,
+						Notification.SET,
+						ModelPackage.DATA_INPUT_UI__INPUT_VARIABLE, oldVariable,
+						newInputVariable);
+				notification.dispatch();
+			}
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					ModelPackage.DATA_INPUT_UI__INPUT_VARIABLE, newInputVariable, newInputVariable));
 	}
 
 	/**

@@ -11,6 +11,7 @@ import javax.wsdl.extensions.ExtensibilityElement;
 import be.edu.fundp.precise.bpel_ui.model.ModelPackage;
 import be.edu.fundp.precise.bpel_ui.model.UserRole;
 
+import org.eclipse.bpel.model.util.ReconciliationHelper;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
@@ -86,6 +87,10 @@ public class UserRoleImpl extends BPEL_UI_EntityImpl implements UserRole {
 	 */
 	public void setId(String newId) {
 		String oldId = id;
+		if (!isReconciling) {
+			ReconciliationHelper.replaceAttribute(this, ModelPackage.eINSTANCE
+					.getUserRole_Id().getName(),newId);
+		}
 		id = newId;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.USER_ROLE__ID, oldId, id));

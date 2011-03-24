@@ -9,16 +9,19 @@ package be.edu.fundp.precise.bpel_ui.model.impl;
 import be.edu.fundp.precise.bpel_ui.model.ModelPackage;
 import be.edu.fundp.precise.bpel_ui.model.UserInteraction;
 import be.edu.fundp.precise.bpel_ui.model.UserRole;
+import be.edu.fundp.precise.bpel_ui.model.util.BPEL_UI_Constants;
 
 import java.util.Collection;
 
 import org.eclipse.bpel.model.impl.ActivityImpl;
+import org.eclipse.bpel.model.util.ReconciliationHelper;
 
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -151,6 +154,23 @@ public abstract class UserInteractionImpl extends ActivityImpl implements UserIn
 				return role != null && !role.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+	
+	@Override
+	protected void adoptContent(EReference reference, Object object) {
+		if (object instanceof UserRole) {
+			ReconciliationHelper.adoptChild(this, role, (UserRole) object,
+					BPEL_UI_Constants.ND_ROLE);
+		}
+		super.adoptContent(reference, object);
+	}
+
+	@Override
+	protected void orphanContent(EReference reference, Object object) {
+		if (object instanceof UserRole) {
+			ReconciliationHelper.orphanChild(this, (UserRole) object);
+		}
+		super.orphanContent(reference, object);
 	}
 
 } //UserInteractionImpl
