@@ -9,16 +9,22 @@ package be.edu.fundp.precise.bpel_ui.model.impl;
 import be.edu.fundp.precise.bpel_ui.model.EventHandlerUI;
 import be.edu.fundp.precise.bpel_ui.model.ModelPackage;
 import be.edu.fundp.precise.bpel_ui.model.OnUserEvent;
+import be.edu.fundp.precise.bpel_ui.model.util.BPEL_UI_Constants;
 
 import java.util.Collection;
 
+import org.eclipse.bpel.model.OnAlarm;
+import org.eclipse.bpel.model.OnEvent;
 import org.eclipse.bpel.model.impl.EventHandlerImpl;
+import org.eclipse.bpel.model.util.BPELConstants;
+import org.eclipse.bpel.model.util.ReconciliationHelper;
 
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -153,4 +159,20 @@ public class EventHandlerUIImpl extends EventHandlerImpl implements EventHandler
 		return super.eIsSet(featureID);
 	}
 
+	@Override
+	protected void adoptContent(EReference reference, Object object) {
+		if (object instanceof OnUserEvent) {
+			ReconciliationHelper.adoptChild(this, userInteraction, (OnUserEvent) object,
+					BPEL_UI_Constants.ND_USER_INTERACTION);
+		}
+		super.adoptContent(reference, object);
+	}
+
+	@Override
+	protected void orphanContent(EReference reference, Object object) {
+		if (object instanceof OnUserEvent) {
+			ReconciliationHelper.orphanChild(this, (OnUserEvent) object);
+		}
+		super.orphanContent(reference, object);
+	}
 } //EventHandlerUIImpl

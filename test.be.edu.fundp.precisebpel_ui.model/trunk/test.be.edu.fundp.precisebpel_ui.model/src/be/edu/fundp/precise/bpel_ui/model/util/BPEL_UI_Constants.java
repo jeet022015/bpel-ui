@@ -9,5 +9,7 @@ public class BPEL_UI_Constants {
 	public static final String ND_DATA_SELECTION_UI = "dataSelectionUI";
 	public static final String ND_PICK_UI = "pickUI";
 	public static final String ND_ON_USER_EVENT = "onUserEvent";
+	public static final String ND_SCOPE_UI = "scopeUI";
+	public static final String ND_EVENT_UI_HANDLER = "eventUiHandler";
 
 }

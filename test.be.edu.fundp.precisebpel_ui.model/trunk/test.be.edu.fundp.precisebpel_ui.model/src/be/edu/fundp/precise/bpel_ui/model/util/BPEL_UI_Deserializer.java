@@ -1,34 +1,47 @@
 package be.edu.fundp.precise.bpel_ui.model.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.wsdl.extensions.ExtensionRegistry;
 import javax.xml.namespace.QName;
 
 import org.eclipse.bpel.model.Activity;
+import org.eclipse.bpel.model.BPELFactory;
+import org.eclipse.bpel.model.EventHandler;
+import org.eclipse.bpel.model.ExtensibleElement;
 import org.eclipse.bpel.model.Import;
 import org.eclipse.bpel.model.OnAlarm;
+import org.eclipse.bpel.model.OnEvent;
 import org.eclipse.bpel.model.OnMessage;
 import org.eclipse.bpel.model.Process;
+import org.eclipse.bpel.model.Scope;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.extensions.BPELActivityDeserializer;
 import org.eclipse.bpel.model.resource.BPELReader;
+import org.eclipse.bpel.model.util.BPELUtils;
 import org.eclipse.bpel.model.util.ImportResolver;
 import org.eclipse.bpel.model.util.ImportResolverRegistry;
 import org.eclipse.bpel.ui.util.ModelHelper;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xsd.util.XSDConstants;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import be.edu.fundp.precise.bpel_ui.model.DataInputUI;
 import be.edu.fundp.precise.bpel_ui.model.DataOutputUI;
 import be.edu.fundp.precise.bpel_ui.model.DataSelectionUI;
+import be.edu.fundp.precise.bpel_ui.model.EventHandlerUI;
 import be.edu.fundp.precise.bpel_ui.model.ModelFactory;
 import be.edu.fundp.precise.bpel_ui.model.ModelPackage;
 import be.edu.fundp.precise.bpel_ui.model.OnUserEvent;
 import be.edu.fundp.precise.bpel_ui.model.PickUI;
+import be.edu.fundp.precise.bpel_ui.model.ScopeUI;
 import be.edu.fundp.precise.bpel_ui.model.UserEventType;
 
 /*
@@ -194,7 +207,6 @@ public class BPEL_UI_Deserializer implements BPELActivityDeserializer {
 	           	   	  continue;
 	           	   	             	
 	               pickInstanceElement = (Element)pickElements.item(i);
-	               //System.out.println("pickInstanceElement = "+pickInstanceElement.getLocalName());
 	               
 					if (pickInstanceElement.getLocalName().equals(BPEL_UI_Constants.ND_ON_USER_EVENT)) {
 	     					OnUserEvent onUserEvent = xml2OnUserEvent(pickInstanceElement, activity, bpelReader);
@@ -206,8 +218,96 @@ public class BPEL_UI_Deserializer implements BPELActivityDeserializer {
 			return sa;
 		}
 		
+		/*
+		 * Scope
+		 */
+		if (BPEL_UI_Constants.ND_SCOPE_UI.equals(elementType.getLocalPart())) {
+
+			// create a new DataOutputUI model object if not already created
+			ScopeUI sa;
+			Element saElement = (Element)node;
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
+			if(activity != null && activity instanceof ScopeUI){
+				sa = (ScopeUI)activity;
+			}else {
+				sa = ModelFactory.eINSTANCE
+					.createScopeUI();
+				// attach the DOM node to our new activity
+				sa.setElement(saElement);
+			}
+			
+			// Handler EventHandler element
+			setEventHandler(saElement, sa, bpelReader);
+
+			return sa;
+		}
+		
 		System.err.println("Cannot handle this kind of element");
 		return null;
+	}
+
+	private void setEventHandler(Element element, Activity extensibleElement, BPELReader bpelReader) {
+		List<Element> eventHandlerElements = getBPELChildElementsByLocalName(element, "eventHandlers");
+        
+		if (eventHandlerElements.size() > 0) {
+			EventHandler eventHandler =	xml2EventHandler(eventHandlerElements.get(0), extensibleElement, bpelReader); 
+
+			if (extensibleElement instanceof Process) ((Process)extensibleElement).setEventHandlers(eventHandler);
+				else if (extensibleElement instanceof Scope) ((Scope)extensibleElement).setEventHandlers(eventHandler);
+		}
+	}
+
+	private EventHandler xml2EventHandler(Element eventHandlerElement, Activity extensibleElement, BPELReader bpelReader) {
+		EventHandlerUI eventHandler = ModelFactory.eINSTANCE.createEventHandlerUI();
+		eventHandler.setElement(eventHandlerElement);
+		
+		// Save all the references to external namespaces		
+		saveNamespacePrefix(eventHandler, eventHandlerElement);			
+	
+		NodeList eventHandlerElements = eventHandlerElement.getChildNodes();        
+		Element eventHandlerInstanceElement = null;
+		if (eventHandlerElements != null && eventHandlerElements.getLength() > 0) {
+          
+			for (int i = 0; i < eventHandlerElements.getLength(); i++) {
+				if (eventHandlerElements.item(i).getNodeType() != Node.ELEMENT_NODE)
+					continue;           	   	             
+			   	eventHandlerInstanceElement = (Element)eventHandlerElements.item(i);
+               
+				if (eventHandlerInstanceElement.getLocalName().equals("onUserEvent")) {
+					OnUserEvent onUserEvent = xml2OnUserEvent(eventHandlerInstanceElement, extensibleElement, bpelReader);     				
+					eventHandler.getUserInteraction().add(onUserEvent);
+				}
+			}
+		}
+		return eventHandler;
+	}
+
+	private void saveNamespacePrefix(EObject eObject, Element element) {
+		Map<String,String> nsMap = null; // lazy init since it may require a new map
+		NamedNodeMap attrs = element.getAttributes();
+		
+		for (int i=0; i < attrs.getLength(); i++) {
+			Attr attr = (Attr) attrs.item(i);        
+			// XML namespace attributes use the reserved namespace "http://www.w3.org/2000/xmlns/". 
+			if (XSDConstants.XMLNS_URI_2000.equals(attr.getNamespaceURI())) {
+				if (nsMap == null) {
+					nsMap = BPELUtils.getNamespaceMap(eObject);
+				}
+				nsMap.put(BPELUtils.getNSPrefixMapKey(attr.getLocalName()), attr.getValue());
+			}
+		}
+	}
+
+	private List<Element> getBPELChildElementsByLocalName(Element parentElement, String localName) {
+		List<Element> list = new ArrayList<Element>();
+		NodeList children = parentElement.getChildNodes();
+		for (int i = 0; i < children.getLength(); i++) {
+			Node node = children.item(i);
+			if (localName.equals(node.getLocalName()) && BPELUtils.isBPELElement(node)) {
+                list.add((Element) node);
+			}
+		}
+		return list;
 	}
 
 	private OnUserEvent xml2OnUserEvent(Element pickInstanceElement, Activity activity, BPELReader bpelReader) {

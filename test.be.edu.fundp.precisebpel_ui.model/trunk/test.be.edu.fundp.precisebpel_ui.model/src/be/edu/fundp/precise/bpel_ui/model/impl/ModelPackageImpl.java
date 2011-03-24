@@ -202,6 +202,20 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
 				serializer);
 		
+		// ScopeUI
+		name = ScopeUI.class.getSimpleName();
+		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
+				BPEL_UI_Constants.ND_SCOPE_UI), deserializer);
+		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
+				serializer);
+		
+		// EventHandlerUI
+		name = EventHandlerUI.class.getSimpleName();
+		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
+				BPEL_UI_Constants.ND_EVENT_UI_HANDLER), deserializer);
+		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
+				serializer);
+		
 		// OnUserEvent
 		name = OnUserEvent.class.getSimpleName();
 		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
