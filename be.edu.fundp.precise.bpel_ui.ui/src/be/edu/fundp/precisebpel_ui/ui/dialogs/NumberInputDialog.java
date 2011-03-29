@@ -53,7 +53,7 @@ public class NumberInputDialog extends Dialog {
 		Shell parent = getParent();
 		final Shell shell = new Shell(parent, SWT.TITLE | SWT.BORDER
 				| SWT.APPLICATION_MODAL);
-		shell.setText("NumberInputDialog");
+		shell.setText("New User Role");
 
 		shell.setLayout(new GridLayout(2, true));
 
