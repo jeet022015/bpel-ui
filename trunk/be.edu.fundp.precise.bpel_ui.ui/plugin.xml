@@ -42,5 +42,21 @@
 				<input type="be.edu.fundp.precise.bpel_ui.model.UserInteraction" />
 			</propertySection>
 		</propertySections>
+		<propertySections contributorId="org.eclipse.bpel.ui.bpeleditor">
+			<propertySection
+				class="be.edu.fundp.precisebpel_ui.ui.properties.DataSelectionInteractionPropertySection"
+				tab="org.eclipse.bpel.ui.tabs.details"
+				id="be.edu.fundp.precisebpel_ui.ui.properties.DataSelectionInteractionPropertySection">
+				<input type="be.edu.fundp.precise.bpel_ui.model.DataSelectionUI" />
+			</propertySection>
+		</propertySections>
+		<propertySections contributorId="org.eclipse.bpel.ui.bpeleditor">
+			<propertySection
+				class="be.edu.fundp.precisebpel_ui.ui.properties.DataSelectionMinCardinalityPropertySection"
+				tab="org.eclipse.bpel.ui.tabs.details"
+				id="be.edu.fundp.precisebpel_ui.ui.properties.DataSelectionMinCardinalityPropertySection">
+				<input type="be.edu.fundp.precise.bpel_ui.model.DataSelectionUI" />
+			</propertySection>
+		</propertySections>
 	</extension>
 </plugin>
