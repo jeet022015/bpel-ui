@@ -31,6 +31,7 @@ import be.edu.fundp.precise.bpel_ui.model.ModelPackage;
 import be.edu.fundp.precise.bpel_ui.model.OnUserEvent;
 import be.edu.fundp.precise.bpel_ui.model.PickUI;
 import be.edu.fundp.precise.bpel_ui.model.ScopeUI;
+import be.edu.fundp.precise.bpel_ui.model.UserInteraction;
 import be.edu.fundp.precise.bpel_ui.model.UserRole;
 
 /*
@@ -159,6 +160,20 @@ public class BPEL_UI_Serializer implements BPELActivitySerializer {
 
 			// insert the DOM element into the DOM tree
 			//parentNode.appendChild(saElement);
+		}
+		
+		/*
+		 * UserRole
+		 */
+		if (activity instanceof UserInteraction) {
+			UserInteraction sa = (UserInteraction)activity;
+
+			if(saElement != null){
+				EList<UserRole> roles = sa.getRole();
+				for (UserRole onUserEvent : roles) {
+					saElement.appendChild(userRole2XML(onUserEvent,document,elementType,process,bpelWriter));
+				}
+			}
 		}
 		
 		// insert the DOM element into the DOM tree
