@@ -96,9 +96,21 @@ public class BPEL_UI_Deserializer implements BPELActivityDeserializer {
 				}
 			}
 			
-			setUserRole(saElement, sa);
+			// handle the MaxCardinality
+			String attName = ModelPackage.eINSTANCE
+					.getDataSelectionUI_MaxCardinality().getName();
+			if (saElement.getAttribute(attName) != null) {
+				sa.setMaxCardinality(Integer.parseInt(saElement.getAttribute(attName)));
+			}
 			
-			//TODO UserRole
+			// handle the MaxCardinality
+			attName = ModelPackage.eINSTANCE
+					.getDataSelectionUI_MinCardinality().getName();
+			if (saElement.getAttribute(attName) != null) {
+				sa.setMinCardinality(Integer.parseInt(saElement.getAttribute(attName)));
+			}
+			
+			setUserRole(saElement, sa);
 
 			return sa;
 		}

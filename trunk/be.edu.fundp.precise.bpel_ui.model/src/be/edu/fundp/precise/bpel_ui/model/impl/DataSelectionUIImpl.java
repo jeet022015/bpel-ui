@@ -201,6 +201,7 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	 * @customized
 	 */
 	public void setMaxCardinality(int newMaxCardinality) {
+		System.out.println("aquuuiiiiii "+newMaxCardinality);
 		int oldMaxCardinality = maxCardinality;
 		if (!isReconciling) {
 			ReconciliationHelper.replaceAttribute(this, ModelPackage.eINSTANCE
