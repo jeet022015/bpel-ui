@@ -4,6 +4,8 @@ This material is based on:
 [http://www.eclipse.org/bpel/users/howto/ode.php designBPEL]
 [http://wso2.org/library/tutorials/developing-simple-bpel-project-eclipse-bpel-designer-plugin-wso2-bps-bpel-exporter-plugin wso2]
 
+https://docs.google.com/drawings/pub?id=1gykvH4cKN9Jbd07VrR6Z8OI1JIg4ntqbbR5uJPcVYnc&w=497&h=160
+
 = IDE Installation =
 
   # Download the Eclipse J2EE: [http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr1 Eclipse J2EE]
