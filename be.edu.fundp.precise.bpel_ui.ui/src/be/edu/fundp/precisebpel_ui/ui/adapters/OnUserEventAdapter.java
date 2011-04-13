@@ -20,6 +20,7 @@ import org.eclipse.swt.graphics.Image;
 
 import be.edu.fundp.precise.bpel_ui.model.ModelPackage;
 import be.edu.fundp.precise.bpel_ui.model.OnUserEvent;
+import be.edu.fundp.precisebpel_ui.ui.BPEL_UIConstants;
 
 
 public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElement,
@@ -36,11 +37,11 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 	/* ILabeledElement */
 	
 	public Image getSmallImage(Object object) {
-		return BPELUIPlugin.INSTANCE.getImage(IBPELUIConstants.ICON_ONMESSAGE_16);
+		return BPELUIPlugin.INSTANCE.getImage(BPEL_UIConstants.ON_USER_EVENT_ICON_16);
 	}
 	
 	public Image getLargeImage(Object object) {
-		return BPELUIPlugin.INSTANCE.getImage(IBPELUIConstants.ICON_ONMESSAGE_32);
+		return BPELUIPlugin.INSTANCE.getImage(BPEL_UIConstants.ON_USER_EVENT_ICON_20);
 	}	
 	
 	public String getTypeLabel(Object object) {

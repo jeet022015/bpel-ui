@@ -131,14 +131,25 @@ public class UserInteractionPropertySection extends BPELPropertySection {
 								.getVariableType(model, ModelHelper.OUTGOING));
 				String id = dialog.open();
 				if (id != null) {
-					UserRole l = ModelFactory.eINSTANCE.createUserRole();
+					final UserRole l = ModelFactory.eINSTANCE.createUserRole();
 					l.setId(id);
 					if (model instanceof UserInteraction) {
 						UserInteraction inter = (UserInteraction) model;
 						inter.getRole().add(l);
 						basicSetInput(model);
+						Button button2 = fWidgetFactory.createButton(sectionClient,
+								l.getId(), SWT.RADIO);
+						button2.addSelectionListener(new SelectionListener() {
+							public void widgetSelected(SelectionEvent e) {
+								myUserRole = l.getId();
+							}
+
+							public void widgetDefaultSelected(SelectionEvent e) {
+								widgetSelected(e);
+							}
+						});
+						myButton.add(button2);
 					}
-					updateVariableWidgets();
 				}
 			}
 
@@ -186,7 +197,7 @@ public class UserInteractionPropertySection extends BPELPropertySection {
 		if (model instanceof UserInteraction) {
 			UserInteraction inter = (UserInteraction) model;
 			EList<UserRole> l = inter.getRole();
-			raiseButton();
+			//raiseButton();
 			for (final UserRole userRole : l) {
 				System.out.println("role "+userRole);
 				Button button2 = fWidgetFactory.createButton(sectionClient,
@@ -202,14 +213,19 @@ public class UserInteractionPropertySection extends BPELPropertySection {
 				});
 				myButton.add(button2);
 			}
+			sectionClient.redraw();
 		}
 	}
 
 	private void raiseButton() {
-		System.out.println("disposed");
-		for (Button theButton : myButton) {
-			theButton.dispose();
-		}
+		//mainLabel.
+		sectionClient.dispose();
+		sectionClient = fWidgetFactory.createComposite(mainLabel);
+		sectionClient.setLayout(new GridLayout());
+		// Button button2 = fWidgetFactory.createButton(sectionClient,
+		// "Radio 2", SWT.RADIO);
+		mainLabel.setClient(sectionClient);
+		
 	}
 
 	@Override
