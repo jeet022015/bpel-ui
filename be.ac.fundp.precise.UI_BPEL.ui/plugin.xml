@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.bpel.common.ui.paletteAdditions">
+      <additions
+            provider="be.ac.fundp.precise.ui_bpel.ui.palette.BpelUiPaletteProvider"
+            targetEditor="org.eclipse.bpel.ui.bpeleditor">
+      </additions>
+   </extension>
+   <extension
+         id="BpelUiObjectFactory"
+         name="test"
+         point="org.eclipse.bpel.ui.uiObjectFactories">
+      <factory
+            categoryId="not.used"
+            class="be.ac.fundp.precise.ui_bpel.ui.factories.BpelUiObjectFactory"
+            id="be.ac.fundp.precise.ui_bpel.ui.factories.BpelUiObjectFactory"
+            specCompliant="false">
+      </factory>
+   </extension>
+   <extension point="org.eclipse.ui.views.properties.tabbed.propertySections">
+         <propertySections contributorId="org.eclipse.bpel.ui.bpeleditor">
+         	<propertySection
+				class="be.ac.fundp.precise.ui_bpel.ui.properties.DataInputUIPropertySection"
+				tab="org.eclipse.bpel.ui.tabs.details"
+				id="be.ac.fundp.precise.ui_bpel.ui.properties.DataInputUIPropertySection">
+				<input type="be.edu.fundp.precise.uibpel.model.DataInputUI" />
+			</propertySection>
+			<propertySection
+				class="be.ac.fundp.precise.ui_bpel.ui.properties.DataOutputUIPropertySection"
+				tab="org.eclipse.bpel.ui.tabs.details"
+				id="be.ac.fundp.precise.ui_bpel.ui.properties.DataOutputUIPropertySection">
+				<input type="be.edu.fundp.precise.uibpel.model.DataOutputUI" />
+			</propertySection>
+			<propertySection
+				class="be.ac.fundp.precise.ui_bpel.ui.properties.DataSelectionMinCardinalityPropertySection"
+				tab="org.eclipse.bpel.ui.tabs.details"
+				id="be.ac.fundp.precise.ui_bpel.ui.properties.DataSelectionMinCardinalityPropertySection">
+				<input type="be.edu.fundp.precise.uibpel.model.DataSelectionUI" />
+			</propertySection>
+			<propertySection
+				class="be.ac.fundp.precise.ui_bpel.ui.properties.DataSelectionMaxCardinalityPropertySection"
+				tab="org.eclipse.bpel.ui.tabs.details"
+				id="be.ac.fundp.precise.ui_bpel.ui.properties.DataSelectionMaxCardinalityPropertySection">
+				<input type="be.edu.fundp.precise.uibpel.model.DataSelectionUI" />
+			</propertySection>
+			<propertySection
+				class="be.ac.fundp.precise.ui_bpel.ui.properties.UserInteractionPropertySection"
+				tab="org.eclipse.bpel.ui.tabs.details"
+				id="be.ac.fundp.precise.ui_bpel.ui.properties.UserInteractionPropertySection">
+				<input type="be.edu.fundp.precise.uibpel.model.UserInteraction" />
+			</propertySection>
+         </propertySections>
+   </extension>
+   
+   	<extension point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            id="org.eclipse.bpel.extensionssample.ui.contribution2"
+            nameFilter="*.bpel">
+         <menu
+               label="UI-BPEL"
+               path="additions"
+               id="org.eclipse.bpel.extensionssample.ui.menu2">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               label="Generate AUI"
+               class="be.ac.fundp.precise.ui_bpel.ui.popup.actions.PopupActionGenerateAUI"
+               menubarPath="org.eclipse.bpel.extensionssample.ui.menu2/group1"
+               enablesFor="1"
+               id="org.eclipse.bpel.extensionssample.ui.popupAction">
+         </action>
+         <action
+               label="Generate Executable BPEL"
+               class="be.ac.fundp.precise.ui_bpel.ui.popup.actions.PopupActionGenerateBPEL"
+               menubarPath="org.eclipse.bpel.extensionssample.ui.menu2/group1"
+               enablesFor="1"
+               id="org.eclipse.bpel.extensionssample.ui.popupAction">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>
