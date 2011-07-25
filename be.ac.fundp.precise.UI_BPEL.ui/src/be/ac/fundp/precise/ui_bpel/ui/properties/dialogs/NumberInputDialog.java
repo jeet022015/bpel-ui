@@ -20,9 +20,11 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import be.ac.fundp.precise.ui_bpel.ui.Messages;
+
 public class NumberInputDialog extends Dialog {
 	private String value = "Default";
-	private String type = "String";
+	private String type = Messages.Data_Type_String;
 	//private EObject modelObject;
 	//private EObject variableType;
 	private Button b1;
@@ -58,22 +60,22 @@ public class NumberInputDialog extends Dialog {
 		Shell parent = getParent();
 		final Shell shell = new Shell(parent, SWT.TITLE | SWT.BORDER
 				| SWT.APPLICATION_MODAL);
-		shell.setText("New User Role");
+		shell.setText(Messages.UIBPELEditor_Dialog_Number_Input_Title);
 
 		shell.setLayout(new GridLayout(3, true));
 
 		Label label = new Label(shell, SWT.NULL);
-		label.setText("User Role:");
+		label.setText(Messages.UIBPELEditor_Dialog_Number_Input_Label1);
 
 		final Text text = new Text(shell, SWT.SINGLE | SWT.BORDER);
 		
 		final Group g = new Group(shell, SWT.SINGLE | SWT.BORDER);
 
 		final Button buttonOK = new Button(shell, SWT.PUSH);
-		buttonOK.setText("Ok");
+		buttonOK.setText(Messages.UIBPELEditor_Dialog_Number_Input_Button1);
 		buttonOK.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
 		Button buttonCancel = new Button(shell, SWT.PUSH);
-		buttonCancel.setText("Cancel");
+		buttonCancel.setText(Messages.UIBPELEditor_Dialog_Number_Input_Button2);
 
 		text.addListener(SWT.Modify, new Listener() {
 			public void handleEvent(Event event) {
@@ -87,31 +89,35 @@ public class NumberInputDialog extends Dialog {
 		});
 		
 		//g.setSize(110, 110);
-		g.setText("Type");
+		g.setText(Messages.UIBPELEditor_Dialog_Number_Input_Label2);
 		b1 = new Button(g, SWT.RADIO);
 		b1.setBounds(10, 5, 75, 15);
-		b1.setText("String");
+		b1.setText(Messages.UIBPELEditor_Dialog_Number_Input_Label_type1);
 		b1.setEnabled(true);
 		b2 = new Button(g, SWT.RADIO);
 		b2.setBounds(10, 20, 75, 15);
-		b2.setText("Integer");
+		b2.setText(Messages.UIBPELEditor_Dialog_Number_Input_Label_type2);
 		b3 = new Button(g, SWT.RADIO);
 		b3.setBounds(10, 35, 80, 15);
-		b3.setText("Data");
+		b3.setText(Messages.UIBPELEditor_Dialog_Number_Input_Label_type3);
 		b4 = new Button(g, SWT.RADIO);
 		b4.setBounds(10, 50, 80, 15);
-		b4.setText("Boolean");
+		b4.setText(Messages.UIBPELEditor_Dialog_Number_Input_Label_type4);
 
 		Listener myList = new Listener() {
 			public void handleEvent(Event event) {
 				try {
 					if (b1.getSelection())
-						type = "StringType";
+						type = Messages.Data_Type_String;
+						//"StringType";
 					else if (b2.getSelection())
-						type = "IntType";
+						type = Messages.Data_Type_Int; 
+						//"IntType";
 					else if (b3.getSelection())
-						type = "DataType";
-					else type = "BooleanType";
+						type = Messages.Data_Type_Date; 
+						//"DataType";
+					else type = Messages.Data_Type_Boolean; 
+							//"BooleanType";
 				} catch (Exception e) {
 					buttonOK.setEnabled(false);
 				}

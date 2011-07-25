@@ -5,7 +5,6 @@ import org.eclipse.bpel.common.ui.flatui.FlatFormAttachment;
 import org.eclipse.bpel.common.ui.flatui.FlatFormData;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.ui.IBPELUIConstants;
-import org.eclipse.bpel.ui.Messages;
 import org.eclipse.bpel.ui.commands.SetCommand;
 import org.eclipse.bpel.ui.dialogs.VariableSelectorDialog;
 import org.eclipse.bpel.ui.properties.BPELPropertySection;
@@ -26,6 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import be.ac.fundp.precise.ui_bpel.ui.Messages;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 
 /*
@@ -93,7 +93,8 @@ public class DataInputUIPropertySection extends BPELPropertySection {
 		data.top = new FlatFormAttachment(composite, IDetailsAreaConstants.VSPACE);
 		composite.setLayoutData(data);
 
-		Label variableLabel = fWidgetFactory.createLabel(composite, "Variable:"); 
+		Label variableLabel = fWidgetFactory.createLabel(composite, Messages.UIBPELEditor_Property_InputVar);
+				//"Variable input:"); 
 		variableName = fWidgetFactory.createLabel(composite, "", SWT.NONE); //$NON-NLS-1$
 		variableBrowseButton = fWidgetFactory.createButton(composite, 
 				Messages.FaultThrowNameSection_Browse_1, SWT.PUSH); 

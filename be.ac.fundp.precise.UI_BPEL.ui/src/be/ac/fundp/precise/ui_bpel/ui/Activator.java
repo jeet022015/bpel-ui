@@ -12,7 +12,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import be.ac.fundp.precise.ui_bpel.ui.factories.BpelUiAdapterFactory;
-import be.ac.fundp.precise.ui_bpel.ui.util.BpelUiConstants;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
 /**
@@ -64,8 +63,8 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	protected void initializeImageRegistry(ImageRegistry reg) {
 		URL baseURL = getBundle().getEntry("/");
-		createImageDescriptor(BpelUiConstants.DEFAULT_ICON_16, baseURL);
-		createImageDescriptor(BpelUiConstants.DEFAULT_ICON_20, baseURL);
+		createImageDescriptor(Messages.DEFAULT_ICON_16, baseURL);
+		createImageDescriptor(Messages.DEFAULT_ICON_20, baseURL);
 	}
 	
 	private void createImageDescriptor(String id, URL baseURL) {

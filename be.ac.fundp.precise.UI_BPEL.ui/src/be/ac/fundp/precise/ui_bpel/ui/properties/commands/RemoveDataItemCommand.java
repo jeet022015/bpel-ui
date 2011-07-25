@@ -14,6 +14,7 @@ package be.ac.fundp.precise.ui_bpel.ui.properties.commands;
 import org.eclipse.bpel.ui.commands.RemoveFromListCommand;
 import org.eclipse.emf.common.util.EList;
 
+import be.ac.fundp.precise.ui_bpel.ui.Messages;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
 
@@ -24,7 +25,7 @@ import be.edu.fundp.precise.uibpel.model.UserInteraction;
 public class RemoveDataItemCommand extends RemoveFromListCommand {
 
 	public RemoveDataItemCommand(UserInteraction target, DataItem oldCopy) {
-		super(target, oldCopy, "Delete Data");
+		super(target, oldCopy,  Messages.UIBPELEditor_Command_Delete_Data);
 	}
 
 	@Override

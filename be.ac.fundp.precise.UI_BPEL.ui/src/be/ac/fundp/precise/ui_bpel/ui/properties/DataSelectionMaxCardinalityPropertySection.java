@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
+import be.ac.fundp.precise.ui_bpel.ui.Messages;
 import be.ac.fundp.precise.ui_bpel.ui.details.IntegerIValue;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
@@ -62,7 +63,8 @@ public class DataSelectionMaxCardinalityPropertySection  extends BPELPropertySec
 		parent.setLayoutData(data);
 		
 		fCreateInstanceButton = fWidgetFactory.createText(parent, "");
-		Label variableLabel = fWidgetFactory.createLabel(parent, "MaxCardinality:");
+		Label variableLabel = fWidgetFactory.createLabel(parent, Messages.UIBPELEditor_Property_Max_Cardinality);
+				//"MaxCardinality:");
 		
 		data = new FlatFormData();
 		data.left = new FlatFormAttachment(0, 100);
