@@ -72,14 +72,14 @@
                class="be.ac.fundp.precise.ui_bpel.ui.popup.actions.PopupActionGenerateAUI"
                menubarPath="org.eclipse.bpel.extensionssample.ui.menu2/group1"
                enablesFor="1"
-               id="org.eclipse.bpel.extensionssample.ui.popupAction">
+               id="org.eclipse.bpel.extensionssample.ui.popupAction3">
          </action>
          <action
                label="Generate Executable BPEL"
                class="be.ac.fundp.precise.ui_bpel.ui.popup.actions.PopupActionGenerateBPEL"
                menubarPath="org.eclipse.bpel.extensionssample.ui.menu2/group1"
                enablesFor="1"
-               id="org.eclipse.bpel.extensionssample.ui.popupAction">
+               id="org.eclipse.bpel.extensionssample.ui.popupAction4">
          </action>
       </objectContribution>
    </extension>

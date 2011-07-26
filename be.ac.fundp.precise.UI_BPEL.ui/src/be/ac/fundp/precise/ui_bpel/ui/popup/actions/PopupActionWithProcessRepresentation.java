@@ -21,7 +21,7 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartSite;
 
-abstract public class PopupActionWithProcessRepresentation {
+abstract public class PopupActionWithProcessRepresentation  implements IObjectActionDelegate {
 	
 	private Shell shell = null;
 

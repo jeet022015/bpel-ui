@@ -95,13 +95,31 @@ public class DataOutputUIImpl extends UserInteractionImpl implements DataOutputU
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public void setOutputVariable(Variable newOutputVariable) {
-		Variable oldOutputVariable = outputVariable;
-		outputVariable = newOutputVariable;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.DATA_OUTPUT_UI__OUTPUT_VARIABLE, oldOutputVariable, outputVariable));
+		if (newOutputVariable != outputVariable) {
+			ENotificationImpl notification = null;
+			Variable oldVariable = outputVariable;
+			if (!isReconciling) {
+				ReconciliationHelper.replaceAttribute(this,
+						//Is it working?
+						ModelPackage.eINSTANCE.getDataOutputUI_OutputVariable().getName(),
+						newOutputVariable == null ? null : newOutputVariable.getName());
+			}
+			outputVariable = newOutputVariable;
+			if (eNotificationRequired()) {
+				notification = new ENotificationImpl(this,
+						Notification.SET,
+						ModelPackage.DATA_OUTPUT_UI__OUTPUT_VARIABLE, oldVariable,
+						newOutputVariable);
+				notification.dispatch();
+			}
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					ModelPackage.DATA_OUTPUT_UI__OUTPUT_VARIABLE, 
+					newOutputVariable, newOutputVariable));
 	}
 
 	/**

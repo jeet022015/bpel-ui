@@ -22,6 +22,7 @@ import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.RepeatUntil;
 import org.eclipse.bpel.model.Scope;
 import org.eclipse.bpel.model.Sequence;
+import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.While;
 import org.eclipse.emf.common.util.EList;
 
@@ -32,7 +33,6 @@ import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 import org.usixml.aui.auiPackage.AbstractCompoundIU;
 import org.usixml.aui.auiPackage.AbstractDataIU;
 import org.usixml.aui.auiPackage.AbstractDataIUType;
-import org.usixml.aui.auiPackage.AbstractSelectionIU;
 import org.usixml.aui.auiPackage.AbstractUIModel;
 import org.usixml.aui.auiPackage.AuiPackageFactory;
 
@@ -43,12 +43,12 @@ public class AUIGenerator {
 	private AbstractUIModel model;
 	private AuiPackageFactory factory = AuiPackageFactory.eINSTANCE;
 	private AbstractCompoundIU comp;
-	private Map<String, Set<String>> varMapping;
+	private Map<String, Set<String>> varDependenceMapping;
 	private Set<String> varUI;
 	
 	
 	public AbstractUIModel createAUI(Process process) {
-		AuiPackageFactory.eINSTANCE.eClass();
+		//AuiPackageFactory.eINSTANCE.eClass();
 		AbstractUIModel model = factory.createAbstractUIModel();
 		this.model = model;
 		createAbstractComponent();
@@ -65,11 +65,12 @@ public class AUIGenerator {
 		idGen++;
 		model.getCompoundIUs().add(comp);
 		comp.setModel(model);
-		varMapping = new HashMap<String, Set<String>>();
+		varDependenceMapping = new HashMap<String, Set<String>>();
 		varUI = new HashSet<String>();
 	}
 	
 	private void activity2AUI(Activity activity){
+		
 		//Create elements
 		if (activity instanceof DataSelectionUI)
 			createDataUiDataSelectionUI((DataSelectionUI) activity);
@@ -85,6 +86,7 @@ public class AUIGenerator {
 			assign2AUI((Assign) activity);
 		else if (activity instanceof DataSelectionUI)
 			dataSelection2AUI((DataSelectionUI) activity);
+		
 		//Create New Component
 		else if (activity instanceof Flow)
 			flow2AUI((Flow) activity);
@@ -98,6 +100,7 @@ public class AUIGenerator {
 			repeatUntil2AUI((RepeatUntil) activity);
 		else if (activity instanceof Pick)
 			pick2AUI((Pick) activity);
+		
 		//Recursive
 		else if (activity instanceof Sequence)
 			sequence2AUI((Sequence) activity);
@@ -106,7 +109,30 @@ public class AUIGenerator {
 	}
 
 	private void createDataUiDataSelectionUI(DataSelectionUI activity) {
-		Set<String> myVarDep = varMapping.get(activity.getOutputVariable().getName());
+		hasDependenceAmongVars(activity.getOutputVariable().getName());
+		
+		varUI.add(activity.getOutputVariable().getName());
+		varUI.add(activity.getInputVariable().getName());
+		
+		createAbstractDataUIComponent(factory.createAbstractSelectionIU(), 
+				AbstractDataIUType.INPUT_OUTPUT);
+//		for (be.edu.fundp.precise.uibpel.model.DataItem dataItem : activity.getData()) {
+//			AbstractDataIU absInputUI = factory.createAbstractDataIU();
+//			comp.getInteractionUnits().add(absInputUI);
+//			absInputUI.setLabel(dataItem.getDescription());
+//			be.ac.fundp.etea2.usixml.aui.model.DataItem myData = factory.createDataItem();
+//			be.ac.fundp.etea2.usixml.aui.model.DataType test = mappingTypes(dataItem.getType());
+//			myData.setType(test);
+//			absDataUI.getData().add(myData);
+//		}
+	}
+
+	private void hasDependenceAmongVars(String varName) {
+		if (varUI.contains(varName)) {
+			createAbstractComponent();
+			return;
+		}
+		Set<String> myVarDep = varDependenceMapping.get(varName);
 		if (myVarDep != null)
 			for (String variable : myVarDep) {
 				if (varUI.contains(variable)){
@@ -114,39 +140,14 @@ public class AUIGenerator {
 					break;
 				}
 			}
-		varUI.add(activity.getOutputVariable().getName());
-		varUI.add(activity.getInputVariable().getName());
-		AbstractSelectionIU absSelection = factory.createAbstractSelectionIU();
-		absSelection.setParentIU(comp);
-		absSelection.setDataUIType(AbstractDataIUType.INPUT_OUTPUT);
-		comp.getInteractionUnits().add(absSelection);
-		//for (be.edu.fundp.precise.uibpel.model.DataItem dataItem : activity.getData()) {
-			//AbstractDataIU absInputUI = factory.createAbstractDataIU();
-			//comp.getInteractionUnits().add(absInputUI);
-			//absInputUI.setLabel(dataItem.getDescription());
-			//be.ac.fundp.etea2.usixml.aui.model.DataItem myData = factory.createDataItem();
-			//be.ac.fundp.etea2.usixml.aui.model.DataType test = mappingTypes(dataItem.getType());
-			//myData.setType(test);
-			//absDataUI.getData().add(myData);
-		//}
-		//AbstractSelectionUI absSelectionUI = factory.createAbstractSelectionUI();
-		//absDataUI.getInputInteraction().add(absSelectionUI);
 	}
 
 	private void createDataUiDataOutputUI(DataOutputUI activity) {
-		Set<String> myVarDep = varMapping.get(activity.getOutputVariable().getName());
-		if (myVarDep != null)
-			for (String variable : myVarDep) {
-				if (varUI.contains(variable)){
-					createAbstractComponent();
-					break;
-				}
-			}
+		hasDependenceAmongVars(activity.getOutputVariable().getName());
+		
 		varUI.add(activity.getOutputVariable().getName());
-		AbstractDataIU absSelection = factory.createAbstractDataIU();
-		absSelection.setParentIU(comp);
-		absSelection.setDataUIType(AbstractDataIUType.OUTPUT);
-		comp.getInteractionUnits().add(absSelection);
+		
+		createAbstractDataUIComponent(factory.createAbstractDataIU(), AbstractDataIUType.OUTPUT);
 //		for (DataItem dataItem : activity.getData()) {
 //			AbstractOutputUI absInputUI = factory.createAbstractOutputUI();
 //			absDataUI.getOutputInteraction().add(absInputUI);
@@ -160,10 +161,8 @@ public class AUIGenerator {
 
 	private void createDataUiDataInputUI(DataInputUI activity) {
 		varUI.add(activity.getInputVariable().getName());
-		AbstractDataIU absSelection = factory.createAbstractDataIU();
-		absSelection.setParentIU(comp);
-		absSelection.setDataUIType(AbstractDataIUType.INPUT);
-		comp.getInteractionUnits().add(absSelection);
+		
+		createAbstractDataUIComponent(factory.createAbstractDataIU(), AbstractDataIUType.INPUT);
 //		for (DataItem dataItem : activity.getData()) {
 //			AbstractInputUI absInputUI = factory.createAbstractInputUI();
 //			absDataUI.getInputInteraction().add(absInputUI);
@@ -173,6 +172,13 @@ public class AUIGenerator {
 //			myData.setType(test);
 //			absDataUI.getData().add(myData);
 //		}
+	}
+
+	private void createAbstractDataUIComponent(AbstractDataIU abstractDataIU,
+			AbstractDataIUType input) {
+		abstractDataIU.setParentIU(comp);
+		abstractDataIU.setDataUIType(input);
+		comp.getInteractionUnits().add(abstractDataIU);
 	}
 
 //	private be.ac.fundp.etea2.usixml.aui.model.DataType mappingTypes(
@@ -278,50 +284,40 @@ public class AUIGenerator {
 	}
 
 	private void copy2AUI(Copy copy) {
-		String inputVar = copy.getTo().getVariable().getName();
-		String outputVar = copy.getFrom().getVariable().getName();
-		Set<String> set;
-		if(inputVar != null && outputVar != null){
-			if (varMapping.containsKey(inputVar)){
-				set = varMapping.get(inputVar);
-			} else {
-				set = new HashSet<String>();
-			}
-			set.add(outputVar);
-			varMapping.put(inputVar, set);
+		if (copy.getTo().getVariable() != null
+				&& copy.getFrom().getVariable() != null){
+			dealWithVars(copy.getFrom().getVariable(), copy.getTo().getVariable());
 		}
 	}
 
 	private void invoke2AUI(Invoke activity) {
-		String inputVar = activity.getInputVariable().getName();
-		String outputVar = activity.getOutputVariable().getName();
-		Set<String> set;
-		if(inputVar != null && outputVar != null){
-			if (varMapping.containsKey(inputVar)){
-				set = varMapping.get(inputVar);
-				
-			} else {
-				set = new HashSet<String>();
-			}
-			set.add(outputVar);
-			varMapping.put(inputVar, set);
-		}
-		
+		dealWithVars(activity.getInputVariable(), activity.getOutputVariable());
 	}
 	
 	private void dataSelection2AUI(DataSelectionUI activity) {
-		String inputVar = activity.getInputVariable().getName();
-		String outputVar = activity.getOutputVariable().getName();
+		dealWithVars(activity.getInputVariable(), activity.getOutputVariable());
+	}
+
+	private void dealWithVars(Variable inputVariable,
+			Variable outputVariable) {
+		String inputVarName = null;
+		String outputVarName =null;
+		if (inputVariable != null){
+			inputVarName = inputVariable.getName();
+		}
+		if (outputVariable != null){
+			outputVarName = outputVariable.getName();
+		}
 		Set<String> set;
-		if(inputVar != null && outputVar != null){
-			if (varMapping.containsKey(inputVar)){
-				set = varMapping.get(inputVar);
+		if(inputVarName != null && outputVarName != null){
+			if (varDependenceMapping.containsKey(outputVarName)){
+				set = varDependenceMapping.get(outputVarName);
 				
 			} else {
 				set = new HashSet<String>();
 			}
-			set.add(outputVar);
-			varMapping.put(inputVar, set);
+			set.add(inputVarName);
+			varDependenceMapping.put(outputVarName, set);
 		}
 	}
 
