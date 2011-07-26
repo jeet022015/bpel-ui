@@ -38,15 +38,13 @@ public class PopupActionGenerateBPEL extends PopupActionWithProcessRepresentatio
 		try {
 			IFile f = getBpelFile();
 			IFolder folder = (IFolder) f.getParent();
-			System.out.println(folder.getClass());
-			IFile file = folder.getFile("newProcess2.bpel");
+			IFile file = folder.getFile("UIBPEL_Process.bpel");
 			if (!file.exists()) {
 				byte[] bytes = "".getBytes();
 			    InputStream source = new ByteArrayInputStream(bytes);
 			    file.create(source, IResource.NONE, null);
 			}
 			File realFile = file.getLocation().toFile();
-			//String path ="/Users/Neto/Documents/runtime-EclipseApplication/NewUiBpel/bpelContent/newBPEL.test";
 			OutputStream out = new BufferedOutputStream( new FileOutputStream(realFile));
 			Map<?, ?> args =  new HashMap();
 			newWriter.write((BPELResource) getBpelResource(), out, args);

@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.eclipse.bpel.model.Process;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -49,15 +48,9 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
 		m.put("model", new XMIResourceFactoryImpl());
-
-		// Create a resource
-		//String path = getBpelFile().getParent().getFullPath().toOSString()+IPath.SEPARATOR+"AUI.model";
-		//Resource resource = getResourceSet().createResource(URI
-		//		.createURI("platform:/resource"+path));
 		
 		IFile f = getBpelFile();
 		IFolder folder = (IFolder) f.getParent();
-		System.out.println(folder.getClass());
 		IFile file = folder.getFile("AUI.model");
 		try {
 			if (!file.exists()) {
@@ -67,8 +60,6 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 			}
 			IPath fullProcessPath = file.getFullPath();
 			URI uri = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
-			System.out.println("uri: " + uri);
-			//Resource auiResource = getResourceSet().getResource(uri, true);
 			Resource auiResource = getResourceSet().createResource(uri);
 			
 			auiResource.getContents().clear();
