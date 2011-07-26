@@ -7,8 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.resource.BPELResource;
@@ -46,8 +44,9 @@ public class PopupActionGenerateBPEL extends PopupActionWithProcessRepresentatio
 			}
 			File realFile = file.getLocation().toFile();
 			OutputStream out = new BufferedOutputStream( new FileOutputStream(realFile));
-			Map<?, ?> args =  new HashMap();
-			newWriter.write((BPELResource) getBpelResource(), out, args);
+			//Map<?, ?> args =  new HashMap();
+			//newWriter.write((BPELResource) getBpelResource(), out, args);
+			newWriter.write((BPELResource) getBpelResource(), out, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (CoreException e) {

@@ -47,11 +47,11 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 		// Register the XMI resource factory for the .website extension
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
-		m.put("model", new XMIResourceFactoryImpl());
+		m.put("aui", new XMIResourceFactoryImpl());
 		
 		IFile f = getBpelFile();
 		IFolder folder = (IFolder) f.getParent();
-		IFile file = folder.getFile("AUI.model");
+		IFile file = folder.getFile("AUI_Model.aui");
 		try {
 			if (!file.exists()) {
 				byte[] bytes = "".getBytes();
