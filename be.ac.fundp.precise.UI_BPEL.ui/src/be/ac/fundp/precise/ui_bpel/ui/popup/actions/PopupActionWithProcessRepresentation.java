@@ -88,5 +88,9 @@ abstract public class PopupActionWithProcessRepresentation  implements IObjectAc
 	public IFile getBpelFile() {
 		return bpelFile;
 	}
+	
+	public Resource getBpelResource() {
+		return bpelResource;
+	}
 
 }

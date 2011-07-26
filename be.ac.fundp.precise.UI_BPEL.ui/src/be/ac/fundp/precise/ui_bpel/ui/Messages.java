@@ -21,7 +21,6 @@ public final class Messages extends NLS {
 		// Do not instantiate
 	}
 
-	public static String ActionImplementationSection_Action_Category_1;
 	public static String UIBPELEditor_Data_Input_UI_1;
 	public static String UIBPELEditor_Data_Input_UI_2;
 	public static String UIBPELEditor_Data_Output_UI_1;

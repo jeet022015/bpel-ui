@@ -1,10 +1,17 @@
 package be.ac.fundp.precise.ui_bpel.ui.popup.actions;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
 
 import org.eclipse.bpel.model.Process;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -44,16 +51,34 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 		m.put("model", new XMIResourceFactoryImpl());
 
 		// Create a resource
-		String path = getBpelFile().getParent().getFullPath().toOSString()+IPath.SEPARATOR+"AUI.model";
-		Resource resource = getResourceSet().createResource(URI
-				.createURI("platform:/resource"+path));
-
-		resource.getContents().add(model);
-
-		// Now save the content.
+		//String path = getBpelFile().getParent().getFullPath().toOSString()+IPath.SEPARATOR+"AUI.model";
+		//Resource resource = getResourceSet().createResource(URI
+		//		.createURI("platform:/resource"+path));
+		
+		IFile f = getBpelFile();
+		IFolder folder = (IFolder) f.getParent();
+		System.out.println(folder.getClass());
+		IFile file = folder.getFile("AUI.model");
 		try {
-			resource.save(Collections.EMPTY_MAP);
+			if (!file.exists()) {
+				byte[] bytes = "".getBytes();
+			    InputStream source = new ByteArrayInputStream(bytes);
+			    file.create(source, IResource.NONE, null);
+			}
+			IPath fullProcessPath = file.getFullPath();
+			URI uri = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
+			System.out.println("uri: " + uri);
+			//Resource auiResource = getResourceSet().getResource(uri, true);
+			Resource auiResource = getResourceSet().createResource(uri);
+			
+			auiResource.getContents().clear();
+			auiResource.getContents().add(model);
+	
+			// Now save the content.
+			auiResource.save(Collections.EMPTY_MAP);
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 	}
