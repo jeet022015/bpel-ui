@@ -1,13 +1,13 @@
-#summary One-sentence summary of this page.
+#summary Description of the UI BPEL Editor.
 
 = Introduction =
 
-Add your content here.
+In a previous work, we proposed a BPEL extension able to modelize all types of user interactions within WSC processes, called UI-BPEL meta-model. The UI BPEL Editor is a tool able to modelize processes based on this meta-model. Figure 2 presents a screenshot of the tool.
+
+Figure Screenshot (Put the number 1 (Palette) and 2 (Properties))
+
+= Palette =
 
 
-= Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= Properties =
