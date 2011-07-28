@@ -1,13 +1,22 @@
-#summary One-sentence summary of this page.
+#summary Example.
+#labels Example
 
 = Introduction =
 
-Add your content here.
+In the following, we introduce an example of a WSC in order to highlight the need to AUI representation for WSC. Figure 1 presents a simple travel reservations in BEPL. In this WSC, clients are required to provide information about the travel (such as the destination, the departure time, etc.) and to choose the mode of transportation (flight or driving).
 
+FIGURE 1. Web service composition to manage travel reservations.
 
-= Details =
+The WSC requires the following user interactions: 
+ * Data input interactions: input of travel information (1 - InitializingService) and license number (2 - ProvideLicense);
+ * Data selection: selection of the mode of transportation: flight or driving (3 - ChoosingMeanOfTransportation);
+ * Data output interaction: output of the approval (4 - ConfirmReservation);
+ * Interaction by user events: cancellation of the reservation process by the user (5 - CancelationEvent).
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= Archives =
+
+These archives are necessaries to run this example:
+ * UI BPEL Model: link
+ * UI BPEL WSDL: link
+ * UI BPEL Update site: put the site
+ * UI BPEL Mediator: link
