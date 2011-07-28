@@ -5,8 +5,6 @@ we propose a BPEL extension that deals with the user interactions expression in 
 
 Congress paper. link
 
-<img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/bpel-ui_metamodel.png width=500>
-
 = User Interactions =
 
 Any computer system that involves users needs UIs to permit interactions between the user and the system. Based [] and [], we identified 2 types of user interactions, namely: *data interaction* and *interaction by user event*. In the following, we describe each type of them.
@@ -29,7 +27,7 @@ The data interactions (input, output and selection) can change the control flow 
 
 UI-BPEL extends the BPEL by adding new data interaction activities and a new type of interaction events. Figure 3 presents an overview of the UI-BPEL meta-model. It shows the classes that model the user interactions and their connections with some relevant classes of the BPEL meta-model.
 
-http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/bpel-ui_metamodel.png
+<img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/bpel-ui_metamodel.png width=500>
 
 Figure
 
