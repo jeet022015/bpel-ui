@@ -5,6 +5,8 @@ we propose a BPEL extension that deals with the user interactions expression in 
 
 Congress paper. link
 
+[[Image:Westminstpalace.jpg|150px|alt=A large clock tower and other buildings line a great river.|The Palace of Westminster]]
+
 = User Interactions =
 
 Any computer system that involves users needs UIs to permit interactions between the user and the system. Based [] and [], we identified 2 types of user interactions, namely: *data interaction* and *interaction by user event*. In the following, we describe each type of them.
