@@ -17,6 +17,7 @@ The tabbed properties view allows you to create any user interface for your prop
  * Input Variable: 
  * Output Variable: 
  * Create Data Item: 
+ * Delete Data Item: 
  * Min & Max Cardinality: 
  * Roles:
 
