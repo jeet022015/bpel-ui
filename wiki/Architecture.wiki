@@ -7,7 +7,6 @@ Add your content here.
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+ * The modeling component: where the WSC can be specified with the user interactions, through a modeling tool. The modelization of the user interactions is materialized by an extension of a WSC language. The extension will be based on two standards: 1) BPEL, the de-facto standard for WSC; and 2) UsiXML link, an emerging standard for describing user interfaces.
+ * The deployment component: where the AUI is derived by applying transformations by the WSC created on the previous component. We adopt the standard proposed by the UsiXML to modelize the AUIs. Additionally, this component is responsible to apply other transformations in order to generate an executable version of the process in BPEL.
+ * The runtime component: where the CUI is generated from the AUI and the context of use. This component can rely on the current works to generate the CUI, such as UsiXML or MARiA link. Additionally, the user can interact with the CUI through an interpreter, while the runtime component arbitrates the communication between the CUI and the WSC.
