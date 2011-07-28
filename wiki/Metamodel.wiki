@@ -1,7 +1,9 @@
 #summary test
 #labels Metamodel,UIBPEL
 
-<wiki:toc max_depth="2" />
+#sidebar test
+
+
 
 = Introduction =
 
