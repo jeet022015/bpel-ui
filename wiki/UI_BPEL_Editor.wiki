@@ -8,7 +8,7 @@ In a previous work, we proposed a BPEL extension able to modelize all types of u
 
 == Palette - 1 ==
 
- The Palette of Activities at right, it has the BPEL activities which can drag'n drop into the process. Our extension is highlighted, it is a sub-menu at the Palette of Activities, it has the entities to modelize user interactions.
+The Palette of Activities at right, it has the BPEL activities which can drag'n drop into the process. Our extension is highlighted, it is a sub-menu at the Palette of Activities, it has the entities to modelize user interactions.
 
 == Properties - 2 ==
 
