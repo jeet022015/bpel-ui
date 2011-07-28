@@ -5,7 +5,7 @@ we propose a BPEL extension that deals with the user interactions expression in 
 
 Congress paper. link
 
-[[Image:Westminstpalace.jpg|150px|alt=A large clock tower and other buildings line a great river.|The Palace of Westminster]]
+{{ http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/bpel-ui_metamodel.png | alt text | width=100 }}
 
 = User Interactions =
 
