@@ -2,12 +2,22 @@
 
 = Introduction =
 
-Add your content here.
+This sub-component allows transformation from UI-BPEL processes in an executable BPEL. In the following, we explain how the user interaction in UI-BPEL can be transformed into BPEL Activities.
 
+DataInputUI:
+ * Create a variable and assign to it the ID and the role.
+ * Create an invoke, set as input variable the variable created before, and as output variable the variable set by the designer.
 
-= Details =
+DataOutputUI:
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+ * Assign the ID and the role to the variable set by the designer.
+ * Create an invoke with the input variable as variable set by the designer.
+
+DataSelectionUI:
+
+ * Assign the ID and the role to the input variable set by the designer.
+ * Create an invoke with the input and output as variables set by the designer.
+
+OnUserEvent:
+
+ * Create an OnEvent
