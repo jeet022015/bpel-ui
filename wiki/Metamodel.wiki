@@ -31,8 +31,6 @@ UI-BPEL extends the BPEL by adding new data interaction activities and a new typ
 
 <img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/bpel-ui_metamodel.png title="UI BPEL meta-model" width=500>
 
-Figure
-
 In the following, we present the main classes of the UI-BPEL meta-model. 
 
  * _DataInteraction_ is a generalization class that represents the new UI-BPEL activities. 
