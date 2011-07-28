@@ -8,10 +8,10 @@ In the following, we introduce an example of a WSC in order to highlight the nee
 <img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/travelReservationsBPEL.png title="UI BPEL meta-model" width=700>
 
 The WSC requires the following user interactions: 
- * Data input interactions: input of travel information (1 - InitializingService) and license number (2 - ProvideLicense);
- * Data selection: selection of the mode of transportation: flight or driving (3 - ChoosingMeanOfTransportation);
- * Data output interaction: output of the approval (4 - ConfirmReservation);
- * Interaction by user events: cancellation of the reservation process by the user (5 - CancelationEvent).
+ * Data input interactions: input of travel information (1 - Initializing Service) and license number (2 - Provide License);
+ * Data selection: selection of the mode of transportation: flight or driving (3 - Choosing Mean Of Transportation);
+ * Data output interaction: output of the approval (4 - Confirm Reservation);
+ * Interaction by user events: cancellation of the reservation process by the user (5 - Cancelation Event).
 
 = Archives =
 
