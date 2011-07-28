@@ -1,13 +1,26 @@
-#summary One-sentence summary of this page.
+#UI BPEL Metamodel
 
 = Introduction =
 
-Add your content here.
+we propose a BPEL extension that deals with the user interactions expression in a Web service composition. This extension defines new data interaction activities to allow user providing, selecting or getting data. Moreover, the extension proposes a new type of interaction events that allow processing of the user interaction. The user interaction specification helps to generate a user interface for the Web service composition which is made by transforming the described user interactions to user interface components.
 
 
-= Details =
+= User Interactions =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Any computer system that involves users needs UIs to permit interactions between the user and the system. Based [] and [], we identified 2 types of user interactions, namely: *data interaction* and *interaction by user event*. In the following, we describe each type of them.
+
+== Data Interaction==
+
+The data interaction is the most basic user interaction. This type of interaction represents any user interaction that directly modifies the data flow in the process. The data flow consists of the sources and destinations in the process that extract and load data, the transformations that modify and extend data, and the paths that link sources, transformations, and destinations. There are three basic subcategories for this type of user interaction:
+
+ * *Data input interaction* represents the fact that the user provides data to a Web service at runtime. For example, users provide the license number to a car renting Web service;
+ * *Data output interaction* represents the fact that a Web service composition makes available data to the user. For example, the trip scheduling Web service composition presents the car renting price to the users;
+ * *Data selection* represents the fact that the user can select a data from a set of data. For example, users can select between flight or driving as the mode of transportation for their trip.
+
+== Interaction by User Event==
+
+A user event is a user interaction that changes the control flow of the process. The control flow consists in the different paths that might be traversed through the process during its execution. An example of an interaction by user event is the cancelation process, where the user can cancel the execution of the Web service composition at any time.
+
+The data interactions (input, output and selection) can change the control flow (e.g. the selection of a branch of execution is done based on data), as well as the interactions by user events can change the data flow (e.g. the data processing depends on the selected branch of execution). However, the distinction among the types of user interaction is fundamental, since each type of interaction must be mapped in different components in the user interface (e.g. text box or label for data interaction and button for interaction by event).
+
+= UI BPEL Metamodel =
