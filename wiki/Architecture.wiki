@@ -4,32 +4,29 @@
 
 This project proposes a model-driven engineering (MDE) approach for providing adaptable UIs from WSC. Our MDE approach provides models and transformations for deriving and adapting UI from WSC and the context of use. Figure 1 describes the architecture of our MDE approach.
 
+<img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/archicture.png title="UI BPEL meta-model" width=500>
 
+We identify 3 main models and 3 main methodological steps.
 
-
- We identify 3 main models and 3 main methodological steps.
-
-\subsection{Models}
+==Models==
 
 Our MDE approach relies on 3 models: 
 
-\begin{itemize}
-\item \emph{UI-WSC}:  an extension of WSC with user interaction activities. To be compliant with current standards, the model is to rely on existing standards: a standard for WSC (e.g. BPEL) and a standard for describing user interfaces (e.g. UsiXML).
-\item  \emph{Abstract user interface (AUI)}: this model describes the UI independently to any interaction modality (e.g. graphical modal, vocal modal) and computing platform (e.g. PC, smart phone). This model only specifies the UI components, their elements, and the navigation among the components.
-\item  \emph{Concrete user interface (CUI)}: this model is an adaptation of an AUI to a specific context of use (user preference, environment, and platform). For example, for visually handicapped person, an output abstract component could be transformed to a (concrete) vocal output.
-\end{itemize}
+ * UI-WSC:  an extension of WSC with user interaction activities. To be compliant with current standards, the model is to rely on existing standards: a standard for WSC (e.g. BPEL) and a standard for describing user interfaces (e.g. UsiXML).
+ * Abstract user interface (AUI): this model describes the UI independently to any interaction modality (e.g. graphical modal, vocal modal) and computing platform (e.g. PC, smart phone). This model only specifies the UI components, their elements, and the navigation among the components.
+ * Concrete user interface (CUI): this model is an adaptation of an AUI to a specific context of use (user preference, environment, and platform). For example, for visually handicapped person, an output abstract component could be transformed to a (concrete) vocal output.
 
-\subsection{Method}
+==Method==
 
 Our MDE method consists in 3 main steps:
 
-\begin{itemize}
-\item \emph{Modeling}: where the WSCs are modelized within its user interactions by a designer using the UI-WSC.
-\item \emph{Transformation}: where the AUI is derived by applying transformations to the UI-WSC model. 
-\item \emph{Adaptation}: where the CUI is derived from the AUI and the context of use. Additionally, the user can interact with the CUI through an interpreter, while a runtime component arbitrates the communication between the CUI and the WSC.
-\end{itemize}
+ * Modeling: where the WSCs are modelized within its user interactions by a designer using the UI-WSC.
+ * Transformation: where the AUI is derived by applying transformations to the UI-WSC model. 
+ * Adaptation: where the CUI is derived from the AUI and the context of use. Additionally, the user can interact with the CUI through an interpreter, while a runtime component arbitrates the communication between the CUI and the WSC.
 
-= Details =
+= Components =
+
+*Describe what is a component.*
 
 ==  Modeling Component ==
 
