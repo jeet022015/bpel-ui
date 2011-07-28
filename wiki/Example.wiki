@@ -5,7 +5,7 @@
 
 In the following, we introduce an example of a WSC in order to highlight the need to AUI representation for WSC. Figure 1 presents a simple travel reservations in BEPL. In this WSC, clients are required to provide information about the travel (such as the destination, the departure time, etc.) and to choose the mode of transportation (flight or driving).
 
-<img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/travelReservationsBPEL.png title="UI BPEL meta-model" width=500>
+<img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/travelReservationsBPEL.png title="UI BPEL meta-model" >
 
 The WSC requires the following user interactions: 
  * Data input interactions: input of travel information (1 - InitializingService) and license number (2 - ProvideLicense);
