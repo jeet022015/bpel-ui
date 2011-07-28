@@ -10,4 +10,4 @@ In a previous work, we proposed a BPEL extension able to modelize all types of u
 
 
 
-= Properties =
+= Properties - 2 =
