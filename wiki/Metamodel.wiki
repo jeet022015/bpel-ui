@@ -1,21 +1,21 @@
 #labels Metamodel,UIBPEL
 = Introduction =
 
-we propose a BPEL extension that deals with the user interactions expression in a Web service composition. This extension defines new data interaction activities to allow user providing, selecting or getting data. Moreover, the extension proposes a new type of interaction events that allow processing of the user interaction. The user interaction specification helps to generate a user interface for the Web service composition which is made by transforming the described user interactions to user interface components.
+We propose a BPEL extension that deals with the user interactions expression in a Web service composition. This extension defines new data interaction activities to allow user providing, selecting or getting data. Moreover, the extension proposes a new type of interaction events that allow processing of the user interaction.
 
 Congress paper. link
 
 = User Interactions =
 
-Any computer system that involves users needs UIs to permit interactions between the user and the system. Based [] and [], we identified 2 types of user interactions, namely: *data interaction* and *interaction by user event*. In the following, we describe each type of them.
+Any computer system that involves users needs UIs to permit interactions between the user and the system. Based [] and [], we identified 2 types of user interactions, namely: _data interaction_ and _interaction by user event_. In the following, we describe each type of them.
 
 == Data Interaction==
 
 The data interaction is the most basic user interaction. This type of interaction represents any user interaction that directly modifies the data flow in the process. The data flow consists of the sources and destinations in the process that extract and load data, the transformations that modify and extend data, and the paths that link sources, transformations, and destinations. There are three basic subcategories for this type of user interaction:
 
- * *Data input interaction* represents the fact that the user provides data to a Web service at runtime. For example, users provide the license number to a car renting Web service;
- * *Data output interaction* represents the fact that a Web service composition makes available data to the user. For example, the trip scheduling Web service composition presents the car renting price to the users;
- * *Data selection* represents the fact that the user can select a data from a set of data. For example, users can select between flight or driving as the mode of transportation for their trip.
+ * _Data input interaction_ represents the fact that the user provides data to a Web service at runtime. For example, users provide the license number to a car renting Web service;
+ * _Data output interaction_ represents the fact that a Web service composition makes available data to the user. For example, the trip scheduling Web service composition presents the car renting price to the users;
+ * _Data selection_ represents the fact that the user can select a data from a set of data. For example, users can select between flight or driving as the mode of transportation for their trip.
 
 == Interaction by User Event==
 
@@ -33,8 +33,8 @@ Figure
 
 In the following, we present the main classes of the UI-BPEL meta-model. 
 
- * DataInteraction is a generalization class that represents the new UI-BPEL activities. 
- * DataInputUI is a class that represents the data input activity. This activity is similar to the BPEL Receive activity, since it suspends the composition precess execution while waiting for an input from the user. However, unlike the BPEL Receive activity, the process waits for an event where data is provided, instead of a message from another Web service. This type of event will be explained afterwards. 
- * DataOutputUI is a class that represents the data output activity. This activity specifies which variable contains data to be presented to the user. 
- * DataSelectionUI is a class that represents the data selection activity. This activity allows the user to select one value (or a subset of values) from a set of values of a specific variable. The number of selectable values can be deﬁned by using the minCardinality property (how many values must be selected at least) and/or the maxCardinality property (the maximum number of elements have to be selected). Like DataInputUI , the DataSelectionUI activity suspends the execution of the process until receiving an event of selecting data as we will explain afterwards. 
- * OnUserEvent is a generalization class that represents a new type of BPEL event. Such an event defines the occurrence of a user interaction. An interaction event can be either an atomic event that designates a predeﬁned eventOnAtomicInteractionEvent or a composite event that combines atomic and/or composite events OncompositeInteractionEvent.
+ * _DataInteraction_ is a generalization class that represents the new UI-BPEL activities. 
+ * _DataInputUI_ is a class that represents the data input activity. This activity is similar to the BPEL Receive activity, since it suspends the composition precess execution while waiting for an input from the user. However, unlike the BPEL Receive activity, the process waits for an event where data is provided, instead of a message from another Web service. This type of event will be explained afterwards. 
+ * _DataOutputUI_ is a class that represents the data output activity. This activity specifies which variable contains data to be presented to the user. 
+ * _DataSelectionUI_ is a class that represents the data selection activity. This activity allows the user to select one value (or a subset of values) from a set of values of a specific variable. The number of selectable values can be deﬁned by using the minCardinality property (how many values must be selected at least) and/or the maxCardinality property (the maximum number of elements have to be selected). Like DataInputUI , the DataSelectionUI activity suspends the execution of the process until receiving an event of selecting data as we will explain afterwards. 
+ * _OnUserEvent_ is a generalization class that represents a new type of BPEL event. Such an event defines the occurrence of a user interaction. An interaction event can be either an atomic event that designates a predeﬁned eventOnAtomicInteractionEvent or a composite event that combines atomic and/or composite events OncompositeInteractionEvent.
