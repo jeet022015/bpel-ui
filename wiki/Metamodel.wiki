@@ -27,7 +27,8 @@ The data interactions (input, output and selection) can change the control flow 
 
 UI-BPEL extends the BPEL by adding new data interaction activities and a new type of interaction events. Figure 3 presents an overview of the UI-BPEL meta-model. It shows the classes that model the user interactions and their connections with some relevant classes of the BPEL meta-model.
 
-http://bpel-ui.eclipselabs.org.codespot.com/files/bpel-ui_metamodel.png
+http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/bpel-ui_metamodel.png
+
 Figure
 
 In the following, we present the main classes of the UI-BPEL meta-model. 
