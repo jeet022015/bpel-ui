@@ -5,8 +5,7 @@ we propose a BPEL extension that deals with the user interactions expression in 
 
 Congress paper. link
 
-[http://code.google.com/ <img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/bpel-ui_metamodel.png width=20
-height=20>]
+{{{<img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/bpel-ui_metamodel.png width=20 height=20>}}}
 
 = User Interactions =
 
