@@ -4,7 +4,7 @@
 
 This project proposes a model-driven engineering (MDE) approach for providing adaptable UIs from WSC. Our MDE approach provides models and transformations for deriving and adapting UI from WSC and the context of use. Figure 1 describes the architecture of our MDE approach.
 
-<img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/archicture.png title="UI BPEL meta-model" width=500>
+<img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/archicture.png title="UI BPEL meta-model" width=600>
 
 We identify 3 main models and 3 main methodological steps.
 
