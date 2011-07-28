@@ -20,6 +20,7 @@ Where the AUI is derived by applying transformations by the WSC created on the p
 This sub-component is responsible to transform UI-BPEL processes in its AUI description. The activities of BPEL can (1) create new AUI Component: If Activity, While Activity, ForEach Activity, RepeatUntil Activity, Flow Activity, and Pick Activity; (2) create Variable Dependences: Assign Activity, Invoke Activity, DataSelectionUI Activity, continue the recursive creation: Scope Activity and Sequence Activity.
 
 Algorithm:
+{{{
 If (inputVariable isContained uiVars) 
 		or (inputVariable.dependencies 
 		     isContained uiVars)
@@ -27,6 +28,7 @@ If (inputVariable isContained uiVars)
  	
 c = CreateAbstractDataUI
 comp.add(c)
+}}}
 
 === UI_BPEL2BPEL ===
 
@@ -48,7 +50,7 @@ DataSelectionUI:
 
 OnUserEvent:
 
- * Create an OnEvent.
+ * Create an OnEvent
 
 
 ==  Runtime Component ==
