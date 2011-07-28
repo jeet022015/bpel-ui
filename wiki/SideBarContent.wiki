@@ -1,7 +1,9 @@
  * Home
- * Generic Documents
-   * Test1
-   * Test2
+ * General Documents
+    * [Metamodel UI BPEL Metamodel]
+    * [UI_BPEL_Editor UI BPEL Editor]
+    * [Example UI BPEL Example]
  * Technical Documents
-   * Test3
-   * Test4
+    * [Architecture]
+    * [AUI_Algorithm AUI Grouping Algorithm]
+    * [BPEL_Algorithm BPEL Generator Algorithm]
