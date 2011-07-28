@@ -7,3 +7,4 @@
     * [Architecture]
     * [AUI_Algorithm AUI Grouping Algorithm]
     * [BPEL_Algorithm BPEL Generator Algorithm]
+    * [Mediation Mediation Description]
