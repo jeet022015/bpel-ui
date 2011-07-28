@@ -1,6 +1,7 @@
 #summary One-sentence summary of this page.
 
-Requirements:
+= Requirements =
+
  * Eclipse IDE for Java EE Developers
 
 = From update site =
@@ -26,8 +27,7 @@ The instructions below are for building the current tip of the UI BPEL editor.
     * DTP STK 1.6.x
     * WTP (Web Tools Platform) 2.0.x
     * Designer BPEL 1.2.x
- # Check out the following plug-ins from :pserver:anonymous@dev.eclipse.org:/cvsroot/technology
-In folder org.eclipse.bpel/plugins
+ # Check out the following plug-ins from :pserver:anonymous@dev.eclipse.org:/cvsroot/technology. In folder org.eclipse.bpel/plugins:
     * org.eclipse.bpel.common.model
     * org.eclipse.bpel.common.ui - Common UI classes are here.
     * org.eclipse.bpel.model - The BPEL model classes generated from the EMF model, resource sets, etc.
