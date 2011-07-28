@@ -6,8 +6,20 @@ In a previous work, we proposed a BPEL extension able to modelize all types of u
 
 <img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/ui_bpel_ss.png title="UI BPEL Editor" width=900>
 
-= Palette - 1 =
+== Palette - 1 ==
 
+ The Palette of Activities at right, it has the BPEL activities which can drag'n drop into the process. Our extension is highlighted, it is a sub-menu at the Palette of Activities, it has the entities to modelize user interactions.
 
+== Properties - 2 ==
 
-= Properties - 2 =
+The tabbed properties view allows you to create any user interface for your properties. In addition, you can create user interfaces for elements that do not implement an IPropertySource. Indeed the properties view can be extended to view any data for the selection in your workbench part.
+
+ * Input Variable: 
+ * Output Variable: 
+ * Create Data Item: 
+ * Min & Max Cardinality: 
+ * Roles:
+
+= Bugs and Wish List =
+ * Change the name automatically
+ * User Role
