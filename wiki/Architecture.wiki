@@ -15,29 +15,6 @@ Where the WSC can be specified with the user interactions, through a modeling to
 
 Where the AUI is derived by applying transformations by the WSC created on the previous component. We adopt the standard proposed by the UsiXML to modelize the AUIs. Additionally, this component is responsible to apply other transformations in order to generate an executable version of the process in BPEL.
 
-=== UI_BPEL2BPEL ===
-
-This sub-component allows transformation from UI-BPEL processes in an executable BPEL. In the following, we explain how the user interaction in UI-BPEL can be transformed into BPEL Activities.
-
-DataInputUI:
- * Create a variable and assign to it the ID and the role.
- * Create an invoke, set as input variable the variable created before, and as output variable the variable set by the designer.
-
-DataOutputUI:
-
- * Assign the ID and the role to the variable set by the designer.
- * Create an invoke with the input variable as variable set by the designer.
-
-DataSelectionUI:
-
- * Assign the ID and the role to the input variable set by the designer.
- * Create an invoke with the input and output as variables set by the designer.
-
-OnUserEvent:
-
- * Create an OnEvent
-
-
 ==  Runtime Component ==
 
 Where the CUI is generated from the AUI and the context of use. This component can rely on the current works to generate the CUI, such as UsiXML or MARiA link. Additionally, the user can interact with the CUI through an interpreter, while the runtime component arbitrates the communication between the CUI and the WSC.
