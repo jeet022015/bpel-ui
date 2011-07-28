@@ -1,4 +1,8 @@
+#summary test
 #labels Metamodel,UIBPEL
+
+<wiki:toc max_depth="2" />
+
 = Introduction =
 
 We propose a BPEL extension that deals with the user interactions expression in a Web service composition. This extension defines new data interaction activities to allow user providing, selecting or getting data. Moreover, the extension proposes a new type of interaction events that allow processing of the user interaction.
