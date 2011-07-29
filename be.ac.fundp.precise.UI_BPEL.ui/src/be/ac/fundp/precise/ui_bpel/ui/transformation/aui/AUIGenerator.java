@@ -1,5 +1,6 @@
 package be.ac.fundp.precise.ui_bpel.ui.transformation.aui;
 
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -45,7 +46,11 @@ public class AUIGenerator {
 	private AbstractCompoundIU comp;
 	private Map<String, Set<String>> varDependenceMapping;
 	private Set<String> varUI;
+	private MediatorConfigurator medConf;
 	
+	public AUIGenerator (OutputStream out){
+		medConf = new MediatorConfigurator (out);
+	}
 	
 	public AbstractUIModel createAUI(Process process) {
 		//AuiPackageFactory.eINSTANCE.eClass();
@@ -54,6 +59,8 @@ public class AUIGenerator {
 		createAbstractComponent();
 		 
 		activity2AUI(process.getActivity());
+		
+		medConf.finalize();
 		
 		return model;
 	}
@@ -111,20 +118,12 @@ public class AUIGenerator {
 	private void createDataUiDataSelectionUI(DataSelectionUI activity) {
 		hasDependenceAmongVars(activity.getOutputVariable().getName());
 		
+		medConf.createDataSelectionConf(comp, activity);
 		varUI.add(activity.getOutputVariable().getName());
 		varUI.add(activity.getInputVariable().getName());
 		
 		createAbstractDataUIComponent(factory.createAbstractSelectionIU(), 
 				AbstractDataIUType.INPUT_OUTPUT);
-//		for (be.edu.fundp.precise.uibpel.model.DataItem dataItem : activity.getData()) {
-//			AbstractDataIU absInputUI = factory.createAbstractDataIU();
-//			comp.getInteractionUnits().add(absInputUI);
-//			absInputUI.setLabel(dataItem.getDescription());
-//			be.ac.fundp.etea2.usixml.aui.model.DataItem myData = factory.createDataItem();
-//			be.ac.fundp.etea2.usixml.aui.model.DataType test = mappingTypes(dataItem.getType());
-//			myData.setType(test);
-//			absDataUI.getData().add(myData);
-//		}
 	}
 
 	private void hasDependenceAmongVars(String varName) {
@@ -145,33 +144,18 @@ public class AUIGenerator {
 	private void createDataUiDataOutputUI(DataOutputUI activity) {
 		hasDependenceAmongVars(activity.getOutputVariable().getName());
 		
+		medConf.createDataOutputConf(comp, activity);
 		varUI.add(activity.getOutputVariable().getName());
 		
 		createAbstractDataUIComponent(factory.createAbstractDataIU(), AbstractDataIUType.OUTPUT);
-//		for (DataItem dataItem : activity.getData()) {
-//			AbstractOutputUI absInputUI = factory.createAbstractOutputUI();
-//			absDataUI.getOutputInteraction().add(absInputUI);
-//			absInputUI.setLabel(dataItem.getDescription());
-//			be.ac.fundp.etea2.usixml.aui.model.DataItem myData = factory.createDataItem();
-//			be.ac.fundp.etea2.usixml.aui.model.DataType test = mappingTypes(dataItem.getType());
-//			myData.setType(test);
-//			absDataUI.getData().add(myData);
-//		}
 	}
 
 	private void createDataUiDataInputUI(DataInputUI activity) {
 		varUI.add(activity.getInputVariable().getName());
 		
+		medConf.createDataInputConf(comp, activity);
+		
 		createAbstractDataUIComponent(factory.createAbstractDataIU(), AbstractDataIUType.INPUT);
-//		for (DataItem dataItem : activity.getData()) {
-//			AbstractInputUI absInputUI = factory.createAbstractInputUI();
-//			absDataUI.getInputInteraction().add(absInputUI);
-//			absInputUI.setLabel(dataItem.getDescription());
-//			be.ac.fundp.etea2.usixml.aui.model.DataItem myData = factory.createDataItem();
-//			be.ac.fundp.etea2.usixml.aui.model.DataType test = mappingTypes(dataItem.getType());
-//			myData.setType(test);
-//			absDataUI.getData().add(myData);
-//		}
 	}
 
 	private void createAbstractDataUIComponent(AbstractDataIU abstractDataIU,
@@ -180,20 +164,6 @@ public class AUIGenerator {
 		abstractDataIU.setDataUIType(input);
 		comp.getInteractionUnits().add(abstractDataIU);
 	}
-
-//	private be.ac.fundp.etea2.usixml.aui.model.DataType mappingTypes(
-//			be.edu.fundp.precise.uibpel.model.DataType dataType) {
-//		if (dataType.getValue() == be.edu.fundp.precise.uibpel.model.DataType.BOOLEAN_TYPE_VALUE) {
-//			return be.ac.fundp.etea2.usixml.aui.model.DataType.BOOLEAN;
-//		}
-//		if (dataType.getValue() == be.edu.fundp.precise.uibpel.model.DataType.DATA_TYPE_VALUE) {
-//			return be.ac.fundp.etea2.usixml.aui.model.DataType.DATE;
-//		}
-//		if (dataType.getValue() == be.edu.fundp.precise.uibpel.model.DataType.STRING_TYPE_VALUE) {
-//			return be.ac.fundp.etea2.usixml.aui.model.DataType.STRING;
-//		}
-//		return be.ac.fundp.etea2.usixml.aui.model.DataType.INTEGER;
-//	}
 
 	private void repeatUntil2AUI(RepeatUntil activity) {
 		createAbstractComponent();

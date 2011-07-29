@@ -47,6 +47,7 @@ public class PopupActionGenerateBPEL extends PopupActionWithProcessRepresentatio
 			//Map<?, ?> args =  new HashMap();
 			//newWriter.write((BPELResource) getBpelResource(), out, args);
 			newWriter.write((BPELResource) getBpelResource(), out, null);
+			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (CoreException e) {

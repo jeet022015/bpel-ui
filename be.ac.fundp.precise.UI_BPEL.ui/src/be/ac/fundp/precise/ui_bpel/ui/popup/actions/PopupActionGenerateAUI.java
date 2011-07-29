@@ -1,8 +1,12 @@
 package be.ac.fundp.precise.ui_bpel.ui.popup.actions;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Map;
 
@@ -24,8 +28,6 @@ import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.AUIGenerator;
 
 public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation {
 	
-	private AUIGenerator auiGen = new AUIGenerator();
-
 	/**
 	 * @see IActionDelegate#run(IAction)
 	 */
@@ -42,8 +44,6 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 
 	private void createAuiModel(Process process) {
 		
-		AbstractUIModel model = auiGen.createAUI(process);
-		
 		// Register the XMI resource factory for the .website extension
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = reg.getExtensionToFactoryMap();
@@ -51,14 +51,27 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 		
 		IFile f = getBpelFile();
 		IFolder folder = (IFolder) f.getParent();
-		IFile file = folder.getFile("AUI_Model.aui");
+		IFile auiFile = folder.getFile("AUI_Model.aui");
+		IFile mediatorFile = folder.getFile("mediator.conf");
 		try {
-			if (!file.exists()) {
+			if (!auiFile.exists()) {
 				byte[] bytes = "".getBytes();
 			    InputStream source = new ByteArrayInputStream(bytes);
-			    file.create(source, IResource.NONE, null);
+			    auiFile.create(source, IResource.NONE, null);
+			    source.close();
 			}
-			IPath fullProcessPath = file.getFullPath();
+			if (!mediatorFile.exists()) {
+				byte[] bytes = "".getBytes();
+			    InputStream source = new ByteArrayInputStream(bytes);
+			    mediatorFile.create(source, IResource.NONE, null);
+			    source.close();
+			}
+			File realFile = mediatorFile.getLocation().toFile();
+			OutputStream out = new BufferedOutputStream( new FileOutputStream(realFile));
+			AUIGenerator auiGen = new AUIGenerator(out);
+			AbstractUIModel model = auiGen.createAUI(process);
+			
+			IPath fullProcessPath = auiFile.getFullPath();
 			URI uri = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
 			Resource auiResource = getResourceSet().createResource(uri);
 			
