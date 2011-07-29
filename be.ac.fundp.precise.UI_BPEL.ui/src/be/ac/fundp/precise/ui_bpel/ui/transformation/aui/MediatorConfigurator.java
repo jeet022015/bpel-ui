@@ -3,9 +3,11 @@ package be.ac.fundp.precise.ui_bpel.ui.transformation.aui;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.usixml.aui.auiPackage.AbstractCompoundIU;
 
@@ -16,12 +18,20 @@ import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 
 public class MediatorConfigurator {
 	
-	private JSONArray json;
+	//private JSONArray json;
+	private JSONObject json;
 	private PrintWriter out;
+	private Set<HashMap<String, Object>> dataInput;
+	private Set<HashMap<String, Object>> dataOutput;
+	private Set<HashMap<String, Object>> dataSelection;
 	
 	public MediatorConfigurator (OutputStream outstream){
 		out = new PrintWriter(outstream, true);
-		json = new JSONArray();
+		//json = new JSONArray();
+		json = new JSONObject();
+		dataInput = new HashSet<HashMap<String, Object>>();
+		dataOutput = new HashSet<HashMap<String, Object>>();
+		dataSelection = new HashSet<HashMap<String, Object>>();
 	}
 	
 	public void createDataInputConf(AbstractCompoundIU comp, DataInputUI inputActivity){
@@ -34,11 +44,15 @@ public class MediatorConfigurator {
 			dataItemMap.put(dataItem.getType().getName(), dataItem.getDescription());
 		}
 		dataInputMap.put("data", dataItemMap);
-		dataInputMap.put("type", "dataInput");
-		json.add(dataInputMap);
+		//dataInputMap.put("type", "dataInput");
+		dataInput.add(dataInputMap);
+		//json.add(dataInputMap);
 	}
 	
 	public void finalize(){
+		json.put("dataInput", dataInput);
+		json.put("dataOutput", dataOutput);
+		json.put("dataSelection", dataSelection);
 		out.println(json);
 		out.close();
 	}
@@ -54,8 +68,9 @@ public class MediatorConfigurator {
 			dataItemMap.put(dataItem.getType().getName(), dataItem.getDescription());
 		}
 		dataInputMap.put("data", dataItemMap);
-		dataInputMap.put("type", "dataOutput");
-		json.add(dataInputMap);
+		//dataInputMap.put("type", "dataOutput");
+		dataOutput.add(dataInputMap);
+		//json.add(dataInputMap);
 	}
 
 	public void createDataSelectionConf(AbstractCompoundIU comp,
@@ -72,7 +87,8 @@ public class MediatorConfigurator {
 		dataInputMap.put("type", "dataSelection");
 		dataInputMap.put("min", activity.getMinCardinality());
 		dataInputMap.put("max", activity.getMaxCardinality());
-		dataInputMap.put("type", "dataSelection");
-		json.add(dataInputMap);
+		//dataInputMap.put("type", "dataSelection");
+		//json.add(dataInputMap);
+		dataSelection.add(dataInputMap);
 	}
 }
