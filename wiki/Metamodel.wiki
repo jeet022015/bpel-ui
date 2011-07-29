@@ -32,7 +32,7 @@ UI-BPEL extends the BPEL by adding new data interaction activities and a new typ
 
 <img src=http://svn.codespot.com/a/eclipselabs.org/bpel-ui/wiki/images/bpel-ui_metamodel.png title="UI BPEL meta-model" width=500>
 
-This meta-model can be divided in 2 parts _data interaction_ representation and _interaction by user event_ representation. The class _User Interaction_ represents the common characteristics among these parts:
+This meta-model can be divided in 2 parts _data interaction_ representation and _interaction by user event_ representation. The class _User Interaction_ represents the common characteristics among these parts. This class has the following properties:
  * *id*: this id has a unique value in order to identify any _User Interaction_.
  * *roles*: the set of user IDs that identifies which users can perform the user interactions.
 
