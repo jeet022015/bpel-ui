@@ -38,15 +38,19 @@ This meta-model can be divided in 2 parts _data interaction_ representation and 
 
 In the following, we present the classes responsible to deal with the _data interaction_:
 
- * _Data Interaction_ is a generalization class that represents the new UI-BPEL activities. 
- * _Data Input UI_ is a class that represents the data input activity. This activity is similar to the BPEL Receive activity, since it suspends the composition precess execution while waiting for an input from the user. However, unlike the BPEL Receive activity, the process waits for an event where data is provided, instead of a message from another Web service. This type of event will be explained afterwards. 
- * _Data Output UI_ is a class that represents the data output activity. This activity specifies which variable contains data to be presented to the user. 
- * _Data Selection UI_ is a class that represents the data selection activity. This activity allows the user to select one value (or a subset of values) from a set of values of a specific variable. The number of selectable values can be deﬁned by using the minCardinality property (how many values must be selected at least) and/or the maxCardinality property (the maximum number of elements have to be selected). Like DataInputUI , the DataSelectionUI activity suspends the execution of the process until receiving an event of selecting data as we will explain afterwards. 
+ * _Data Interaction_ is a generalization class that represents a new _data interaction_.
+ * _Data Item_ TODO.
+ * _Data Input UI_ is a class that represents the data input activity. This activity is similar to the BPEL _Receive Activity_, since it suspends the process execution while waiting for an input from the user. However, unlike the _BPEL Receive_ activity, this activity waits for a message from the UI with the data provided by the user, instead of a message from another Web service. 
+    * *inputVariable* represents the variable where the data provided by the user will be stored.
+ * _Data Output UI_ is a class that represents the data output activity.
+    * *outputVariable* specifies which variable contains data to be presented to the user.
+ * _Data Selection UI_ is a class that represents the data selection activity. This activity allows the user to select one value (or a subset of values) from a set of values of a specific variable. Like DataInputUI , the DataSelectionUI activity suspends the execution of the process until receiving the data from the user. 
+    * *minCardinality* identifies how many values from the *inputVariable* must be selected at least.
+    * *maxCardinality* identifies the maximum number of elements have to be selected.
 
-In the following, we present the main classes of the UI-BPEL meta-model. 
+In the following, we present the classes responsible to deal with the _interaction by user event_:
 
- * _Data Interaction_ is a generalization class that represents the new UI-BPEL activities. 
- * _Data Input UI_ is a class that represents the data input activity. This activity is similar to the BPEL Receive activity, since it suspends the composition precess execution while waiting for an input from the user. However, unlike the BPEL Receive activity, the process waits for an event where data is provided, instead of a message from another Web service. This type of event will be explained afterwards. 
- * _Data Output UI_ is a class that represents the data output activity. This activity specifies which variable contains data to be presented to the user. 
- * _Data Selection UI_ is a class that represents the data selection activity. This activity allows the user to select one value (or a subset of values) from a set of values of a specific variable. The number of selectable values can be deﬁned by using the minCardinality property (how many values must be selected at least) and/or the maxCardinality property (the maximum number of elements have to be selected). Like DataInputUI , the DataSelectionUI activity suspends the execution of the process until receiving an event of selecting data as we will explain afterwards. 
- * _On User Event_ is a generalization class that represents a new type of BPEL event. Such an event defines the occurrence of a user interaction. An interaction event can be either an atomic event that designates a predeﬁned eventOnAtomicInteractionEvent or a composite event that combines atomic and/or composite events OncompositeInteractionEvent.
+ * _Pick UI_ TODO.
+ * _Scope UI_ TODO.
+ * _Event Handler UI_ TODO.
+ * _On User Event_ is a generalization class that represents a new type of BPEL event. Such an event defines the occurrence of a user interaction. An interaction event can be either an atomic event that designates a predefined eventOnAtomicInteractionEvent or a composite event that combines atomic and/or composite events OncompositeInteractionEvent.
