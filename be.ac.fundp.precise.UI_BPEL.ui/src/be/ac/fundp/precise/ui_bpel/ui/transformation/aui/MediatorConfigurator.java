@@ -39,9 +39,16 @@ public class MediatorConfigurator {
 		dataInputMap.put("UIid", inputActivity.getId());
 		dataInputMap.put("ComponentID", comp.getId());
 		dataInputMap.put("role", "my role");
-		Map<String, String> dataItemMap = new HashMap<String, String>();
+		Map<String, Set<String>> dataItemMap = new HashMap<String, Set<String>>();
 		for (DataItem dataItem : inputActivity.getData()) {
-			dataItemMap.put(dataItem.getType().getName(), dataItem.getDescription());
+			Set<String> myData;
+			if (dataItemMap.containsKey(dataItem.getType().getName())){
+				myData = dataItemMap.get(dataItem.getType().getName());
+			}else {
+				myData = new HashSet<String>();
+			}
+			myData.add(dataItem.getDescription());
+			dataItemMap.put(dataItem.getType().getName(), myData);
 		}
 		dataInputMap.put("data", dataItemMap);
 		//dataInputMap.put("type", "dataInput");
