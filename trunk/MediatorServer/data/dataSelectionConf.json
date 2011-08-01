@@ -1,0 +1,27 @@
+{"dataSelection": {
+  "id": 1006,
+  "role": "myRole",
+  "dataType" : "stringData"
+  "Selectable": {
+    "option": "option1",
+    "option": "option2",
+    "option": "option3",
+    "option": "option4"
+    },
+  "max": 1,
+  "min": 1 
+  },
+  "dataSelection": {
+  "id": 1007,
+  "role": "myRole",
+  "dataType" : "intData"
+  "Selectable": {
+    "option": 10,
+    "option": 20,
+    "option": 30,
+    "option": 40
+    },
+  "max": 2,
+  "min": 1 
+  }
+}

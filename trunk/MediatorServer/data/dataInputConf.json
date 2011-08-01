@@ -1,0 +1,28 @@
+{"dataInput": {
+  "UIid": 1000,
+  "ComponentID": 1,
+  "role": "myRole",
+  "data": {
+    "stringData": "name",
+    "intData" : "age",
+    "booleanData": "single"
+  },
+  "dataInput": {
+  "id": 1001,
+  "ComponentID": 1,
+  "role": "myRole",
+  "data": {
+    "intData": "creditNumber",
+    "intData" : "number"
+  },
+  "dataInput": {
+  "id": 1002,
+  "ComponentID": 2,
+  "role": "myRole",
+  "data": {
+    "stringData": "mother",
+    "intData" : "motherAge",
+    "stringData": "father",
+    "intData": "fatherAge"
+  }
+}
