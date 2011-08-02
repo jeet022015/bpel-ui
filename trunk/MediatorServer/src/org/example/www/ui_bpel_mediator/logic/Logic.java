@@ -1,20 +1,16 @@
 package org.example.www.ui_bpel_mediator.logic;
 
 import org.example.www.ui_bpel_mediator.DataUIType;
+import org.example.www.ui_bpel_mediator.logic.mediator.DataFromCUI;
 
 
 public class Logic {
 	
 	protected static Logic instance;
-	protected MediatorDataInputInteraction medInput;
-	protected MediatorDataOutputInteraction medOutput;
-	protected MediatorDataSelectionInteraction medSelection;
+	protected AUI_Communicator mediator = AUI_Communicator.getInstance();
 	
 	
 	protected Logic() {
-		medInput = new MediatorDataInputInteraction ();
-		medOutput = new MediatorDataOutputInteraction ();
-		medSelection = new MediatorDataSelectionInteraction ();
 	}
 
 	public static Logic getInstance() {
@@ -25,15 +21,24 @@ public class Logic {
 	}
 
 	public void sendData(String id, DataUIType data) {
-		medOutput.sendData(id, data);
+		mediator.sendData(id, data);
 	}
 
 	public DataUIType getSelectionData(String id, DataUIType selectable) {
-		return medSelection.getSelectionData(id, selectable);
+		DataFromCUI receiveData = mediator.receiveSelectedData(id, selectable);
+		DataUIType data = parser(receiveData);
+		return data;
 	}
 
 	public DataUIType getInputData(String id) {
-		return medInput.getInputData(id);
+		DataFromCUI receiveData = mediator.receiveInputData(id);
+		DataUIType data = parser(receiveData);
+		return data;
+	}
+
+	private DataUIType parser(DataFromCUI receiveData) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
