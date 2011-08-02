@@ -124,7 +124,12 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 			if(saElement != null){
 				String attMaxCardi = ModelPackage.eINSTANCE
 						.getUsableEntity_Id().getName();
-				saElement.setAttribute(attMaxCardi, sa.getId());
+				if (sa.getId() != null && !"".equals(sa.getId())){
+					saElement.setAttribute(attMaxCardi, sa.getId());
+					BpelUiUtils.setId(sa.getId());
+				}
+				else 
+					saElement.setAttribute(attMaxCardi, Integer.toString(BpelUiUtils.getNewId()));
 				
 				EList<String> roles = sa.getRoles();
 				for (String role : roles) {

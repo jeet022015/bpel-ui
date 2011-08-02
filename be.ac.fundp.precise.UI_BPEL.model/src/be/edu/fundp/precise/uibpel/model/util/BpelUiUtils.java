@@ -7,6 +7,8 @@ import org.eclipse.bpel.model.util.BPELUtils;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
 public class BpelUiUtils {
+	
+	private static int id = 0;
 
 	/**
 	 * Adds the extensionsample namespace to the given process
@@ -19,6 +21,20 @@ public class BpelUiUtils {
 		INamespaceMap<String, String> nsMap = BPELUtils.getNamespaceMap(process);
 		nsMap.put(nsPrefix, nsURI);
 		return nsPrefix;
+	}
+	
+	public static int getNewId(){
+		return id++;
+	}
+	
+	public static void setId(String newStrId){
+		try {
+			int newId = Integer.parseInt(newStrId);
+			if (newId > id)
+				id = ++newId;
+		} catch (Exception e) {
+			
+		}
 	}
 
 }

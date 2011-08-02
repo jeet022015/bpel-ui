@@ -89,6 +89,7 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 					.getUsableEntity_Id().getName();
 			if (saElement.getAttribute(attName) != null) {
 				sa.setId(saElement.getAttribute(attName));
+				BpelUiUtils.setId(saElement.getAttribute(attName));
 			}
 			
 			//TODO It Works?
@@ -138,6 +139,7 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 					.getUsableEntity_Id().getName();
 			if (saElement.getAttribute(attName) != null) {
 				sa.setId(saElement.getAttribute(attName));
+				BpelUiUtils.setId(saElement.getAttribute(attName));
 			}
 			
 			//TODO It Works?
@@ -216,6 +218,7 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 					.getUsableEntity_Id().getName();
 			if (saElement.getAttribute(attName) != null) {
 				sa.setId(saElement.getAttribute(attName));
+				BpelUiUtils.setId(saElement.getAttribute(attName));
 			}
 			
 			//TODO It Works?
