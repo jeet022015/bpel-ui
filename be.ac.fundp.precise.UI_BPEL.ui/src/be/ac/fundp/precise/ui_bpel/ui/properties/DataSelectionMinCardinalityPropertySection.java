@@ -42,7 +42,8 @@ public class DataSelectionMinCardinalityPropertySection  extends BPELPropertySec
 
 		super.basicSetInput(newInput);
 		if (newInput instanceof DataSelectionUI) {
-			fCreteInstanceController.setFeature(ModelPackage.eINSTANCE.getDataSelectionUI_MinCardinality());
+			fCreteInstanceController.setFeature(
+					ModelPackage.eINSTANCE.getDataSelectionUI_MinCardinality());
 			fCreteInstanceController.setInput(newInput);
 		} else {
 			fCreteInstanceController.setFeature( null );		
@@ -62,7 +63,8 @@ public class DataSelectionMinCardinalityPropertySection  extends BPELPropertySec
 		parent.setLayoutData(data);
 		
 		fCreateInstanceButton = fWidgetFactory.createText(parent, "");
-		Label variableLabel = fWidgetFactory.createLabel(parent,Messages.UIBPELEditor_Property_Min_Cardinality);
+		Label variableLabel = fWidgetFactory.createLabel(parent,
+				Messages.UIBPELEditor_Property_Min_Cardinality);
 				//"MinCardinality:");
 		
 		data = new FlatFormData();

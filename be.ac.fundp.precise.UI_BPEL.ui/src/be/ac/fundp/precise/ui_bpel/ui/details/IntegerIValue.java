@@ -46,7 +46,7 @@ public class IntegerIValue implements IValue {
 	@SuppressWarnings("nls")
 	public void set( Object text ) {
 		if (text == null) {
-			fWidget.setText("0");
+			fWidget.setText("1");
 		} else {
 			fWidget.setText( text.toString() );
 		}

@@ -203,13 +203,20 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @customized
 	 */
 	public void setMaxCardinality(int newMaxCardinality) {
-		int oldMaxCardinality = maxCardinality;
-		maxCardinality = newMaxCardinality;
+		int oldMaxCardinality = minCardinality;
+		if (!isReconciling) {
+			ReconciliationHelper.replaceAttribute(this, ModelPackage.eINSTANCE
+					.getDataSelectionUI_MaxCardinality().getName(),
+					Integer.toString(newMaxCardinality));
+		}
+		minCardinality = newMaxCardinality;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.DATA_SELECTION_UI__MAX_CARDINALITY, oldMaxCardinality, maxCardinality));
+			eNotify(new ENotificationImpl(this, Notification.SET, 
+					ModelPackage.DATA_SELECTION_UI__MAX_CARDINALITY, 
+					oldMaxCardinality, maxCardinality));
 	}
 
 	/**

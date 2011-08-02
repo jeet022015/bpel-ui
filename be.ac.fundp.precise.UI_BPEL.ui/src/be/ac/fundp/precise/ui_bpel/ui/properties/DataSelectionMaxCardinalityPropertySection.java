@@ -25,7 +25,7 @@ import be.edu.fundp.precise.uibpel.model.ModelPackage;
  * 
  * Note that validation of this activity is not yet implemented.
  */
-public class DataSelectionMaxCardinalityPropertySection  extends BPELPropertySection {
+public class DataSelectionMaxCardinalityPropertySection extends BPELPropertySection {
 	
 	Text fCreateInstanceButton;	
 	EditController fCreteInstanceController ;
@@ -42,8 +42,8 @@ public class DataSelectionMaxCardinalityPropertySection  extends BPELPropertySec
 
 		super.basicSetInput(newInput);
 		if (newInput instanceof DataSelectionUI) {
-			fCreteInstanceController.setFeature(ModelPackage.eINSTANCE.
-					getDataSelectionUI_MaxCardinality());
+			fCreteInstanceController.setFeature(
+					ModelPackage.eINSTANCE.getDataSelectionUI_MaxCardinality());
 			fCreteInstanceController.setInput(newInput);
 		} else {
 			fCreteInstanceController.setFeature( null );		
@@ -63,7 +63,8 @@ public class DataSelectionMaxCardinalityPropertySection  extends BPELPropertySec
 		parent.setLayoutData(data);
 		
 		fCreateInstanceButton = fWidgetFactory.createText(parent, "");
-		Label variableLabel = fWidgetFactory.createLabel(parent, Messages.UIBPELEditor_Property_Max_Cardinality);
+		Label variableLabel = fWidgetFactory.createLabel(parent,
+				Messages.UIBPELEditor_Property_Max_Cardinality);
 				//"MaxCardinality:");
 		
 		data = new FlatFormData();
@@ -71,7 +72,6 @@ public class DataSelectionMaxCardinalityPropertySection  extends BPELPropertySec
 		data.top = new FlatFormAttachment(0, 0);
 		data.right = new FlatFormAttachment(0, 150);
 		fCreateInstanceButton.setLayoutData(data);
-		//fCreateInstanceButton.setText(Integer.toString(model.getMaxCardinality()));
 		
 		data = new FlatFormData();
 		data.left = new FlatFormAttachment(0, 0);
