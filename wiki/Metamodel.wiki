@@ -39,7 +39,9 @@ This meta-model can be divided in 2 parts _data interaction_ representation and 
 In the following, we present the classes responsible to deal with the _data interaction_:
 
  * _Data Interaction_ is a generalization class that represents a new _data interaction_.
- * _Data Item_ TODO.
+ * _Data Item_ is a class that represents the data involved in the user interaction. The current version just can represent data as simple type. This class has the following properties:
+    * *description* identifies the meaning of the item.
+    * *type* represents the type of the item. The type of a _Data Item_ can be: string, integer, boolean, and date.
  * _Data Input UI_ is a class that represents the data input activity. This activity is similar to the BPEL _Receive Activity_, since it suspends the process execution while waiting for an input from the user. However, unlike the _BPEL Receive_ activity, this activity waits for a message from the UI with the data provided by the user, instead of a message from another Web service. 
     * *inputVariable* represents the variable where the data provided by the user will be stored.
  * _Data Output UI_ is a class that represents the data output activity.
@@ -50,7 +52,7 @@ In the following, we present the classes responsible to deal with the _data inte
 
 In the following, we present the classes responsible to deal with the _interaction by user event_:
 
- * _Pick UI_ TODO.
- * _Scope UI_ TODO.
- * _Event Handler UI_ TODO.
- * _On User Event_ is a generalization class that represents a new type of BPEL event. Such an event defines the occurrence of a user interaction. An interaction event can be either an atomic event that designates a predefined eventOnAtomicInteractionEvent or a composite event that combines atomic and/or composite events OncompositeInteractionEvent.
+ * _Pick UI_ is a extension to the _Pick Activity_ that can receive additionally _User Events_.
+ * _Scope UI_ is a extension to the _Scope Activity_ that allows _User Events_.
+ * _Event Handler UI_ is a extension to the _Event Handler_ that can receive additionally _User Events_.
+ * _On User Event_ is class that represents a new event on BPEL that defines the occurrence of a user interaction.
