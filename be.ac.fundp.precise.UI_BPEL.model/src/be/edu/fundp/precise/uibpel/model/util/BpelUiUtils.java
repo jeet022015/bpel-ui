@@ -32,7 +32,8 @@ public class BpelUiUtils {
 			int newId = Integer.parseInt(newStrId);
 			if (newId > id)
 				id = ++newId;
-		} catch (Exception e) {
+			//TODO maybe it dont works
+		} catch (NumberFormatException e) {
 			
 		}
 	}

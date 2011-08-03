@@ -65,6 +65,24 @@ public class Activator extends AbstractUIPlugin {
 		URL baseURL = getBundle().getEntry("/");
 		createImageDescriptor(Messages.DEFAULT_ICON_16, baseURL);
 		createImageDescriptor(Messages.DEFAULT_ICON_20, baseURL);
+		
+		createImageDescriptor(Messages.DATA_INPUT_ICON_16, baseURL);
+		createImageDescriptor(Messages.DATA_INPUT_ICON_20, baseURL);
+		
+		createImageDescriptor(Messages.DATA_OUTPUT_ICON_16, baseURL);
+		createImageDescriptor(Messages.DATA_OUTPUT_ICON_20, baseURL);
+		
+		createImageDescriptor(Messages.DATA_SELECTION_ICON_16, baseURL);
+		createImageDescriptor(Messages.DATA_SELECTION_ICON_20, baseURL);
+		
+		createImageDescriptor(Messages.ON_USER_EVENT_ICON_16, baseURL);
+		createImageDescriptor(Messages.ON_USER_EVENT_ICON_20, baseURL);
+		
+		createImageDescriptor(Messages.PICK_UI_ICON_16, baseURL);
+		createImageDescriptor(Messages.PICK_UI_ICON_20, baseURL);
+		
+		createImageDescriptor(Messages.SCOPE_UI_ICON_16, baseURL);
+		createImageDescriptor(Messages.SCOPE_UI_ICON_20, baseURL);
 	}
 	
 	private void createImageDescriptor(String id, URL baseURL) {

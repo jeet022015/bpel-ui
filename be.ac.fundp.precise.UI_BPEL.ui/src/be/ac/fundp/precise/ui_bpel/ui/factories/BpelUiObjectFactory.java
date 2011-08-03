@@ -7,7 +7,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
 import be.ac.fundp.precise.ui_bpel.ui.Activator;
-import be.ac.fundp.precise.ui_bpel.ui.util.BpelUiConstants;
+import be.ac.fundp.precise.ui_bpel.ui.Messages;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
 public class BpelUiObjectFactory extends AbstractUIObjectFactory implements IExtensionUIObjectFactory {
@@ -27,12 +27,42 @@ public class BpelUiObjectFactory extends AbstractUIObjectFactory implements IExt
 	
 	@Override
 	public Image getLargeImage() {
-		return Activator.getDefault().getImageRegistry().get(BpelUiConstants.DEFAULT_ICON_20);
+		String path = "";
+		if (modelType.getName().equals("DataInputUI"))
+			path = Messages.DATA_INPUT_ICON_20;
+		else if (modelType.getName().equals("DataOutputUI"))
+			path = Messages.DATA_OUTPUT_ICON_20;
+		else if (modelType.getName().equals("DataSelectionUI"))
+			path = Messages.DATA_SELECTION_ICON_20;
+		else if (modelType.getName().equals("OnUserEvent"))
+			path = Messages.ON_USER_EVENT_ICON_20;
+		else if (modelType.getName().equals("ScopeUI"))
+			path = Messages.SCOPE_UI_ICON_20;
+		else if (modelType.getName().equals("PickUI"))
+			path = Messages.PICK_UI_ICON_20;
+		else 
+			path = Messages.DEFAULT_ICON_20;
+		return Activator.getDefault().getImageRegistry().get(path);
 	}
 
 	@Override
 	public ImageDescriptor getLargeImageDescriptor() {
-		return Activator.getDefault().getImageDescriptor(BpelUiConstants.DEFAULT_ICON_20);
+		String path = "";
+		if (modelType.getName().equals("DataInputUI"))
+			path = Messages.DATA_INPUT_ICON_20;
+		else if (modelType.getName().equals("DataOutputUI"))
+			path = Messages.DATA_OUTPUT_ICON_20;
+		else if (modelType.getName().equals("DataSelectionUI"))
+			path = Messages.DATA_SELECTION_ICON_20;
+		else if (modelType.getName().equals("OnUserEvent"))
+			path = Messages.ON_USER_EVENT_ICON_20;
+		else if (modelType.getName().equals("ScopeUI"))
+			path = Messages.SCOPE_UI_ICON_20;
+		else if (modelType.getName().equals("PickUI"))
+			path = Messages.PICK_UI_ICON_20;
+		else 
+			path = Messages.DEFAULT_ICON_20;
+		return Activator.getDefault().getImageDescriptor(path);
 	}
 
 	@Override
@@ -42,12 +72,42 @@ public class BpelUiObjectFactory extends AbstractUIObjectFactory implements IExt
 
 	@Override
 	public Image getSmallImage() {
-		return Activator.getDefault().getImageRegistry().get(BpelUiConstants.DEFAULT_ICON_16);
+		String path = "";
+		if (modelType.getName().equals("DataInputUI"))
+			path = Messages.DATA_INPUT_ICON_16;
+		else if (modelType.getName().equals("DataOutputUI"))
+			path = Messages.DATA_OUTPUT_ICON_16;
+		else if (modelType.getName().equals("DataSelectionUI"))
+			path = Messages.DATA_SELECTION_ICON_16;
+		else if (modelType.getName().equals("OnUserEvent"))
+			path = Messages.ON_USER_EVENT_ICON_16;
+		else if (modelType.getName().equals("ScopeUI"))
+			path = Messages.SCOPE_UI_ICON_16;
+		else if (modelType.getName().equals("PickUI"))
+			path = Messages.PICK_UI_ICON_16;
+		else 
+			path = Messages.DEFAULT_ICON_16;
+		return Activator.getDefault().getImageRegistry().get(path);
 	}
 
 	@Override
 	public ImageDescriptor getSmallImageDescriptor() {
-		return Activator.getDefault().getImageDescriptor(BpelUiConstants.DEFAULT_ICON_16);
+		String path = "";
+		if (modelType.getName().equals("DataInputUI"))
+			path = Messages.DATA_INPUT_ICON_16;
+		else if (modelType.getName().equals("DataOutputUI"))
+			path = Messages.DATA_OUTPUT_ICON_16;
+		else if (modelType.getName().equals("DataSelectionUI"))
+			path = Messages.DATA_SELECTION_ICON_16;
+		else if (modelType.getName().equals("OnUserEvent"))
+			path = Messages.ON_USER_EVENT_ICON_16;
+		else if (modelType.getName().equals("ScopeUI"))
+			path = Messages.SCOPE_UI_ICON_16;
+		else if (modelType.getName().equals("PickUI"))
+			path = Messages.PICK_UI_ICON_16;
+		else 
+			path = Messages.DEFAULT_ICON_16;
+		return Activator.getDefault().getImageDescriptor(path);
 	}
 
 	@Override
