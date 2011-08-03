@@ -1,7 +1,6 @@
-#summary One-sentence summary of this page.
+#summary Description of UI BPEL's Architecture.
 
 = Introduction =
-
 
 The UI BPEL extension is a piece of the integrated system for providing User Interfaces (UI) for Web service compositions (WSC) specified through BPEL. The overall architecture of the system is shown in following Figure, which partitions its software components into design time, deployment time, and runtime components.
 
