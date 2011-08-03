@@ -1,25 +1,25 @@
-#summary One-sentence summary of this page.
+#summary Installation UI Eclipse.
 
 = Requirements =
 
- * Eclipse IDE for Java EE Developers
+ * Eclipse IDE for Java EE Developers [http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr2 link]
 
 = From update site =
 
 Installation Flow:
  # Open Help -> Install New Software.
  # Select the UI BPEL update site.
+    * https://svn.codespot.com/a/eclipselabs.org/bpel-ui/update/update.xml
  # When the list of existing features is populated - select 'UI BPEL Tools'.
  # Proceed with the installation by pressing 'Next', then press 'Next' again in the next screen.
  # Accept the EULA when asked:
  # Finish the installation. Restart Eclipse.
- # After restarting switch to the PHP perspective, and you are done:
 
 = From the repository =
 
 The instructions below are for building the current tip of the UI BPEL editor.
 
- # Make sure your Target Platform includes the dependencies listed below. [ Window->Preferences->Plug-in Development->Target Platform ] If you have the dependencies described below you can skip to step 3
+ # Make sure your Target Platform includes the dependencies listed below. Window->Preferences->Plug-in Development->Target Platform . If you have the dependencies described below you can skip to step 3
  # You need to download the following dependencies.
     * Eclipse 3.6.x (Helios)
     * EMF 2.4.x
@@ -27,19 +27,8 @@ The instructions below are for building the current tip of the UI BPEL editor.
     * DTP STK 1.6.x
     * WTP (Web Tools Platform) 2.0.x
     * Designer BPEL 1.2.x
- # Check out the following plug-ins from :pserver:anonymous@dev.eclipse.org:/cvsroot/technology. In folder org.eclipse.bpel/plugins:
-    * org.eclipse.bpel.common.model
-    * org.eclipse.bpel.common.ui - Common UI classes are here.
-    * org.eclipse.bpel.model - The BPEL model classes generated from the EMF model, resource sets, etc.
-    * org.eclipse.bpel.wsil.model - The WSIL model we use in the WSIL browser.
-    * org.eclipse.bpel.ui - The main editor code.
-    * org.eclipse.bpel.runtimes - This is what runtimes need to extend in order to plug in.
-    * org.eclipse.bpel.apache.ode.runtime - A Reference integration with the Apache ODE runtime.
-    * org.eclipse.bpel.apache.ode.deploy.ui - An Editor to create an Apache ODE deployment descriptor.
-    * org.eclipse.bpel.apache.ode.deploy.model - The EMF model for the deployment descriptor editor.
-    * org.eclipse.bpel.validator - A BPEL validator that will check the BPEL source for errors.
-    * org.eclipse.bpel.examples.extensionPoints - Some examples of extension points provided by other plugins in the BPEL editor.
+ # Check out the following plug-ins from the svn repository.  https://svn.codespot.com/a/eclipselabs.org/bpel-ui/trunk/ 
+    * In folder:
+       * be.ac.fundp.precise.UI_BPEL.model - The UI BPEL model classes generated from the EMF model, resource sets, etc.
+       * be.ac.fundp.precise.UI_BPEL.ui - The main editor code.
  # Launch a runtime workbench (a.k.a. Eclipse Application). The new workbench will have the just installed plugins with it and it just ought to run them.
- # In the running workbench with the BPEL plugins create a new BPEL project and then create a BPEL process using the new BPEL file wizard. You should get a skeleton of a BPEL source file to work with. 
- # If you have other BPEL sources you can open them as well, however, they first need to be imported into an eclipse project which by default must live in an eclipse workspace. As long as the BPEL source file has 2.0 code, the editor ought to be able to open it.
- # Double-click on the .bpel file to open the BPEL editor.
