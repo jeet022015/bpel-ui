@@ -1,6 +1,7 @@
  * Home
  * General Documents
     * [Metamodel UI BPEL Metamodel]
+ * User Documents
     * [UI_BPEL_Editor UI BPEL Editor]
     * [Example UI BPEL Example]
  * Technical Documents
