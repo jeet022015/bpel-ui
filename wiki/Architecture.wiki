@@ -12,7 +12,7 @@ The design part comprises the UI BPEL editor with the new activities and element
 
 == Deployment Time ==
 
-TO DO.  
+The deployment of a UI orchestration requires translating the UI BPEL specification, which is not immediately executable neither by a standard BPEL engine nor by the UI rendering interpreter (the so-called UI interpreter, which we discuss in the following), into executable formats. This task is achieved by the UI BPEL processor, which, starting from the UI BPEL model, it generates three kinds of outputs: 
 
 == Runtime ==
 
