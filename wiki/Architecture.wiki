@@ -8,7 +8,7 @@ The UI BPEL extension is a piece of the integrated system for providing User Int
 
 == Design Time ==
 
-The design part comprises the BPEL4UI editor with it. TO DO.
+The design part comprises the UI BPEL editor with the new activities and elements proposed by the UI BPEL metamodel. In this tool, the WSC designer can describe BPEL processes and define the user interaction presents on it, and the editor generates a corresponding UI BPEL specification as output. This tool is an extension to Eclipse BPEL Editor that adds: (i) a palette that allows the designer to specify the user interaction activities by drag’n drop them on the BPEL process and (ii) a property panel that allows the designer to set the properties of the user interaction activities based on the UI BPEL meta-model.
 
 == Deployment Time ==
 
