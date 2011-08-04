@@ -14,6 +14,8 @@ The design part comprises the UI BPEL editor with the new activities and element
 
 The deployment of a UI orchestration requires translating the UI BPEL specification, which is not immediately executable neither by a standard BPEL engine nor by the UI rendering interpreter (the so-called UI interpreter, which we discuss in the following), into executable formats. This task is achieved by the UI BPEL processor, which, starting from the UI BPEL model, it generates three kinds of outputs: 
 
+ # A standard BPEL specification containing only web service orchestration logic. Unlike the UI BPEL model, the generated BPEL specification does no longer contain any of the UI-specific constructs introduced in [link] and can therefore be executed by any standards-compliant BPEL engine. This means that all references to user interactions activities are rewritten into references to the respective operation at the mediator server. More information about the transformation and mediation can be found [link] and [link].
+
 == Runtime ==
 
 TODO
