@@ -233,16 +233,18 @@ public class AUIGenerator {
 	private void scope2AUI(Scope activity) {
 		activity2AUI(activity.getActivity());
 		
-		EList<OnAlarm> onAlarmes = activity.getEventHandlers().getAlarm();
-		for (OnAlarm onAlarm : onAlarmes) {
-			createAbstractComponent();
-			activity2AUI (onAlarm.getActivity());
-		}
-		
-		EList<OnEvent> events = activity.getEventHandlers().getEvents();
-		for (OnEvent onEvent : events) {
-			createAbstractComponent();
-			activity2AUI (onEvent.getActivity());
+		if (activity.getEventHandlers() != null){
+			EList<OnAlarm> onAlarmes = activity.getEventHandlers().getAlarm();
+			for (OnAlarm onAlarm : onAlarmes) {
+				createAbstractComponent();
+				activity2AUI (onAlarm.getActivity());
+			}
+			
+			EList<OnEvent> events = activity.getEventHandlers().getEvents();
+			for (OnEvent onEvent : events) {
+				createAbstractComponent();
+				activity2AUI (onEvent.getActivity());
+			}
 		}
 	}
 
