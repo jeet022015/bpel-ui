@@ -197,8 +197,9 @@ public class AUIGenerator {
 	
 	private void flow2AUI(Flow activity) {
 		EList<Activity> activities = activity.getActivities();
+		AbstractCompoundIU intialComp = comp;
 		for (Activity activity2 : activities) {
-			createAbstractComponent();
+			comp = intialComp;
 			activity2AUI (activity2);
 		}
 	}
