@@ -10,6 +10,9 @@ import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import org.eclipse.bpel.model.Process;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -52,7 +55,7 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 		IFile f = getBpelFile();
 		IFolder folder = (IFolder) f.getParent();
 		IFile auiFile = folder.getFile("AUI_Model.aui");
-		IFile mediatorFile = folder.getFile("mediator.conf");
+		IFile mediatorFile = folder.getFile("mediator.xml");
 		try {
 			if (!auiFile.exists()) {
 				byte[] bytes = "".getBytes();
@@ -83,6 +86,10 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (CoreException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
 			e.printStackTrace();
 		}
 	}

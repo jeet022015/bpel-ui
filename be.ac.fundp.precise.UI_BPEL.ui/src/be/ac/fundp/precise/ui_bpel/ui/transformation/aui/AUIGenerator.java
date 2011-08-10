@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import org.eclipse.bpel.model.Activity;
 import org.eclipse.bpel.model.Assign;
 import org.eclipse.bpel.model.Copy;
@@ -48,11 +51,11 @@ public class AUIGenerator {
 	private Set<String> varUI;
 	private MediatorConfigurator medConf;
 	
-	public AUIGenerator (OutputStream out){
+	public AUIGenerator (OutputStream out) throws ParserConfigurationException{
 		medConf = new MediatorConfigurator (out);
 	}
 	
-	public AbstractUIModel createAUI(Process process) {
+	public AbstractUIModel createAUI(Process process) throws TransformerException {
 		//AuiPackageFactory.eINSTANCE.eClass();
 		AbstractUIModel model = factory.createAbstractUIModel();
 		this.model = model;

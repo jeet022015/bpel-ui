@@ -1,15 +1,20 @@
 package be.ac.fundp.precise.ui_bpel.ui.transformation.aui;
 
 import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
-import net.sf.json.JSONObject;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.usixml.aui.auiPackage.AbstractCompoundIU;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataItem;
@@ -19,83 +24,141 @@ import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 public class MediatorConfigurator {
 	
 	//private JSONArray json;
-	private JSONObject json;
-	private PrintWriter out;
-	private Set<HashMap<String, Object>> dataInput;
-	private Set<HashMap<String, Object>> dataOutput;
-	private Set<HashMap<String, Object>> dataSelection;
+	private Element rootElement;
+	private Document doc;
+	private OutputStream out;
 	
-	public MediatorConfigurator (OutputStream outstream){
-		out = new PrintWriter(outstream, true);
-		//json = new JSONArray();
-		json = new JSONObject();
-		dataInput = new HashSet<HashMap<String, Object>>();
-		dataOutput = new HashSet<HashMap<String, Object>>();
-		dataSelection = new HashSet<HashMap<String, Object>>();
+	public MediatorConfigurator (OutputStream outstream) throws ParserConfigurationException{
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory
+				.newInstance();
+		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+		// root elements
+		doc = docBuilder.newDocument();
+		rootElement = doc.createElement("mediation");
+		doc.appendChild(rootElement);
+		out = outstream;
 	}
 	
 	public void createDataInputConf(AbstractCompoundIU comp, DataInputUI inputActivity){
-		HashMap<String, Object> dataInputMap = new HashMap<String, Object>();
-		dataInputMap.put("UIid", inputActivity.getId());
-		dataInputMap.put("ComponentID", comp.getId());
-		dataInputMap.put("role", "my role");
-		Map<String, Set<String>> dataItemMap = new HashMap<String, Set<String>>();
+		Element staff = doc.createElement("DataInput");
+		rootElement.appendChild(staff);
+		
+		Attr attr = doc.createAttribute("UIid");
+		attr.setValue(inputActivity.getId());
+		staff.setAttributeNode(attr);
+		
+		attr = doc.createAttribute("ComponentID");
+		attr.setValue(Integer.toString(comp.getId()));
+		staff.setAttributeNode(attr);
+		
+		attr = doc.createAttribute("role");
+		//TODO deal with role
+		attr.setValue("----");
+		staff.setAttributeNode(attr);
+		
+		Element data = doc.createElement("data");
+		staff.appendChild(data);
 		for (DataItem dataItem : inputActivity.getData()) {
-			Set<String> myData;
-			if (dataItemMap.containsKey(dataItem.getType().getName())){
-				myData = dataItemMap.get(dataItem.getType().getName());
-			}else {
-				myData = new HashSet<String>();
-			}
-			myData.add(dataItem.getDescription());
-			dataItemMap.put(dataItem.getType().getName(), myData);
+			Element elemDataItem = doc.createElement("dataItem");
+			data.appendChild(elemDataItem);
+			
+			attr = doc.createAttribute("id");
+			attr.setValue(dataItem.getDescription());
+			elemDataItem.setAttributeNode(attr);
+			
+			attr = doc.createAttribute("type");
+			attr.setValue(dataItem.getType().getName());
+			elemDataItem.setAttributeNode(attr);
 		}
-		dataInputMap.put("data", dataItemMap);
-		//dataInputMap.put("type", "dataInput");
-		dataInput.add(dataInputMap);
-		//json.add(dataInputMap);
 	}
 	
-	public void finalize(){
-		json.put("dataInput", dataInput);
-		json.put("dataOutput", dataOutput);
-		json.put("dataSelection", dataSelection);
-		out.println(json);
-		out.close();
+	public void finalize() throws TransformerException {
+		// write the content into xml file
+		TransformerFactory transformerFactory = TransformerFactory
+				.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		DOMSource source = new DOMSource(doc);
+		StreamResult result = new StreamResult(out);
+
+		transformer.transform(source, result);
+
+		System.out.println("File saved!");
 	}
 
 	public void createDataOutputConf(AbstractCompoundIU comp,
 			DataOutputUI activity) {
-		HashMap<String, Object> dataInputMap = new HashMap<String, Object>();
-		dataInputMap.put("UIid", activity.getId());
-		dataInputMap.put("ComponentID", comp.getId());
-		dataInputMap.put("role", "my role");
-		Map<String, String> dataItemMap = new HashMap<String, String>();
+		Element staff = doc.createElement("DataInput");
+		rootElement.appendChild(staff);
+		
+		Attr attr = doc.createAttribute("UIid");
+		attr.setValue(activity.getId());
+		staff.setAttributeNode(attr);
+		
+		attr = doc.createAttribute("ComponentID");
+		attr.setValue(Integer.toString(comp.getId()));
+		staff.setAttributeNode(attr);
+		
+		attr = doc.createAttribute("role");
+		//TODO deal with role
+		attr.setValue("----");
+		staff.setAttributeNode(attr);
+		
+		Element data = doc.createElement("data");
+		staff.appendChild(data);
 		for (DataItem dataItem : activity.getData()) {
-			dataItemMap.put(dataItem.getType().getName(), dataItem.getDescription());
+			Element elemDataItem = doc.createElement("dataItem");
+			data.appendChild(elemDataItem);
+			
+			attr = doc.createAttribute("id");
+			attr.setValue(dataItem.getDescription());
+			elemDataItem.setAttributeNode(attr);
+			
+			attr = doc.createAttribute("type");
+			attr.setValue(dataItem.getType().getName());
+			elemDataItem.setAttributeNode(attr);
 		}
-		dataInputMap.put("data", dataItemMap);
-		//dataInputMap.put("type", "dataOutput");
-		dataOutput.add(dataInputMap);
-		//json.add(dataInputMap);
 	}
 
 	public void createDataSelectionConf(AbstractCompoundIU comp,
 			DataSelectionUI activity) {
-		HashMap<String, Object> dataInputMap = new HashMap<String, Object>();
-		dataInputMap.put("UIid", activity.getId());
-		dataInputMap.put("ComponentID", comp.getId());
-		dataInputMap.put("role", "my role");
-		Map<String, String> dataItemMap = new HashMap<String, String>();
+		Element staff = doc.createElement("DataInput");
+		rootElement.appendChild(staff);
+		
+		Attr attr = doc.createAttribute("UIid");
+		attr.setValue(activity.getId());
+		staff.setAttributeNode(attr);
+		
+		attr = doc.createAttribute("ComponentID");
+		attr.setValue(Integer.toString(comp.getId()));
+		staff.setAttributeNode(attr);
+		
+		attr = doc.createAttribute("role");
+		//TODO deal with role
+		attr.setValue("----");
+		staff.setAttributeNode(attr);
+		
+		Element data = doc.createElement("data");
+		staff.appendChild(data);
 		for (DataItem dataItem : activity.getData()) {
-			dataItemMap.put(dataItem.getType().getName(), dataItem.getDescription());
+			Element elemDataItem = doc.createElement("dataItem");
+			data.appendChild(elemDataItem);
+			
+			attr = doc.createAttribute("id");
+			attr.setValue(dataItem.getDescription());
+			elemDataItem.setAttributeNode(attr);
+			
+			attr = doc.createAttribute("type");
+			attr.setValue(dataItem.getType().getName());
+			elemDataItem.setAttributeNode(attr);
 		}
-		dataInputMap.put("selectable", dataItemMap);
-		dataInputMap.put("type", "dataSelection");
-		dataInputMap.put("min", activity.getMinCardinality());
-		dataInputMap.put("max", activity.getMaxCardinality());
-		//dataInputMap.put("type", "dataSelection");
-		//json.add(dataInputMap);
-		dataSelection.add(dataInputMap);
+		
+		attr = doc.createAttribute("minCardi");
+		attr.setValue(Integer.toString(activity.getMinCardinality()));
+		staff.setAttributeNode(attr);
+		
+		attr = doc.createAttribute("maxCardi");
+		attr.setValue(Integer.toString(activity.getMaxCardinality()));
+		staff.setAttributeNode(attr);
 	}
 }

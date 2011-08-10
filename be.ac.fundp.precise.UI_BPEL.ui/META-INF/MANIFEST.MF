@@ -20,12 +20,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.apache.xml.serialize;version="2.9.0",
  org.eclipse.bpel.common.extension.model
-Bundle-ClassPath: lib/commons-beanutils-1.7.jar,
- lib/commons-collections.jar,
- lib/commons-lang.jar,
- lib/commons-logging-1.1.1.jar,
- lib/ezmorph.jar,
- lib/json-lib-2.4-jdk15.jar,
- lib/org.usixml.aui_2.0.0.201107141402.jar,
- .,
- lib/commons-io-2.0.1.jar
+Bundle-ClassPath: .
