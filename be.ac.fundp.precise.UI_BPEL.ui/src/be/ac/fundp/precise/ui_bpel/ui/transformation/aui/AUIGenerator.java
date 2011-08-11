@@ -171,16 +171,19 @@ public class AUIGenerator {
 	private void repeatUntil2AUI(RepeatUntil activity) {
 		createAbstractComponent();
 		activity2AUI (activity.getActivity());
+		createAbstractComponent();
 	}
 
 	private void forEach2AUI(ForEach activity) {
 		createAbstractComponent();
 		activity2AUI (activity.getActivity());
+		createAbstractComponent();
 	}
 
 	private void while2AUI(While activity) {
 		createAbstractComponent();
 		activity2AUI (activity.getActivity());
+		createAbstractComponent();
 	}
 	
 	private void pick2AUI(Pick activity) {
@@ -195,6 +198,7 @@ public class AUIGenerator {
 			createAbstractComponent();
 			activity2AUI (onAlarme.getActivity());
 		}
+		createAbstractComponent();
 		
 	}
 	
@@ -215,6 +219,7 @@ public class AUIGenerator {
 		for (ElseIf elseIf : elseIfs) {
 			elseIf2AUI(elseIf);
 		}
+		createAbstractComponent();
 	}
 
 	private void elseIf2AUI(ElseIf elseIf) {

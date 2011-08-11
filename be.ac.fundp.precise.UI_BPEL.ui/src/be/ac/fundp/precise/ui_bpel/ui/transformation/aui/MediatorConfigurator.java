@@ -88,7 +88,7 @@ public class MediatorConfigurator {
 
 	public void createDataOutputConf(AbstractCompoundIU comp,
 			DataOutputUI activity) {
-		Element staff = doc.createElement("DataInput");
+		Element staff = doc.createElement("DataOutput");
 		rootElement.appendChild(staff);
 		
 		Attr attr = doc.createAttribute("UIid");
@@ -122,7 +122,7 @@ public class MediatorConfigurator {
 
 	public void createDataSelectionConf(AbstractCompoundIU comp,
 			DataSelectionUI activity) {
-		Element staff = doc.createElement("DataInput");
+		Element staff = doc.createElement("DataSelection");
 		rootElement.appendChild(staff);
 		
 		Attr attr = doc.createAttribute("UIid");
