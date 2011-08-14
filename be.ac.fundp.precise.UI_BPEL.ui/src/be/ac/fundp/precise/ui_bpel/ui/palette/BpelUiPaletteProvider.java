@@ -32,6 +32,14 @@ public class BpelUiPaletteProvider implements IPaletteProvider {
 				Messages.UIBPELEditor_Data_Selection_UI_1, Messages.UIBPELEditor_Data_Selection_UI_2,
 				new BpelUiObjectFactory(ModelPackage.eINSTANCE
 						.getDataSelectionUI())));
+		
+		category.add(new BPELCreationToolEntry("Scope UI", "Scope UI",
+				new BpelUiObjectFactory(ModelPackage.eINSTANCE
+						.getScopeUI())));
+		
+		category.add(new BPELCreationToolEntry("Pick UI", "Pick UI",
+				new BpelUiObjectFactory(ModelPackage.eINSTANCE
+						.getPickUI())));
 
 		paletteRoot.add(category);
 	}
