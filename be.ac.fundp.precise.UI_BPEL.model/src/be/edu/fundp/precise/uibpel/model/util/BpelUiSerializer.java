@@ -1,8 +1,12 @@
 package be.edu.fundp.precise.uibpel.model.util;
 
+import java.util.Iterator;
+
 import javax.xml.namespace.QName;
 
 import org.eclipse.bpel.model.Activity;
+import org.eclipse.bpel.model.OnAlarm;
+import org.eclipse.bpel.model.OnEvent;
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.extensions.BPELActivitySerializer;
 import org.eclipse.bpel.model.resource.BPELWriter;
@@ -15,7 +19,10 @@ import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
+import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
+import be.edu.fundp.precise.uibpel.model.OnUserEvent;
+import be.edu.fundp.precise.uibpel.model.ScopeUI;
 import be.edu.fundp.precise.uibpel.model.UsableEntity;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
 
@@ -30,9 +37,29 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 	public void marshall(QName elementType, Activity activity,
 			Node parentNode, Process process,
 			BPELWriter bpelWriter) {
+		System.out.println("here");
 
 		Document document = parentNode.getOwnerDocument();
 		Element saElement = null;
+		
+		//TODO put it inside my writer
+		
+		/*
+		 * ScopeUI
+		 */
+		if (activity instanceof ScopeUI) {
+			ScopeUI sa = (ScopeUI)activity;
+
+			if(saElement == null){
+				// create a new DOM element for our Activity
+				saElement = document.createElementNS(elementType.getNamespaceURI(),
+						BpelUiConstants.ND_SCOPE_UI);
+				saElement.setPrefix(BpelUiUtils.addNamespace(process));
+			}
+			if (sa.getEventHandlers() != null)
+				saElement.appendChild(eventUIHandler2XML((EventHandlerUI) sa
+						.getEventHandlers(), document, elementType, process, bpelWriter));
+		}
 
 		/*
 		 * DataSelectionUI
@@ -146,6 +173,56 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 		//NEVER DELETE IT NETO!!!!
 		// insert the DOM element into the DOM tree
 		parentNode.appendChild(saElement);
+	}
+
+	private Node eventUIHandler2XML(EventHandlerUI eventHandler,
+			Document document, QName elementType, Process process,
+			BPELWriter bpelWriter) {
+		
+		BpelUIWriter myBpelUIWriter =  new BpelUIWriter(bpelWriter.getResource(),document);
+		
+		Element eventHandlerElement = document.createElementNS(elementType.getNamespaceURI(),
+				BpelUiConstants.ND_EVENT_UI_HANDLER);
+		eventHandlerElement.setPrefix(BpelUiUtils.addNamespace(process));
+
+		for (Iterator<?> it = eventHandler.getUserInteraction().iterator(); it.hasNext();) {
+			OnUserEvent onUserEvent = (OnUserEvent) it.next();
+			eventHandlerElement.appendChild(onUserEvent2XML(onUserEvent, document, elementType.getNamespaceURI(), process, bpelWriter));
+		}
+		// TODO: For backwards compatibility with 1.1 we should serialize
+		// OnMessages here.
+		for (Iterator<?> it = eventHandler.getEvents().iterator(); it.hasNext();) {
+			OnEvent onEvent = (OnEvent) it.next();
+			eventHandlerElement.appendChild(myBpelUIWriter.onEvent2XML(onEvent));
+		}
+		for (Iterator<?> it = eventHandler.getAlarm().iterator(); it.hasNext();) {
+			OnAlarm onAlarm = (OnAlarm) it.next();
+			eventHandlerElement.appendChild(myBpelUIWriter.onAlarm2XML(onAlarm));
+		}
+		// serialize local namespace prefixes to XML
+		//serializePrefixes(eventHandler, eventHandlerElement);
+		//bpelWriter.extensibleElement2XML(eventHandler, eventHandlerElement);
+		return eventHandlerElement;
+	}
+
+	public Node onUserEvent2XML(OnUserEvent onUserEvent, Document document,
+			String elementType, Process process, BPELWriter bpelWriter) {
+		// create a new DOM element for our Activity
+		Element saElement = document.createElementNS(elementType,
+				BpelUiConstants.ND_ON_USER_EVENT);
+		saElement.setPrefix(BpelUiUtils.addNamespace(process));
+
+		if (onUserEvent.getActivity() != null) {
+			saElement.appendChild(bpelWriter.activity2XML(onUserEvent.getActivity()));
+		}
+		
+		if (onUserEvent.getId() != null) {
+			saElement.setAttribute("id", onUserEvent.getId());
+		}
+		// serialize local namespace prefixes to XML
+		//serializePrefixes(eventHandler, eventHandlerElement);
+		//bpelWriter.extensibleElement2XML(eventHandler, eventHandlerElement);
+		return saElement;
 	}
 
 	public Node dataItem2XML(DataItem dataItem, Document document,

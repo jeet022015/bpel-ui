@@ -12,11 +12,13 @@ import be.edu.fundp.precise.uibpel.model.ModelPackage;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 
 import org.eclipse.bpel.model.Activity;
+import org.eclipse.bpel.model.util.ReconciliationHelper;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -76,10 +78,13 @@ public class OnUserEventImpl extends UsableEntityImpl implements OnUserEvent {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public NotificationChain basicSetActivity(Activity newActivity, NotificationChain msgs) {
 		Activity oldActivity = activity;
+		if (!isReconciling) {
+			ReconciliationHelper.replaceChild(this, oldActivity, newActivity);
+		}
 		activity = newActivity;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ModelPackage.ON_USER_EVENT__ACTIVITY, oldActivity, newActivity);
@@ -184,6 +189,23 @@ public class OnUserEventImpl extends UsableEntityImpl implements OnUserEvent {
 			ExtensibilityElement arg0) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	protected void adoptContent(EReference reference, Object object) {
+		if (object instanceof Activity) {
+			ReconciliationHelper.replaceChild(this, activity, (Activity) object);
+		}
+		super.adoptContent(reference, object);
+
+	}
+	
+	@Override
+	protected void orphanContent(EReference reference, Object obj) {
+		if (obj instanceof Activity) {
+			ReconciliationHelper.orphanChild(this, (Activity)obj);
+		}
+		super.orphanContent(reference, obj);
 	}
 
 } //OnUserEventImpl

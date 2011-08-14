@@ -31,6 +31,7 @@ import org.eclipse.wst.wsdl.WSDLElement;
 import org.w3c.dom.Element;
 
 import be.edu.fundp.precise.uibpel.model.DataItem;
+import be.edu.fundp.precise.uibpel.model.impl.OnUserEventImpl;
 
 public class BpelUiReconciliationHelper extends ReconciliationHelper{
 	
@@ -49,6 +50,8 @@ public class BpelUiReconciliationHelper extends ReconciliationHelper{
 			}
 			if (newChild.getElement() == null) {
 				if (newChild instanceof DataItem){
+					newChild.setElement(BpelUiElementFactory.getInstance().createElement(newChild, parent));
+				} else if (newChild instanceof OnUserEventImpl){
 					newChild.setElement(BpelUiElementFactory.getInstance().createElement(newChild, parent));
 				} else {
 					newChild.setElement(ElementFactory.getInstance().createElement(newChild, parent));

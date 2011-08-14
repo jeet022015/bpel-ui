@@ -1,6 +1,8 @@
 package be.edu.fundp.precise.uibpel.model.util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -8,12 +10,14 @@ import javax.wsdl.extensions.ExtensionRegistry;
 import javax.xml.namespace.QName;
 
 import org.eclipse.bpel.model.Activity;
+import org.eclipse.bpel.model.EventHandler;
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.Scope;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.Variables;
 import org.eclipse.bpel.model.extensions.BPELActivityDeserializer;
 import org.eclipse.bpel.model.resource.BPELReader;
+import org.eclipse.bpel.model.util.BPELUtils;
 import org.eclipse.bpel.ui.util.ModelHelper;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -27,8 +31,12 @@ import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 import be.edu.fundp.precise.uibpel.model.DataType;
+import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.ModelFactory;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
+import be.edu.fundp.precise.uibpel.model.OnUserEvent;
+import be.edu.fundp.precise.uibpel.model.PickUI;
+import be.edu.fundp.precise.uibpel.model.ScopeUI;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
 
 /*
@@ -228,9 +236,155 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 			setDataItem(saElement, sa);
 			return sa;
 		}
+		
+		/*
+		 * PickUI
+		 */
+		if (BpelUiConstants.ND_PICK_UI.equals(elementType.getLocalPart())) {
+
+			// create a new DataOutputUI model object if not already created
+			PickUI sa;
+			Element saElement = (Element)node;
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
+			if(activity != null && activity instanceof PickUI){
+				sa = (PickUI)activity;
+			}else {
+				sa = ModelFactory.eINSTANCE
+					.createPickUI();
+				// attach the DOM node to our new activity
+				sa.setElement(saElement);
+			}
+			
+			NodeList pickElements = saElement.getChildNodes();
+	        
+	        Element pickInstanceElement = null;
+
+			if (pickElements != null && pickElements.getLength() > 0) {
+	          
+	           for (int i = 0; i < pickElements.getLength(); i++) {
+					if (pickElements.item(i).getNodeType() != Node.ELEMENT_NODE)
+	           	   	  continue;
+	           	   	             	
+	               pickInstanceElement = (Element)pickElements.item(i);
+	               
+					if (pickInstanceElement.getLocalName().equals(BpelUiConstants.ND_ON_USER_EVENT)) {
+	     					OnUserEvent onUserEvent = xml2OnUserEvent(pickInstanceElement, activity, bpelReader);
+	     					sa.getUserInteraction().add(onUserEvent);
+	     			}     
+	           }
+	        }
+
+			return sa;
+		}
+		
+		/*
+		 * Scope
+		 */
+		if (BpelUiConstants.ND_SCOPE_UI.equals(elementType.getLocalPart())) {
+
+			// create a new DataOutputUI model object if not already created
+			ScopeUI sa;
+			Element saElement = (Element)node;
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
+			if(activity != null && activity instanceof ScopeUI){
+				sa = (ScopeUI)activity;
+			}else {
+				sa = ModelFactory.eINSTANCE
+					.createScopeUI();
+				// attach the DOM node to our new activity
+				sa.setElement(saElement);
+			}
+			
+			// Handler EventHandler element
+			setEventHandler(saElement, sa, bpelReader);
+
+			return sa;
+		}
 
 		System.err.println("Cannot handle this kind of element");
 		return null;
+	}
+
+	private void setEventHandler(Element element, Activity extensibleElement, BPELReader bpelReader) {
+		List<Element> eventHandlerElements = getBPELChildElementsByLocalName(element, "eventHandlers");
+        
+		if (eventHandlerElements.size() > 0) {
+			EventHandler eventHandler =	xml2EventHandler(eventHandlerElements.get(0), extensibleElement, bpelReader); 
+
+			if (extensibleElement instanceof Process) ((Process)extensibleElement).setEventHandlers(eventHandler);
+				else if (extensibleElement instanceof Scope) ((Scope)extensibleElement).setEventHandlers(eventHandler);
+		}
+	}
+
+	private EventHandler xml2EventHandler(Element eventHandlerElement, Activity extensibleElement, BPELReader bpelReader) {
+		EventHandlerUI eventHandler = ModelFactory.eINSTANCE.createEventHandlerUI();
+		eventHandler.setElement(eventHandlerElement);
+		
+		// Save all the references to external namespaces		
+		//saveNamespacePrefix(eventHandler, eventHandlerElement);			
+	
+		NodeList eventHandlerElements = eventHandlerElement.getChildNodes();        
+		Element eventHandlerInstanceElement = null;
+		if (eventHandlerElements != null && eventHandlerElements.getLength() > 0) {
+          
+			for (int i = 0; i < eventHandlerElements.getLength(); i++) {
+				if (eventHandlerElements.item(i).getNodeType() != Node.ELEMENT_NODE)
+					continue;           	   	             
+			   	eventHandlerInstanceElement = (Element)eventHandlerElements.item(i);
+               
+				if (eventHandlerInstanceElement.getLocalName().equals("onUserEvent")) {
+					OnUserEvent onUserEvent = xml2OnUserEvent(eventHandlerInstanceElement, extensibleElement, bpelReader);     				
+					eventHandler.getUserInteraction().add(onUserEvent);
+				}
+			}
+		}
+		return eventHandler;
+	}
+
+	private OnUserEvent xml2OnUserEvent(Element pickInstanceElement, Activity activity, BPELReader bpelReader) {
+		// create a new DataOutputUI model object if not already created
+		OnUserEvent sa = ModelFactory.eINSTANCE
+			.createOnUserEvent();
+		sa.setElement(pickInstanceElement);
+		
+		// handle the ID
+		String attName = ModelPackage.eINSTANCE
+				.getUsableEntity_Id().getName();
+		if (pickInstanceElement.getAttribute(attName) != null) {
+			sa.setId(pickInstanceElement.getAttribute(attName));
+		}
+		
+		// handle the child activity
+		NodeList childElements = pickInstanceElement.getChildNodes();
+		Element activityElement = null;
+		if (childElements != null && childElements.getLength() > 0) {
+			for (int i = 0; i < childElements.getLength(); i++) {
+				// the only element node is the child activity
+				if ((childElements.item(i).getNodeType() == Node.ELEMENT_NODE)) {
+					activityElement = (Element) childElements.item(i);
+					Activity childActivity = bpelReader.xml2Activity(activityElement);
+					if (childActivity != null) {
+						sa.setActivity(childActivity);
+					}
+				}
+			}
+		}
+		
+		//setUserRole(pickInstanceElement, (UserInteraction) sa);
+		
+		return sa;
+	}
+
+	private List<Element> getBPELChildElementsByLocalName(Element parentElement, String localName) {
+		List<Element> list = new ArrayList<Element>();
+		NodeList children = parentElement.getChildNodes();
+		for (int i = 0; i < children.getLength(); i++) {
+			Node node = children.item(i);
+			if (localName.equals(node.getLocalName()) && BPELUtils.isBPELElement(node)) {
+                list.add((Element) node);
+			}
+		}
+		return list;
 	}
 
 	private Set<Variable> getMyVars(WSDLElement context) {

@@ -221,6 +221,34 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 				BpelUiConstants.ND_DATA_SELECTION_UI), deserializer);
 		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
 				serializer);
+		
+		// PickUI
+		name = PickUI.class.getSimpleName();
+		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
+				BpelUiConstants.ND_PICK_UI), deserializer);
+		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
+				serializer);
+		
+		// ScopeUI
+		name = ScopeUI.class.getSimpleName();
+		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
+				BpelUiConstants.ND_SCOPE_UI), deserializer);
+		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
+				serializer);
+		
+		// EventHandlerUI
+		name = EventHandlerUI.class.getSimpleName();
+		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
+				BpelUiConstants.ND_EVENT_UI_HANDLER), deserializer);
+		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
+				serializer);
+		
+		// OnUserEvent
+		name = OnUserEvent.class.getSimpleName();
+		extensionRegistry.registerActivityDeserializer(new QName(ModelPackage.eNS_URI,
+				BpelUiConstants.ND_ON_USER_EVENT), deserializer);
+		extensionRegistry.registerActivitySerializer(new QName(ModelPackage.eNS_URI, name),
+				serializer);
 	}
 
 	/**
