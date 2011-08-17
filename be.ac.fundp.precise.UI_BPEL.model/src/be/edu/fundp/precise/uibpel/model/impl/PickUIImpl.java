@@ -6,29 +6,25 @@
  */
 package be.edu.fundp.precise.uibpel.model.impl;
 
-import be.edu.fundp.precise.uibpel.model.ModelPackage;
-import be.edu.fundp.precise.uibpel.model.OnUserEvent;
-import be.edu.fundp.precise.uibpel.model.PickUI;
-import be.edu.fundp.precise.uibpel.model.util.BpelUiConstants;
-
 import java.util.Collection;
 
 import javax.wsdl.extensions.ExtensibilityElement;
 
 import org.eclipse.bpel.model.impl.PickImpl;
-import org.eclipse.bpel.model.util.ReconciliationHelper;
-
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import be.edu.fundp.precise.uibpel.model.ModelPackage;
+import be.edu.fundp.precise.uibpel.model.OnUserEvent;
+import be.edu.fundp.precise.uibpel.model.PickUI;
+import be.edu.fundp.precise.uibpel.model.util.BpelUiConstants;
+import be.edu.fundp.precise.uibpel.model.util.BpelUiReconciliationHelper;
 
 /**
  * <!-- begin-user-doc -->
@@ -176,7 +172,7 @@ public class PickUIImpl extends PickImpl implements PickUI {
 	@Override
 	protected void adoptContent(EReference reference, Object object) {
 		if (object instanceof OnUserEvent) {
-			ReconciliationHelper.adoptChild(this, userInteraction, (OnUserEvent) object,
+			BpelUiReconciliationHelper.adoptChild(this, userInteraction, (OnUserEvent) object,
 					BpelUiConstants.ND_USER_INTERACTION);
 		}
 		super.adoptContent(reference, object);
@@ -185,7 +181,7 @@ public class PickUIImpl extends PickImpl implements PickUI {
 	@Override
 	protected void orphanContent(EReference reference, Object object) {
 		if (object instanceof OnUserEvent) {
-			ReconciliationHelper.orphanChild(this, (OnUserEvent) object);
+			BpelUiReconciliationHelper.orphanChild(this, (OnUserEvent) object);
 		}
 		super.orphanContent(reference, object);
 	}

@@ -51,6 +51,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import be.edu.fundp.precise.uibpel.model.DataItem;
+import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 
 public class BpelUIWriter extends org.eclipse.bpel.model.resource.BPELWriter {
@@ -329,6 +330,13 @@ public class BpelUIWriter extends org.eclipse.bpel.model.resource.BPELWriter {
 	public Element onUserEventImpl2XML(OnUserEvent element) {
 		String namespace = element.eClass().getEPackage().getNsURI();
 		Element elem = (Element) mySer.onUserEvent2XML(element, staticDoc,
+				namespace, getResource().getProcess(), this);
+		return elem;
+	}
+
+	public Element eventHandlerUI2XML(EventHandlerUI element) {
+		String namespace = element.eClass().getEPackage().getNsURI();
+		Element elem = (Element) mySer.eventUIHandler2XML(element, staticDoc,
 				namespace, getResource().getProcess(), this);
 		return elem;
 	}

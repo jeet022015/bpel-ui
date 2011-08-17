@@ -31,6 +31,7 @@ import org.eclipse.wst.wsdl.WSDLElement;
 import org.w3c.dom.Element;
 
 import be.edu.fundp.precise.uibpel.model.DataItem;
+import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.impl.OnUserEventImpl;
 
 public class BpelUiReconciliationHelper extends ReconciliationHelper{
@@ -153,6 +154,63 @@ public class BpelUiReconciliationHelper extends ReconciliationHelper{
 				if (faultHandler.getCatch().size() == 0 && faultHandler.getCatchAll() == null) {
 					invoke.setFaultHandler(null);
 				}
+			}
+		} finally {
+			setUpdatingDom(parent, oldUpdatingDom);
+		}
+	}
+	
+	public static void replaceChild(WSDLElement parent, WSDLElement oldElement,
+			WSDLElement newElement) {
+		boolean oldUpdatingDom = isUpdatingDom(parent);
+		try {
+			setUpdatingDom(parent, true);		
+			
+			if (isLoading(parent)) {
+				return;
+			}
+
+			Element parseElement = parent.getElement();
+
+			if (parent instanceof ExtensionActivity) {
+				parseElement = getExtensionActivityChildElement(parseElement);
+			}
+
+			if (parseElement == null) {
+				System.err.println("trying to replace child on null element: "
+						+ parent.getClass());
+				return;
+			}
+			if (oldElement == newElement) {
+				return;
+			}
+			if (newElement != null) {
+				if (newElement.getElement() == null) {
+					if (newElement instanceof EventHandlerUI){
+						newElement.setElement(BpelUiElementFactory.getInstance().createElement(newElement, parent));
+					} else {
+						Element newDomElement = ElementFactory.getInstance()
+								.createElement(newElement, parent);
+						if (newDomElement == null) {
+							return;
+						}
+						newElement.setElement(newDomElement);
+					}
+				}
+				if (oldElement != null
+						&& oldElement.getElement() != null
+						&& parseElement == oldElement.getElement()
+								.getParentNode()) {
+					parseElement.replaceChild(newElement.getElement(),
+							oldElement.getElement());
+				} else {
+					ElementPlacer.placeChild(parent, newElement.getElement());
+				}
+			} else if (oldElement != null
+					&& oldElement.getElement() != null
+					&& parseElement == oldElement.getElement()
+							.getParentNode()) {
+				ElementPlacer.niceRemoveChild(parent, oldElement.getElement());
 			}
 		} finally {
 			setUpdatingDom(parent, oldUpdatingDom);

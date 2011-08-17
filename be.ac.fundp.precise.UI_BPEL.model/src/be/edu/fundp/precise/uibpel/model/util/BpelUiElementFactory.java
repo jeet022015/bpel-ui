@@ -64,6 +64,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import be.edu.fundp.precise.uibpel.model.DataItem;
+import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.impl.OnUserEventImpl;
 
 
@@ -150,6 +151,9 @@ public class BpelUiElementFactory{
 		}
 		if (element instanceof CorrelationSet) {
 			return writer.correlationSet2XML((CorrelationSet) element);
+		}
+		if (element instanceof EventHandlerUI) {
+			return writer.eventHandlerUI2XML((EventHandlerUI) element);
 		}
 		if (element instanceof EventHandler) {
 			return writer.eventHandler2XML((EventHandler) element);

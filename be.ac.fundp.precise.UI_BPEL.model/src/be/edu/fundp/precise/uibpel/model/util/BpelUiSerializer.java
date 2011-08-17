@@ -58,7 +58,7 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 			}
 			if (sa.getEventHandlers() != null)
 				saElement.appendChild(eventUIHandler2XML((EventHandlerUI) sa
-						.getEventHandlers(), document, elementType, process, bpelWriter));
+						.getEventHandlers(), document, elementType.getNamespaceURI(), process, bpelWriter));
 		}
 
 		/*
@@ -175,19 +175,22 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 		parentNode.appendChild(saElement);
 	}
 
-	private Node eventUIHandler2XML(EventHandlerUI eventHandler,
-			Document document, QName elementType, Process process,
+	public Node eventUIHandler2XML(EventHandlerUI eventHandler,
+			Document document, String elementType, Process process,
 			BPELWriter bpelWriter) {
+		BpelUIWriter myBpelUIWriter;
+		if (bpelWriter instanceof BpelUIWriter)
+			myBpelUIWriter = (BpelUIWriter) bpelWriter;
+		else
+			myBpelUIWriter =  new BpelUIWriter(bpelWriter.getResource(),document);
 		
-		BpelUIWriter myBpelUIWriter =  new BpelUIWriter(bpelWriter.getResource(),document);
-		
-		Element eventHandlerElement = document.createElementNS(elementType.getNamespaceURI(),
+		Element eventHandlerElement = document.createElementNS(elementType,
 				BpelUiConstants.ND_EVENT_UI_HANDLER);
 		eventHandlerElement.setPrefix(BpelUiUtils.addNamespace(process));
 
 		for (Iterator<?> it = eventHandler.getUserInteraction().iterator(); it.hasNext();) {
 			OnUserEvent onUserEvent = (OnUserEvent) it.next();
-			eventHandlerElement.appendChild(onUserEvent2XML(onUserEvent, document, elementType.getNamespaceURI(), process, bpelWriter));
+			eventHandlerElement.appendChild(onUserEvent2XML(onUserEvent, document, elementType, process, bpelWriter));
 		}
 		// TODO: For backwards compatibility with 1.1 we should serialize
 		// OnMessages here.
