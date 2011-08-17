@@ -181,13 +181,6 @@ public class DataOutputUIImpl extends UserInteractionImpl implements DataOutputU
 		return super.eIsSet(featureID);
 	}
 
-	@Override
-	public ExtensibilityElement removeExtensibilityElement(
-			ExtensibilityElement arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

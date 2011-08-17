@@ -183,13 +183,6 @@ public class OnUserEventImpl extends UsableEntityImpl implements OnUserEvent {
 		}
 		return super.eIsSet(featureID);
 	}
-
-	@Override
-	public ExtensibilityElement removeExtensibilityElement(
-			ExtensibilityElement arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	protected void adoptContent(EReference reference, Object object) {

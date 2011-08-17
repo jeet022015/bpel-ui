@@ -51,13 +51,6 @@ public class ScopeUIImpl extends ScopeImpl implements ScopeUI {
 	}
 
 	@Override
-	public ExtensibilityElement removeExtensibilityElement(
-			ExtensibilityElement arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void updateElementReferences(EObject object, String attrName,
 			String attrValue) {
 		// TODO Auto-generated method stub	

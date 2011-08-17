@@ -30,15 +30,14 @@ import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.While;
 import org.eclipse.emf.common.util.EList;
 
+import auiPackage.AbstractCompoundIU;
+import auiPackage.AbstractDataIU;
+import auiPackage.AbstractDataIUType;
+import auiPackage.AbstractUIModel;
+import auiPackage.AuiPackageFactory;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
-
-import org.usixml.aui.auiPackage.AbstractCompoundIU;
-import org.usixml.aui.auiPackage.AbstractDataIU;
-import org.usixml.aui.auiPackage.AbstractDataIUType;
-import org.usixml.aui.auiPackage.AbstractUIModel;
-import org.usixml.aui.auiPackage.AuiPackageFactory;
 
 public class AUIGenerator {
 
