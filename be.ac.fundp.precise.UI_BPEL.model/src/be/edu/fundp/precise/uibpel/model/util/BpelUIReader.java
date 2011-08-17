@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.eclipse.bpel.model.Activity;
 import org.eclipse.bpel.model.BPELExtensibleElement;
-import org.eclipse.bpel.model.BPELFactory;
 import org.eclipse.bpel.model.CorrelationSets;
 import org.eclipse.bpel.model.EventHandler;
 import org.eclipse.bpel.model.FaultHandler;
 import org.eclipse.bpel.model.MessageExchanges;
 import org.eclipse.bpel.model.OnAlarm;
 import org.eclipse.bpel.model.OnEvent;
+import org.eclipse.bpel.model.OnMessage;
 import org.eclipse.bpel.model.PartnerLinks;
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.Scope;
@@ -19,7 +19,6 @@ import org.eclipse.bpel.model.TerminationHandler;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.Variables;
 import org.eclipse.bpel.model.resource.BPELReader;
-import org.eclipse.bpel.model.util.BPELUtils;
 import org.eclipse.bpel.ui.util.ModelHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
@@ -27,15 +26,21 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
+import be.edu.fundp.precise.uibpel.model.DataItem;
+import be.edu.fundp.precise.uibpel.model.DataOutputUI;
+import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
+import be.edu.fundp.precise.uibpel.model.DataType;
 import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.ModelFactory;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
+import be.edu.fundp.precise.uibpel.model.PickUI;
 import be.edu.fundp.precise.uibpel.model.ScopeUI;
+import be.edu.fundp.precise.uibpel.model.UserInteraction;
 
 public class BpelUIReader extends BPELReader{
 
-	public ScopeUI xml2ScopeUI(Element scopeElement) {
+	protected ScopeUI xml2ScopeUI(Element scopeElement) {
 		ScopeUI scope = ModelFactory.eINSTANCE
 				.createScopeUI();
 		// attach the DOM node to our new activity
@@ -163,7 +168,7 @@ public class BpelUIReader extends BPELReader{
 	 * @param localName  the localName to match against
 	 * @return a node list of the matching children of parentElement
      */
-	public List<Element> getBPELUiChildElementsByLocalName(Element parentElement, String localName) {
+	protected List<Element> getBPELUiChildElementsByLocalName(Element parentElement, String localName) {
 		List<Element> list = new ArrayList<Element>();
 		NodeList children = parentElement.getChildNodes();
 		for (int i = 0; i < children.getLength(); i++) {
@@ -175,7 +180,7 @@ public class BpelUIReader extends BPELReader{
 		return list;
 	}
 
-	private EventHandler xml2EventUIHandler(Element eventHandlerElement) {
+	protected EventHandler xml2EventUIHandler(Element eventHandlerElement) {
 		EventHandlerUI eventHandler = ModelFactory.eINSTANCE.createEventHandlerUI();
 		eventHandler.setElement(eventHandlerElement);
 		
@@ -210,7 +215,7 @@ public class BpelUIReader extends BPELReader{
 		return eventHandler;
 	}
 
-	private OnUserEvent xml2OnUserEvent(Element pickInstanceElement) {
+	protected OnUserEvent xml2OnUserEvent(Element pickInstanceElement) {
 		// create a new DataOutputUI model object if not already created
 		OnUserEvent sa = ModelFactory.eINSTANCE
 			.createOnUserEvent();
@@ -242,7 +247,7 @@ public class BpelUIReader extends BPELReader{
 		return sa;
 	}
 
-	public Activity xml2DataInputUI(Activity activity, Element saElement, Process process) {
+	protected DataInputUI xml2DataInputUI(Activity activity, Element saElement, Process process) {
 		// create a new DataInputUI model object if not already created
 		DataInputUI sa;
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
@@ -255,23 +260,77 @@ public class BpelUIReader extends BPELReader{
 			// attach the DOM node to our new activity
 			sa.setElement(saElement);
 		}
-		
 		createInputVar(activity, saElement, process, sa);
 		
 		// handle the ID
+		setID(saElement, sa);
+		//TODO It Works?
+		setUserRole(saElement, sa);
+		//TODO It Works?
+		setDataItem(saElement, sa);
+		return sa;
+	}
+
+	private void setDataItem(Element saElement, UserInteraction sa) {
+		NodeList userRoles = saElement.getChildNodes();        
+		Element userRoleElement = null;
+		if (userRoles != null && userRoles.getLength() > 0) {
+			for (int i = 0; i < userRoles.getLength(); i++) {
+				if (userRoles.item(i).getNodeType() != Node.ELEMENT_NODE)
+					continue;
+				userRoleElement = (Element)userRoles.item(i);
+				if (userRoleElement.getLocalName().equals("dataItem")) {
+					DataItem aDataItem = ModelFactory.eINSTANCE
+							.createDataItem();
+					aDataItem.setElement(userRoleElement);
+					// handle the SampleExtensionAttribute
+					String dataDesc = ModelPackage.eINSTANCE
+							.getDataItem_Description().getName();
+					if (userRoleElement.getAttribute(dataDesc) != null) {
+						aDataItem.setDescription(userRoleElement.getAttribute(dataDesc));
+					}
+					
+					// handle the SampleExtensionAttribute
+					String dataType = ModelPackage.eINSTANCE
+							.getDataItem_Type().getName();
+					if (userRoleElement.getAttribute(dataType) != null) {
+						aDataItem.setType(DataType.STRING_TYPE);
+					}
+					sa.getData().add(aDataItem);
+				}
+			}
+		}
+	}
+
+	private void setUserRole(Element saElement, UserInteraction sa) {
+		NodeList userRoles = saElement.getChildNodes();        
+		Element userRoleElement = null;
+		if (userRoles != null && userRoles.getLength() > 0) {
+          
+			for (int i = 0; i < userRoles.getLength(); i++) {
+				if (userRoles.item(i).getNodeType() != Node.ELEMENT_NODE)
+					continue;           	   	             
+			   	userRoleElement = (Element)userRoles.item(i);
+				if (userRoleElement.getLocalName().equals(BpelUiConstants.ND_USER_ROLE)) {
+					
+					// handle the SampleExtensionAttribute
+					String attName = ModelPackage.eINSTANCE
+							.getUsableEntity_Roles().getName();
+					if (userRoleElement.getAttribute(attName) != null) {
+						sa.getRoles().add(userRoleElement.getAttribute(attName));
+					}
+				}
+			}
+		}
+	}
+
+	private void setID(Element saElement, UserInteraction sa) {
 		String attName = ModelPackage.eINSTANCE
 				.getUsableEntity_Id().getName();
 		if (saElement.getAttribute(attName) != null) {
 			sa.setId(saElement.getAttribute(attName));
 			BpelUiUtils.setId(saElement.getAttribute(attName));
 		}
-		
-		//TODO It Works?
-		//setUserRole(saElement, sa);
-		
-		//TODO It Works?
-		//setDataItem(saElement, sa);
-		return sa;
 	}
 
 	private void createInputVar(Activity activity, Element saElement,
@@ -291,6 +350,160 @@ public class BpelUIReader extends BPELReader{
 				}
 			}
 		}
+	}
+
+	protected DataOutputUI xml2DataOutputUI(Activity activity, Element saElement,
+			Process process) {
+		DataOutputUI sa;
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
+		if (activity instanceof DataOutputUI) {
+			sa = (DataOutputUI)activity;
+		}
+		else {
+			sa = ModelFactory.eINSTANCE
+				.createDataOutputUI();
+			// attach the DOM node to our new activity
+			sa.setElement(saElement);
+		}
+		
+		setOutputVar(saElement, process, sa);
+		
+		// handle the ID
+		setID(saElement, sa);
+		
+		//TODO It Works?
+		setUserRole(saElement, sa);
+		
+		//TODO It Works?
+		setDataItem(saElement, sa);
+		return sa;
+	}
+
+	private void setOutputVar(Element saElement, Process process,
+			DataOutputUI sa) {
+		// handle variable name: find this variable is in a visible scope
+		String outputVarName = saElement.getAttribute(
+				ModelPackage.eINSTANCE.
+				getDataOutputUI_OutputVariable().getName());
+		if (outputVarName!=null && !"".equals(outputVarName.trim())) {
+			//Variable[] vars = ModelHelper.getVisibleVariables(activity);
+			for (Variable variable : process.getVariables().getChildren()) {
+				if (outputVarName.equals(variable.getName())) {
+					sa.setOutputVariable(variable);
+					break;
+				}
+			}
+		}
+	}
+
+	protected DataSelectionUI xml2DataSelectionUI(Activity activity, Element saElement,
+			Process process) {
+		DataSelectionUI sa;
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
+		if (activity instanceof DataSelectionUI) {
+			sa = (DataSelectionUI)activity;
+		}
+		else {
+			sa = ModelFactory.eINSTANCE
+				.createDataSelectionUI();
+
+			// attach the DOM node to our new activity
+			sa.setElement(saElement);
+		}
+		
+		setMaxCard(saElement, sa);
+		
+		setMinCardin(saElement, sa);
+		
+		setOutputVar(saElement, process, sa);
+		
+		createInputVar(activity, saElement, process, sa);
+		
+		// handle the ID
+		setID(saElement, sa);
+		
+		//TODO It Works?
+		setUserRole(saElement, sa);
+		
+		//TODO It Works?
+		setDataItem(saElement, sa);
+		return sa;
+	}
+
+	private void setMinCardin(Element saElement, DataSelectionUI sa) {
+		// handle the MaxCardinality
+		String attName = ModelPackage.eINSTANCE
+				.getDataSelectionUI_MinCardinality().getName();
+		if (saElement.getAttribute(attName) != null) {
+			sa.setMinCardinality(Integer.parseInt(saElement.getAttribute(attName)));
+		}
+	}
+
+	private void setMaxCard(Element saElement, DataSelectionUI sa) {
+		// handle the MaxCardinality
+		String attName = ModelPackage.eINSTANCE
+				.getDataSelectionUI_MaxCardinality().getName();
+		if (saElement.getAttribute(attName) != null) {
+			sa.setMaxCardinality(Integer.parseInt(saElement.getAttribute(attName)));
+		}
+	}
+
+	public Activity xml2PickUI(Activity activity, Element pickElement,
+			Process process) {
+		PickUI pick;
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
+		if(activity != null && activity instanceof PickUI){
+			pick = (PickUI)activity;
+		}else {
+			pick = ModelFactory.eINSTANCE
+				.createPickUI();
+			// attach the DOM node to our new activity
+			pick.setElement(pickElement);
+		}
+
+		// Set name
+		Attr name = pickElement.getAttributeNode("name");
+		
+		if (name != null && name.getSpecified())
+			pick.setName(name.getValue());
+		
+		// Set createInstance
+		Attr createInstance = pickElement.getAttributeNode("createInstance");
+		
+		if (createInstance != null && createInstance.getSpecified()) 
+       		pick.setCreateInstance(Boolean.valueOf(createInstance.getValue().equals("yes") ? "True":"False"));  	
+	
+        NodeList pickElements = pickElement.getChildNodes();
+        
+        Element pickInstanceElement = null;
+
+		if (pickElements != null && pickElements.getLength() > 0) {
+          
+           for (int i = 0; i < pickElements.getLength(); i++) {
+				if (pickElements.item(i).getNodeType() != Node.ELEMENT_NODE)
+           	   	  continue;
+           	   	             	
+               pickInstanceElement = (Element)pickElements.item(i);
+               
+				if (pickInstanceElement.getLocalName().equals("onAlarm")) {
+     				OnAlarm onAlarm = xml2OnAlarm( pickInstanceElement );
+     				
+     				pick.getAlarm().add(onAlarm);
+     			}     	
+				else if (pickInstanceElement.getLocalName().equals("onMessage")) {
+     				OnMessage onMessage = xml2OnMessage(pickInstanceElement);	
+    	 			pick.getMessages().add(onMessage);
+     			}
+				else if (pickInstanceElement.getLocalName().equals(BpelUiConstants.ND_ON_USER_EVENT)) {
+ 					OnUserEvent onUserEvent = xml2OnUserEvent(pickInstanceElement);
+ 					pick.getUserInteraction().add(onUserEvent);
+				}
+           }
+        }
+        
+        setStandardAttributes(pickElement, pick);
+
+		return pick;
 	}
 
 }
