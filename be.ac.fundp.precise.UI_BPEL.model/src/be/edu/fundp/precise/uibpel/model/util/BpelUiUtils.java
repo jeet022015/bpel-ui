@@ -3,6 +3,7 @@ package be.edu.fundp.precise.uibpel.model.util;
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.adapters.INamespaceMap;
 import org.eclipse.bpel.model.util.BPELUtils;
+import org.w3c.dom.Node;
 
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
@@ -36,6 +37,11 @@ public class BpelUiUtils {
 		} catch (NumberFormatException e) {
 			
 		}
+	}
+
+	//TODO
+	public static boolean isBpelUiElement(Node node) {
+		return true;
 	}
 
 }

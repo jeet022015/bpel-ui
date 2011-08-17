@@ -47,6 +47,7 @@ import be.edu.fundp.precise.uibpel.model.UserInteraction;
 public class BpelUiDeserializer implements BPELActivityDeserializer {
 		
 	Set <Integer> codes = new HashSet<Integer>();
+	BpelUIReader inBpelUIReader = new BpelUIReader();
 	
 	@Override
 	public Activity unmarshall(QName elementType, Node node, Activity activity, Process process,
@@ -105,6 +106,7 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 			
 			//TODO It Works?
 			setDataItem(saElement, sa);
+			//return inBpelUIReader.xml2DataInputUI(activity,saElement, process);
 			return sa;
 		}
 		
@@ -281,24 +283,8 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 		 * Scope
 		 */
 		if (BpelUiConstants.ND_SCOPE_UI.equals(elementType.getLocalPart())) {
-
-			// create a new DataOutputUI model object if not already created
-			ScopeUI sa;
 			Element saElement = (Element)node;
-			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
-			if(activity != null && activity instanceof ScopeUI){
-				sa = (ScopeUI)activity;
-			}else {
-				sa = ModelFactory.eINSTANCE
-					.createScopeUI();
-				// attach the DOM node to our new activity
-				sa.setElement(saElement);
-			}
-			
-			// Handler EventHandler element
-			setEventHandler(saElement, sa, bpelReader);
-
-			return sa;
+			return inBpelUIReader.xml2ScopeUI(saElement);
 		}
 
 		System.err.println("Cannot handle this kind of element");
