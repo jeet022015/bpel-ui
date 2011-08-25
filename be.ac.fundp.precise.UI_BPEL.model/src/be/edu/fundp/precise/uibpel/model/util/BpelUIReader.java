@@ -148,8 +148,6 @@ public class BpelUIReader extends BPELReader{
 
 	protected void setEventHandlerUI(Element element, BPELExtensibleElement extensibleElement) {
 		List<Element> eventHandlerElements = getBPELUiChildElementsByLocalName(element, "eventUiHandler");
-
-		System.out.println("eventHandlerElements: "+eventHandlerElements);
         
 		if (eventHandlerElements.size() > 0) {
 			EventHandler eventHandler =	xml2EventUIHandler(eventHandlerElements.get(0)); 

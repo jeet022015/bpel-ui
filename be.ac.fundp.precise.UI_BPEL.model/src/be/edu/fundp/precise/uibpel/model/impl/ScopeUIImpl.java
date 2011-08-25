@@ -64,7 +64,6 @@ public class ScopeUIImpl extends ScopeImpl implements ScopeUI {
 			EventHandler newEventHandlers, NotificationChain msgs) {
 		EventHandler oldEventHandlers = eventHandlers;
 		if (!isReconciling) {
-			System.out.println("class type: "+newEventHandlers.getClass());
 			BpelUiReconciliationHelper.replaceChild(this, oldEventHandlers,
 					newEventHandlers);
 		}

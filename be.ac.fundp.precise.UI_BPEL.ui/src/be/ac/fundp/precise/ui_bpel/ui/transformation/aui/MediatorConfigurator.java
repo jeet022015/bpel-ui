@@ -82,8 +82,6 @@ public class MediatorConfigurator {
 		StreamResult result = new StreamResult(out);
 
 		transformer.transform(source, result);
-
-		System.out.println("File saved!");
 	}
 
 	public void createDataOutputConf(AbstractCompoundIU comp,

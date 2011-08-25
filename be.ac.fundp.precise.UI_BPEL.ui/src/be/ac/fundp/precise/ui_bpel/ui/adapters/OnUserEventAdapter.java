@@ -1,7 +1,6 @@
 package be.ac.fundp.precise.ui_bpel.ui.adapters;
 
 import org.eclipse.bpel.ui.BPELUIPlugin;
-import org.eclipse.bpel.ui.IBPELUIConstants;
 import org.eclipse.bpel.ui.adapters.ContainerAdapter;
 import org.eclipse.bpel.ui.adapters.IContainer;
 import org.eclipse.bpel.ui.adapters.IExtensionFactory;
@@ -13,7 +12,6 @@ import org.eclipse.bpel.ui.editparts.ElseIfEditPart;
 import org.eclipse.bpel.ui.editparts.OutlineTreeEditPart;
 import org.eclipse.bpel.ui.util.ModelHelper;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.swt.graphics.Image;
@@ -63,7 +61,7 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 	/* EditPartFactory */
 	
 	public EditPart createEditPart(EditPart context, Object model) {
-		Resource r = ((EObject)model).eResource();
+		//Resource r = ((EObject)model).eResource();
 		EditPart result = new ElseIfEditPart();
 		result.setModel(model);
 		return result;

@@ -37,7 +37,6 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 	public void marshall(QName elementType, Activity activity,
 			Node parentNode, Process process,
 			BPELWriter bpelWriter) {
-		System.out.println("here");
 
 		Document document = parentNode.getOwnerDocument();
 		Element saElement = null;
