@@ -28,6 +28,8 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 	@Override
 	public Activity unmarshall(QName elementType, Node node, Activity activity, Process process,
 			Map nsMap, ExtensionRegistry extReg, URI uri, BPELReader bpelReader) {
+		
+		inBpelUIReader.setInnerReader(bpelReader);
 	
 		if (codes.contains(node.hashCode())) {
 			return null;

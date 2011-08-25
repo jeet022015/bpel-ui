@@ -20,6 +20,7 @@ import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.Variables;
 import org.eclipse.bpel.model.resource.BPELReader;
 import org.eclipse.bpel.ui.util.ModelHelper;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,6 +40,8 @@ import be.edu.fundp.precise.uibpel.model.ScopeUI;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
 
 public class BpelUIReader extends BPELReader{
+	
+	BPELReader myInnerReader;
 
 	protected ScopeUI xml2ScopeUI(Element scopeElement) {
 		ScopeUI scope = ModelFactory.eINSTANCE
@@ -135,7 +138,7 @@ public class BpelUIReader extends BPELReader{
 					continue;
 				}
                
-               Activity activity = xml2Activity(activityElement);
+               Activity activity = myInnerReader.xml2Activity(activityElement);
                if (activity != null) { 
                		scope.setActivity(activity);
                		break;
@@ -485,7 +488,6 @@ public class BpelUIReader extends BPELReader{
                
 				if (pickInstanceElement.getLocalName().equals("onAlarm")) {
      				OnAlarm onAlarm = xml2OnAlarm( pickInstanceElement );
-     				
      				pick.getAlarm().add(onAlarm);
      			}     	
 				else if (pickInstanceElement.getLocalName().equals("onMessage")) {
@@ -502,6 +504,14 @@ public class BpelUIReader extends BPELReader{
         setStandardAttributes(pickElement, pick);
 
 		return pick;
+	}
+
+	public void setInnerReader(BPELReader bpelReader) {
+		myInnerReader = bpelReader;
+	}
+	
+	public Resource getResource () {
+		return myInnerReader.getResource();
 	}
 
 }
