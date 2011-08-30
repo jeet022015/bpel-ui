@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="BPEL_UI_ObjectFactory"
+         name="test"
+         point="org.eclipse.bpel.ui.uiObjectFactories">
+         <factory
+         	class="be.edu.fundp.precise.bpel_ui.ui.factories.BPEL_UI_UIObjectFactory"
+         	specCompliant="false" categoryId="not.used"
+         	id="be.edu.fundp.precise.bpel_ui.ui.factories.BPEL_UI_UIObjectFactory" />
+   </extension>
+   <extension
+         point="org.eclipse.bpel.common.ui.paletteAdditions">
+      <additions
+            provider="be.edu.fundp.precise.bpel_ui.ui.pallete.BPEL_UI_PaletteProvider"
+            targetEditor="org.eclipse.bpel.ui.bpeleditor">
+      </additions>
+   </extension>
+   
+  	<extension point="org.eclipse.ui.views.properties.tabbed.propertySections">
+		<propertySections contributorId="org.eclipse.bpel.ui.bpeleditor">
+			<propertySection
+				class="be.edu.fundp.precise.bpel_ui.ui.properties.DataInputUIPropertySection"
+				tab="org.eclipse.bpel.ui.tabs.details"
+				id="be.edu.fundp.precise.bpel_ui.ui.properties.DataInputUIPropertySection">
+				<input type="model.DataInputUI" />
+			</propertySection>
+		</propertySections>
+	</extension>
+
+</plugin>
