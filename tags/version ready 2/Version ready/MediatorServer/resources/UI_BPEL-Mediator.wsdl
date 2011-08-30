@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="UI_BPEL-Mediator" targetNamespace="http://www.example.org/UI_BPEL-Mediator/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.example.org/UI_BPEL-Mediator/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.example.org/UI_BPEL-Mediator/">
+      <xsd:element name="dataInputUI">
+        <xsd:complexType>
+          <xsd:sequence>
+          	<xsd:element name="auiID" type="xsd:string"/>
+          	<xsd:element name="role" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="dataInputUIResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="tns:DataUIType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    
+      <xsd:complexType name="DataUIType">
+      	<xsd:sequence>
+      		<xsd:element maxOccurs="unbounded" minOccurs="0" name="StringUIData" type="tns:StringUIDataType">
+      		</xsd:element>
+      		<xsd:element maxOccurs="unbounded" minOccurs="0" name="IntUIData" type="tns:IntUIDataType">
+      		</xsd:element>
+      		<xsd:element maxOccurs="unbounded" minOccurs="0" name="DateUIData" type="tns:DateUIDataType">
+      		</xsd:element>
+      		<xsd:element maxOccurs="unbounded" minOccurs="0" name="BooleanUIData" type="tns:BooleanUIDataType">
+      		</xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+    
+      <xsd:complexType name="StringUIDataType">
+      	<xsd:sequence>
+      		<xsd:element name="Name" type="xsd:string"/>
+      		<xsd:element name="Data" type="xsd:string"/>
+      	</xsd:sequence>
+      </xsd:complexType>
+    
+      <xsd:complexType name="IntUIDataType">
+      	<xsd:sequence>
+      		<xsd:element name="Name" type="xsd:string"/>
+      		<xsd:element name="Data" type="xsd:int"/>
+      	</xsd:sequence>
+      </xsd:complexType>
+    
+      <xsd:complexType name="DateUIDataType">
+      	<xsd:sequence>
+      		<xsd:element name="Name" type="xsd:string"/>
+      		<xsd:element name="Data" type="xsd:date"/>
+      	</xsd:sequence>
+      </xsd:complexType>
+    
+      <xsd:complexType name="BooleanUIDataType">
+      	<xsd:sequence>
+      		<xsd:element name="Name" type="xsd:string"/>
+      		<xsd:element name="Data" type="xsd:boolean"/>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="dataOutputUI">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="auiID" type="xsd:string"/>
+      			<xsd:element name="role" type="xsd:string"/>
+      			<xsd:element name="data" type="tns:DataUIType"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="dataOutputUIResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="out" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="dataSelectionUI">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="auiID" type="xsd:string"/>
+      			<xsd:element name="role" type="xsd:string"/>
+      			<xsd:element name="selectable" type="tns:DataUIType"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="dataSelectionUIResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="selected" type="tns:DataUIType"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="eventUI">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="in" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="eventUIResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="id" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="eventDataUI">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="id" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="NewOperationResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="out" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="NewOperationResponse">
+    <wsdl:part name="parameters" element="tns:NewOperationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dataOutputUIResponse">
+    <wsdl:part name="parameters" element="tns:dataOutputUIResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dataSelectionUIResponse">
+    <wsdl:part name="parameters" element="tns:dataSelectionUIResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dataSelectionUIRequest">
+    <wsdl:part name="parameters" element="tns:dataSelectionUI">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dataInputUIResponse">
+    <wsdl:part name="parameters" element="tns:dataInputUIResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dataInputUIRequest">
+    <wsdl:part name="parameters" element="tns:dataInputUI">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="eventUIResponse">
+    <wsdl:part name="parameters" element="tns:eventUIResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="eventDataUIRequest">
+    <wsdl:part name="parameters" element="tns:eventDataUI">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="eventUIRequest">
+    <wsdl:part name="parameters" element="tns:eventUI">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dataOutputUIRequest">
+    <wsdl:part name="parameters" element="tns:dataOutputUI">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="UI_BPEL-Mediator">
+    <wsdl:operation name="dataInputUI">
+      <wsdl:input message="tns:dataInputUIRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:dataInputUIResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dataOutputUI">
+      <wsdl:input message="tns:dataOutputUIRequest">
+    </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="dataSelectionUI">
+      <wsdl:input message="tns:dataSelectionUIRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:dataSelectionUIResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eventDataUI">
+      <wsdl:input message="tns:eventDataUIRequest">
+    </wsdl:input>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="UI_BPEL-MediatorSOAP" type="tns:UI_BPEL-Mediator">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="dataInputUI">
+      <soap:operation soapAction="http://www.example.org/UI_BPEL-Mediator/dataInputUI"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="dataOutputUI">
+      <soap:operation soapAction="http://www.example.org/UI_BPEL-Mediator/dataOutputUI"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="dataSelectionUI">
+      <soap:operation soapAction="http://www.example.org/UI_BPEL-Mediator/dataSelectionUI"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eventDataUI">
+      <soap:operation soapAction="http://www.example.org/UI_BPEL-Mediator/eventDataUI"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UI_BPEL-Mediator">
+    <wsdl:port name="UI_BPEL-MediatorSOAP" binding="tns:UI_BPEL-MediatorSOAP">
+      <soap:address location="http://www.example.org/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
