@@ -10,6 +10,8 @@ import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
+import be.edu.fundp.precise.uibpel.model.util.BpelUiConstants;
+import be.edu.fundp.precise.uibpel.model.util.BpelUiReconciliationHelper;
 
 import java.util.Collection;
 
@@ -20,6 +22,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -300,6 +303,16 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+	
+	@Override
+	protected void adoptContent(EReference reference, Object object) {
+		if (object instanceof DataItem) {
+			if (reference.getName().equals(BpelUiConstants.ND_OUTPUT_ITEM))
+				BpelUiReconciliationHelper.adoptChild(this, outputItem, (DataItem) object,
+						BpelUiConstants.ND_OUTPUT_ITEM);
+		}
+		super.adoptContent(reference, object);
 	}
 
 	/**

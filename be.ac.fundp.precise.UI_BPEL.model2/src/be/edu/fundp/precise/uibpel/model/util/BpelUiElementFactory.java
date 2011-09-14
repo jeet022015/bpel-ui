@@ -64,6 +64,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import be.edu.fundp.precise.uibpel.model.DataItem;
+import be.edu.fundp.precise.uibpel.model.DataOutputUI;
+import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.impl.OnUserEventImpl;
 
@@ -241,7 +243,15 @@ public class BpelUiElementFactory{
 		}
 		//Here are BPEL UI Elements
 		if (element instanceof DataItem) {
-			return writer.dataItem2XML((DataItem) element);
+			String type = BpelUiConstants.ND_INPUT_ITEM;
+			if (parent instanceof DataSelectionUI){
+				DataSelectionUI d = (DataSelectionUI)parent;
+				if (d.getOutputItem().contains(element))
+					type = BpelUiConstants.ND_OUTPUT_ITEM;
+			} else if (parent instanceof DataOutputUI)
+				type = BpelUiConstants.ND_OUTPUT_ITEM;
+			
+			return writer.dataItem2XML((DataItem) element, type);
 		}
 		if (element instanceof OnUserEventImpl) {
 			return writer.onUserEventImpl2XML((OnUserEventImpl) element);

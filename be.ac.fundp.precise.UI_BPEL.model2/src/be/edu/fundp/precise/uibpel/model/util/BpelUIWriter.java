@@ -320,11 +320,11 @@ public class BpelUIWriter extends org.eclipse.bpel.model.resource.BPELWriter {
 		return super.documentation2XML(documentation);
 	}
 
-	public Element dataItem2XML(DataItem element) {
+	public Element dataItem2XML(DataItem element, String type) {
 		//TODO WORKS?
 		String namespace = element.eClass().getEPackage().getNsURI();
 		Element elem = (Element) mySer.dataItem2XML(element, staticDoc,
-				namespace, getResource().getProcess(), BpelUiConstants.ND_INPUT_ITEM);
+				namespace, getResource().getProcess(), type);
 		return elem;
 	}
 
