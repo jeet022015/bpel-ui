@@ -9,7 +9,6 @@ public class Logic {
 	protected static Logic instance;
 	protected AUI_Communicator mediator = AUI_Communicator.getInstance();
 	
-	
 	protected Logic() {
 	}
 

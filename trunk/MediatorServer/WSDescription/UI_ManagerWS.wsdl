@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/UI_BPEL-Mediator/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="UI_BPEL-Mediator" targetNamespace="http://www.example.org/UI_BPEL-Mediator/">
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/UI_BPEL-Mediator/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="UI_ManagerWS_Binding" targetNamespace="http://www.example.org/UI_BPEL-Mediator/">
   <wsdl:types>
     <xsd:schema targetNamespace="http://www.example.org/UI_BPEL-Mediator/">
       <xsd:element name="dataInputUI">
@@ -124,6 +124,20 @@
       		</xsd:sequence>
       	</xsd:complexType>
       </xsd:element>
+      <xsd:element name="faultUI">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="id" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="NewOperationResponse1">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="out" type="xsd:string"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="dataInputUIRequest">
@@ -156,7 +170,13 @@
   <wsdl:message name="NewOperationResponse">
   	<wsdl:part name="parameters" element="tns:NewOperationResponse"></wsdl:part>
   </wsdl:message>
-  <wsdl:portType name="UI_BPEL-Mediator">
+  <wsdl:message name="faultUIRequest">
+  	<wsdl:part name="parameters" element="tns:faultUI"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="NewOperationResponse1">
+  	<wsdl:part name="parameters" element="tns:NewOperationResponse1"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="UI_Manager">
     <wsdl:operation name="dataInputUI">
       <wsdl:input message="tns:dataInputUIRequest"/>
       <wsdl:output message="tns:dataInputUIResponse"/>
@@ -171,9 +191,11 @@
     <wsdl:operation name="eventDataUI">
     	<wsdl:input message="tns:eventDataUIRequest"></wsdl:input>
     </wsdl:operation>
+    <wsdl:operation name="faultUI">
+    	<wsdl:input message="tns:faultUIRequest"></wsdl:input>
+    </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="UI_BPEL-MediatorSOAP"
-  	type="tns:UI_BPEL-Mediator">
+  <wsdl:binding name="UI_ManagerWS_Binder" type="tns:UI_Manager">
   	<soap:binding style="document"
   		transport="http://schemas.xmlsoap.org/soap/http" />
   	<wsdl:operation name="dataInputUI">
@@ -210,9 +232,16 @@
   			<soap:body use="literal" />
   		</wsdl:input>
   	</wsdl:operation>
+  	<wsdl:operation name="faultUI">
+  		<soap:operation
+  			soapAction="http://www.example.org/UI_BPEL-Mediator/faultUI" />
+  		<wsdl:input>
+  			<soap:body use="literal" />
+  		</wsdl:input>
+  	</wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="UI_BPEL-Mediator">
-    <wsdl:port binding="tns:UI_BPEL-MediatorSOAP" name="UI_BPEL-MediatorSOAP">
+  <wsdl:service name="UI_ManagerWS">
+    <wsdl:port binding="tns:UI_ManagerWS_Binder" name="UI_ManagerWS_SOAP">
       <soap:address location="http://www.example.org/"/>
     </wsdl:port>
   </wsdl:service>
