@@ -21,48 +21,40 @@
       <xsd:complexType name="DataUIType">
       	<xsd:sequence>
       		<xsd:element name="StringUIData"
-      			type="tns:StringUIDataType" minOccurs="0"
+      			type="xsd:string" minOccurs="0"
       			maxOccurs="unbounded">
       		</xsd:element>
-      		<xsd:element name="IntUIData" type="tns:IntUIDataType"
+      		<xsd:element name="IntUIData" type="xsd:int"
       			minOccurs="0" maxOccurs="unbounded">
       		</xsd:element>
-      		<xsd:element name="DateUIData" type="tns:DateUIDataType"
+      		<xsd:element name="DateUIData" type="xsd:date"
       			minOccurs="0" maxOccurs="unbounded">
       		</xsd:element>
       		<xsd:element name="BooleanUIData"
-      			type="tns:BooleanUIDataType" minOccurs="0"
+      			type="xsd:boolean" minOccurs="0"
       			maxOccurs="unbounded">
       		</xsd:element>
       	</xsd:sequence>
       </xsd:complexType>
     
       <xsd:complexType name="StringUIDataType">
-      	<xsd:sequence>
-      		<xsd:element name="Name" type="xsd:string"></xsd:element>
-      		<xsd:element name="Data" type="xsd:string"></xsd:element>
-      	</xsd:sequence>
+      	<xsd:attribute name="id" type="xsd:string"></xsd:attribute>
+      	<xsd:attribute name="value" type="xsd:string"></xsd:attribute>
       </xsd:complexType>
-    
+
       <xsd:complexType name="IntUIDataType">
-      	<xsd:sequence>
-      		<xsd:element name="Name" type="xsd:string"></xsd:element>
-      		<xsd:element name="Data" type="xsd:int"></xsd:element>
-      	</xsd:sequence>
+      	<xsd:attribute name="id" type="xsd:string"></xsd:attribute>
+      	<xsd:attribute name="value" type="xsd:int"></xsd:attribute>
       </xsd:complexType>
-    
+
       <xsd:complexType name="DateUIDataType">
-      	<xsd:sequence>
-      		<xsd:element name="Name" type="xsd:string"></xsd:element>
-      		<xsd:element name="Data" type="xsd:date"></xsd:element>
-      	</xsd:sequence>
+      	<xsd:attribute name="id" type="xsd:string"></xsd:attribute>
+      	<xsd:attribute name="value" type="xsd:date"></xsd:attribute>
       </xsd:complexType>
-    
+
       <xsd:complexType name="BooleanUIDataType">
-      	<xsd:sequence>
-      		<xsd:element name="Name" type="xsd:string"></xsd:element>
-      		<xsd:element name="Data" type="xsd:boolean"></xsd:element>
-      	</xsd:sequence>
+      	<xsd:attribute name="id" type="xsd:string"></xsd:attribute>
+      	<xsd:attribute name="value" type="xsd:boolean"></xsd:attribute>
       </xsd:complexType>
       <xsd:element name="dataOutputUI">
       	<xsd:complexType>
