@@ -1,7 +1,10 @@
 package be.ac.fundp.precise.ui_bpel.ui.transformation.executBPEL;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.bpel.model.Assign;
 import org.eclipse.bpel.model.BPELFactory;
@@ -18,6 +21,7 @@ import org.eclipse.bpel.model.Sequence;
 import org.eclipse.bpel.model.To;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.Variables;
+import org.eclipse.bpel.model.resource.BPELResource;
 import org.eclipse.bpel.model.resource.BPELWriter;
 import org.eclipse.bpel.model.util.BPELConstants;
 import org.eclipse.core.resources.IFile;
@@ -51,6 +55,12 @@ public class WriterUiBpel extends BPELWriter {
 		}
 		arg2 = path;
 		bpel.configureProcess(arg1, arg2, process);
+	}
+	
+	public void write(BPELResource resource, OutputStream out, Map<?, ?> args)
+			throws IOException {
+		super.write(resource, out, args);
+		bpel.importNewWSDL();
 	}
 	
 	protected Element process2XML(Process process) {

@@ -40,11 +40,11 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
+import org.eclipse.wst.wsdl.ExtensibleElement;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
-import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.util.WSDLConstants;
 
 import be.ac.fundp.precise.ui_bpel.ui.util.WSDLImportHelperUI;
@@ -81,6 +81,8 @@ public class BpelUIUtil {
 	private int eventCount;
 	private Process p;
 	private PartnerLink partnerLinkBPEL;
+	private PartnerLinkType plt;
+	private Role role;
 
 	private static BpelUIUtil instance;
 
@@ -134,16 +136,16 @@ public class BpelUIUtil {
 
 		importBPEL = createImportInProcess();
 		partnerLinkBPEL = createPartnerLinkInProcess2();
-		PartnerLinkType plt = createPartnerLinkTypeInProcess();
-		Role role = createRoleInProcess();
+		plt = createPartnerLinkTypeInProcess();
+		role = createRoleInProcess();
 		
-		importNewWSDL(plt, role);
+		organizeBpelElement();
+		importNewWSDL();
 		operationConfiguration();
 		treatProcess(process.getActivity());
 	}
 
-	private void importNewWSDL(PartnerLinkType plt, Role role) {
-		
+	private void organizeBpelElement() {
 		//FIXME create correct names
 		PortType pt = null;
 		for (Object portType : wsdl_ui_bpel.getPortTypes().keySet()) {
@@ -162,10 +164,21 @@ public class BpelUIUtil {
 		
 		partnerLinkBPEL.setPartnerLinkType(plt);
 		partnerLinkBPEL.setPartnerRole(role);
-		
+	}
+
+	public void importNewWSDL() {
 		
 		WSDLImportHelperUI.addImportAndNamespace(processWSDl, wsdl_ui_bpel);
-		processWSDl.getEExtensibilityElements().add(plt);
+		boolean newPL = true;
+		for (Object element : processWSDl.getEExtensibilityElements()) {
+			if (element instanceof PartnerLinkType){
+				PartnerLinkType innerPL = (PartnerLinkType)element;
+				if(innerPL.getName().equals(plt.getName()))
+					newPL = false;
+			}
+		}
+		if (newPL)
+			processWSDl.getEExtensibilityElements().add(plt);
 		try {
 			processWSDl.eResource().save(null);
 		} catch (IOException e) {

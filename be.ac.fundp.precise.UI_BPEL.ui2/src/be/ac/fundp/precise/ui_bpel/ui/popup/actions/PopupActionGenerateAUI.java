@@ -1,11 +1,7 @@
 package be.ac.fundp.precise.ui_bpel.ui.popup.actions;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Map;
@@ -16,11 +12,10 @@ import javax.xml.transform.TransformerException;
 import org.eclipse.bpel.model.Process;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -31,11 +26,15 @@ import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.AUIGenerator;
 
 public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation {
 	
+	private ExtensibleURIConverterImpl converter;
+	
 	/**
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
 
+		converter = new ExtensibleURIConverterImpl();
+		
 		// load BPEL,WSDL,XSDs
 		Process process = loadBPEL();
 
@@ -57,25 +56,22 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 		IFile auiFile = folder.getFile("AUI_Model.aui");
 		IFile mediatorFile = folder.getFile("mediator.xml");
 		try {
-			if (!auiFile.exists()) {
-				byte[] bytes = "".getBytes();
-			    InputStream source = new ByteArrayInputStream(bytes);
-			    auiFile.create(source, IResource.NONE, null);
-			    source.close();
-			}
-			if (!mediatorFile.exists()) {
-				byte[] bytes = "".getBytes();
-			    InputStream source = new ByteArrayInputStream(bytes);
-			    mediatorFile.create(source, IResource.NONE, null);
-			    source.close();
-			}
-			File realFile = mediatorFile.getLocation().toFile();
-			OutputStream out = new BufferedOutputStream( new FileOutputStream(realFile));
-			AUIGenerator auiGen = new AUIGenerator(out);
-			AbstractUIModel model = auiGen.createAUI(process);
-			
 			IPath fullProcessPath = auiFile.getFullPath();
 			URI uri = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
+			OutputStream out1 = new BufferedOutputStream(converter.createOutputStream(uri));
+			
+			
+			fullProcessPath = mediatorFile.getFullPath();
+			URI uri2 = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
+			OutputStream out2 = new BufferedOutputStream(converter.createOutputStream(uri2));
+			
+			//File realFile = mediatorFile.getLocation().toFile();
+			//OutputStream out = new BufferedOutputStream( new FileOutputStream(realFile));
+			AUIGenerator auiGen = new AUIGenerator(out2);
+			AbstractUIModel model = auiGen.createAUI(process);
+			
+			//IPath fullProcessPath = auiFile.getFullPath();
+			//URI uri = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
 			Resource auiResource = getResourceSet().createResource(uri);
 			
 			auiResource.getContents().clear();
@@ -84,8 +80,6 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 			// Now save the content.
 			auiResource.save(Collections.EMPTY_MAP);
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
 			e.printStackTrace();
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();

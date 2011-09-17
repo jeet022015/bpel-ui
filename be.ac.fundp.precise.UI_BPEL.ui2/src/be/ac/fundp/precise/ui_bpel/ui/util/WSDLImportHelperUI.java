@@ -30,7 +30,6 @@ public class WSDLImportHelperUI extends WSDLImportHelper{
 	
 	protected static void addImport(String namespace, Definition importingDefinition,
 		URI importingUri, Definition importedDefinition, URI importedUri) {
-		System.out.println("importedUri1: "+importedUri);
 		WSDLFactory wsdlFactory = WSDLPackage.eINSTANCE.getWSDLFactory();
 		List<Import> imports = importingDefinition.getImports(namespace);
 		if (imports == null) {
@@ -45,7 +44,6 @@ public class WSDLImportHelperUI extends WSDLImportHelper{
 		}
 		if (!found) {
 			String locationURI = createBuildPathRelativeReference(importingUri, importedUri);
-			System.out.println("locationURI1: "+locationURI);
 
 			if (locationURI != null && locationURI.length() != 0) {
 				// Create and add the import to the definition
