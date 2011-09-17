@@ -1,7 +1,7 @@
 package be.ac.fundp.precise.ui_bpel.ui.transformation.executBPEL;
 
-import javax.wsdl.PortType;
-import javax.xml.namespace.QName;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.bpel.model.Assign;
 import org.eclipse.bpel.model.BPELFactory;
@@ -11,7 +11,6 @@ import org.eclipse.bpel.model.ExtensionActivity;
 import org.eclipse.bpel.model.From;
 import org.eclipse.bpel.model.Import;
 import org.eclipse.bpel.model.Invoke;
-import org.eclipse.bpel.model.PartnerLink;
 import org.eclipse.bpel.model.PartnerLinks;
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.Query;
@@ -19,149 +18,58 @@ import org.eclipse.bpel.model.Sequence;
 import org.eclipse.bpel.model.To;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.Variables;
-import org.eclipse.bpel.model.partnerlinktype.PartnerLinkType;
-import org.eclipse.bpel.model.partnerlinktype.PartnerlinktypeFactory;
-import org.eclipse.bpel.model.partnerlinktype.Role;
-import org.eclipse.bpel.model.resource.BPELResourceSetImpl;
 import org.eclipse.bpel.model.resource.BPELWriter;
-import org.eclipse.bpel.model.util.BPELUtils;
-import org.eclipse.bpel.ui.util.BPELUtil;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.Message;
+import org.eclipse.bpel.model.util.BPELConstants;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.wst.wsdl.Operation;
-import org.eclipse.wst.wsdl.util.WSDLConstants;
+import org.eclipse.wst.wsdl.Part;
 import org.w3c.dom.Element;
 
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
+import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 
 public class WriterUiBpel extends BPELWriter {
 
-	private static final String SERVICE_NAME = "CurrencyConvertorSoap";
-	private PartnerLink pl;
-	private Variable inputVar;
-	private Operation outputOperation;
-	private Operation selectionOperation;
-	private Operation inputOperation;
-	private Process process;
-	private Definition wsdlDefinition;
-	private String path = "file:/Users/Neto/Documents/workspaceBPEL/AnotherService/CurrencyConvertor.wsdl";
-
-
-	public WriterUiBpel(Process process) {
+	private String path = "file:/Users/Neto/Documents/runtime-EclipseApplication/UI-Project-Test/bpelContent/UI_ManagerWS.wsdl";
+	private BpelUIUtil bpel;
+	
+	public WriterUiBpel(Process process, IResource iFile) {
 		super();
-		this.process = process;
-	}
-	
-	private Import attemptLoad ( ) {
-		
-		Import  fImport = null;
-		// empty paths are ignored
-		if (path.length() == 0) {
-			return null;
+		String arg1 = "";
+		String arg2 = "";
+		bpel = BpelUIUtil.getInstace();
+		for (Import processImp : process.getImports()) {
+			if (process.getTargetNamespace().equals(processImp.getNamespace())){
+				IFolder folder = (IFolder) iFile.getParent();
+				IFile file = folder.getFile(processImp.getLocation());
+				arg1 = file.getFullPath().toString();
+			}
 		}
-		
-
-		URI uri = URI.createURI(path);
-		//URI uri = URI.createFileURI( path );
-		if (uri == null) {
-			return null;
-		}
-		
-		fImport = createImport( attemptLoad(uri, "wsdl") );
-		
-		return fImport;
-		
-	}
-	
-	private Import createImport(Object obj) {
-		Import imp = null;
-		if (obj instanceof Definition) {
-			wsdlDefinition = (Definition)obj;
-			imp = createImportFrom(wsdlDefinition);
-		}
-		return imp;
-	}
-	
-	private Import createImportFrom (Definition defn) {
-		
-		Import imp = BPELFactory.eINSTANCE.createImport();
-	
-		// namespace
-		String t = defn.getTargetNamespace();
-		if (t != null) {
-			imp.setNamespace( t );
-		}
-		// location
-		Resource resource = process.eResource();
-		URI schemaURI = URI.createURI( defn.getLocation() );
-		imp.setLocation( schemaURI.deresolve(resource.getURI(),true,true,true).toString() );
-		
-		// importType (the WSDL kind)
-		imp.setImportType(  WSDLConstants.WSDL_NAMESPACE_URI );
-	
-		return imp;		
-	}
-
-	private Object attemptLoad(URI uri, String kind) {
-
-		Resource resource = null;
-		try {
-			BPELResourceSetImpl fHackedResourceSet = BPELUtils.slightlyHackedResourceSet(process);
-			resource = fHackedResourceSet.getResource(uri, true, kind);
-		} catch (Throwable t) {
-			// BPELUIPlugin.log(t);
-			return t;
-		}
-
-		// Bugzilla 324164
-		if (resource!=null && resource.getErrors().isEmpty() && resource.isLoaded()) {
-			return resource.getContents().get(0);
-		}
-		return null;
+		arg2 = path;
+		bpel.configureProcess(arg1, arg2, process);
 	}
 	
 	protected Element process2XML(Process process) {
-		process.getImports().add(attemptLoad());
+		if (!process.getImports().contains(bpel.getImportBPEL())) {
+			process.getImports().add(bpel.getImportBPEL());
+		}
 		return super.process2XML(process);
 	}
 
 	protected Element variables2XML(Variables variables) {
-		variables.getChildren().add(inputVar);
+		variables.getChildren().addAll(bpel.getUiVariables());
 		return super.variables2XML(variables);
 	}
 
 	protected Element partnerLinks2XML(PartnerLinks partnerLinks) {
-		PartnerLink pl = createUIBPELPartnerLink();
-		System.out.println(pl);
-		return super.partnerLinks2XML(partnerLinks);
-	}
-
-	private PartnerLink createUIBPELPartnerLink() {
-		
-		PortType pt = null;
-		for (Object portType : wsdlDefinition.getPortTypes().keySet()) {
-			QName t = (QName)portType;
-			if(t.getLocalPart().equals(SERVICE_NAME))
-				pt = wsdlDefinition.getPortType(t);
+		if (!partnerLinks.getChildren().contains(bpel.getPartnerLinkBPEL())) {
+			partnerLinks.getChildren().add(bpel.getPartnerLinkBPEL());
 		}
-		//FIXME PUT CORRECT NAMES
-		
-		PartnerLink partner = BPELFactory.eINSTANCE.createPartnerLink();
-		
-		String newPartnerName = "name";
-		newPartnerName = BPELUtil.generateUniqueModelName(process, newPartnerName, partner);
-		PartnerLinkType plt = PartnerlinktypeFactory.eINSTANCE.createPartnerLinkType();
-		plt.setName( "PartnerLInkTypeName");
-		
-		Role role1 =  PartnerlinktypeFactory.eINSTANCE.createRole();
-		role1.setName ( "RoleName" );
-		role1.setPortType(pt);
-		plt.getRole().add(role1);
-		return partner;
+		return super.partnerLinks2XML(partnerLinks);
 	}
 
 	protected Element extensionActivity2XML(ExtensionActivity activity) {
@@ -178,34 +86,89 @@ public class WriterUiBpel extends BPELWriter {
 	}
 
 	private Element dealWithDataOutputUI(DataOutputUI activity) {
+
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
+		
+		Variable[] vars = bpel.getVariableForDataInt(activity);
+		
+		Variable inputVar = vars[0];
 
-		Invoke i = BPELFactory.eINSTANCE.createInvoke();
-		i.setName("MyInvoke");
-		i.setPartnerLink(pl);
-		//i.setInputVariable(activity.getOutputVariable());
-		i.setOperation(outputOperation);
-
-		Assign a = BPELFactory.eINSTANCE.createAssign();
-		a.setName("MyAssign");
+		Assign before = BPELFactory.eINSTANCE.createAssign();
+		before.setName("DataOutputConfiguration");
+		
+		Operation inputOperation = bpel.getOutputOperation();
+		
+		//================== ROLE =====================
+		String role = activity.getRoles().size() > 1 ? activity.getRoles().get(0) : "roleDefault";
 
 		Copy c = BPELFactory.eINSTANCE.createCopy();
+
 		From f = BPELFactory.eINSTANCE.createFrom();
 		Expression e = BPELFactory.eINSTANCE.createExpression();
-		e.setBody("'test'");
+		e.setBody("'"+role+"'");
 		f.setExpression(e);
+
 		To t = BPELFactory.eINSTANCE.createTo();
 		Query toQuery = BPELFactory.eINSTANCE.createQuery();
-		toQuery.setQueryLanguage("urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0");
+		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
 		toQuery.setValue("role");
 		t.setQuery(toQuery);
-		//t.setVariable(activity.getOutputVariable());
-		
+		t.setVariable(inputVar);
+		t.setPart((Part) inputOperation.getInput().getMessage().getPart("parameters"));
 		c.setFrom(f);
 		c.setTo(t);
-		a.getCopy().add(c);
+		before.getCopy().add(c);
+		
+		//================== ID =====================
+		c = BPELFactory.eINSTANCE.createCopy();
 
-		s.getActivities().add(a);
+		f = BPELFactory.eINSTANCE.createFrom();
+		e = BPELFactory.eINSTANCE.createExpression();
+		e.setBody("'"+activity.getId()+"'");
+		f.setExpression(e);
+
+		t = BPELFactory.eINSTANCE.createTo();
+		toQuery = BPELFactory.eINSTANCE.createQuery();
+		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
+		toQuery.setValue("auiID");
+		t.setQuery(toQuery);
+		t.setVariable(inputVar);
+		t.setPart((Part) inputOperation.getInput().getMessage().getPart("parameters"));
+		c.setFrom(f);
+		c.setTo(t);
+		before.getCopy().add(c);
+		
+		//================== COPY DATA ITEM =====================
+		int cont = 1;
+		for (DataItem di : activity.getOutputItem()) {
+			c = BPELFactory.eINSTANCE.createCopy();
+
+			f = BPELFactory.eINSTANCE.createFrom();
+			f.setVariable(di.getVariable());
+			
+			t = BPELFactory.eINSTANCE.createTo();
+			toQuery = BPELFactory.eINSTANCE.createQuery();
+			toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
+			toQuery.setValue("data["+cont+"]/data");
+			t.setQuery(toQuery);
+			t.setVariable(inputVar);
+			t.setPart((Part) inputOperation.getInput().getMessage().getPart("parameters"));
+
+			
+			c.setFrom(f);
+			c.setTo(t);
+			before.getCopy().add(c);
+			cont++;
+		}
+
+		//================== INVOKE =====================
+		Invoke i = BPELFactory.eINSTANCE.createInvoke();
+		i.setName("InvokeDataOutput");
+		i.setInputVariable(inputVar);
+		i.setOperation(inputOperation);
+		i.setPartnerLink(bpel.getPartnerLinkBPEL());
+		
+		s.getActivities().add(before);
 		s.getActivities().add(i);
 
 		return super.sequence2XML(s);
@@ -213,72 +176,217 @@ public class WriterUiBpel extends BPELWriter {
 
 	private Element dealWithDataSelectionUI(DataSelectionUI activity) {
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
+		
+		Variable[] vars = bpel.getVariableForDataInt(activity);
+		
+		Variable inputVar = vars[0].getName().startsWith(BpelUIUtil.DATA_SELECTION_REQUEST) ? vars[0] : vars[1];
+		Variable outputVar = vars[0].getName().startsWith(BpelUIUtil.DATA_SELECTION_REPONSE) ? vars[0] : vars[1];
 
-		Invoke i = BPELFactory.eINSTANCE.createInvoke();
-		i.setName("MyInvoke");
-		i.setPartnerLink(pl);
-		//i.setInputVariable(activity.getInputVariable());
-		//i.setOutputVariable(activity.getOutputVariable());
-		i.setOperation(selectionOperation);
-		//i.setPortType(portType);
-
-		Assign a = BPELFactory.eINSTANCE.createAssign();
-		a.setName("MyAssign");
+		Assign before = BPELFactory.eINSTANCE.createAssign();
+		before.setName("DataInputConfiguration");
+		
+		Operation inputOperation = bpel.getSelectionOperation();
+		
+		//================== ROLE =====================
+		String role = activity.getRoles().size() > 1 ? activity.getRoles().get(0) : "roleDefault";
 
 		Copy c = BPELFactory.eINSTANCE.createCopy();
+
 		From f = BPELFactory.eINSTANCE.createFrom();
 		Expression e = BPELFactory.eINSTANCE.createExpression();
-		e.setBody("'test'");
+		e.setBody("'"+role+"'");
 		f.setExpression(e);
+
 		To t = BPELFactory.eINSTANCE.createTo();
 		Query toQuery = BPELFactory.eINSTANCE.createQuery();
-		toQuery.setQueryLanguage("urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0");
+		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
 		toQuery.setValue("role");
 		t.setQuery(toQuery);
-		//t.setVariable(activity.getInputVariable());
+		t.setVariable(inputVar);
+		t.setPart((Part) inputOperation.getInput().getMessage().getPart("parameters"));
 		c.setFrom(f);
 		c.setTo(t);
-		a.getCopy().add(c);
+		before.getCopy().add(c);
+		
+		//================== ID =====================
+		c = BPELFactory.eINSTANCE.createCopy();
 
-		s.getActivities().add(a);
+		f = BPELFactory.eINSTANCE.createFrom();
+		e = BPELFactory.eINSTANCE.createExpression();
+		e.setBody("'"+activity.getId()+"'");
+		f.setExpression(e);
+
+		t = BPELFactory.eINSTANCE.createTo();
+		toQuery = BPELFactory.eINSTANCE.createQuery();
+		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
+		toQuery.setValue("auiID");
+		t.setQuery(toQuery);
+		t.setVariable(inputVar);
+		t.setPart((Part) inputOperation.getInput().getMessage().getPart("parameters"));
+		c.setFrom(f);
+		c.setTo(t);
+		before.getCopy().add(c);
+		
+		//================== COPY DATA ITEM =====================
+		int cont = 1;
+		for (DataItem di : activity.getInputItem()) {
+			c = BPELFactory.eINSTANCE.createCopy();
+
+			f = BPELFactory.eINSTANCE.createFrom();
+			toQuery = BPELFactory.eINSTANCE.createQuery();
+			toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
+			toQuery.setValue("selectable["+cont+"]/data");
+			f.setQuery(toQuery);
+			f.setVariable(inputVar);
+			f.setPart((Part) inputOperation.getInput().getMessage().getPart("parameters"));
+
+			t = BPELFactory.eINSTANCE.createTo();
+			t.setVariable(di.getVariable());
+			
+			c.setFrom(f);
+			c.setTo(t);
+			cont++;
+			before.getCopy().add(c);
+		}
+
+		//================== INVOKE =====================
+		Invoke i = BPELFactory.eINSTANCE.createInvoke();
+		i.setName("InvokeDataSelection");
+		i.setInputVariable(inputVar);
+		i.setOutputVariable(outputVar);
+		i.setOperation(inputOperation);
+		i.setPartnerLink(bpel.getPartnerLinkBPEL());
+		
+		//================== COPY DATA ITEM =====================
+		List<Copy> copies = new LinkedList<Copy>();
+		cont = 1;
+		for (DataItem di : activity.getOutputItem()) {
+			c = BPELFactory.eINSTANCE.createCopy();
+
+			f = BPELFactory.eINSTANCE.createFrom();
+			toQuery = BPELFactory.eINSTANCE.createQuery();
+			toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
+			toQuery.setValue("selected["+cont+"]/data");
+			f.setQuery(toQuery);
+			f.setVariable(outputVar);
+			f.setPart((Part) inputOperation.getOutput().getMessage().getPart("parameters"));
+
+			t = BPELFactory.eINSTANCE.createTo();
+			t.setVariable(di.getVariable());
+			
+			c.setFrom(f);
+			c.setTo(t);
+			cont++;
+			copies.add(c);
+		}
+		
+		s.getActivities().add(before);
 		s.getActivities().add(i);
+		
+		if (copies.size() > 0) {
+			Assign after = BPELFactory.eINSTANCE.createAssign();
+			after.setName("ResponseToDataItems");
+			after.getCopy().addAll(copies);
+			s.getActivities().add(after);
+		}
 
 		return super.sequence2XML(s);
 	}
 
 	private Element dealWithDataInputUI(DataInputUI activity) {
+		
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
+		
+		Variable[] vars = bpel.getVariableForDataInt(activity);
+		
+		Variable inputVar = vars[0].getName().startsWith(BpelUIUtil.DATA_INPUT_REQUEST) ? vars[0] : vars[1];
+		Variable outputVar = vars[0].getName().startsWith(BpelUIUtil.DATA_INPUT_REPONSE) ? vars[0] : vars[1];
 
-		Invoke i = BPELFactory.eINSTANCE.createInvoke();
-		i.setName("MyInvoke");
-		i.setPartnerLink(pl);
-		i.setInputVariable(inputVar);
-		//i.setOutputVariable(activity.getInputVariable());
-		i.setOperation(inputOperation);
-		//i.setPortType(portType);
-
-		Assign a = BPELFactory.eINSTANCE.createAssign();
-		a.setName("MyAssign");
+		Assign before = BPELFactory.eINSTANCE.createAssign();
+		before.setName("DataInputConfiguration");
+		
+		Operation inputOperation = bpel.getInputOperation();
+		
+		//================== ROLE =====================
+		String role = activity.getRoles().size() > 1 ? activity.getRoles().get(0) : "roleDefault";
 
 		Copy c = BPELFactory.eINSTANCE.createCopy();
 
 		From f = BPELFactory.eINSTANCE.createFrom();
 		Expression e = BPELFactory.eINSTANCE.createExpression();
-		e.setBody("'test'");
+		e.setBody("'"+role+"'");
 		f.setExpression(e);
 
 		To t = BPELFactory.eINSTANCE.createTo();
 		Query toQuery = BPELFactory.eINSTANCE.createQuery();
-		toQuery.setQueryLanguage("urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0");
+		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
 		toQuery.setValue("role");
 		t.setQuery(toQuery);
 		t.setVariable(inputVar);
+		t.setPart((Part) inputOperation.getInput().getMessage().getPart("parameters"));
 		c.setFrom(f);
 		c.setTo(t);
-		a.getCopy().add(c);
+		before.getCopy().add(c);
+		
+		//================== ID =====================
+		c = BPELFactory.eINSTANCE.createCopy();
 
-		s.getActivities().add(a);
+		f = BPELFactory.eINSTANCE.createFrom();
+		e = BPELFactory.eINSTANCE.createExpression();
+		e.setBody("'"+activity.getId()+"'");
+		f.setExpression(e);
+
+		t = BPELFactory.eINSTANCE.createTo();
+		toQuery = BPELFactory.eINSTANCE.createQuery();
+		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
+		toQuery.setValue("auiID");
+		t.setQuery(toQuery);
+		t.setVariable(inputVar);
+		t.setPart((Part) inputOperation.getInput().getMessage().getPart("parameters"));
+		c.setFrom(f);
+		c.setTo(t);
+		before.getCopy().add(c);
+
+		//================== INVOKE =====================
+		Invoke i = BPELFactory.eINSTANCE.createInvoke();
+		i.setName("InvokeDataInput");
+		i.setInputVariable(inputVar);
+		i.setOutputVariable(outputVar);
+		i.setOperation(inputOperation);
+		i.setPartnerLink(bpel.getPartnerLinkBPEL());
+		
+		//================== COPY DATA ITEM =====================
+		List<Copy> copies = new LinkedList<Copy>();
+		int cont = 1;
+		for (DataItem di : activity.getInputItem()) {
+			c = BPELFactory.eINSTANCE.createCopy();
+
+			f = BPELFactory.eINSTANCE.createFrom();
+			toQuery = BPELFactory.eINSTANCE.createQuery();
+			toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
+			toQuery.setValue("data["+cont+"]/data");
+			f.setQuery(toQuery);
+			f.setVariable(outputVar);
+			f.setPart((Part) inputOperation.getOutput().getMessage().getPart("parameters"));
+
+			t = BPELFactory.eINSTANCE.createTo();
+			t.setVariable(di.getVariable());
+			
+			c.setFrom(f);
+			c.setTo(t);
+			cont++;
+			copies.add(c);
+		}
+		
+		s.getActivities().add(before);
 		s.getActivities().add(i);
+		
+		if (copies.size() > 0) {
+			Assign after = BPELFactory.eINSTANCE.createAssign();
+			after.setName("ResponseToDataItems");
+			after.getCopy().addAll(copies);
+			s.getActivities().add(after);
+		}
 
 		return super.sequence2XML(s);
 	}

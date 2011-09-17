@@ -10,6 +10,8 @@ import java.io.OutputStream;
 
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.resource.BPELResource;
+import org.eclipse.bpel.ui.BPELEditor;
+import org.eclipse.bpel.ui.util.ModelHelper;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -31,7 +33,9 @@ public class PopupActionGenerateBPEL extends PopupActionWithProcessRepresentatio
 
 		// load BPEL,WSDL,XSDs
 		Process process = loadBPEL();
-		newWriter = new WriterUiBpel(process);
+		//BPELEditor editor = ModelHelper.getBPELEditor(getBpelResource());
+		//System.out.println("editor = "+editor);
+		newWriter = new WriterUiBpel(process, getBpelFile());
 
 		try {
 			IFile f = getBpelFile();
@@ -44,8 +48,6 @@ public class PopupActionGenerateBPEL extends PopupActionWithProcessRepresentatio
 			}
 			File realFile = file.getLocation().toFile();
 			OutputStream out = new BufferedOutputStream( new FileOutputStream(realFile));
-			//Map<?, ?> args =  new HashMap();
-			//newWriter.write((BPELResource) getBpelResource(), out, args);
 			newWriter.write((BPELResource) getBpelResource(), out, null);
 			out.close();
 		} catch (IOException e) {
