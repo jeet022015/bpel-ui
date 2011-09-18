@@ -25,10 +25,12 @@ import auiPackage.AbstractCompoundIU;
 import auiPackage.AbstractDataIU;
 import auiPackage.AbstractDataIUType;
 import auiPackage.AbstractOrdering;
-import auiPackage.AbstractSelectionIU;
 import auiPackage.AbstractTriggerIU;
 import auiPackage.AbstractUIModel;
 import auiPackage.AuiPackageFactory;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.strategies.StrategyAUIElement;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.strategies.StrategyDataUI;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.strategies.StrategySelectionUI;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
@@ -107,66 +109,40 @@ public class AUIGenerator {
 	}
 
 	private void createDataUiDataSelectionUI(DataSelectionUI activity) {
-		AbstractCompoundIU comp = createAbstractComponent();
-		orderingCounter++;
-		
+		AbstractCompoundIU comp = dataInteraction(activity.getInputItem(), 
+				AbstractDataIUType.INPUT_OUTPUT, new StrategySelectionUI());
 		medConf.createDataSelectionConf(comp, activity);
-
-		AbstractSelectionIU a = factory.createAbstractSelectionIU();
-		a.setMaxCardinality(activity.getMaxCardinality());
-		a.setMinCardinality(activity.getMinCardinality());
-		
-		AbstractDataIU dataComp = createAbstractDataUIComponent(comp,
-				factory.createAbstractDataIU(), 
-				AbstractDataIUType.INPUT_OUTPUT, "STRING");
-		comp.getInteractionUnits().add(dataComp);
-		
-		//FIXME put the type from the data Item
-		
-		AbstractTriggerIU validator = factory.createAbstractTriggerIU();
-		comp.getInteractionUnits().add(validator);
 	}
 
 	private void createDataUiDataOutputUI(DataOutputUI activity) {
-		AbstractCompoundIU comp = createAbstractComponent();
-		orderingCounter++;
-		
+		AbstractCompoundIU comp = dataInteraction(activity.getOutputItem(),
+				AbstractDataIUType.OUTPUT, new StrategyDataUI());
 		medConf.createDataOutputConf(comp, activity);
-		
-		for (DataItem item : activity.getOutputItem()) {
-			AbstractDataIU dataComp = createAbstractDataUIComponent(comp,
-					factory.createAbstractDataIU(), 
-					AbstractDataIUType.OUTPUT, item.getType().getName());
-			comp.getInteractionUnits().add(dataComp);
-		}
-		
-		AbstractTriggerIU validator = factory.createAbstractTriggerIU();
-		comp.getInteractionUnits().add(validator);
+	}
+	
+	private void createDataUiDataInputUI(DataInputUI activity) {
+		AbstractCompoundIU comp = dataInteraction(activity.getInputItem(),
+				AbstractDataIUType.INPUT, new StrategyDataUI());
+		medConf.createDataInputConf(comp, activity);
 	}
 
-	private void createDataUiDataInputUI(DataInputUI activity) {
+	private AbstractCompoundIU dataInteraction(EList<DataItem> dataItems, 
+			AbstractDataIUType output, StrategyAUIElement strategy) {
 		AbstractCompoundIU comp = createAbstractComponent();
 		orderingCounter++;
 		
-		medConf.createDataInputConf(comp, activity);
-		for (DataItem item : activity.getInputItem()) {
-			AbstractDataIU dataComp = createAbstractDataUIComponent(comp,
-					factory.createAbstractDataIU(), 
-					AbstractDataIUType.INPUT, item.getType().getName());
+		for (DataItem item : dataItems) {
+			//AbstractDataIU dataComp = factory.createAbstractDataIU();
+			AbstractDataIU dataComp = strategy.getStrategy();
+			dataComp.setParentIU(comp);
+			dataComp.setDataUIType(output);
+			dataComp.setDataType(item.getType().getName());
 			comp.getInteractionUnits().add(dataComp);
 		}
 		
 		AbstractTriggerIU validator = factory.createAbstractTriggerIU();
 		comp.getInteractionUnits().add(validator);
-	}
-
-	private AbstractDataIU createAbstractDataUIComponent(AbstractCompoundIU comp, 
-			AbstractDataIU abstractDataIU,
-			AbstractDataIUType input, String dataType) {
-		abstractDataIU.setParentIU(comp);
-		abstractDataIU.setDataUIType(input);
-		abstractDataIU.setDataType(dataType);
-		return abstractDataIU;
+		return comp;
 	}
 
 	private void repeatUntil2AUI(RepeatUntil activity) {
