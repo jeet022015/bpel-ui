@@ -40,7 +40,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.ExtensibleElement;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Port;
@@ -66,7 +65,7 @@ public class BpelUIUtil {
 	public static final String DATA_INPUT_REPONSE = "dataInputResponse";
 	public static final String DATA_INPUT_REQUEST = "dataInputRequest";
 	private static final String WSLD_NAME = "wsdl";
-	private static final String SERVICE_NAME = "UI_Manager";
+	private static final String SERVICE_NAME = "UI_ManagerPortType";
 	private Definition wsdl_ui_bpel;
 	private Definition processWSDl;
 	private Import importBPEL;
@@ -129,7 +128,8 @@ public class BpelUIUtil {
 		processWSDl = (Definition) attemptLoadWSDL(uri, process.eResource()
 				.getResourceSet());
 
-		uri = URI.createURI(ui_bpelWSDLPath, false);
+		//uri = URI.createURI(ui_bpelWSDLPath, false);
+		uri = URI.createPlatformResourceURI(ui_bpelWSDLPath, false);
 		wsdl_ui_bpel = (Definition) attemptLoadWSDL(uri, process.eResource()
 				.getResourceSet());
 		list = new HashMap<String, Set<Variable>>();
@@ -151,6 +151,7 @@ public class BpelUIUtil {
 		for (Object portType : wsdl_ui_bpel.getPortTypes().keySet()) {
 			QName t = (QName)portType;
 			//FIXME DEDUCT IT SERVICE_NAME
+			System.out.println("QName = "+t);
 			if(t.getLocalPart().equals(SERVICE_NAME)){
 				pt = wsdl_ui_bpel.getPortType(t);
 				//http://www.example.org/UI_BPEL-Mediator/
@@ -177,8 +178,10 @@ public class BpelUIUtil {
 					newPL = false;
 			}
 		}
-		if (newPL)
+		if (newPL){
+			System.out.println("here?");
 			processWSDl.getEExtensibilityElements().add(plt);
+		}
 		try {
 			processWSDl.eResource().save(null);
 		} catch (IOException e) {
@@ -195,7 +198,7 @@ public class BpelUIUtil {
 	private PartnerLinkType createPartnerLinkTypeInProcess() {
 		PartnerLinkType plt = PartnerlinktypeFactory.eINSTANCE.createPartnerLinkType();
 		plt.setName("ParnetLinkT");
-		plt.setEnclosingDefinition(processWSDl);
+		//plt.setEnclosingDefinition(processWSDl);
 		return plt;
 	}
 
@@ -233,11 +236,11 @@ public class BpelUIUtil {
 		Port p1 = (Port) s1.getEPorts().get(0);
 		for (Object op : p1.getBinding().getBindingOperations()) {
 			BindingOperation opera = (BindingOperation) op;
-			if (opera.getName().equals("dataInputUI"))
+			if (opera.getName().equals("inputOperation"))
 				inputOperation = opera.getEOperation();
-			else if (opera.getName().equals("dataOutputUI"))
+			else if (opera.getName().equals("outputOperation"))
 				outputOperation = opera.getEOperation();
-			else if (opera.getName().equals("dataSelectionUI"))
+			else if (opera.getName().equals("selectionOperation"))
 				selectionOperation = opera.getEOperation();
 			else if (opera.getName().equals("eventDataUI"))
 				eventOperation = opera.getEOperation();
@@ -410,19 +413,16 @@ public class BpelUIUtil {
 	}
 
 	public static Object attemptLoadWSDL(URI uri, ResourceSet resourceSet) {
-
+		System.out.println("uri = "+ uri);
 		Resource resource = null;
-		try {
-			BPELResourceSetImpl fHackedResourceSet = BPELUtils
-					.slightlyHackedResourceSet(resourceSet);
-			resource = fHackedResourceSet.getResource(uri, true, WSLD_NAME);
-		} catch (Throwable t) {
-			return t;
-		}
+		BPELResourceSetImpl fHackedResourceSet = BPELUtils
+				.slightlyHackedResourceSet(resourceSet);
+		resource = fHackedResourceSet.getResource(uri, true, WSLD_NAME);
 
 		// Bugzilla 324164
 		if (resource != null && resource.getErrors().isEmpty()
 				&& resource.isLoaded()) {
+			System.out.println("test =  "+ resource.getContents());
 			return resource.getContents().get(0);
 		}
 		return null;
