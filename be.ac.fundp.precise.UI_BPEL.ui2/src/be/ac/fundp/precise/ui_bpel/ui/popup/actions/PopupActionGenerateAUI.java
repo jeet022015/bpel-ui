@@ -54,7 +54,7 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 		IFile f = getBpelFile();
 		IFolder folder = (IFolder) f.getParent();
 		IFile auiFile = folder.getFile("AUI_Model.aui");
-		IFile mediatorFile = folder.getFile("mediator.xml");
+		IFile mediatorFile = folder.getFile("UI-AUIC_Mapping.xml");
 		try {
 			IPath fullProcessPath = auiFile.getFullPath();
 			URI uri = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
