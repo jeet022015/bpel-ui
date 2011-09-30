@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.6.1  Built on : Aug 31, 2011 (12:22:40 CEST) -->
+<serviceGroup>
+    <service name="UI-Client">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="be.ac.fundp.webapp.client.UIClientMessageReceiverInOut"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-only" class="be.ac.fundp.webapp.client.UIClientMessageReceiverInOnly"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">be.ac.fundp.webapp.client.UIClientSkeleton</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="requireAssyncInteraction" mep="http://www.w3.org/ns/wsdl/in-only" namespace="http://webApp.fundp.ac.be">
+            <actionMapping>http://webApp.fundp.ac.be/requireAssyncInteraction</actionMapping>
+        </operation>
+        <operation name="requireSyncInteraction" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://webApp.fundp.ac.be">
+            <actionMapping>http://webApp.fundp.ac.be/NewOperation</actionMapping>
+            <outputActionMapping>http://webApp.fundp.ac.be/UI-Client/requireSyncInteractionResponse</outputActionMapping>
+        </operation>
+    </service>
+</serviceGroup>
