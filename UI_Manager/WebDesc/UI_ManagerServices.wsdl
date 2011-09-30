@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://fundp.ac.be" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://fundp.ac.be" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+<wsdl:documentation>
+		Please Type your service description here
+	</wsdl:documentation>
+  <wsdl:types>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://fundp.ac.be">
+            <xs:element name="selectionOperation">
+                <xs:complexType>
+                    <xs:sequence>
+                    	<xs:element minOccurs="0" name="id" nillable="true" type="xs:string"/>
+                    	<xs:element maxOccurs="1" minOccurs="0" name="role" type="xs:string">
+                    	</xs:element>
+                    	<xs:element maxOccurs="unbounded" minOccurs="0" name="data" type="ns:DataUIType">
+                    	</xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="selectionOperationResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ns:DataUIType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="outputOperation">
+                <xs:complexType>
+                    <xs:sequence>
+                    	<xs:element minOccurs="0" name="id" nillable="true" type="xs:string"/>
+                    	<xs:element maxOccurs="1" minOccurs="0" name="role" type="xs:string">
+                    	</xs:element>
+                    	<xs:element maxOccurs="unbounded" minOccurs="0" name="data" type="ns:DataUIType">
+                    	</xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="inputOperation">
+                <xs:complexType>
+                    <xs:sequence>
+                    	<xs:element minOccurs="0" name="id" nillable="true" type="xs:string"/>
+                    	<xs:element maxOccurs="1" minOccurs="0" name="role" type="xs:string">
+                    	</xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="inputOperationResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ns:DataUIType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        
+            <xs:complexType name="DataUIType">
+            	<xs:sequence>
+            		<xs:element maxOccurs="1" minOccurs="0" name="data" type="xs:anyType"/>
+            		<xs:element maxOccurs="1" minOccurs="0" name="type" type="xs:string"/>
+            		<xs:element maxOccurs="1" minOccurs="0" name="id" type="xs:string"/>
+            	</xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="inputOperationResponse">
+    <wsdl:part name="parameters" element="ns:inputOperationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="selectionOperationResponse">
+    <wsdl:part name="parameters" element="ns:selectionOperationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="selectionOperationRequest">
+    <wsdl:part name="parameters" element="ns:selectionOperation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="inputOperationRequest">
+    <wsdl:part name="parameters" element="ns:inputOperation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="outputOperationRequest">
+    <wsdl:part name="parameters" element="ns:outputOperation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="UI_ManagerPortType">
+    <wsdl:operation name="outputOperation">
+      <wsdl:input message="ns:outputOperationRequest" wsaw:Action="urn:outputOperation">
+    </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="inputOperation">
+      <wsdl:input message="ns:inputOperationRequest" wsaw:Action="urn:inputOperation">
+    </wsdl:input>
+      <wsdl:output message="ns:inputOperationResponse" wsaw:Action="urn:inputOperationResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="selectionOperation">
+      <wsdl:input message="ns:selectionOperationRequest" wsaw:Action="urn:selectionOperation">
+    </wsdl:input>
+      <wsdl:output message="ns:selectionOperationResponse" wsaw:Action="urn:selectionOperationResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="UI_ManagerBinding" type="ns:UI_ManagerPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="outputOperation">
+      <soap:operation soapAction="urn:outputOperation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="inputOperation">
+      <soap:operation soapAction="urn:inputOperation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="selectionOperation">
+      <soap:operation soapAction="urn:selectionOperation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UI_ManagerServices">
+    <wsdl:port name="UI_ManagerPort" binding="ns:UI_ManagerBinding">
+      <soap:address location="http://localhost:8090/UI_Manager/services/UI_ManagerServices/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.6.1  Built on : Aug 31, 2011 (12:22:40 CEST) -->
+<serviceGroup>
+    <service name="UI_ManagerServices">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="be.ac.fundp.serverProvide.UI_ManagerServicesMessageReceiverInOut"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-only" class="be.ac.fundp.serverProvide.UI_ManagerServicesMessageReceiverInOnly"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">be.ac.fundp.serverProvide.UI_ManagerServicesSkeleton</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="outputOperation" mep="http://www.w3.org/ns/wsdl/in-only" namespace="http://fundp.ac.be">
+            <actionMapping>urn:outputOperation</actionMapping>
+        </operation>
+        <operation name="inputOperation" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://fundp.ac.be">
+            <actionMapping>urn:inputOperation</actionMapping>
+            <outputActionMapping>urn:inputOperationResponse</outputActionMapping>
+        </operation>
+        <operation name="selectionOperation" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://fundp.ac.be">
+            <actionMapping>urn:selectionOperation</actionMapping>
+            <outputActionMapping>urn:selectionOperationResponse</outputActionMapping>
+        </operation>
+    </service>
+</serviceGroup>
