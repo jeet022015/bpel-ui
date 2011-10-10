@@ -5,6 +5,10 @@ import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.namespace.QName;
 
 import org.eclipse.bpel.model.Assign;
 import org.eclipse.bpel.model.BPELFactory;
@@ -24,12 +28,17 @@ import org.eclipse.bpel.model.Variables;
 import org.eclipse.bpel.model.resource.BPELResource;
 import org.eclipse.bpel.model.resource.BPELWriter;
 import org.eclipse.bpel.model.util.BPELConstants;
-import org.eclipse.bpel.model.util.BPELUtils;
+import org.eclipse.bpel.model.util.XSD2XMLGenerator;
+import org.eclipse.bpel.ui.BPELEditor;
+import org.eclipse.bpel.validator.EmfModelQuery;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDTypeDefinition;
 import org.w3c.dom.Element;
 
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
@@ -39,6 +48,12 @@ import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 
 public class WriterUiBpel extends BPELWriter {
 
+	private static final String EMPTY_STRING = null;
+	private static final String HEAD_STRING =  "xmlns:s1=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+ 		    "xmlns:s2=\"http://www.w3.org/2001/XMLSchema\" " +
+ 		    "s1:type=\"s2:string\">";
+	private static final String NL = System.getProperty("line.separator");
+	
 	private BpelUIUtil bpel;
 	
 	public WriterUiBpel(Process process, IResource iFile) {
@@ -52,7 +67,7 @@ public class WriterUiBpel extends BPELWriter {
 				IFolder folder = (IFolder) iFile.getParent();
 				IFile file = folder.getFile(processImp.getLocation());
 				arg1 = file.getFullPath().toString();
-				file = folder.getFile("UI_ManagerServices.wsdl");
+				file = folder.getFile("UiManager.wsdl");
 				arg2 = file.getFullPath().toString();
 			}
 		}
@@ -96,11 +111,6 @@ public class WriterUiBpel extends BPELWriter {
 
 		return super.extensionActivity2XML(activity);
 	}
-	
-//	protected Element assign2XML(Assign activity) {
-//		System.out.println("Assign Activity = " + activity);
-//		return super.assign2XML(activity);
-//	}
 
 	private Element dealWithDataOutputUI(DataOutputUI activity) {
 
@@ -110,7 +120,9 @@ public class WriterUiBpel extends BPELWriter {
 		
 		Variable inputVar = vars[0];
 		
-		String prefix = BPELUtils.getNamespacePrefix(inputVar, inputVar.getMessageType().getQName().getNamespaceURI());
+		//String prefix = BPELUtils.getNamespacePrefix(inputVar, inputVar.getMessageType().getQName().getNamespaceURI())+":";
+		//TODO when should I do it?
+		String prefix = "";
 
 		Assign assignbBefore = BPELFactory.eINSTANCE.createAssign();
 		assignbBefore.setName("DataOutputConfiguration");
@@ -122,21 +134,8 @@ public class WriterUiBpel extends BPELWriter {
 		Copy initCopy = BPELFactory.eINSTANCE.createCopy();
 
 		From f = BPELFactory.eINSTANCE.createFrom();
-		String dataItensLiteral= "";
-		for (int i = 0; i < activity.getOutputItem().size(); i++) {
-			dataItensLiteral += InitializationContants.DATA_ITEM;
-		}
-		
-		final String literalExpr = InitializationContants.OUTPUT_HEAD + 
-				InitializationContants.COMMON_BODY+
-				InitializationContants.DATA_HEAD +
-					dataItensLiteral +
-				InitializationContants.DATA_TAIL +
-				InitializationContants.OUTPUT_TAIL;
-		
-		f.setLiteral(literalExpr);
-
 		To t = createToPart(inputVar, inputOperation);
+		createDefaultInitializer(null, f, t, activity.getOutputItem().size());
 		initCopy.setFrom(f);
 		initCopy.setTo(t);
 		
@@ -193,7 +192,7 @@ public class WriterUiBpel extends BPELWriter {
 		To t = BPELFactory.eINSTANCE.createTo();
 		Query toQuery = BPELFactory.eINSTANCE.createQuery();
 		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
-		toQuery.setValue(prefix+":"+primaryNode+"["+cont+"]/"+prefix+":"+secondaryNode);
+		toQuery.setValue(prefix+primaryNode+"["+cont+"]/"+secondaryNode);
 		t.setQuery(toQuery);
 		t.setVariable(inputVar);
 		t.setPart(p);
@@ -221,7 +220,7 @@ public class WriterUiBpel extends BPELWriter {
 		To t = BPELFactory.eINSTANCE.createTo();
 		Query toQuery = BPELFactory.eINSTANCE.createQuery();
 		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
-		toQuery.setValue(prefix+":id");
+		toQuery.setValue(prefix+"userInteracId");
 		t.setQuery(toQuery);
 		t.setVariable(inputVar);
 		//FIXME Get the name from some other way or create a constant
@@ -243,7 +242,7 @@ public class WriterUiBpel extends BPELWriter {
 		To t = BPELFactory.eINSTANCE.createTo();
 		Query toQuery = BPELFactory.eINSTANCE.createQuery();
 		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
-		toQuery.setValue(prefix+":role");
+		toQuery.setValue(prefix+"role");
 		t.setQuery(toQuery);
 		t.setVariable(inputVar);
 		//FIXME Get the name from some other way or create a constant
@@ -264,7 +263,9 @@ public class WriterUiBpel extends BPELWriter {
 		Assign assignBefore = BPELFactory.eINSTANCE.createAssign();
 		assignBefore.setName("DataSelectionConfiguration");
 		
-		String prefix = BPELUtils.getNamespacePrefix(inputVar, inputVar.getMessageType().getQName().getNamespaceURI());
+		//String prefix = BPELUtils.getNamespacePrefix(inputVar, inputVar.getMessageType().getQName().getNamespaceURI())+":";
+		//TODO when should i do it?
+		String prefix = "";
 		
 		Operation inputOperation = bpel.getSelectionOperation();
 		
@@ -273,20 +274,8 @@ public class WriterUiBpel extends BPELWriter {
 		Copy initCopy = BPELFactory.eINSTANCE.createCopy();
 
 		From f = BPELFactory.eINSTANCE.createFrom();
-		String dataItensLiteral= "";
-		for (int i = 0; i < activity.getInputItem().size(); i++)
-			dataItensLiteral += InitializationContants.DATA_ITEM;
-		
-		final String literalExpr = InitializationContants.SELECTION_HEAD + 
-				InitializationContants.COMMON_BODY+
-				InitializationContants.DATA_HEAD +
-					dataItensLiteral +
-				InitializationContants.DATA_TAIL +
-				InitializationContants.SELECTION_TAIL;
-		
-		f.setLiteral(literalExpr);
-
 		To t = createToPart(inputVar, inputOperation);
+		createDefaultInitializer(null, f, t, activity.getInputItem().size());
 		initCopy.setFrom(f);
 		initCopy.setTo(t);
 		assignBefore.getCopy().add(initCopy);
@@ -354,7 +343,9 @@ public class WriterUiBpel extends BPELWriter {
 		Variable inputVar = vars[0].getName().startsWith(BpelUIUtil.DATA_INPUT_REQUEST) ? vars[0] : vars[1];
 		Variable outputVar = vars[0].getName().startsWith(BpelUIUtil.DATA_INPUT_REPONSE) ? vars[0] : vars[1];
 		
-		String prefix = BPELUtils.getNamespacePrefix(inputVar, inputVar.getMessageType().getQName().getNamespaceURI());
+		//String prefix = BPELUtils.getNamespacePrefix(inputVar, inputVar.getMessageType().getQName().getNamespaceURI());
+		//TODO when do I must to do it?
+		String prefix = "";
 
 		Assign assignBefore = BPELFactory.eINSTANCE.createAssign();
 		assignBefore.setName("DataInputConfiguration");
@@ -366,12 +357,8 @@ public class WriterUiBpel extends BPELWriter {
 		Copy c = BPELFactory.eINSTANCE.createCopy();
 
 		From f = BPELFactory.eINSTANCE.createFrom();
-		String literalExpr = InitializationContants.INPUT_HEAD + 
-				InitializationContants.COMMON_BODY+
-				InitializationContants.INPUT_TAIL;
-		f.setLiteral(literalExpr);
-
 		To t = createToPart(inputVar, inputOperation);
+		createDefaultInitializer(null, f, t, 0);
 		c.setFrom(f);
 		c.setTo(t);
 		assignBefore.getCopy().add(c);
@@ -400,7 +387,7 @@ public class WriterUiBpel extends BPELWriter {
 		int cont = 1;
 		for (DataItem di : activity.getInputItem()) {
 			Part p = (Part) inputOperation.getOutput().getMessage().getPart("parameters");
-			c = createDataItemCopy(outputVar, prefix, p, cont, di, "return", "data");
+			c = createDataItemCopy(outputVar, prefix, p, cont, di, "data", "data");
 			cont++;
 			copies.add(c);
 		}
@@ -426,7 +413,7 @@ public class WriterUiBpel extends BPELWriter {
 		From f = BPELFactory.eINSTANCE.createFrom();
 		Query toQuery = BPELFactory.eINSTANCE.createQuery();
 		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
-		toQuery.setValue(prefix+":"+primaryNode+"["+cont+"]/"+prefix+":"+secondaryNode);
+		toQuery.setValue(prefix+primaryNode+"["+cont+"]/"+prefix+secondaryNode);
 		f.setQuery(toQuery);
 		f.setVariable(outputVar);
 		f.setPart(part);
@@ -437,5 +424,109 @@ public class WriterUiBpel extends BPELWriter {
 		c.setFrom(f);
 		c.setTo(t);
 		return c;
+	}
+	
+	
+	/**
+	 * Construct an appropriate XML literal initializer for the given "from" and "to" parts
+	 *  
+	 * @param bpelEditor
+	 * @param from
+	 * @param to
+	 * @return
+	 */
+	public static String createDefaultInitializer(BPELEditor bpelEditor, From from, To to, int dataItems) {
+		String literal = EMPTY_STRING;
+		if ( from!=null && to!=null) {
+			literal = from.getLiteral();
+			if (literal==null || literal.isEmpty()) {
+				literal = createDefaultInitializer(bpelEditor, to.getVariable(), to.getPart(), dataItems);
+				from.setLiteral(literal);
+			}
+		}
+		return literal;
+	}
+	
+	/**
+	 * Construct an appropriate XML literal initializer for the given variable and message part.
+	 *  
+	 * @param bpelEditor
+	 * @param var - the variable to be initialized
+	 * @param part - if the variable is defined as a message, this is the message part
+	 *               otherwise null
+	 * @return - XML string representing an intializer for the given variable
+     * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=330813
+	 * @see https://jira.jboss.org/browse/JBIDE-7351
+	 */
+	public static String createDefaultInitializer(BPELEditor bpelEditor, Variable var, Part part, int dataItems) {
+		String fromString = EMPTY_STRING;
+		try {
+			String rootElement = null;
+			String uriWSDL = null;
+
+			// Variable is defined using "messageType"
+			Message msg = (Message)var.getMessageType();
+			if (msg != null) {
+				if (msg.eIsProxy()) {
+					msg = (Message)EmfModelQuery.resolveProxy(bpelEditor.getProcess(), msg);
+				}
+				if (part==null) {
+					Map parts = msg.getParts();
+					if (parts!=null && !parts.isEmpty()) {
+						Map.Entry entry = (Map.Entry)parts.entrySet().iterator().next();
+						part = (Part)entry.getValue();
+					}
+				}
+				if (part!=null) {
+					XSDElementDeclaration declaration = part.getElementDeclaration();
+					if (declaration != null) {
+						uriWSDL = declaration.getSchema().getSchemaLocation();
+						rootElement = declaration.getName();
+					}
+				}
+			}
+
+			// Variable is defined using "type"
+			XSDTypeDefinition type = var.getType();
+			if (type != null) {
+				QName qname = new QName(type.getTargetNamespace(), type.getName());
+				rootElement = qname.getLocalPart();
+				uriWSDL = type.eResource().getURI().toString();
+			}
+
+			// Variable is defined using "element"
+			XSDElementDeclaration element = var.getXSDElement();
+			if (element != null) {
+				QName qname = new QName(element.getTargetNamespace(), element
+						.getName());
+				rootElement = qname.getLocalPart();
+				uriWSDL = element.eResource().getURI().toString();
+			}
+
+			XSD2XMLGenerator generator = new XSD2XMLGenerator(uriWSDL, rootElement);
+			fromString = generator.createXML();
+		}
+		catch (Exception e) {
+		}
+		//fromString = fromString.replaceAll("", "");
+		
+		//TODO this regex is just to String type
+		String finalSt = fromString;
+		Pattern pattern = Pattern.compile("<[a-zA-Z]*:?data>.*</[a-zA-Z]*:?data>", Pattern.DOTALL);
+		Matcher matcher = pattern.matcher(fromString);
+		if (matcher.find()){
+			String myShit = matcher.group();
+			String tail = ("</"+ myShit.split("data")[1].replaceAll("\\s|<|>|"+NL, "") + "data>").trim();
+			String head = myShit.replaceAll("xsi:type=\"anyType\"/>", HEAD_STRING+ "Data" +tail);
+			
+			String body = "";
+			
+			for (int i = 0; i < dataItems; i++) {
+				body += head;
+			}
+			
+			finalSt = pattern.split(fromString)[0] + body + pattern.split(fromString)[1];
+		}
+		return finalSt;
 	}
 }

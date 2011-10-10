@@ -20,6 +20,7 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.apache.xml.serialize;version="2.9.0",
- org.eclipse.bpel.common.extension.model
+ org.eclipse.bpel.common.extension.model,
+ org.eclipse.bpel.validator
 Bundle-ClassPath: .,
  lib/org.usixml.aui_2.0.0.201107141402.jar

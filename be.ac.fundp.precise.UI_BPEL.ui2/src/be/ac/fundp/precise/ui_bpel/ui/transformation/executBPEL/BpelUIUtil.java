@@ -65,7 +65,7 @@ public class BpelUIUtil {
 	public static final String DATA_INPUT_REPONSE = "dataInputResponse";
 	public static final String DATA_INPUT_REQUEST = "dataInputRequest";
 	private static final String WSLD_NAME = "wsdl";
-	private static final String SERVICE_NAME = "UI_ManagerPortType";
+	private static final String SERVICE_NAME = "UiManager";
 	private Definition wsdl_ui_bpel;
 	private Definition processWSDl;
 	private Import importBPEL;
@@ -104,14 +104,13 @@ public class BpelUIUtil {
 		Port p1 = (Port) s1.getEPorts().get(0);
 		for (Object op : p1.getBinding().getBindingOperations()) {
 			BindingOperation opera = (BindingOperation) op;
-			if (opera.getName().equals("dataInputUI"))
+			if (opera.getName().equals("inputOperation"))
 				inputOperation = opera.getEOperation();
-			else if (opera.getName().equals("dataOutputUI"))
+			else if (opera.getName().equals("outputOperation"))
 				outputOperation = opera.getEOperation();
-			else if (opera.getName().equals("dataSelectionUI"))
+			else if (opera.getName().equals("selectionOperation"))
 				selectionOperation = opera.getEOperation();
-			else if (opera.getName().equals("eventDataUI"))
-				eventOperation = opera.getEOperation();
+			//FIXME get the operation to generate the processid
 		}
 		treatProcess(process.getActivity());
 	}
@@ -151,7 +150,6 @@ public class BpelUIUtil {
 		for (Object portType : wsdl_ui_bpel.getPortTypes().keySet()) {
 			QName t = (QName)portType;
 			//FIXME DEDUCT IT SERVICE_NAME
-			System.out.println("QName = "+t);
 			if(t.getLocalPart().equals(SERVICE_NAME)){
 				pt = wsdl_ui_bpel.getPortType(t);
 				//http://www.example.org/UI_BPEL-Mediator/
@@ -413,7 +411,6 @@ public class BpelUIUtil {
 	}
 
 	public static Object attemptLoadWSDL(URI uri, ResourceSet resourceSet) {
-		System.out.println("uri = "+ uri);
 		Resource resource = null;
 		BPELResourceSetImpl fHackedResourceSet = BPELUtils
 				.slightlyHackedResourceSet(resourceSet);
@@ -422,7 +419,6 @@ public class BpelUIUtil {
 		// Bugzilla 324164
 		if (resource != null && resource.getErrors().isEmpty()
 				&& resource.isLoaded()) {
-			System.out.println("test =  "+ resource.getContents());
 			return resource.getContents().get(0);
 		}
 		return null;
