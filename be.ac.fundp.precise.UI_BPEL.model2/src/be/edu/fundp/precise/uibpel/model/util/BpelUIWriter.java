@@ -328,7 +328,7 @@ public class BpelUIWriter extends org.eclipse.bpel.model.resource.BPELWriter {
 		return elem;
 	}
 
-	public Element onUserEventImpl2XML(OnUserEvent element) {
+	public Element onUserEventImpl2XML(OnUserEvent element, Object parent) {
 		String namespace = element.eClass().getEPackage().getNsURI();
 		Element elem = (Element) mySer.onUserEvent2XML(element, staticDoc,
 				namespace, getResource().getProcess(), this);

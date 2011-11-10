@@ -67,6 +67,7 @@ import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
+import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.impl.OnUserEventImpl;
 
 
@@ -253,8 +254,8 @@ public class BpelUiElementFactory{
 			
 			return writer.dataItem2XML((DataItem) element, type);
 		}
-		if (element instanceof OnUserEventImpl) {
-			return writer.onUserEventImpl2XML((OnUserEventImpl) element);
+		if (element instanceof OnUserEvent) {
+			return writer.onUserEventImpl2XML((OnUserEventImpl) element, parent);
 		}
 		throw new IllegalArgumentException("Cannot create element for type: " + element.getClass().getName());
 	}

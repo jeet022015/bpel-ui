@@ -6,13 +6,18 @@
  */
 package be.edu.fundp.precise.uibpel.model.impl;
 
-import be.edu.fundp.precise.uibpel.model.ModelPackage;
-import be.edu.fundp.precise.uibpel.model.ScopeUI;
-
+import org.eclipse.bpel.model.BPELPackage;
+import org.eclipse.bpel.model.EventHandler;
 import org.eclipse.bpel.model.impl.ScopeImpl;
-
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import be.edu.fundp.precise.uibpel.model.ModelPackage;
+import be.edu.fundp.precise.uibpel.model.ScopeUI;
+import be.edu.fundp.precise.uibpel.model.util.BpelUiReconciliationHelper;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,6 +37,30 @@ public class ScopeUIImpl extends ScopeImpl implements ScopeUI {
 	protected ScopeUIImpl() {
 		super();
 	}
+	
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 */
+	public NotificationChain basicSetEventHandlers(
+			EventHandler newEventHandlers, NotificationChain msgs) {
+		EventHandler oldEventHandlers = eventHandlers;
+		if (!isReconciling) {
+			BpelUiReconciliationHelper.replaceChild(this, oldEventHandlers,
+					newEventHandlers);
+		}
+		eventHandlers = newEventHandlers;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this,
+					Notification.SET, BPELPackage.SCOPE__EVENT_HANDLERS,
+					oldEventHandlers, newEventHandlers);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -46,7 +75,6 @@ public class ScopeUIImpl extends ScopeImpl implements ScopeUI {
 	@Override
 	public void updateElementReferences(EObject object, String attrName,
 			String attrValue) {
-		
 	}
 
 } //ScopeUIImpl

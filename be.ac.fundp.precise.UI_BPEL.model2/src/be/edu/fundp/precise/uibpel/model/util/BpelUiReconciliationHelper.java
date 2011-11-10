@@ -2,15 +2,18 @@ package be.edu.fundp.precise.uibpel.model.util;
 
 import java.util.List;
 
+import org.eclipse.bpel.model.Activity;
 import org.eclipse.bpel.model.Catch;
 import org.eclipse.bpel.model.CorrelationSet;
 import org.eclipse.bpel.model.CorrelationSets;
+import org.eclipse.bpel.model.EventHandler;
 import org.eclipse.bpel.model.ExtensionActivity;
 import org.eclipse.bpel.model.FaultHandler;
 import org.eclipse.bpel.model.Flow;
 import org.eclipse.bpel.model.Invoke;
 import org.eclipse.bpel.model.MessageExchange;
 import org.eclipse.bpel.model.MessageExchanges;
+import org.eclipse.bpel.model.OnEvent;
 import org.eclipse.bpel.model.PartnerLink;
 import org.eclipse.bpel.model.PartnerLinks;
 import org.eclipse.bpel.model.Process;
@@ -24,17 +27,33 @@ import org.eclipse.bpel.model.impl.CorrelationSetsImpl;
 import org.eclipse.bpel.model.impl.MessageExchangesImpl;
 import org.eclipse.bpel.model.impl.PartnerLinksImpl;
 import org.eclipse.bpel.model.impl.VariablesImpl;
+import org.eclipse.bpel.model.util.BPELConstants;
 import org.eclipse.bpel.model.util.ElementFactory;
 import org.eclipse.bpel.model.util.ElementPlacer;
 import org.eclipse.bpel.model.util.ReconciliationHelper;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.wst.wsdl.WSDLElement;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
-import be.edu.fundp.precise.uibpel.model.impl.OnUserEventImpl;
+import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 
 public class BpelUiReconciliationHelper extends ReconciliationHelper{
+	
+	protected static BpelUiReconciliationHelper self;
+	
+	protected BpelUiReconciliationHelper(){
+		super();
+	}
+	
+	public static BpelUiReconciliationHelper getInstance(){
+		if(self == null)
+			self = new BpelUiReconciliationHelper();
+		return self;
+	}
 	
 	public static void adoptChild(WSDLElement parent, List<? extends WSDLElement> children, WSDLElement newChild, String nodeName) {
 		boolean oldUpdatingDom = myIsUpdatingDom(parent);
@@ -53,7 +72,7 @@ public class BpelUiReconciliationHelper extends ReconciliationHelper{
 				//I CHANGE HERE
 				if (newChild instanceof DataItem){
 					newChild.setElement(BpelUiElementFactory.getInstance().createElement(newChild, parent));
-				} else if (newChild instanceof OnUserEventImpl){
+				} else if (newChild instanceof OnUserEvent){
 					newChild.setElement(BpelUiElementFactory.getInstance().createElement(newChild, parent));
 				} else {
 					newChild.setElement(ElementFactory.getInstance().createElement(newChild, parent));
@@ -80,6 +99,27 @@ public class BpelUiReconciliationHelper extends ReconciliationHelper{
 		}
 	}
 
+	public void patchDomUI(EObject child, EObject parent, Node parentElement, EObject before, Node beforeElement) {
+         if (child instanceof EventHandlerUI) {
+	    	// fix https://bugs.eclipse.org/bugs/show_bug.cgi?id=330308
+	    	EventHandler e = (EventHandlerUI)child;
+	    	EList<OnEvent> _onEvent = e.getEvents();
+	    	OnEvent on = _onEvent.get(0);
+	    	Element onElement = ReconciliationHelper.getBPELChildElementByLocalName(e.getElement(), BPELConstants.ND_ON_EVENT);
+	    	on.setElement(onElement);
+	    	reconcile(on, onElement);
+	    } if (child instanceof OnUserEvent) {
+	    	OnUserEvent o = (OnUserEvent)child;
+	    	Activity a = o.getActivity();
+	    	Element s = ReconciliationHelper.getBPELChildElementByLocalName(o.getElement(), BPELConstants.ND_SCOPE);
+	    	a.setElement(s);
+	    	reconcile(a, s);
+	    } else {
+	    	super.patchDom(child, parent, parentElement, before, beforeElement);
+	    }
+	}
+	
+	
 	private static void mySetUpdatingDom(WSDLElement element, boolean updatingDOM) {
 		if (element instanceof BPELExtensibleElementImpl) {
 			((BPELExtensibleElementImpl) element).setUpdatingDOM(updatingDOM);			

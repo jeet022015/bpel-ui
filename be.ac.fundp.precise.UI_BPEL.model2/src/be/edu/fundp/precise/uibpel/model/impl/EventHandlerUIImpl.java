@@ -6,25 +6,23 @@
  */
 package be.edu.fundp.precise.uibpel.model.impl;
 
-import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
-import be.edu.fundp.precise.uibpel.model.ModelPackage;
-import be.edu.fundp.precise.uibpel.model.OnUserEvent;
-
 import java.util.Collection;
 
 import org.eclipse.bpel.model.impl.EventHandlerImpl;
 import org.eclipse.bpel.model.util.ReconciliationHelper;
-
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
+import be.edu.fundp.precise.uibpel.model.ModelPackage;
+import be.edu.fundp.precise.uibpel.model.OnUserEvent;
+import be.edu.fundp.precise.uibpel.model.util.BpelUiConstants;
+import be.edu.fundp.precise.uibpel.model.util.BpelUiReconciliationHelper;
 
 /**
  * <!-- begin-user-doc -->
@@ -153,6 +151,16 @@ public class EventHandlerUIImpl extends EventHandlerImpl implements EventHandler
 				return userInteraction != null && !userInteraction.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	
+	@Override
+	protected void adoptContent(EReference reference, Object object) {
+		if (object instanceof OnUserEvent) {
+			BpelUiReconciliationHelper.adoptChild(this, userInteraction, (OnUserEvent) object,
+					BpelUiConstants.ND_ON_USER_EVENT);
+		}
+		super.adoptContent(reference, object);
 	}
 	
 	@Override
