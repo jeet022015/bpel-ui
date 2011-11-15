@@ -40,10 +40,12 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.w3c.dom.Element;
 
+import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.DataInteractionManager;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
+import be.edu.fundp.precise.uibpel.model.ScopeUI;
 
 public class WriterUiBpel extends BPELWriter {
 
@@ -57,35 +59,46 @@ public class WriterUiBpel extends BPELWriter {
 	
 	public WriterUiBpel(Process process, IResource iFile) {
 		super();
-		//FIXME choose better names
-		String arg1 = "";
-		String arg2 = "";
-		String arg3 = "";
+		String processWsldPath = "";
+		String uiManagerWsdlPath = "";
+		String userEventWsdlPath = "";
 		bpel = BpelUIUtil.getInstace();
 		for (Import processImp : process.getImports()) {
 			if (process.getTargetNamespace().equals(processImp.getNamespace())){
 				IFolder folder = (IFolder) iFile.getParent();
 				IFile file = folder.getFile(processImp.getLocation());
-				arg1 = file.getFullPath().toString();
+				processWsldPath = file.getFullPath().toString();
 				file = folder.getFile("UiManager.wsdl");
-				arg2 = file.getFullPath().toString();
+				uiManagerWsdlPath = file.getFullPath().toString();
 				file = folder.getFile("UserEventListener.wsdl");
-				arg3 = file.getFullPath().toString();
+				userEventWsdlPath = file.getFullPath().toString();
 			}
 		}
-		bpel.configureProcess(arg1, arg2, arg3, process);
+		bpel.configureProcess(processWsldPath, uiManagerWsdlPath, userEventWsdlPath, process);
 	}
 	
 	public void write(BPELResource resource, OutputStream out, Map<?, ?> args)
 			throws IOException {
 		super.write(resource, out, args);
-		bpel.importNewWSDL();
+		bpel.saveProcessWSDL();
 	}
+	
+	protected Element onEvent2XML(org.eclipse.bpel.model.OnEvent onEvent) {
+		return super.onEvent2XML(onEvent);
+	};
 	
 	protected Element process2XML(Process process) {
 		if (!process.getImports().contains(bpel.getImportBPEL())) {
 			process.getImports().add(bpel.getImportBPEL());
 		}
+		if (!process.getImports().contains(bpel.getImportUserEvent())) {
+			process.getImports().add(bpel.getImportUserEvent());
+		}
+		
+		if (process.getCorrelationSets() == null){
+			process.setCorrelationSets(BPELFactory.eINSTANCE.createCorrelationSets());
+		}
+		process.getCorrelationSets().getChildren().add(bpel.getUserEventCorrelationSet());
 		return super.process2XML(process);
 	}
 
@@ -98,6 +111,9 @@ public class WriterUiBpel extends BPELWriter {
 		if (!partnerLinks.getChildren().contains(bpel.getPartnerLinkBPEL())) {
 			partnerLinks.getChildren().add(bpel.getPartnerLinkBPEL());
 		}
+		if (!partnerLinks.getChildren().contains(bpel.getPartnerLinkUserEvent())) {
+			partnerLinks.getChildren().add(bpel.getPartnerLinkUserEvent());
+		}
 		return super.partnerLinks2XML(partnerLinks);
 	}
 
@@ -109,9 +125,15 @@ public class WriterUiBpel extends BPELWriter {
 			return dealWithDataOutputUI((DataOutputUI) activity);
 		} else if (activity instanceof DataInputUI) {
 			return dealWithDataInputUI((DataInputUI) activity);
+		}  else if (activity instanceof ScopeUI) {
+			return dealWithScopeUI((ScopeUI) activity);
 		}
 
 		return super.extensionActivity2XML(activity);
+	}
+
+	private Element dealWithScopeUI(ScopeUI activity) {
+		return scope2XML(activity);
 	}
 
 	private Element dealWithDataOutputUI(DataOutputUI activity) {
@@ -122,7 +144,8 @@ public class WriterUiBpel extends BPELWriter {
 		
 		Variable inputVar = vars[0];
 		
-		//String prefix = BPELUtils.getNamespacePrefix(inputVar, inputVar.getMessageType().getQName().getNamespaceURI())+":";
+		//String prefix = BPELUtils.getNamespacePrefix(inputVar, 
+		//inputVar.getMessageType().getQName().getNamespaceURI())+":";
 		//TODO when should I do it?
 		String prefix = "";
 
@@ -259,13 +282,16 @@ public class WriterUiBpel extends BPELWriter {
 		
 		Variable[] vars = bpel.getVariableForDataInt(activity);
 		
-		Variable inputVar = vars[0].getName().startsWith(BpelUIUtil.DATA_SELECTION_REQUEST) ? vars[0] : vars[1];
-		Variable outputVar = vars[0].getName().startsWith(BpelUIUtil.DATA_SELECTION_REPONSE) ? vars[0] : vars[1];
+		Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
+				getDefaultRequestNames(DataInteractionManager.SELECTION_OPERATION)) ? vars[0] : vars[1];
+		Variable outputVar = vars[0].getName().startsWith(DataInteractionManager.
+				getDefaultResponseNames(DataInteractionManager.SELECTION_OPERATION)) ? vars[0] : vars[1];
 
 		Assign assignBefore = BPELFactory.eINSTANCE.createAssign();
 		assignBefore.setName("DataSelectionConfiguration");
 		
-		//String prefix = BPELUtils.getNamespacePrefix(inputVar, inputVar.getMessageType().getQName().getNamespaceURI())+":";
+		//String prefix = BPELUtils.getNamespacePrefix(inputVar, 
+		//inputVar.getMessageType().getQName().getNamespaceURI())+":";
 		//TODO when should i do it?
 		String prefix = "";
 		
@@ -342,10 +368,13 @@ public class WriterUiBpel extends BPELWriter {
 		
 		Variable[] vars = bpel.getVariableForDataInt(activity);
 		
-		Variable inputVar = vars[0].getName().startsWith(BpelUIUtil.DATA_INPUT_REQUEST) ? vars[0] : vars[1];
-		Variable outputVar = vars[0].getName().startsWith(BpelUIUtil.DATA_INPUT_REPONSE) ? vars[0] : vars[1];
+		Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
+				getDefaultRequestNames(DataInteractionManager.INPUT_OPERATION)) ? vars[0] : vars[1];
+		Variable outputVar = vars[0].getName().startsWith(DataInteractionManager.
+				getDefaultResponseNames(DataInteractionManager.INPUT_OPERATION)) ? vars[0] : vars[1];
 		
-		//String prefix = BPELUtils.getNamespacePrefix(inputVar, inputVar.getMessageType().getQName().getNamespaceURI());
+		//String prefix = BPELUtils.getNamespacePrefix(inputVar, 
+				//inputVar.getMessageType().getQName().getNamespaceURI());
 		//TODO when do I must to do it?
 		//definition.getPrefix
 		//Ask it from BpelUIUtil
@@ -471,10 +500,10 @@ public class WriterUiBpel extends BPELWriter {
 			// Variable is defined using "messageType"
 			Message msg = (Message)var.getMessageType();
 			if (msg != null) {
-				if (msg.eIsProxy()) {
+				//if (msg.eIsProxy()) {
 					//FIXME it works???
 					//msg = (Message)EmfModelQuery.resolveProxy(bpelEditor.getProcess(), msg);
-				}
+				//}
 				if (part==null) {
 					Map parts = msg.getParts();
 					if (parts!=null && !parts.isEmpty()) {

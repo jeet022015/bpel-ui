@@ -1,16 +1,10 @@
 package be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import javax.wsdl.PortType;
-import javax.xml.namespace.QName;
-
 import org.eclipse.bpel.model.Activity;
-import org.eclipse.bpel.model.BPELFactory;
 import org.eclipse.bpel.model.Catch;
 import org.eclipse.bpel.model.CorrelationSet;
 import org.eclipse.bpel.model.ElseIf;
@@ -31,28 +25,18 @@ import org.eclipse.bpel.model.Scope;
 import org.eclipse.bpel.model.Sequence;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.While;
-import org.eclipse.bpel.model.messageproperties.MessagepropertiesFactory;
-import org.eclipse.bpel.model.messageproperties.Property;
-import org.eclipse.bpel.model.messageproperties.PropertyAlias;
-import org.eclipse.bpel.model.messageproperties.Query;
-import org.eclipse.bpel.model.partnerlinktype.PartnerLinkType;
-import org.eclipse.bpel.model.partnerlinktype.PartnerlinktypeFactory;
-import org.eclipse.bpel.model.partnerlinktype.Role;
 import org.eclipse.bpel.model.resource.BPELResourceSetImpl;
 import org.eclipse.bpel.model.util.BPELUtils;
-import org.eclipse.bpel.ui.util.XSDUtils;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
-import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
-import org.eclipse.wst.wsdl.Part;
-import org.eclipse.wst.wsdl.Port;
-import org.eclipse.wst.wsdl.Service;
-import org.eclipse.wst.wsdl.util.WSDLConstants;
 
+import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.DataInteractionManager;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.EventInteractionManager;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.representation.ImportRepresentation;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.representation.PartnerLinkRepresentation;
 import be.ac.fundp.precise.ui_bpel.ui.util.WSDLImportHelperUI;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataInteraction;
@@ -65,37 +49,24 @@ import be.edu.fundp.precise.uibpel.model.ScopeUI;
 
 public class BpelUIUtil {
 
-	public static final String DATA_SELECTION_REPONSE = "dataSelectionResponse";
-	public static final String DATA_SELECTION_REQUEST = "dataSelectionRequest";
-	public static final String ON_USER_EVENT_DATA = "onUserEventData";
-	public static final String DATA_OUTPUT_REQUEST = "dataOutputRequest";
-	public static final String DATA_INPUT_REPONSE = "dataInputResponse";
-	public static final String DATA_INPUT_REQUEST = "dataInputRequest";
 	private static final String WSLD_NAME = "wsdl";
 	private static final String SERVICE_NAME = "UiManager";
-	private static final Object SERVICE_NAME_USER_EVENT = "UserEventListener";
+	private static final String SERVICE_NAME_USER_EVENT = "UserEventListener";
+	
+	protected PartnerLinkRepresentation uiManagerPartnerLink;
+	protected PartnerLinkRepresentation userEventListenerPartnerLink;
+	
+	protected ImportRepresentation uiManagerImport;
+	protected ImportRepresentation userEventImport;
+	
+	protected DataInteractionManager uiManagerOp;
+	protected EventInteractionManager eventManagerOp;
+	
 	private Definition wsdl_ui_bpel;
 	private Definition wsdl_user_event_listinner;
 	private Definition processWSDl;
-	private Import importBPEL;
-	private Map<String, Set<Variable>> list;
-	private Operation inputOperation;
-	private Operation outputOperation;
-	private Operation selectionOperation;
-	private Operation eventOperation;
-	private int selectionCount;
-	private int inputCount;
-	private int outputCount;
-	private int eventCount;
+	
 	private Process p;
-	private PartnerLink partnerLinkBPEL;
-	private PartnerLink partnerLinkUserEvent;
-	private PartnerLinkType partnerLinkTypeBPEL;
-	private Role role;
-	private PropertyAlias myPA;
-	private Property propertyName;
-	private Role roleEventListenner;
-	private PartnerLinkType partnerLinkTypeUserEvent;
 
 	private static BpelUIUtil instance;
 
@@ -131,137 +102,24 @@ public class BpelUIUtil {
 		wsdl_user_event_listinner = (Definition) attemptLoadWSDL(uri, process.eResource()
 				.getResourceSet());
 		
-		list = new HashMap<String, Set<Variable>>();
-
-		importBPEL = createImportInProcess();
-		partnerLinkBPEL = createPartnerLinkInProcess2();
-		partnerLinkUserEvent = createPartnerLinkUserEvent();
-		partnerLinkTypeBPEL = createPartnerLinkTypeInProcess();
-		partnerLinkTypeUserEvent = createPartnerLinkTypeUserEvent();
-		role = createRoleInProcess();
-		roleEventListenner = createUserEventRole();
+		uiManagerPartnerLink = new PartnerLinkRepresentation("UiManagerPartnerLink",
+				"UiManagerPartnerLinkType","UiManagerRole", wsdl_ui_bpel,SERVICE_NAME, processWSDl);
+		userEventListenerPartnerLink = new PartnerLinkRepresentation("UserEventPartnerLink",
+				"UserEventPartnerLinkType","UserEventRole", wsdl_user_event_listinner,SERVICE_NAME_USER_EVENT, processWSDl);
 		
-		organizeBpelElement();
-		organizeBpelElementUserEvent();
-		createCorrelationSet();
-		importNewWSDL();
-		operationConfiguration();
+		uiManagerImport = new ImportRepresentation(wsdl_ui_bpel, processWSDl, p.eResource());
+		userEventImport = new ImportRepresentation(wsdl_user_event_listinner,processWSDl, p.eResource());
+		
+		uiManagerOp = new DataInteractionManager(wsdl_ui_bpel);
+		eventManagerOp = new EventInteractionManager(wsdl_user_event_listinner, processWSDl);
+		
+		saveProcessWSDL();
 		treatProcess(process.getActivity());
 	}
 
-	private PartnerLinkType createPartnerLinkTypeUserEvent() {
-		PartnerLinkType plt = PartnerlinktypeFactory.eINSTANCE.createPartnerLinkType();
-		plt.setName("ParnetLinkTypeUserEvent");
-		return plt;
-	}
-
-	private Role createUserEventRole() {
-		Role role1 =  PartnerlinktypeFactory.eINSTANCE.createRole();
-		role1.setName ( "RoleUserEvent" );
-		return role1;
-	}
-
-	private void organizeBpelElementUserEvent() {
-		//FIXME create correct names
-		PortType pt = null;
-		for (Object portType : wsdl_user_event_listinner.getPortTypes().keySet()) {
-			QName t = (QName)portType;
-			//FIXME DEDUCT IT SERVICE_NAME
-			if(t.getLocalPart().equals(SERVICE_NAME_USER_EVENT)){
-				pt = wsdl_user_event_listinner.getPortType(t);
-				//http://www.example.org/UI_BPEL-Mediator/
-			}
-		}
-		
-		//Role and PartnerLinkType
-		roleEventListenner.setPortType(pt);
-		partnerLinkTypeUserEvent.getRole().add(roleEventListenner);
-		partnerLinkTypeUserEvent.setEnclosingDefinition(processWSDl);
-		
-		partnerLinkUserEvent.setPartnerLinkType(partnerLinkTypeUserEvent);
-		partnerLinkUserEvent.setPartnerRole(roleEventListenner);
-	}
-
-	private PartnerLink createPartnerLinkUserEvent() {
-		String newPartnerName = "PartnerLinkUserEvent";
-		PartnerLink partner = BPELFactory.eINSTANCE.createPartnerLink();
-		partner.setName(newPartnerName);
-		return partner;
-	}
-
-	private void createCorrelationSet() {
-		CorrelationSet myCS = BPELFactory.eINSTANCE.createCorrelationSet();
-		
-		Service s1 = (Service) wsdl_user_event_listinner.getEServices().get(0);
-		Port p1 = (Port) s1.getEPorts().get(0);
-		for (Object op : p1.getBinding().getBindingOperations()) {
-			BindingOperation opera = (BindingOperation) op;
-			if (opera.getName().equals("fireEvent")){
-				eventOperation = opera.getEOperation();
-			}
-		}
-		
-		myPA = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
-		myPA.setMessageType(eventOperation.getInput().getMessage());
-		Part part = (Part) eventOperation.getInput().getMessage().getPart("parameters");
-
-		myPA.setPart("parameters");
-		propertyName = MessagepropertiesFactory.eINSTANCE.createProperty();
-		propertyName.setType(XSDUtils.getPrimitive("string"));
-		QName qname = new QName("test", "propertyName");
-		propertyName.setQName(qname);
-		propertyName.setName("propertyName");
-		myPA.setPropertyName(propertyName);
-		propertyName.setEnclosingDefinition(processWSDl);
-		
-		//The query
-		String query = "";
-		String prefix = processWSDl.getPrefix("test");
-		if (prefix!=null)
-			query = query + "/" + prefix + ":" + "processId";
-		else
-			query = query + "/" + "processId";
-		Query q = MessagepropertiesFactory.eINSTANCE.createQuery();
-		q.setValue(query);
-		myPA.setQuery(q);
-	}
-
-	private void organizeBpelElement() {
-		//FIXME create correct names
-		PortType pt = null;
-		for (Object portType : wsdl_ui_bpel.getPortTypes().keySet()) {
-			QName t = (QName)portType;
-			//FIXME DEDUCT IT SERVICE_NAME
-			if(t.getLocalPart().equals(SERVICE_NAME)){
-				pt = wsdl_ui_bpel.getPortType(t);
-				//http://www.example.org/UI_BPEL-Mediator/
-			}
-		}
-		
-		//Role and PartnerLinkType
-		role.setPortType(pt);
-		partnerLinkTypeBPEL.getRole().add(role);
-		partnerLinkTypeBPEL.setEnclosingDefinition(processWSDl);
-		
-		partnerLinkBPEL.setPartnerLinkType(partnerLinkTypeBPEL);
-		partnerLinkBPEL.setPartnerRole(role);
-	}
-
-	public void importNewWSDL() {
+	public void saveProcessWSDL() {
 		
 		WSDLImportHelperUI.addToolingNamespaces(processWSDl);
-		
-		WSDLImportHelperUI.addImportAndNamespace(processWSDl, wsdl_ui_bpel);
-		WSDLImportHelperUI.addImportAndNamespace(processWSDl, wsdl_user_event_listinner);
-		boolean newPL = true;
-
-		processWSDl.getEExtensibilityElements().add(partnerLinkTypeBPEL);
-
-		processWSDl.getEExtensibilityElements().add(partnerLinkTypeUserEvent);
-
-		processWSDl.getEExtensibilityElements().add(propertyName);
-
-		processWSDl.getEExtensibilityElements().add(myPA);
 
 		try {
 			processWSDl.eResource().save(null);
@@ -269,75 +127,18 @@ public class BpelUIUtil {
 			e.printStackTrace();
 		}
 	}
-	
-	private Role createRoleInProcess() {
-		Role role1 =  PartnerlinktypeFactory.eINSTANCE.createRole();
-		role1.setName ( "RoleName" );
-		return role1;
-	}
-
-	private PartnerLinkType createPartnerLinkTypeInProcess() {
-		PartnerLinkType plt = PartnerlinktypeFactory.eINSTANCE.createPartnerLinkType();
-		plt.setName("ParnetLinkT");
-		//plt.setEnclosingDefinition(processWSDl);
-		return plt;
-	}
-
-	private PartnerLink createPartnerLinkInProcess2() {
-		String newPartnerName = "partnerLinkUserInteraction";
-		PartnerLink partner = BPELFactory.eINSTANCE.createPartnerLink();
-		partner.setName(newPartnerName);
-		return partner;
-	}
-
-	private Import createImportInProcess() {
-
-		Import imp = BPELFactory.eINSTANCE.createImport();
-
-		// namespace
-		String t = wsdl_ui_bpel.getTargetNamespace();
-		if (t != null) {
-			imp.setNamespace(t);
-		}
-		// location
-		Resource resource = p.eResource();
-		URI schemaURI = URI.createURI(wsdl_ui_bpel.getLocation());
-		imp.setLocation(schemaURI
-				.deresolve(resource.getURI(), true, true, true).toString());
-
-		// importType (the WSDL kind)
-		imp.setImportType(WSDLConstants.WSDL_NAMESPACE_URI);
-
-		return imp;
-	}
-
-	private void operationConfiguration() {
-		selectionCount = inputCount = outputCount = eventCount = 1;
-		Service s1 = (Service) wsdl_ui_bpel.getEServices().get(0);
-		Port p1 = (Port) s1.getEPorts().get(0);
-		for (Object op : p1.getBinding().getBindingOperations()) {
-			BindingOperation opera = (BindingOperation) op;
-			if (opera.getName().equals("inputOperation"))
-				inputOperation = opera.getEOperation();
-			else if (opera.getName().equals("outputOperation"))
-				outputOperation = opera.getEOperation();
-			else if (opera.getName().equals("selectionOperation"))
-				selectionOperation = opera.getEOperation();
-			else if (opera.getName().equals("eventDataUI"))
-				eventOperation = opera.getEOperation();
-		}
-	}
 
 	public Set<Variable> getUiVariables() {
 		Set<Variable> var = new HashSet<Variable>();
-		for (Set<Variable> simpleSet : list.values()) {
-			var.addAll(simpleSet);
-		}
+		var.addAll(uiManagerOp.getVariables());
+		var.addAll(eventManagerOp.getVariables());
 		return var;
 	}
 
 	public Variable[] getVariableForDataInt(DataInteraction activity) {
-		return list.get(activity.getId()).toArray(new Variable[0]);
+		if (uiManagerOp.containsUserInteraction(activity.getId()))
+			return uiManagerOp.getVariable(activity.getId());
+		return eventManagerOp.getVariable(activity.getId());
 	}
 
 	private void treatProcess(Activity activity) {
@@ -377,47 +178,13 @@ public class BpelUIUtil {
 
 	private void extensionActivity2XML(ExtensionActivity activity) {
 		if (activity instanceof DataSelectionUI) {
-			DataSelectionUI s = (DataSelectionUI) activity;
-			Variable inputVar = BPELFactory.eINSTANCE.createVariable();
-			inputVar.setName(DATA_SELECTION_REQUEST + selectionCount);
-			inputVar.setMessageType((Message) selectionOperation.getInput()
-					.getMessage());
-			Variable outputVar = BPELFactory.eINSTANCE.createVariable();
-			outputVar.setName(DATA_SELECTION_REPONSE + selectionCount);
-			outputVar.setMessageType((Message) selectionOperation.getOutput()
-					.getMessage());
-			Set<Variable> var = new HashSet<Variable>();
-			var.add(outputVar);
-			var.add(inputVar);
-			list.put(s.getId(), var);
-			selectionCount++;
+			uiManagerOp.createDataSelectionVar((DataSelectionUI) activity);
 			return;
 		} else if (activity instanceof DataInputUI) {
-			DataInputUI s = (DataInputUI) activity;
-			Variable inputVar = BPELFactory.eINSTANCE.createVariable();
-			inputVar.setName(DATA_INPUT_REQUEST + inputCount);
-			inputVar.setMessageType((Message) inputOperation.getInput()
-					.getMessage());
-			Variable outputVar = BPELFactory.eINSTANCE.createVariable();
-			outputVar.setName(DATA_INPUT_REPONSE + inputCount);
-			outputVar.setMessageType((Message) inputOperation.getOutput()
-					.getMessage());
-			Set<Variable> var = new HashSet<Variable>();
-			var.add(outputVar);
-			var.add(inputVar);
-			list.put(s.getId(), var);
-			inputCount++;
+			uiManagerOp.createDataInputVar((DataInputUI) activity);
 			return;
 		} else if (activity instanceof DataOutputUI) {
-			DataOutputUI s = (DataOutputUI) activity;
-			Variable inputVar = BPELFactory.eINSTANCE.createVariable();
-			inputVar.setName(DATA_OUTPUT_REQUEST + outputCount);
-			inputVar.setMessageType((Message) outputOperation.getInput()
-					.getMessage());
-			Set<Variable> var = new HashSet<Variable>();
-			var.add(inputVar);
-			list.put(s.getId(), var);
-			outputCount++;
+			uiManagerOp.createDataOutputVar((DataOutputUI) activity);
 			return;
 		} else if (activity instanceof ScopeUI) {
 			ScopeUI scope = (ScopeUI) activity;
@@ -425,14 +192,7 @@ public class BpelUIUtil {
 			if (eventHand instanceof EventHandlerUI) {
 				EventHandlerUI eventHandUI = (EventHandlerUI) eventHand;
 				for (OnUserEvent userEvent : eventHandUI.getUserInteraction()) {
-					Variable inputVar = BPELFactory.eINSTANCE.createVariable();
-					inputVar.setName(ON_USER_EVENT_DATA + eventCount);
-					inputVar.setMessageType((Message) eventOperation.getInput()
-							.getMessage());
-					Set<Variable> var = new HashSet<Variable>();
-					var.add(inputVar);
-					list.put(userEvent.getId(), var);
-					eventCount++;
+					eventManagerOp.createEventVar(userEvent);
 				}
 			}
 			scopeInner(scope);
@@ -440,14 +200,7 @@ public class BpelUIUtil {
 		} else if (activity instanceof PickUI) {
 			PickUI pick = (PickUI) activity;
 			for (OnUserEvent userEvent : pick.getUserInteraction()) {
-				Variable inputVar = BPELFactory.eINSTANCE.createVariable();
-				inputVar.setName(ON_USER_EVENT_DATA + eventCount);
-				inputVar.setMessageType((Message) eventOperation.getInput()
-						.getMessage());
-				Set<Variable> var = new HashSet<Variable>();
-				var.add(inputVar);
-				list.put(userEvent.getId(), var);
-				eventCount++;
+				eventManagerOp.createEventVar(userEvent);
 			}
 			dealPick(pick);
 		}
@@ -474,27 +227,31 @@ public class BpelUIUtil {
 	}
 
 	public Operation getInputOperation() {
-		return inputOperation;
+		return uiManagerOp.getInputOperation();
 	}
 
 	public Operation getOutputOperation() {
-		return outputOperation;
+		return uiManagerOp.getOutputOperation();
 	}
 
 	public Operation getSelectionOperation() {
-		return selectionOperation;
+		return uiManagerOp.getSelectionOperation();
 	}
 
 	public Operation getEventOperation() {
-		return eventOperation;
+		return eventManagerOp.getOperation();
 	}
 	
 	public Import getImportBPEL() {
-		return importBPEL;
+		return uiManagerImport.getImport();
+	}
+	
+	public Import getImportUserEvent() {
+		return userEventImport.getImport();
 	}
 
 	public PartnerLink getPartnerLinkBPEL() {
-		return partnerLinkBPEL;
+		return uiManagerPartnerLink.getPartnerLink();
 	}
 
 	public static Object attemptLoadWSDL(URI uri, ResourceSet resourceSet) {
@@ -509,5 +266,13 @@ public class BpelUIUtil {
 			return resource.getContents().get(0);
 		}
 		return null;
+	}
+
+	public CorrelationSet getUserEventCorrelationSet() {
+		return eventManagerOp.getCorrelationSet();
+	}
+
+	public PartnerLink getPartnerLinkUserEvent() {
+		return userEventListenerPartnerLink.getPartnerLink();
 	}
 }
