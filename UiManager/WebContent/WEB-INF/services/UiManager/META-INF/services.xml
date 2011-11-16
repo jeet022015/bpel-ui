@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.6.1  Built on : Aug 31, 2011 (12:22:40 CEST) -->
+<serviceGroup>
+    <service name="UiManager">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="be.ac.fundp.uimanager.controller.UiManagerMessageReceiverInOut"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-only" class="be.ac.fundp.uimanager.controller.UiManagerMessageReceiverInOnly"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">be.ac.fundp.uimanager.controller.UiManagerSkeleton</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="inputOperation" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://fundp.ac.be/UiManager/">
+            <actionMapping>http://fundp.ac.be/UiManager/inputOperation</actionMapping>
+            <outputActionMapping>http://fundp.ac.be/UiManager/UiManager/inputOperationResponse</outputActionMapping>
+        </operation>
+        <operation name="selectionOperation" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://fundp.ac.be/UiManager/">
+            <actionMapping>http://fundp.ac.be/UiManager/selectionOperation</actionMapping>
+            <outputActionMapping>http://fundp.ac.be/UiManager/UiManager/selectionOperationResponse</outputActionMapping>
+        </operation>
+        <operation name="outputOperation" mep="http://www.w3.org/ns/wsdl/in-only" namespace="http://fundp.ac.be/UiManager/">
+            <actionMapping>http://fundp.ac.be/UiManager/outputOperation</actionMapping>
+        </operation>
+        <operation name="generateProcessId" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://fundp.ac.be/UiManager/">
+            <actionMapping>http://fundp.ac.be/UiManager/generateProcessId</actionMapping>
+            <outputActionMapping>http://fundp.ac.be/UiManager/UiManager/generateProcessIdResponse</outputActionMapping>
+        </operation>
+    </service>
+</serviceGroup>

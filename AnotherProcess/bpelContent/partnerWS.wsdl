@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="partnerWS" targetNamespace="http://www.example.org/partnerWS/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.example.org/partnerWS/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.example.org/partnerWS/">
+      <xsd:element name="shipmentPrice">
+        <xsd:complexType>
+          <xsd:sequence>
+          	<xsd:element name="shipper" type="xsd:string"/>
+          	<xsd:element name="product" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="shipmentPriceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="shipPrice" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="calculateInitialPrice">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="product" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="calculateInitialPriceResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="initialPrice" type="xsd:int"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="calculatePrice">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="initialPrice" type="xsd:int"/>
+      			<xsd:element name="shipPrice" type="xsd:int"/>
+      			<xsd:element name="product" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="calculatePriceResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="price" type="xsd:int"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CalculatePrice">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="in" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CalculatePriceResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="out" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="calculateDiscount">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="price" type="xsd:int"/>
+      			<xsd:element name="product" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="calculateDiscountResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="discount" type="xsd:int"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getPayment">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="in" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="NewOperationResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="out" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="sendBill">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="in" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="sendBillResponse1">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="out" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="launchShipment">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="in" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="launchShipmentResponse1">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="out" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="launchShipmentRequest">
+    <wsdl:part name="parameters" element="tns:launchShipment">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="calculateInitialPriceRequest">
+    <wsdl:part name="parameters" element="tns:calculateInitialPrice">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="calculatePriceResponse">
+    <wsdl:part name="parameters" element="tns:calculatePriceResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CalculatePriceResponse">
+    <wsdl:part name="parameters" element="tns:CalculatePriceResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="calculateDiscountResponse">
+    <wsdl:part name="parameters" element="tns:calculateDiscountResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="shipmentPriceRequest">
+    <wsdl:part name="parameters" element="tns:shipmentPrice">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="calculateDiscountRequest">
+    <wsdl:part name="parameters" element="tns:calculateDiscount">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sendBillRequest">
+    <wsdl:part name="parameters" element="tns:sendBill">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="shipmentPriceResponse">
+    <wsdl:part name="parameters" element="tns:shipmentPriceResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="calculateInitialPriceResponse">
+    <wsdl:part name="parameters" element="tns:calculateInitialPriceResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CalculatePriceRequest">
+    <wsdl:part name="parameters" element="tns:CalculatePrice">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sendBillResponse1">
+    <wsdl:part name="parameters" element="tns:sendBillResponse1">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="launchShipmentResponse1">
+    <wsdl:part name="parameters" element="tns:launchShipmentResponse1">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="calculatePriceRequest">
+    <wsdl:part name="parameters" element="tns:calculatePrice">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="NewOperationResponse">
+    <wsdl:part name="parameters" element="tns:NewOperationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPaymentRequest">
+    <wsdl:part name="parameters" element="tns:getPayment">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="partnerWS">
+    <wsdl:operation name="shipmentPrice">
+      <wsdl:input message="tns:shipmentPriceRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:shipmentPriceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="calculateInitialPrice">
+      <wsdl:input message="tns:calculateInitialPriceRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:calculateInitialPriceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="calculatePrice">
+      <wsdl:input message="tns:calculatePriceRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:calculatePriceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="calculateDiscount">
+      <wsdl:input message="tns:calculateDiscountRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:calculateDiscountResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="partnerWSSOAP" type="tns:partnerWS">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="shipmentPrice">
+      <soap:operation soapAction="http://www.example.org/partnerWS/shipmentPrice"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="calculateInitialPrice">
+      <soap:operation soapAction="http://www.example.org/partnerWS/calculateInitialPrice"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="calculatePrice">
+      <soap:operation soapAction="http://www.example.org/partnerWS/calculatePrice"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="calculateDiscount">
+      <soap:operation soapAction="http://www.example.org/partnerWS/calculateDiscount"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="partnerWS">
+    <wsdl:port name="partnerWSSOAP" binding="tns:partnerWSSOAP">
+      <soap:address location="http://localhost:8090/PartnerExample/services/partnerWS/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

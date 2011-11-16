@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.6.1  Built on : Aug 31, 2011 (12:22:40 CEST) -->
+<serviceGroup>
+    <service name="partnerWS">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="org.example.www.partnerws.provider.PartnerWSMessageReceiverInOut"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">org.example.www.partnerws.provider.PartnerWSSkeleton</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="calculateDiscount" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://www.example.org/partnerWS/">
+            <actionMapping>http://www.example.org/partnerWS/calculateDiscount</actionMapping>
+            <outputActionMapping>http://www.example.org/partnerWS/partnerWS/calculateDiscountResponse</outputActionMapping>
+        </operation>
+        <operation name="shipmentPrice" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://www.example.org/partnerWS/">
+            <actionMapping>http://www.example.org/partnerWS/shipmentPrice</actionMapping>
+            <outputActionMapping>http://www.example.org/partnerWS/partnerWS/shipmentPriceResponse</outputActionMapping>
+        </operation>
+        <operation name="calculateInitialPrice" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://www.example.org/partnerWS/">
+            <actionMapping>http://www.example.org/partnerWS/calculateInitialPrice</actionMapping>
+            <outputActionMapping>http://www.example.org/partnerWS/partnerWS/calculateInitialPriceResponse</outputActionMapping>
+        </operation>
+        <operation name="calculatePrice" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://www.example.org/partnerWS/">
+            <actionMapping>http://www.example.org/partnerWS/calculatePrice</actionMapping>
+            <outputActionMapping>http://www.example.org/partnerWS/partnerWS/calculatePriceResponse</outputActionMapping>
+        </operation>
+    </service>
+</serviceGroup>

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+                  xmlns:wsdl1="http://fundp.ac.be/UiManager/"
+                  xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+                  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+                  xmlns:tns="http://travelcompany.org.be"
+                  xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
+                  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  targetNamespace="http://travelcompany.org.be">
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema"
+              xmlns:wsdl="http://www.example.org/partnerWS/"
+              attributeFormDefault="unqualified"
+              elementFormDefault="qualified"
+              targetNamespace="http://travelcompany.org.be">
+         <element name="PurchaseOrderRequest">
+            <complexType>
+               <sequence>
+                  <element name="input" type="string"/>
+               </sequence>
+            </complexType>
+         </element>
+         <element name="PurchaseOrderResponse">
+            <complexType>
+               <sequence>
+                  <element name="result" type="string"/>
+               </sequence>
+            </complexType>
+         </element>
+      </schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tns="http://fundp.ac.be/UiManager/"
+                  attributeFormDefault="unqualified"
+                  elementFormDefault="unqualified"
+                  targetNamespace="http://fundp.ac.be/UiManager/">
+         <xsd:element name="outputOperation">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element minOccurs="0" name="userInteracId" type="xsd:string"/>
+                  <xsd:element minOccurs="0" name="role" type="xsd:string"/>
+                  <xsd:element minOccurs="0" name="processid" type="xsd:string"/>
+                  <xsd:element maxOccurs="unbounded" minOccurs="0" name="data" type="tns:UiDataType"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="outputOperationResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="out" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="inputOperation">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element minOccurs="0" name="userInteracId" type="xsd:string"/>
+                  <xsd:element minOccurs="0" name="role" type="xsd:string"/>
+                  <xsd:element minOccurs="0" name="processId" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="inputOperationResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element maxOccurs="unbounded" minOccurs="0" name="data" type="tns:UiDataType"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="selectionOperation">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element minOccurs="0" name="userInteracId" type="xsd:string"/>
+                  <xsd:element minOccurs="0" name="role" type="xsd:string"/>
+                  <xsd:element minOccurs="0" name="processId" type="xsd:string"/>
+                  <xsd:element maxOccurs="unbounded" minOccurs="0" name="data" type="tns:UiDataType"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="selectionOperationResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:UiDataType"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="generateProcessId">
+            <xsd:complexType/>
+         </xsd:element>
+         <xsd:element name="generateProcessIdResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element minOccurs="0" name="processId" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="NewOperation3">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="in" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="NewOperation3Response">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="out" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:complexType name="UiDataType">
+            <xsd:sequence>
+               <xsd:element name="data" type="xsd:anyType"/>
+               <xsd:element name="type" type="xsd:string"/>
+               <xsd:element name="id" type="xsd:string"/>
+            </xsd:sequence>
+         </xsd:complexType>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tns="http://www.example.org/partnerWS/"
+                  attributeFormDefault="unqualified"
+                  elementFormDefault="unqualified"
+                  targetNamespace="http://www.example.org/partnerWS/">
+         <xsd:element name="shipmentPrice">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="shipper" type="xsd:string"/>
+                  <xsd:element name="product" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="shipmentPriceResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="shipPrice" type="xsd:int"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="calculateInitialPrice">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="product" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="calculateInitialPriceResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="initialPrice" type="xsd:int"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="calculatePrice">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="initialPrice" type="xsd:int"/>
+                  <xsd:element name="shipPrice" type="xsd:int"/>
+                  <xsd:element name="product" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="calculatePriceResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="price" type="xsd:int"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="CalculatePrice">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="in" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="CalculatePriceResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="out" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="calculateDiscount">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="price" type="xsd:int"/>
+                  <xsd:element name="product" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="calculateDiscountResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="discount" type="xsd:int"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="getPayment">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="in" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="NewOperationResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="out" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="sendBill">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="in" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="sendBillResponse1">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="out" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="launchShipment">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="in" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="launchShipmentResponse1">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="out" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="PurchaseOrderRequestMessage">
+      <wsdl:part name="payload" element="tns:PurchaseOrderRequest"/>
+   </wsdl:message>
+   <wsdl:message name="PurchaseOrderResponseMessage">
+      <wsdl:part name="payload" element="tns:PurchaseOrderResponse"/>
+   </wsdl:message>
+   <wsdl:portType name="AnotherProcessPortType">
+      <wsdl:operation name="process">
+         <wsdl:input message="tns:PurchaseOrderRequestMessage"
+                     wsaw:Action="http://travelcompany.org.be/process"/>
+         <wsdl:output message="tns:PurchaseOrderResponseMessage"
+                      wsaw:Action="http://travelcompany.org.be/PurchaseOrder/processResponse"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="AnotherProcessSOAP11Binding"
+   	type="tns:AnotherProcessPortType">
+   	<soap:binding style="document"
+   		transport="http://schemas.xmlsoap.org/soap/http" />
+   	<wsdl:operation name="process">
+   		<soap:operation
+   			soapAction="http://travelcompany.org.be/process" />
+   		<wsdl:input>
+   			<soap:body use="literal" />
+   		</wsdl:input>
+   		<wsdl:output>
+   			<soap:body use="literal" />
+   		</wsdl:output>
+   	</wsdl:operation>
+   </wsdl:binding>
+   
+   <wsdl:service name="AnotherProcess">
+      <wsdl:port name="AnotherProcessSOAP11port_http" binding="tns:AnotherProcessSOAP11Binding">
+         <soap:address location="http://localhost:8080/ode/processes/AnotherProcess"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>
