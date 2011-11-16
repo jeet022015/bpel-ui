@@ -74,7 +74,7 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 		}
 		
 		/*
-		 * Scope
+		 * ScopeUI
 		 */
 		if (BpelUiConstants.ND_SCOPE_UI.equals(elementType.getLocalPart())) {
 			Element saElement = (Element)node;

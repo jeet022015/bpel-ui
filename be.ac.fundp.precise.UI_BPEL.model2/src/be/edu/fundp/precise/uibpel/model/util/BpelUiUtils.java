@@ -2,6 +2,7 @@ package be.edu.fundp.precise.uibpel.model.util;
 
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.adapters.INamespaceMap;
+import org.eclipse.bpel.model.util.BPELConstants;
 import org.eclipse.bpel.model.util.BPELUtils;
 import org.w3c.dom.Node;
 
@@ -39,9 +40,9 @@ public class BpelUiUtils {
 		}
 	}
 
-	//FIXME what is it doing?
 	public static boolean isBpelUiElement(Node node) {
-		return true;
+		return node != null && node.getNodeType() == Node.ELEMENT_NODE
+				&& (BPELConstants.isBPELNamespace(node.getNamespaceURI()) || BpelUiConstants.isBPELNamespace(node.getNamespaceURI()));
 	}
 
 }

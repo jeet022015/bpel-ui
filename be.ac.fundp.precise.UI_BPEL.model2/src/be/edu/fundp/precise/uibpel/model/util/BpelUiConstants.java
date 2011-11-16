@@ -23,5 +23,11 @@ public class BpelUiConstants {
 
 //	public static final String NS_PREFIX = "ex";
 	public static final String NS_PREFIX = ModelPackage.eINSTANCE.getNsPrefix();
+	private static final String FUNDP_PRECISE_2011 = "http://fundp.ac.be/precise/";
+
+	public static boolean isBPELNamespace(String namespace) {
+		return namespace != null
+				&& ( (namespace.equals(FUNDP_PRECISE_2011)));
+	}
 
 }

@@ -135,10 +135,10 @@ public class BpelUIUtil {
 		return var;
 	}
 
-	public Variable[] getVariableForDataInt(DataInteraction activity) {
-		if (uiManagerOp.containsUserInteraction(activity.getId()))
-			return uiManagerOp.getVariable(activity.getId());
-		return eventManagerOp.getVariable(activity.getId());
+	public Variable[] getVariableForUserInteraction(String id) {
+		if (uiManagerOp.containsUserInteraction(id))
+			return uiManagerOp.getVariable(id);
+		return eventManagerOp.getVariable(id);
 	}
 
 	private void treatProcess(Activity activity) {

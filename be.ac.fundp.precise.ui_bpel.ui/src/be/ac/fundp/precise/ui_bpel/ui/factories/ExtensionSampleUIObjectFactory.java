@@ -1,6 +1,7 @@
 package be.ac.fundp.precise.ui_bpel.ui.factories;
 
 import org.eclipse.bpel.model.BPELFactory;
+import org.eclipse.bpel.model.Scope;
 import org.eclipse.bpel.ui.factories.AbstractUIObjectFactory;
 import org.eclipse.bpel.ui.factories.IExtensionUIObjectFactory;
 import org.eclipse.emf.ecore.EClass;
@@ -16,6 +17,8 @@ import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory implements IExtensionUIObjectFactory {
 
 	private EClass modelType;
+	private static int scopeCounter = 1;
+	
 	private EClass[] classArray = { ModelPackage.eINSTANCE.getDataInputUI(), 
 			ModelPackage.eINSTANCE.getDataOutputUI(), ModelPackage.eINSTANCE.getDataSelectionUI(),
 			ModelPackage.eINSTANCE.getDataItem(), ModelPackage.eINSTANCE.getPickUI(),
@@ -143,7 +146,9 @@ public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory impl
 	 if (result instanceof OnUserEvent) {
 			/** Per bug# 133170 */
 		 	OnUserEvent onAlarm = (OnUserEvent) result;
-			onAlarm.setActivity( BPELFactory.eINSTANCE.createScope());
+		 	Scope innerScope = BPELFactory.eINSTANCE.createScope();
+		 	innerScope.setName("Scope"+scopeCounter);
+			onAlarm.setActivity(innerScope);
 		}
 
 		return result;

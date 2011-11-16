@@ -18,6 +18,7 @@ import org.eclipse.bpel.model.ExtensionActivity;
 import org.eclipse.bpel.model.From;
 import org.eclipse.bpel.model.Import;
 import org.eclipse.bpel.model.Invoke;
+import org.eclipse.bpel.model.OnEvent;
 import org.eclipse.bpel.model.PartnerLinks;
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.Query;
@@ -25,19 +26,23 @@ import org.eclipse.bpel.model.Sequence;
 import org.eclipse.bpel.model.To;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.Variables;
+import org.eclipse.bpel.model.adapters.INamespaceMap;
 import org.eclipse.bpel.model.resource.BPELResource;
 import org.eclipse.bpel.model.resource.BPELWriter;
 import org.eclipse.bpel.model.util.BPELConstants;
+import org.eclipse.bpel.model.util.BPELUtils;
 import org.eclipse.bpel.model.util.XSD2XMLGenerator;
 import org.eclipse.bpel.ui.BPELEditor;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.Element;
 
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.DataInteractionManager;
@@ -45,6 +50,8 @@ import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
+import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
+import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.ScopeUI;
 
 public class WriterUiBpel extends BPELWriter {
@@ -57,8 +64,11 @@ public class WriterUiBpel extends BPELWriter {
 	
 	private BpelUIUtil bpel;
 	
+	protected Process process;
+	
 	public WriterUiBpel(Process process, IResource iFile) {
 		super();
+		this.process = process;
 		String processWsldPath = "";
 		String uiManagerWsdlPath = "";
 		String userEventWsdlPath = "";
@@ -83,9 +93,66 @@ public class WriterUiBpel extends BPELWriter {
 		bpel.saveProcessWSDL();
 	}
 	
-	protected Element onEvent2XML(org.eclipse.bpel.model.OnEvent onEvent) {
-		return super.onEvent2XML(onEvent);
-	};
+	@Override
+	protected Element onEvent2XML(OnEvent onEvent) {
+		Element onEventElement = createBPELElement("onEvent");
+		if (onEvent.getPartnerLink() != null
+				&& onEvent.getPartnerLink().getName() != null) {
+			onEventElement.setAttribute("partnerLink", onEvent.getPartnerLink()
+					.getName());
+		}
+		if (onEvent.getPortType() != null
+				&& onEvent.getPortType().getQName() != null) {
+			onEventElement.setAttribute("portType", qNameToString(onEvent,
+					onEvent.getPortType().getQName()));
+		}
+		
+		if (onEvent.getOperation() != null) {
+			onEventElement.setAttribute("operation",
+					getOperationSignature(onEvent.getOperation()));
+		}
+		if (onEvent.getVariable() != null
+				&& onEvent.getVariable().getName() != null) {
+			onEventElement.setAttribute("variable", onEvent.getVariable()
+					.getName());
+		}
+		if (onEvent.getMessageExchange() != null)
+			onEventElement.setAttribute("messageExchange", onEvent
+					.getMessageExchange().getName());
+		if (onEvent.getMessageType() != null) {
+			onEventElement.setAttribute("messageType", qNameToString(onEvent,
+					onEvent.getMessageType().getQName()));
+		}
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=336003
+		// "element" attribute was missing from original model
+		if (onEvent.getXSDElement() != null) {
+			onEventElement.setAttribute("element",
+					onEvent.getXSDElement().getQName());
+		}
+		if (onEvent.getCorrelationSets() != null) {
+			onEventElement.appendChild(correlationSets2XML(onEvent
+					.getCorrelationSets()));
+		}
+		if (onEvent.getCorrelations() != null) {
+			onEventElement.appendChild(correlations2XML(onEvent
+					.getCorrelations()));
+		}
+
+		if (onEvent.getActivity() != null) {
+			onEventElement.appendChild(activity2XML(onEvent.getActivity()));
+		}
+
+		if (onEvent.getFromParts() != null) {
+			onEventElement.appendChild(fromParts2XML(onEvent.getFromParts()));
+		}
+
+		// serialize local namespace prefixes to XML
+		serializePrefixes(onEvent, onEventElement);
+
+		// TODO: Why do we have this? I don't think OnEvent is extensible.
+		extensibleElement2XML(onEvent, onEventElement);
+		return onEventElement;
+	}
 	
 	protected Element process2XML(Process process) {
 		if (!process.getImports().contains(bpel.getImportBPEL())) {
@@ -133,6 +200,17 @@ public class WriterUiBpel extends BPELWriter {
 	}
 
 	private Element dealWithScopeUI(ScopeUI activity) {
+		EventHandlerUI uiHandler = (EventHandlerUI)activity.getEventHandlers();
+		for (OnUserEvent aOnUserEvent : uiHandler.getUserInteraction()) {
+			OnEvent userInteractionEvent = BPELFactory.eINSTANCE.createOnEvent();
+			
+			userInteractionEvent.setActivity(aOnUserEvent.getActivity());
+			
+			userInteractionEvent.setPartnerLink(bpel.getPartnerLinkUserEvent());
+			userInteractionEvent.setOperation(bpel.getEventOperation());
+			userInteractionEvent.setVariable(bpel.getVariableForUserInteraction(aOnUserEvent.getId())[0]);
+			uiHandler.getEvents().add(userInteractionEvent);
+		}
 		return scope2XML(activity);
 	}
 
@@ -140,7 +218,7 @@ public class WriterUiBpel extends BPELWriter {
 
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
 		
-		Variable[] vars = bpel.getVariableForDataInt(activity);
+		Variable[] vars = bpel.getVariableForUserInteraction(activity.getId());
 		
 		Variable inputVar = vars[0];
 		
@@ -155,7 +233,6 @@ public class WriterUiBpel extends BPELWriter {
 		Operation inputOperation = bpel.getOutputOperation();
 		
 		//================== Initialization =====================
-
 		Copy initCopy = BPELFactory.eINSTANCE.createCopy();
 
 		From f = BPELFactory.eINSTANCE.createFrom();
@@ -170,7 +247,6 @@ public class WriterUiBpel extends BPELWriter {
 		Copy roleCopy = createCopyRole(inputVar, prefix, inputOperation, role);
 		
 		//================== ID =====================
-		
 		Copy idCoppy = createCopyId(activity.getId(), inputVar, prefix, inputOperation);
 		
 		//================== COPY DATA ITEM =====================
@@ -184,7 +260,6 @@ public class WriterUiBpel extends BPELWriter {
 		}
 
 		//================== Configuring the ASSIGN BEFORE =====================
-		
 		assignbBefore.getCopy().add(initCopy);
 		assignbBefore.getCopy().add(roleCopy);
 		assignbBefore.getCopy().add(idCoppy);
@@ -280,7 +355,7 @@ public class WriterUiBpel extends BPELWriter {
 	private Element dealWithDataSelectionUI(DataSelectionUI activity) {
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
 		
-		Variable[] vars = bpel.getVariableForDataInt(activity);
+		Variable[] vars = bpel.getVariableForUserInteraction(activity.getId());
 		
 		Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
 				getDefaultRequestNames(DataInteractionManager.SELECTION_OPERATION)) ? vars[0] : vars[1];
@@ -298,7 +373,6 @@ public class WriterUiBpel extends BPELWriter {
 		Operation inputOperation = bpel.getSelectionOperation();
 		
 		//================== Initialization =====================
-
 		Copy initCopy = BPELFactory.eINSTANCE.createCopy();
 
 		From f = BPELFactory.eINSTANCE.createFrom();
@@ -366,7 +440,7 @@ public class WriterUiBpel extends BPELWriter {
 		
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
 		
-		Variable[] vars = bpel.getVariableForDataInt(activity);
+		Variable[] vars = bpel.getVariableForUserInteraction(activity.getId());
 		
 		Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
 				getDefaultRequestNames(DataInteractionManager.INPUT_OPERATION)) ? vars[0] : vars[1];
@@ -385,8 +459,7 @@ public class WriterUiBpel extends BPELWriter {
 		
 		Operation inputOperation = bpel.getInputOperation();
 		
-		//================== Initialization =====================
-
+		//================== Initialization ====================
 		Copy c = BPELFactory.eINSTANCE.createCopy();
 
 		From f = BPELFactory.eINSTANCE.createFrom();
@@ -403,7 +476,6 @@ public class WriterUiBpel extends BPELWriter {
 		assignBefore.getCopy().add(c);
 		
 		//================== ID =====================
-		
 		Copy idCoppy = createCopyId(activity.getId(), inputVar, prefix, inputOperation);
 		assignBefore.getCopy().add(idCoppy);
 
@@ -564,5 +636,76 @@ public class WriterUiBpel extends BPELWriter {
 			finalSt = pattern.split(fromString)[0] + body + pattern.split(fromString)[1];
 		}
 		return finalSt;
+	}
+	
+	// public NamespacePrefixManager getNamespacePrefixManager() {
+	// return bpelNamespacePrefixManager;
+	// }
+	private void serializePrefixes(EObject eObject, Element context) {
+		INamespaceMap<String, String> nsMap = BPELUtils
+				.getNamespaceMap(eObject);
+		if (!nsMap.isEmpty()) {
+			for( Map.Entry<String,String> entry : nsMap.entrySet()) {
+				String prefix = entry.getKey();
+				String namespace = entry.getValue();
+				if (prefix.length() == 0)
+					context.setAttributeNS(XSDConstants.XMLNS_URI_2000,
+							"xmlns", namespace);
+				else
+					context.setAttributeNS(XSDConstants.XMLNS_URI_2000,
+							"xmlns:" + prefix, namespace);
+			}
+		}
+	}
+	
+	private String qNameToString(EObject eObject, QName qname) {
+		EObject context = eObject;
+		List<String> prefixes = null;
+		String namespace = qname.getNamespaceURI();
+
+		if (namespace == null || namespace.length() == 0) {
+			return qname.getLocalPart();
+		}
+
+		// Transform BPEL namespaces to the latest version so that
+		// references to the old namespace are not serialized.
+		if (BPELConstants.isBPELNamespace(namespace)) {
+			namespace = BPELConstants.NAMESPACE;
+		}
+		while (context != null) {
+			INamespaceMap<String, String> prefixNSMap = BPELUtils
+					.getNamespaceMap(context);
+			prefixes = prefixNSMap.getReverse(namespace);
+			if (!prefixes.isEmpty()) {
+				String prefix = prefixes.get(0);
+				if (!prefix.equals(""))
+					return prefix + ":" + qname.getLocalPart();
+				else
+					return qname.getLocalPart();
+			}
+			context = context.eContainer();
+		}
+		// if a prefix is not found for the namespaceURI, create a new
+		// prefix
+		return addNewRootPrefix("ns", namespace) + ":" + qname.getLocalPart();
+	}
+	
+	private String addNewRootPrefix(String basePrefix, String namespace) {
+		INamespaceMap<String, String> nsMap = BPELUtils
+				.getNamespaceMap(process);
+
+		List<String> prefixes = nsMap.getReverse(namespace);
+		if (prefixes.isEmpty()) {
+			int i = 0;
+			String prefix = basePrefix;
+			while (nsMap.containsKey(prefix)) {
+				prefix = basePrefix + i;
+				i++;
+			}
+			nsMap.put(prefix, namespace);
+			return prefix;
+		} else {
+			return prefixes.get(0);
+		}
 	}
 }

@@ -3,23 +3,39 @@ package be.edu.fundp.precise.uibpel.model.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.eclipse.bpel.model.Activity;
 import org.eclipse.bpel.model.BPELExtensibleElement;
+import org.eclipse.bpel.model.BPELFactory;
+import org.eclipse.bpel.model.BPELPackage;
 import org.eclipse.bpel.model.CorrelationSets;
+import org.eclipse.bpel.model.Correlations;
 import org.eclipse.bpel.model.EventHandler;
 import org.eclipse.bpel.model.FaultHandler;
 import org.eclipse.bpel.model.MessageExchanges;
 import org.eclipse.bpel.model.OnAlarm;
 import org.eclipse.bpel.model.OnEvent;
 import org.eclipse.bpel.model.OnMessage;
+import org.eclipse.bpel.model.PartnerLink;
 import org.eclipse.bpel.model.PartnerLinks;
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.Scope;
 import org.eclipse.bpel.model.TerminationHandler;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.Variables;
+import org.eclipse.bpel.model.impl.OnEventImpl;
+import org.eclipse.bpel.model.proxy.MessageProxy;
+import org.eclipse.bpel.model.proxy.PartnerLinkProxy;
+import org.eclipse.bpel.model.proxy.XSDElementDeclarationProxy;
 import org.eclipse.bpel.model.resource.BPELReader;
+import org.eclipse.bpel.model.util.BPELUtils;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.wst.wsdl.Message;
+import org.eclipse.wst.wsdl.PortType;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -41,7 +57,7 @@ import be.edu.fundp.precise.uibpel.model.UserInteraction;
 public class BpelUIReader extends BPELReader{
 	
 	BPELReader myInnerReader;
-
+	
 	protected ScopeUI xml2ScopeUI(Element scopeElement) {
 		ScopeUI scope = ModelFactory.eINSTANCE
 				.createScopeUI();
@@ -441,7 +457,7 @@ public class BpelUIReader extends BPELReader{
 			sa.setMaxCardinality(Integer.parseInt(saElement.getAttribute(attName)));
 		}
 	}
-
+	
 	public Activity xml2PickUI(Activity activity, Element pickElement,
 			Process process) {
 		PickUI pick;
@@ -498,6 +514,93 @@ public class BpelUIReader extends BPELReader{
 
 		return pick;
 	}
+	
+	/**
+	 * Sets a PartnerLink element for a given EObject. The given activity element
+	 * must contain an attribute named "partnerLink".
+	 * 
+	 * @param activityElement  the DOM element of the activity
+	 * @param eObject  the EObject in which to set the partner link
+	 */
+	@Override
+	protected void setPartnerLink(Element activityElement, final EObject eObject, final EReference reference) {
+		if (!activityElement.hasAttribute("partnerLink")) {
+			return;
+		}
+
+		final String partnerLinkName = activityElement.getAttribute("partnerLink");
+		// We must do this as a post load runnable because the partner link might not
+		// exist yet.
+		PartnerLink targetPartnerLink = BPELUtils.getPartnerLink(eObject, partnerLinkName);
+		if (targetPartnerLink == null) {
+			targetPartnerLink = new PartnerLinkProxy(getResource().getURI(), partnerLinkName);
+		}
+		eObject.eSet(reference, targetPartnerLink);
+	}
+	
+	/**
+	 * Sets name, portType, operation, partner, variable, messageType and correlation for a given PartnerActivity object.
+	 */
+	@Override
+	protected void setOperationParmsOnEvent(final Element activityElement, final OnEvent onEvent) {
+		// Set partnerLink
+		setPartnerLink(activityElement, onEvent, BPELPackage.eINSTANCE.getOnEvent_PartnerLink());
+
+        // Set portType
+        PortType portType = null;
+        if (activityElement.hasAttribute("portType")) {
+            portType = BPELUtils.getPortType(getResource().getURI(), activityElement, "portType");
+            onEvent.setPortType(portType);
+        }
+
+        // Set operation
+        if (activityElement.hasAttribute("operation")) {
+            if (portType != null) {
+                onEvent.setOperation(BPELUtils.getOperation(getResource().getURI(), portType, activityElement, "operation"));
+            } else {
+                ((OnEventImpl) onEvent).setOperationName(activityElement.getAttribute("operation"));
+            }
+        }
+
+		// Set variable
+		if (activityElement.hasAttribute("variable")) {
+			Variable variable = BPELFactory.eINSTANCE.createVariable();		
+	
+			// Set name
+			String name = activityElement.getAttribute("variable");
+			variable.setName(name);
+			onEvent.setVariable(variable);
+			// Don't set the message type of the variable, this will happen
+			// in the next step.
+		}
+		
+		// Set message type
+		if (activityElement.hasAttribute("messageType")) {
+			QName qName = BPELUtils.createAttributeValue(activityElement, "messageType");
+			Message messageType = new MessageProxy(getResource().getURI(), qName);
+			onEvent.setMessageType(messageType);
+		}
+
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=336003
+		// "element" attribute was missing from original model
+		// Set xsd element
+		if (activityElement.hasAttribute("element")) {
+			QName qName = BPELUtils.createAttributeValue(activityElement,
+					"element");
+			XSDElementDeclaration element = new XSDElementDeclarationProxy(
+					getResource().getURI(), qName);
+			onEvent.setXSDElement(element);
+		} else {
+			onEvent.setXSDElement(null);
+		}
+
+		// Set correlations
+		Element correlationsElement = getBPELChildElementByLocalName(activityElement, "correlations");
+		if (correlationsElement != null) {
+			Correlations correlations = xml2Correlations(correlationsElement);
+			onEvent.setCorrelations(correlations);
+		}
+	}
 
 	public void setInnerReader(BPELReader bpelReader) {
 		myInnerReader = bpelReader;
@@ -506,5 +609,4 @@ public class BpelUIReader extends BPELReader{
 	public Resource getResource () {
 		return myInnerReader.getResource();
 	}
-
 }
