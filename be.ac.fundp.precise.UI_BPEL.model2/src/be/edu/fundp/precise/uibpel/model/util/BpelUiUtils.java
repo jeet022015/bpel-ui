@@ -34,7 +34,6 @@ public class BpelUiUtils {
 			int newId = Integer.parseInt(newStrId);
 			if (newId > id)
 				id = ++newId;
-			//TODO maybe it dont works
 		} catch (NumberFormatException e) {
 			
 		}
@@ -43,6 +42,19 @@ public class BpelUiUtils {
 	public static boolean isBpelUiElement(Node node) {
 		return node != null && node.getNodeType() == Node.ELEMENT_NODE
 				&& (BPELConstants.isBPELNamespace(node.getNamespaceURI()) || BpelUiConstants.isBPELNamespace(node.getNamespaceURI()));
+	}
+
+	public static boolean isHigherId(String newStrId) {
+		try {
+			int newId = Integer.parseInt(newStrId);
+			if (newId > id){
+				id = ++newId;
+				return true;
+			}
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return false;
 	}
 
 }

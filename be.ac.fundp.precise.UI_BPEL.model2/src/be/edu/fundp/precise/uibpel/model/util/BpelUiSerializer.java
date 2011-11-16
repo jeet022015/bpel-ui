@@ -130,7 +130,8 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 			if(saElement != null){
 				String attMaxCardi = ModelPackage.eINSTANCE
 						.getUserInteraction_Id().getName();
-				if (sa.getId() != null && !"".equals(sa.getId())){
+				//TODO Maybe it is bugged
+				if (sa.getId() != null && !"".equals(sa.getId()) && BpelUiUtils.isHigherId(sa.getId())){
 					saElement.setAttribute(attMaxCardi, sa.getId());
 					BpelUiUtils.setId(sa.getId());
 				}
