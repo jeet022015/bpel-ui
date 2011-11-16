@@ -147,7 +147,7 @@ public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory impl
 			/** Per bug# 133170 */
 		 	OnUserEvent onAlarm = (OnUserEvent) result;
 		 	Scope innerScope = BPELFactory.eINSTANCE.createScope();
-		 	innerScope.setName("Scope"+scopeCounter);
+		 	innerScope.setName("InnerScope"+scopeCounter);
 			onAlarm.setActivity(innerScope);
 		}
 
