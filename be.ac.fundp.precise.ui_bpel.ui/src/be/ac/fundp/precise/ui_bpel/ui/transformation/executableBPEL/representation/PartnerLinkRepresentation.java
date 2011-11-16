@@ -19,7 +19,7 @@ public class PartnerLinkRepresentation {
 	private String serviceName;
 	
 	public PartnerLinkRepresentation(String partnerLinkName, String partnerLinkTypeName, String roleName, 
-			Definition myWsdlDefinition, String serviceName2, Definition processWsdlDefinition){
+			Definition myWsdlDefinition, String serviceName2, Definition processWsdlDefinition, boolean isMyRole){
 		partnerLink = createPartnerLinkInProcess2(partnerLinkName);
 		partnerLinkType = createPartnerLinkTypeInProcess(partnerLinkTypeName);
 		role = createRoleInProcess(roleName);
@@ -28,7 +28,7 @@ public class PartnerLinkRepresentation {
 		this.myWsdlDefinition = myWsdlDefinition;
 		this.processWsdlDefinition = processWsdlDefinition;
 		
-		organizeBpelElementUserEvent();
+		organizeBpelElementUserEvent(isMyRole);
 		
 		processWsdlDefinition.getEExtensibilityElements().add(partnerLinkType);
 	}
@@ -52,7 +52,7 @@ public class PartnerLinkRepresentation {
 		return role1;
 	}
 	
-	private void organizeBpelElementUserEvent() {
+	private void organizeBpelElementUserEvent(boolean isMyRole) {
 		//FIXME create correct names
 		PortType pt = null;
 		for (Object portType : myWsdlDefinition.getPortTypes().keySet()) {
@@ -70,7 +70,11 @@ public class PartnerLinkRepresentation {
 		partnerLinkType.setEnclosingDefinition(processWsdlDefinition);
 		
 		partnerLink.setPartnerLinkType(partnerLinkType);
-		partnerLink.setPartnerRole(role);
+		if(isMyRole){
+			partnerLink.setMyRole(role);
+		}else{
+			partnerLink.setPartnerRole(role);
+		}
 	}
 
 	public PartnerLink getPartnerLink() {

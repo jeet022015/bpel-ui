@@ -39,7 +39,6 @@ import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.representati
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.representation.PartnerLinkRepresentation;
 import be.ac.fundp.precise.ui_bpel.ui.util.WSDLImportHelperUI;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
-import be.edu.fundp.precise.uibpel.model.DataInteraction;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
@@ -103,9 +102,9 @@ public class BpelUIUtil {
 				.getResourceSet());
 		
 		uiManagerPartnerLink = new PartnerLinkRepresentation("UiManagerPartnerLink",
-				"UiManagerPartnerLinkType","UiManagerRole", wsdl_ui_bpel,SERVICE_NAME, processWSDl);
+				"UiManagerPartnerLinkType","UiManagerRole", wsdl_ui_bpel,SERVICE_NAME, processWSDl, false);
 		userEventListenerPartnerLink = new PartnerLinkRepresentation("UserEventPartnerLink",
-				"UserEventPartnerLinkType","UserEventRole", wsdl_user_event_listinner,SERVICE_NAME_USER_EVENT, processWSDl);
+				"UserEventPartnerLinkType","UserEventRole", wsdl_user_event_listinner,SERVICE_NAME_USER_EVENT, processWSDl, true);
 		
 		uiManagerImport = new ImportRepresentation(wsdl_ui_bpel, processWSDl, p.eResource());
 		userEventImport = new ImportRepresentation(wsdl_user_event_listinner,processWSDl, p.eResource());
