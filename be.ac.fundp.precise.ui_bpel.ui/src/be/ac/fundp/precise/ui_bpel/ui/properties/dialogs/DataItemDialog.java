@@ -22,7 +22,7 @@ import be.edu.fundp.precise.uibpel.model.ModelFactory;
 
 public class DataItemDialog extends Dialog {
 	
-	private String type = "String_Type";
+	private String type = DataType.STRING_TYPE.getName();
 	private String value = "NameDefault";
 	private Button b1;
 	private Button b2;
@@ -93,13 +93,16 @@ public class DataItemDialog extends Dialog {
 		b1 = new Button(g, SWT.RADIO);
 		b1.setBounds(10, 5, 75, 15);
 		b1.setText(DataType.DATA_TYPE.getName());
-		b1.setSelection(true);
+		
 		b2 = new Button(g, SWT.RADIO);
 		b2.setBounds(10, 20, 75, 15);
 		b2.setText(DataType.INT_TYPE.getName());
+		
 		b3 = new Button(g, SWT.RADIO);
 		b3.setBounds(10, 35, 80, 15);
 		b3.setText(DataType.STRING_TYPE.getName());
+		b3.setSelection(true);
+		
 		b4 = new Button(g, SWT.RADIO);
 		b4.setBounds(10, 50, 80, 15);
 		b4.setText(DataType.BOOLEAN_TYPE.getName());
@@ -107,13 +110,13 @@ public class DataItemDialog extends Dialog {
 		Listener myList = new Listener() {
 			public void handleEvent(Event event) {
 				try {
-					if (b1.getSelection())
-						type = b1.getText();
-					else if (b2.getSelection())
+					if (b2.getSelection())
 						type = b2.getText();
 					else if (b3.getSelection())
 						type = b3.getText();
-					else type = b4.getText();
+					else if (b4.getSelection())
+						type = b4.getText();
+					else type = b1.getText();
 				} catch (Exception e) {
 					buttonOK.setEnabled(false);
 				}
