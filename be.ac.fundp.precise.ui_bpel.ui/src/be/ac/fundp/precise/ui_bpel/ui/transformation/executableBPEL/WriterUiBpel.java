@@ -10,10 +10,12 @@ import java.util.regex.Pattern;
 
 import javax.xml.namespace.QName;
 
+import org.eclipse.bpel.model.Activity;
 import org.eclipse.bpel.model.Assign;
 import org.eclipse.bpel.model.BPELFactory;
 import org.eclipse.bpel.model.Copy;
 import org.eclipse.bpel.model.Correlation;
+import org.eclipse.bpel.model.CorrelationPattern;
 import org.eclipse.bpel.model.Correlations;
 import org.eclipse.bpel.model.Expression;
 import org.eclipse.bpel.model.ExtensionActivity;
@@ -169,7 +171,57 @@ public class WriterUiBpel extends BPELWriter {
 			process.setCorrelationSets(BPELFactory.eINSTANCE.createCorrelationSets());
 		}
 		process.getCorrelationSets().getChildren().add(bpel.getUserEventCorrelationSet());
+		addInvoke(process.getActivity());
 		return super.process2XML(process);
+	}
+
+	private void addInvoke(Activity activity) {
+		if (activity instanceof Sequence){
+			
+			Sequence mainSequence = (Sequence)activity;
+			
+			Sequence s = BPELFactory.eINSTANCE.createSequence();
+			Assign assignBefore = BPELFactory.eINSTANCE.createAssign();
+			assignBefore.setName("IdGenerationConfiguration");
+			Operation genIdOperation = bpel.getGenIdOperation();
+			
+			Variable[] vars = bpel.getGenIdVar();
+			
+			Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
+					getDefaultRequestNames(DataInteractionManager.GEN_ID_OPERATION)) ? vars[0] : vars[1];
+			Variable outputVar = vars[0].getName().startsWith(DataInteractionManager.
+					getDefaultResponseNames(DataInteractionManager.GEN_ID_OPERATION)) ? vars[0] : vars[1];
+			
+			//================== Initialization =============
+			Copy c = BPELFactory.eINSTANCE.createCopy();
+			From f = BPELFactory.eINSTANCE.createFrom();
+			To t = createToPart(inputVar, genIdOperation);
+			createDefaultInitializer(null, f, t, 0);
+			c.setFrom(f);
+			c.setTo(t);
+			assignBefore.getCopy().add(c);
+			//================== INVOKE =====================
+			Invoke i = BPELFactory.eINSTANCE.createInvoke();
+			i.setName("InvokeDataInput");
+			i.setInputVariable(inputVar);
+			i.setOutputVariable(outputVar);
+			i.setOperation(genIdOperation);
+			i.setPartnerLink(bpel.getPartnerLinkBPEL());
+			
+			
+			Correlations cc = BPELFactory.eINSTANCE.createCorrelations();
+			Correlation processCorrelation = BPELFactory.eINSTANCE.createCorrelation();
+			processCorrelation.setInitiate(CorrelationSection.YES);
+			processCorrelation.setSet(bpel.getUserEventCorrelationSet());
+			processCorrelation.setPattern(CorrelationPattern.get(CorrelationPattern.RESPONSE));
+			cc.getChildren().add(processCorrelation);
+			i.setCorrelations(cc);
+			
+			s.getActivities().add(assignBefore);
+			s.getActivities().add(i);
+			
+			mainSequence.getActivities().add(1, s);
+		}
 	}
 
 	protected Element variables2XML(Variables variables) {

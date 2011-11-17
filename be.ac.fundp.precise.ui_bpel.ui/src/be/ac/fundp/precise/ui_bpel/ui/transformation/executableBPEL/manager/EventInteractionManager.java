@@ -120,4 +120,8 @@ public class EventInteractionManager {
 		return  list.get(id).toArray(new Variable[0]);
 	}
 
+	public Property getProperty() {
+		return propertyName;
+	}
+
 }

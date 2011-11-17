@@ -109,10 +109,11 @@ public class BpelUIUtil {
 		uiManagerImport = new ImportRepresentation(wsdl_ui_bpel, processWSDl, p.eResource());
 		userEventImport = new ImportRepresentation(wsdl_user_event_listinner,processWSDl, p.eResource());
 		
-		uiManagerOp = new DataInteractionManager(wsdl_ui_bpel);
 		eventManagerOp = new EventInteractionManager(wsdl_user_event_listinner, processWSDl);
+		uiManagerOp = new DataInteractionManager(wsdl_ui_bpel, processWSDl, eventManagerOp.getProperty());
 		
 		saveProcessWSDL();
+		uiManagerOp.createGenIdVars();
 		treatProcess(process.getActivity());
 	}
 
@@ -273,5 +274,13 @@ public class BpelUIUtil {
 
 	public PartnerLink getPartnerLinkUserEvent() {
 		return userEventListenerPartnerLink.getPartnerLink();
+	}
+
+	public Operation getGenIdOperation() {
+		return uiManagerOp.getGenIdOperation();
+	}
+
+	public Variable[] getGenIdVar() {
+		return uiManagerOp.getVariable(DataInteractionManager.GEN_ID_INDEX);
 	}
 }
