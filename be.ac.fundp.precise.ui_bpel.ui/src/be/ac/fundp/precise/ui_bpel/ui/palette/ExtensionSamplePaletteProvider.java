@@ -13,8 +13,8 @@ public class ExtensionSamplePaletteProvider implements IPaletteProvider {
 	@Override
 	public void contributeItems(PaletteRoot paletteRoot) {
 
-		PaletteCategory category = new PaletteCategory("ExtensionSample");
-		category.setCategoryId("extensionsample");
+		PaletteCategory category = new PaletteCategory("User Interactions");
+		category.setCategoryId("uibpel");
 		category.setOrder(40);
 
 		category.add(new BPELCreationToolEntry(
