@@ -3,19 +3,30 @@ package be.ac.fundp.precise.ui_bpel.ui.properties;
 import org.eclipse.bpel.common.ui.details.IDetailsAreaConstants;
 import org.eclipse.bpel.common.ui.flatui.FlatFormAttachment;
 import org.eclipse.bpel.common.ui.flatui.FlatFormData;
-import org.eclipse.bpel.common.ui.flatui.FlatFormLayout;
-import org.eclipse.bpel.ui.IHelpContextIds;
+import org.eclipse.bpel.ui.commands.CompoundCommand;
 import org.eclipse.bpel.ui.properties.BPELPropertySection;
-import org.eclipse.bpel.ui.properties.EditController;
+import org.eclipse.bpel.ui.util.BPELUtil;
+import org.eclipse.bpel.ui.util.BatchedMultiObjectAdapter;
+import org.eclipse.bpel.ui.util.MultiObjectAdapter;
+import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.gef.commands.Command;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.forms.widgets.Section;
 
-import be.ac.fundp.precise.ui_bpel.ui.details.StringIValue;
-import be.edu.fundp.precise.uibpel.model.ModelPackage;
+import be.ac.fundp.precise.ui_bpel.ui.properties.commands.AddUserRoleCommand;
+import be.ac.fundp.precise.ui_bpel.ui.properties.commands.RemoveUserRoleCommand;
+import be.ac.fundp.precise.ui_bpel.ui.properties.dialogs.UserRoleDialog;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
+import be.edu.fundp.precise.uibpel.model.UserRole;
 
 /*
  * Bug 120110
@@ -25,106 +36,157 @@ import be.edu.fundp.precise.uibpel.model.UserInteraction;
  * Note that validation of this activity is not yet implemented.
  */
 public class UserRolePropertySection extends BPELPropertySection {
-	
-	Text fCreateInstanceButton;	
-	EditController fCreteInstanceController ;
 
+	protected Composite parentComposite;
+	protected Label variableName;
+	protected Button variableBrowseButton;
+	private Section mainLabel;
+	private Composite sectionClient;
+	private Button deleteRoleButton;
+	private UserRole currentDataItem;
 
-	protected void createChangeTrackers() {	
-		fCreteInstanceController = createEditController();
-		fCreteInstanceController.setViewIValue(new StringIValue(fCreateInstanceButton));
-		fCreteInstanceController.startListeningTo(fCreateInstanceButton);
+	private UserInteraction getActivity() {
+		return (UserInteraction)getInput();
 	}
 
 	@Override
-	protected void basicSetInput(EObject newInput) {
-
-		super.basicSetInput(newInput);
-		if (newInput instanceof UserInteraction) {
-//			fCreteInstanceController.setFeature(
-//					ModelPackage.eINSTANCE.getUserInteraction_Roles());
-//			fCreteInstanceController.setInput(newInput);
-		} else {
-			fCreteInstanceController.setFeature( null );		
-			fCreteInstanceController.setInput(newInput);
-		}
+	protected MultiObjectAdapter[] createAdapters() {
+		return new MultiObjectAdapter[] {
+			/* model object */
+			new BatchedMultiObjectAdapter() {
+				
+				@Override
+				public void notify (Notification n) {
+				}
+				
+				@Override
+				public void finish() {
+					updateVariableWidgets();
+				}
+			}
+		};
 	}
 
-	protected void createCreateInstanceWidgets(Composite composite) {
-		FlatFormData data;
-		
-		final Composite parent  = createFlatFormComposite( createFlatFormComposite(composite) );
-		data = new FlatFormData();
-		data.left = new FlatFormAttachment(0, IDetailsAreaConstants.HSPACE);
-		data.top = new FlatFormAttachment(0, IDetailsAreaConstants.VSPACE);
-		data.right = new FlatFormAttachment(0, 500);
-		data.height = 500;
-		parent.setLayoutData(data);
-		
-		fCreateInstanceButton = fWidgetFactory.createText(parent, "");
-		Label variableLabel = fWidgetFactory.createLabel(parent,
-				"Role:");
-		
-		data = new FlatFormData();
-		data.left = new FlatFormAttachment(0, 100);
-		data.top = new FlatFormAttachment(0, 0);
-		data.right = new FlatFormAttachment(0, 150);
-		fCreateInstanceButton.setLayoutData(data);
-		
-		data = new FlatFormData();
-		data.left = new FlatFormAttachment(0, 0);
-		data.top = new FlatFormAttachment(0, 0);
-		data.right = new FlatFormAttachment(0, 500);
-		variableLabel.setLayoutData(data);
-		
-		
-		//fCreateInstanceButton.setLayoutData(data);
-	}
-	
 	@Override
 	protected void createClient(Composite parent) {
-		Composite composite = createFlatFormComposite(parent);
-		// HACK: the checkbox by itself looks cramped..give it a little extra space
-		((FlatFormLayout)composite.getLayout()).marginHeight += 3;
+		FlatFormData data;
 
-		createCreateInstanceWidgets(composite);
-		createChangeTrackers();
+		final Composite composite = parentComposite = createFlatFormComposite( 
+				createFlatFormComposite(parent) );
+		data = new FlatFormData();
+		data.left = new FlatFormAttachment(0, 0);
+		data.right = new FlatFormAttachment(100, 0);
+		data.top = new FlatFormAttachment(composite, IDetailsAreaConstants.VSPACE);
+		composite.setLayoutData(data);
+		
+		mainLabel = fWidgetFactory.createSection(composite, SWT.NONE); //$NON-NLS-1$
 
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(
-			composite, IHelpContextIds.PROPERTY_PAGE_PICK_IMPLEMENTATION);
-	}
+		mainLabel.setText("Roles:");
+		//g = fWidgetFactory.createGroup(composite, "group");
+		//Button button2 = fWidgetFactory.createButton(g, "", SWT.RADIO);
+		sectionClient = fWidgetFactory.createComposite(mainLabel);
+		sectionClient.setLayout(new GridLayout());
+		mainLabel.setClient(sectionClient);
+		
+		variableBrowseButton = fWidgetFactory.createButton(composite,
+				"Create Role", SWT.PUSH);
+		data = new FlatFormData();
+		data.left = new FlatFormAttachment(0, 0);
+		data.right = new FlatFormAttachment(10, 0);
+		data.top = new FlatFormAttachment(0, 0);
+		data.height = FigureUtilities.getTextExtents(
+				variableBrowseButton.getText(), variableBrowseButton.getFont()).height + 4;
+		mainLabel.setLayoutData(data);
 
+		data = new FlatFormData();
+		data.top = new FlatFormAttachment(mainLabel, 0, SWT.TOP);
+		data.left = new FlatFormAttachment(50, -BPELUtil.calculateButtonWidth(
+				variableBrowseButton, SHORT_BUTTON_WIDTH)
+				- IDetailsAreaConstants.CENTER_SPACE);
+		data.right = new FlatFormAttachment(50,
+				-IDetailsAreaConstants.CENTER_SPACE);
+		variableBrowseButton.setLayoutData(data);
+		
+		variableBrowseButton.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				Shell shell = composite.getShell();
+				// I need to create a command
+				UserRoleDialog dialog = new UserRoleDialog(shell);
+				UserRole id = dialog.open();
+				
+				if (id != null){
+					UserInteraction userActivity = getActivity();
+					
+					Command command = new AddUserRoleCommand(userActivity, id);
+					getCommandFramework().execute(command);
+					refreshAdapters();
+				}
+			}
 
-	/**
-	 * @see org.eclipse.bpel.ui.properties.BPELPropertySection#getUserContext()
-	 */
-	@Override
-	public Object getUserContext() {
-		return null;
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+		});
+		
+		deleteRoleButton = fWidgetFactory.createButton(composite,
+				"Delete Role", SWT.PUSH);
+		data = new FlatFormData();
+		data.top = new FlatFormAttachment(mainLabel, 25, SWT.TOP);
+		// data.bottom = new FlatFormAttachment(mainLabel, 2, SWT.BOTTOM);
+		data.left = new FlatFormAttachment(50, -BPELUtil.calculateButtonWidth(
+				deleteRoleButton, SHORT_BUTTON_WIDTH)
+				- IDetailsAreaConstants.CENTER_SPACE);
+		data.right = new FlatFormAttachment(50,
+				-IDetailsAreaConstants.CENTER_SPACE);
+		deleteRoleButton.setLayoutData(data);
+		
+		deleteRoleButton.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent e) {
+				
+				CompoundCommand cmd = new CompoundCommand();
+				Command command = new RemoveUserRoleCommand(
+						getActivity(), currentDataItem);
+				cmd.add(command);
+				getCommandFramework().execute(wrapInShowContextCommand(cmd));
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+		});
+		
 	}
 	
-	/**
-	 * @see org.eclipse.bpel.ui.properties.BPELPropertySection#restoreUserContext(java.lang.Object)
-	 */
-	@Override
-	public void restoreUserContext(Object userContext) {
-		fCreateInstanceButton.setFocus();
-	}
-	
-	/**
-	 * @see org.eclipse.ui.views.properties.tabbed.AbstractPropertySection#shouldUseExtraSpace()
-	 */
-	@Override
-	public boolean shouldUseExtraSpace () {
-		return false;
-	}
-	
-	/**
-	 * @see org.eclipse.ui.views.properties.tabbed.AbstractPropertySection#getMinimumHeight()
-	 */
-	@Override
-	public int getMinimumHeight () {
-		return 40;
-	}
+	public void updateVariableWidgets() {
+		if(getActivity() != null){
+			for (final UserRole dataItem : getActivity().getUserRoles()) {
+				String name;
+				if (dataItem.getRoleId() != null)
+					name = dataItem.getRoleId();
+				else
+					name = "name";
+				Button button4 = fWidgetFactory.createButton(sectionClient,
+					name, SWT.RADIO);
+				button4.addSelectionListener(new SelectionListener() {
+					public void widgetSelected(SelectionEvent e) {
+						currentDataItem = dataItem;
+					}
 
+					public void widgetDefaultSelected(SelectionEvent e) {
+						widgetSelected(e);
+					}
+				});
+				
+			}
+		}
+	}
+	
+	@Override
+	protected void basicSetInput(EObject newInput) {
+		if ( newInput instanceof UserInteraction) {
+			super.basicSetInput(newInput);
+			updateVariableWidgets();
+		}
+	}
 }
