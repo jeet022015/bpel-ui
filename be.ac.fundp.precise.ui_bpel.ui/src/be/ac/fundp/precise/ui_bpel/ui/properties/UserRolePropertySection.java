@@ -41,9 +41,9 @@ public class UserRolePropertySection extends BPELPropertySection {
 
 		super.basicSetInput(newInput);
 		if (newInput instanceof UserInteraction) {
-			fCreteInstanceController.setFeature(
-					ModelPackage.eINSTANCE.getUserInteraction_Roles());
-			fCreteInstanceController.setInput(newInput);
+//			fCreteInstanceController.setFeature(
+//					ModelPackage.eINSTANCE.getUserInteraction_Roles());
+//			fCreteInstanceController.setInput(newInput);
 		} else {
 			fCreteInstanceController.setFeature( null );		
 			fCreteInstanceController.setInput(newInput);

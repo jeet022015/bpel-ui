@@ -10,6 +10,7 @@ import be.ac.fundp.precise.ui_bpel.ui.adapters.OnUserEventAdapter;
 import be.ac.fundp.precise.ui_bpel.ui.adapters.PickUIAdapter;
 import be.ac.fundp.precise.ui_bpel.ui.adapters.ScopeUIAdapter;
 import be.ac.fundp.precise.ui_bpel.ui.adapters.SelectionUIAdapter;
+import be.ac.fundp.precise.ui_bpel.ui.adapters.UserRoleAdapter;
 import be.edu.fundp.precise.uibpel.model.util.ModelAdapterFactory;
 
 public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
@@ -24,6 +25,7 @@ public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
 	private ScopeUIAdapter scopeUIAdapter;
 	private EventHandlerUIAdapter eventHandlerUIAdapter;
 	private PickUIAdapter pickUIAdapter;
+	private UserRoleAdapter userRoleAdapter;
 	
 	private ExtensionSampleUIAdapterFactory() {
 		super();
@@ -100,5 +102,11 @@ public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
 		return this.onUserEventAdapter;
 	}
 	
-	
+	@Override
+	public Adapter createUserRoleAdapter() {
+		if (this.userRoleAdapter == null) {
+			this.userRoleAdapter = new UserRoleAdapter();
+		}
+		return this.userRoleAdapter;
+	}
 }

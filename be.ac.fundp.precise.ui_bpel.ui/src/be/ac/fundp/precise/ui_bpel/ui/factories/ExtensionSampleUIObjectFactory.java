@@ -23,7 +23,7 @@ public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory impl
 			ModelPackage.eINSTANCE.getDataOutputUI(), ModelPackage.eINSTANCE.getDataSelectionUI(),
 			ModelPackage.eINSTANCE.getDataItem(), ModelPackage.eINSTANCE.getPickUI(),
 			ModelPackage.eINSTANCE.getOnUserEvent(), ModelPackage.eINSTANCE.getScopeUI(),
-			ModelPackage.eINSTANCE.getEventHandlerUI()};
+			ModelPackage.eINSTANCE.getEventHandlerUI(), ModelPackage.eINSTANCE.getUserRole()};
 
 	public ExtensionSampleUIObjectFactory(EClass modelType) {
 		super();
@@ -143,6 +143,8 @@ public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory impl
 	public EObject createInstance() {
 		EObject result = super.createInstance();
 
+		System.out.println("result2 = "+result);
+		
 	 if (result instanceof OnUserEvent) {
 			/** Per bug# 133170 */
 		 	OnUserEvent onAlarm = (OnUserEvent) result;
