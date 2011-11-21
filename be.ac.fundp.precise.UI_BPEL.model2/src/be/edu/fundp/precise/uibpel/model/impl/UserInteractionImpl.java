@@ -11,15 +11,21 @@ import java.util.Collection;
 import org.eclipse.bpel.model.impl.BPELExtensibleElementImpl;
 import org.eclipse.bpel.model.util.ReconciliationHelper;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
 import be.edu.fundp.precise.uibpel.model.UserRole;
+import be.edu.fundp.precise.uibpel.model.util.BpelUiConstants;
+import be.edu.fundp.precise.uibpel.model.util.BpelUiReconciliationHelper;
 
 /**
  * <!-- begin-user-doc -->
@@ -57,7 +63,7 @@ public abstract class UserInteractionImpl extends BPELExtensibleElementImpl impl
 	protected String id = ID_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getUserRoles() <em>User Roles</em>}' reference list.
+	 * The cached value of the '{@link #getUserRoles() <em>User Roles</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getUserRoles()
@@ -118,9 +124,23 @@ public abstract class UserInteractionImpl extends BPELExtensibleElementImpl impl
 	 */
 	public EList<UserRole> getUserRoles() {
 		if (userRoles == null) {
-			userRoles = new EObjectResolvingEList<UserRole>(UserRole.class, this, ModelPackage.USER_INTERACTION__USER_ROLES);
+			userRoles = new EObjectContainmentEList<UserRole>(UserRole.class, this, ModelPackage.USER_INTERACTION__USER_ROLES);
 		}
 		return userRoles;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case ModelPackage.USER_INTERACTION__USER_ROLES:
+				return ((InternalEList<?>)getUserRoles()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -209,5 +229,21 @@ public abstract class UserInteractionImpl extends BPELExtensibleElementImpl impl
 		return result.toString();
 	}
 	
-	//FIXME ADD ROLES
+	@Override
+	protected void adoptContent(EReference reference, Object object) {
+		if (object instanceof UserRole) {
+			BpelUiReconciliationHelper.adoptChild(this, userRoles, (UserRole) object,
+					BpelUiConstants.ND_USER_ROLE);
+		}
+		super.adoptContent(reference, object);
+
+	}
+	
+	@Override
+	protected void orphanContent(EReference reference, Object obj) {
+		if (obj instanceof UserRole) {
+			BpelUiReconciliationHelper.orphanChild(this, (UserRole)obj);
+		}
+		super.orphanContent(reference, obj);
+	}
 } //UserInteractionImpl

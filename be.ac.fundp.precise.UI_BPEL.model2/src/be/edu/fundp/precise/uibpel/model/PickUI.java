@@ -8,7 +8,6 @@ package be.edu.fundp.precise.uibpel.model;
 
 import org.eclipse.bpel.model.ExtensionActivity;
 import org.eclipse.bpel.model.Pick;
-
 import org.eclipse.emf.common.util.EList;
 
 /**

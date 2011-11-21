@@ -53,6 +53,7 @@ import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.PickUI;
 import be.edu.fundp.precise.uibpel.model.ScopeUI;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
+import be.edu.fundp.precise.uibpel.model.UserRole;
 
 public class BpelUIReader extends BPELReader{
 	
@@ -346,12 +347,13 @@ public class BpelUIReader extends BPELReader{
 				if (userRoleElement.getLocalName().equals(BpelUiConstants.ND_USER_ROLE)) {
 					
 					// handle the SampleExtensionAttribute
-					//FIXME ADD ROLE HERE
-//					String attName = ModelPackage.eINSTANCE
-//							.getUserInteraction_Roles().getName();
-//					if (userRoleElement.getAttribute(attName) != null) {
-//						sa.getRoles().add(userRoleElement.getAttribute(attName));
-//					}
+					String attName = ModelPackage.eINSTANCE
+							.getUserRole_RoleId().getName();
+					if (userRoleElement.getAttribute(attName) != null) {
+						UserRole ur = ModelFactory.eINSTANCE.createUserRole();
+						ur.setRoleId(userRoleElement.getAttribute(attName));
+						sa.getUserRoles().add(ur);
+					}
 				}
 			}
 		}

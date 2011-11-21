@@ -6,16 +6,13 @@
  */
 package be.edu.fundp.precise.uibpel.model.impl;
 
+import org.eclipse.bpel.model.impl.BPELExtensibleElementImpl;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 import be.edu.fundp.precise.uibpel.model.UserRole;
-
-import org.eclipse.bpel.model.impl.BPELExtensibleElementImpl;
-
-import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->

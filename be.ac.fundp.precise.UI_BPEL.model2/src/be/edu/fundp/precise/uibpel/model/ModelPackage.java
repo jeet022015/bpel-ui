@@ -7,7 +7,6 @@
 package be.edu.fundp.precise.uibpel.model;
 
 import org.eclipse.bpel.model.BPELPackage;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
@@ -118,7 +117,7 @@ public interface ModelPackage extends EPackage {
 	int USER_INTERACTION__ID = BPELPackage.BPEL_EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>User Roles</b></em>' reference list.
+	 * The feature id for the '<em><b>User Roles</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -191,7 +190,7 @@ public interface ModelPackage extends EPackage {
 	int DATA_INTERACTION__ID = USER_INTERACTION__ID;
 
 	/**
-	 * The feature id for the '<em><b>User Roles</b></em>' reference list.
+	 * The feature id for the '<em><b>User Roles</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -373,7 +372,7 @@ public interface ModelPackage extends EPackage {
 	int DATA_INPUT_UI__ID = DATA_INTERACTION__ID;
 
 	/**
-	 * The feature id for the '<em><b>User Roles</b></em>' reference list.
+	 * The feature id for the '<em><b>User Roles</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -491,7 +490,7 @@ public interface ModelPackage extends EPackage {
 	int DATA_OUTPUT_UI__ID = DATA_INTERACTION__ID;
 
 	/**
-	 * The feature id for the '<em><b>User Roles</b></em>' reference list.
+	 * The feature id for the '<em><b>User Roles</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -609,7 +608,7 @@ public interface ModelPackage extends EPackage {
 	int DATA_SELECTION_UI__ID = DATA_INPUT_UI__ID;
 
 	/**
-	 * The feature id for the '<em><b>User Roles</b></em>' reference list.
+	 * The feature id for the '<em><b>User Roles</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -754,7 +753,7 @@ public interface ModelPackage extends EPackage {
 	int ON_USER_EVENT__ID = USER_INTERACTION__ID;
 
 	/**
-	 * The feature id for the '<em><b>User Roles</b></em>' reference list.
+	 * The feature id for the '<em><b>User Roles</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1276,10 +1275,10 @@ public interface ModelPackage extends EPackage {
 	EAttribute getUserInteraction_Id();
 
 	/**
-	 * Returns the meta object for the reference list '{@link be.edu.fundp.precise.uibpel.model.UserInteraction#getUserRoles <em>User Roles</em>}'.
+	 * Returns the meta object for the containment reference list '{@link be.edu.fundp.precise.uibpel.model.UserInteraction#getUserRoles <em>User Roles</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>User Roles</em>'.
+	 * @return the meta object for the containment reference list '<em>User Roles</em>'.
 	 * @see be.edu.fundp.precise.uibpel.model.UserInteraction#getUserRoles()
 	 * @see #getUserInteraction()
 	 * @generated
@@ -1547,7 +1546,7 @@ public interface ModelPackage extends EPackage {
 		EAttribute USER_INTERACTION__ID = eINSTANCE.getUserInteraction_Id();
 
 		/**
-		 * The meta object literal for the '<em><b>User Roles</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>User Roles</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

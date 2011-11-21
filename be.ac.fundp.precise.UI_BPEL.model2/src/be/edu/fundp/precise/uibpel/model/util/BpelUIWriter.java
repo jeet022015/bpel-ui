@@ -53,6 +53,7 @@ import org.w3c.dom.Node;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
+import be.edu.fundp.precise.uibpel.model.UserRole;
 
 public class BpelUIWriter extends org.eclipse.bpel.model.resource.BPELWriter {
 	private Document staticDoc;
@@ -338,6 +339,13 @@ public class BpelUIWriter extends org.eclipse.bpel.model.resource.BPELWriter {
 	public Element eventHandlerUI2XML(EventHandlerUI element) {
 		String namespace = element.eClass().getEPackage().getNsURI();
 		Element elem = (Element) mySer.eventUIHandler2XML(element, staticDoc,
+				namespace, getResource().getProcess(), this);
+		return elem;
+	}
+
+	public Element userRolel2XML(UserRole element, Object parent) {
+		String namespace = element.eClass().getEPackage().getNsURI();
+		Element elem = (Element) mySer.userRole2XML(element, staticDoc,
 				namespace, getResource().getProcess(), this);
 		return elem;
 	}

@@ -7,7 +7,6 @@
 package be.edu.fundp.precise.uibpel.model;
 
 import org.eclipse.bpel.model.BPELExtensibleElement;
-
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -55,7 +54,7 @@ public interface UserInteraction extends BPELExtensibleElement {
 	void setId(String value);
 
 	/**
-	 * Returns the value of the '<em><b>User Roles</b></em>' reference list.
+	 * Returns the value of the '<em><b>User Roles</b></em>' containment reference list.
 	 * The list contents are of type {@link be.edu.fundp.precise.uibpel.model.UserRole}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -63,9 +62,9 @@ public interface UserInteraction extends BPELExtensibleElement {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>User Roles</em>' reference list.
+	 * @return the value of the '<em>User Roles</em>' containment reference list.
 	 * @see be.edu.fundp.precise.uibpel.model.ModelPackage#getUserInteraction_UserRoles()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<UserRole> getUserRoles();

@@ -7,7 +7,6 @@
 package be.edu.fundp.precise.uibpel.model;
 
 import org.eclipse.bpel.model.EventHandler;
-
 import org.eclipse.emf.common.util.EList;
 
 /**

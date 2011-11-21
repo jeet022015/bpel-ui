@@ -6,7 +6,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="UserInteraction" abstract="true" eSuperTypes="../../org.eclipse.bpel.model/bin/model/bpel.ecore#//BPELExtensibleElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="userRoles" upperBound="-1"
-        eType="#//UserRole"/>
+        eType="#//UserRole" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataInteraction" abstract="true" eSuperTypes="#//UserInteraction ../../org.eclipse.bpel.model/bin/model/bpel.ecore#//ExtensionActivity"/>
   <eClassifiers xsi:type="ecore:EClass" name="DataItem" eSuperTypes="../../org.eclipse.bpel.model/bin/model/bpel.ecore#//BPELExtensibleElement">

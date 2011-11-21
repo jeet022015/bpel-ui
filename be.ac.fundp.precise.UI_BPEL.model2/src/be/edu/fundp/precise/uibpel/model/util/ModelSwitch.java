@@ -7,7 +7,6 @@
 package be.edu.fundp.precise.uibpel.model.util;
 
 import be.edu.fundp.precise.uibpel.model.*;
-
 import javax.wsdl.extensions.AttributeExtensible;
 import javax.wsdl.extensions.ElementExtensible;
 
@@ -17,14 +16,24 @@ import org.eclipse.bpel.model.EventHandler;
 import org.eclipse.bpel.model.ExtensionActivity;
 import org.eclipse.bpel.model.Pick;
 import org.eclipse.bpel.model.Scope;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
-
 import org.eclipse.wst.wsdl.ExtensibleElement;
 import org.eclipse.wst.wsdl.WSDLElement;
+
+import be.edu.fundp.precise.uibpel.model.DataInputUI;
+import be.edu.fundp.precise.uibpel.model.DataInteraction;
+import be.edu.fundp.precise.uibpel.model.DataItem;
+import be.edu.fundp.precise.uibpel.model.DataOutputUI;
+import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
+import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
+import be.edu.fundp.precise.uibpel.model.ModelPackage;
+import be.edu.fundp.precise.uibpel.model.OnUserEvent;
+import be.edu.fundp.precise.uibpel.model.PickUI;
+import be.edu.fundp.precise.uibpel.model.ScopeUI;
+import be.edu.fundp.precise.uibpel.model.UserInteraction;
+import be.edu.fundp.precise.uibpel.model.UserRole;
 
 /**
  * <!-- begin-user-doc -->

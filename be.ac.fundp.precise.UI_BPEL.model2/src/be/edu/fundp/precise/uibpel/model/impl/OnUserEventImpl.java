@@ -6,20 +6,17 @@
  */
 package be.edu.fundp.precise.uibpel.model.impl;
 
-import be.edu.fundp.precise.uibpel.model.ModelPackage;
-import be.edu.fundp.precise.uibpel.model.OnUserEvent;
-
 import org.eclipse.bpel.model.Activity;
 import org.eclipse.bpel.model.util.ReconciliationHelper;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import be.edu.fundp.precise.uibpel.model.ModelPackage;
+import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 
 /**
  * <!-- begin-user-doc -->

@@ -38,8 +38,6 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 			Node parentNode, Process process,
 			BPELWriter bpelWriter) {
 
-
-		System.out.println("============apenteskljsdfhdksjhfkjdshfkljhdqsjkfhkjsdhkjfhkjsdqhkj");
 		Document document = parentNode.getOwnerDocument();
 		Element saElement = null;
 		
@@ -143,13 +141,9 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 				
 				EList<UserRole> roles = sa.getUserRoles();
 				for (UserRole role : roles) {
-					//FIXME ADD ROLE HERE
-//					Element saElement2 = document.createElementNS(elementType.getNamespaceURI(),
-//							BpelUiConstants.ND_USER_ROLE);
-//					saElement2.setPrefix(BpelUiUtils.addNamespace(process));
-//					saElement2.setAttribute(ModelPackage.eINSTANCE.
-//							getUserInteraction_Roles().getName(), role);
-//					saElement.appendChild(saElement2);
+					saElement.appendChild(userRole2XML(role,
+							document,elementType.getNamespaceURI(),process,
+							BpelUiConstants.ND_USER_ROLE));
 				}
 			}
 		}
@@ -157,7 +151,18 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 		//NEVER DELETE IT NETO!!!!
 		// insert the DOM element into the DOM tree
 		parentNode.appendChild(saElement);
-		System.out.println("apenteskljsdfhdksjhfkjdshfkljhdqsjkfhkjsdhkjfhkjsdqhkj");
+	}
+
+	private Node userRole2XML(UserRole role, Document document,
+			String namespaceURI, Process process, String ndUserRole) {
+		Element saElement = document.createElementNS(namespaceURI, ndUserRole);
+		saElement.setPrefix(BpelUiUtils.addNamespace(process));
+		
+		if (role.getRoleId() != null) {
+			saElement.setAttribute(ModelPackage.eINSTANCE.
+					getUserRole_RoleId().getName(), role.getRoleId());
+		}
+		return saElement;
 	}
 
 	public Node eventUIHandler2XML(EventHandlerUI eventHandler,
@@ -225,6 +230,18 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 		if (dataItem.getVariable() != null) {
 			saElement.setAttribute(ModelPackage.eINSTANCE.
 					getDataItem_Variable().getName(), dataItem.getVariable().getName());
+		}
+		return saElement;
+	}
+
+	public Element userRole2XML(UserRole element, Document staticDoc,
+			String namespace, Process process, BpelUIWriter bpelUIWriter) {
+		Element saElement = staticDoc.createElementNS(namespace, BpelUiConstants.ND_USER_ROLE);
+		saElement.setPrefix(BpelUiUtils.addNamespace(process));
+		
+		if (element.getRoleId() != null) {
+			saElement.setAttribute(ModelPackage.eINSTANCE.
+					getUserRole_RoleId().getName(), element.getRoleId());
 		}
 		return saElement;
 	}

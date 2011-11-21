@@ -8,10 +8,7 @@ package be.edu.fundp.precise.uibpel.model.impl;
 
 import java.util.Collection;
 
-import org.eclipse.bpel.model.OnAlarm;
-import org.eclipse.bpel.model.OnEvent;
 import org.eclipse.bpel.model.impl.EventHandlerImpl;
-import org.eclipse.bpel.model.util.BPELConstants;
 import org.eclipse.bpel.model.util.ReconciliationHelper;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;

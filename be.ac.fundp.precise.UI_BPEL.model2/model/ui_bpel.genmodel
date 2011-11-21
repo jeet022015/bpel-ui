@@ -15,7 +15,7 @@
     </genEnums>
     <genClasses image="false" ecoreClass="ui_bpel.ecore#//UserInteraction">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ui_bpel.ecore#//UserInteraction/id"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ui_bpel.ecore#//UserInteraction/userRoles"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ui_bpel.ecore#//UserInteraction/userRoles"/>
     </genClasses>
     <genClasses image="false" ecoreClass="ui_bpel.ecore#//DataInteraction"/>
     <genClasses ecoreClass="ui_bpel.ecore#//DataItem">

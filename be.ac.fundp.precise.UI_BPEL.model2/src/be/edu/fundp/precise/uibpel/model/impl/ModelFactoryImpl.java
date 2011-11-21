@@ -7,15 +7,25 @@
 package be.edu.fundp.precise.uibpel.model.impl;
 
 import be.edu.fundp.precise.uibpel.model.*;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
+import be.edu.fundp.precise.uibpel.model.DataInputUI;
+import be.edu.fundp.precise.uibpel.model.DataItem;
+import be.edu.fundp.precise.uibpel.model.DataOutputUI;
+import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
+import be.edu.fundp.precise.uibpel.model.DataType;
+import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
+import be.edu.fundp.precise.uibpel.model.ModelFactory;
+import be.edu.fundp.precise.uibpel.model.ModelPackage;
+import be.edu.fundp.precise.uibpel.model.OnUserEvent;
+import be.edu.fundp.precise.uibpel.model.PickUI;
+import be.edu.fundp.precise.uibpel.model.ScopeUI;
+import be.edu.fundp.precise.uibpel.model.UserRole;
 
 /**
  * <!-- begin-user-doc -->

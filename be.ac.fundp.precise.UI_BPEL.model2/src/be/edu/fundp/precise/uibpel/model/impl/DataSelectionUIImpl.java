@@ -6,29 +6,25 @@
  */
 package be.edu.fundp.precise.uibpel.model.impl;
 
+import java.util.Collection;
+
+import org.eclipse.bpel.model.util.ReconciliationHelper;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 import be.edu.fundp.precise.uibpel.model.util.BpelUiConstants;
 import be.edu.fundp.precise.uibpel.model.util.BpelUiReconciliationHelper;
-
-import java.util.Collection;
-
-import org.eclipse.bpel.model.util.ReconciliationHelper;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->

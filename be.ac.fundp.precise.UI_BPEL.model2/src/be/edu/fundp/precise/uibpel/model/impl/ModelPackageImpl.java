@@ -8,6 +8,17 @@ package be.edu.fundp.precise.uibpel.model.impl;
 
 import javax.xml.namespace.QName;
 
+import org.eclipse.bpel.model.BPELPackage;
+import org.eclipse.bpel.model.extensions.BPELExtensionRegistry;
+import org.eclipse.bpel.model.messageproperties.MessagepropertiesPackage;
+import org.eclipse.bpel.model.partnerlinktype.PartnerlinktypePackage;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataInteraction;
 import be.edu.fundp.precise.uibpel.model.DataItem;
@@ -25,21 +36,6 @@ import be.edu.fundp.precise.uibpel.model.UserRole;
 import be.edu.fundp.precise.uibpel.model.util.BpelUiConstants;
 import be.edu.fundp.precise.uibpel.model.util.BpelUiDeserializer;
 import be.edu.fundp.precise.uibpel.model.util.BpelUiSerializer;
-
-import org.eclipse.bpel.model.BPELPackage;
-
-import org.eclipse.bpel.model.extensions.BPELExtensionRegistry;
-import org.eclipse.bpel.model.messageproperties.MessagepropertiesPackage;
-
-import org.eclipse.bpel.model.partnerlinktype.PartnerlinktypePackage;
-
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-
-import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -590,7 +586,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		// Initialize classes and features; add operations and parameters
 		initEClass(userInteractionEClass, UserInteraction.class, "UserInteraction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getUserInteraction_Id(), ecorePackage.getEString(), "id", null, 0, 1, UserInteraction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getUserInteraction_UserRoles(), this.getUserRole(), null, "userRoles", null, 0, -1, UserInteraction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getUserInteraction_UserRoles(), this.getUserRole(), null, "userRoles", null, 0, -1, UserInteraction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(dataInteractionEClass, DataInteraction.class, "DataInteraction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

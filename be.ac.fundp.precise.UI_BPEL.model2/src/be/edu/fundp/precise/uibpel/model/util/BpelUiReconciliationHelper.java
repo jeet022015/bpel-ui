@@ -40,6 +40,7 @@ import org.w3c.dom.Node;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
+import be.edu.fundp.precise.uibpel.model.UserRole;
 
 public class BpelUiReconciliationHelper extends ReconciliationHelper{
 	
@@ -73,6 +74,8 @@ public class BpelUiReconciliationHelper extends ReconciliationHelper{
 				if (newChild instanceof DataItem){
 					newChild.setElement(BpelUiElementFactory.getInstance().createElement(newChild, parent));
 				} else if (newChild instanceof OnUserEvent){
+					newChild.setElement(BpelUiElementFactory.getInstance().createElement(newChild, parent));
+				} else if (newChild instanceof UserRole){
 					newChild.setElement(BpelUiElementFactory.getInstance().createElement(newChild, parent));
 				} else {
 					newChild.setElement(ElementFactory.getInstance().createElement(newChild, parent));
