@@ -109,22 +109,22 @@ public interface ModelPackage extends EPackage {
 	int USER_INTERACTION__DOCUMENTATION = BPELPackage.BPEL_EXTENSIBLE_ELEMENT__DOCUMENTATION;
 
 	/**
-	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_INTERACTION__ROLES = BPELPackage.BPEL_EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
-
-	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int USER_INTERACTION__ID = BPELPackage.BPEL_EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
+	int USER_INTERACTION__ID = BPELPackage.BPEL_EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>User Roles</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_INTERACTION__USER_ROLES = BPELPackage.BPEL_EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>User Interaction</em>' class.
@@ -182,15 +182,6 @@ public interface ModelPackage extends EPackage {
 	int DATA_INTERACTION__DOCUMENTATION = USER_INTERACTION__DOCUMENTATION;
 
 	/**
-	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATA_INTERACTION__ROLES = USER_INTERACTION__ROLES;
-
-	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -198,6 +189,15 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int DATA_INTERACTION__ID = USER_INTERACTION__ID;
+
+	/**
+	 * The feature id for the '<em><b>User Roles</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_INTERACTION__USER_ROLES = USER_INTERACTION__USER_ROLES;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -364,15 +364,6 @@ public interface ModelPackage extends EPackage {
 	int DATA_INPUT_UI__DOCUMENTATION = DATA_INTERACTION__DOCUMENTATION;
 
 	/**
-	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATA_INPUT_UI__ROLES = DATA_INTERACTION__ROLES;
-
-	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -380,6 +371,15 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int DATA_INPUT_UI__ID = DATA_INTERACTION__ID;
+
+	/**
+	 * The feature id for the '<em><b>User Roles</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_INPUT_UI__USER_ROLES = DATA_INTERACTION__USER_ROLES;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -482,15 +482,6 @@ public interface ModelPackage extends EPackage {
 	int DATA_OUTPUT_UI__DOCUMENTATION = DATA_INTERACTION__DOCUMENTATION;
 
 	/**
-	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATA_OUTPUT_UI__ROLES = DATA_INTERACTION__ROLES;
-
-	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -498,6 +489,15 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int DATA_OUTPUT_UI__ID = DATA_INTERACTION__ID;
+
+	/**
+	 * The feature id for the '<em><b>User Roles</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_OUTPUT_UI__USER_ROLES = DATA_INTERACTION__USER_ROLES;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -600,15 +600,6 @@ public interface ModelPackage extends EPackage {
 	int DATA_SELECTION_UI__DOCUMENTATION = DATA_INPUT_UI__DOCUMENTATION;
 
 	/**
-	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATA_SELECTION_UI__ROLES = DATA_INPUT_UI__ROLES;
-
-	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -616,6 +607,15 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int DATA_SELECTION_UI__ID = DATA_INPUT_UI__ID;
+
+	/**
+	 * The feature id for the '<em><b>User Roles</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_SELECTION_UI__USER_ROLES = DATA_INPUT_UI__USER_ROLES;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -745,15 +745,6 @@ public interface ModelPackage extends EPackage {
 	int ON_USER_EVENT__DOCUMENTATION = USER_INTERACTION__DOCUMENTATION;
 
 	/**
-	 * The feature id for the '<em><b>Roles</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ON_USER_EVENT__ROLES = USER_INTERACTION__ROLES;
-
-	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -761,6 +752,15 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int ON_USER_EVENT__ID = USER_INTERACTION__ID;
+
+	/**
+	 * The feature id for the '<em><b>User Roles</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__USER_ROLES = USER_INTERACTION__USER_ROLES;
 
 	/**
 	 * The feature id for the '<em><b>Activity</b></em>' containment reference.
@@ -1180,6 +1180,70 @@ public interface ModelPackage extends EPackage {
 	int EVENT_HANDLER_UI_FEATURE_COUNT = BPELPackage.EVENT_HANDLER_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link be.edu.fundp.precise.uibpel.model.impl.UserRoleImpl <em>User Role</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see be.edu.fundp.precise.uibpel.model.impl.UserRoleImpl
+	 * @see be.edu.fundp.precise.uibpel.model.impl.ModelPackageImpl#getUserRole()
+	 * @generated
+	 */
+	int USER_ROLE = 10;
+
+	/**
+	 * The feature id for the '<em><b>Documentation Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_ROLE__DOCUMENTATION_ELEMENT = BPELPackage.BPEL_EXTENSIBLE_ELEMENT__DOCUMENTATION_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Element</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_ROLE__ELEMENT = BPELPackage.BPEL_EXTENSIBLE_ELEMENT__ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>EExtensibility Elements</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_ROLE__EEXTENSIBILITY_ELEMENTS = BPELPackage.BPEL_EXTENSIBLE_ELEMENT__EEXTENSIBILITY_ELEMENTS;
+
+	/**
+	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_ROLE__DOCUMENTATION = BPELPackage.BPEL_EXTENSIBLE_ELEMENT__DOCUMENTATION;
+
+	/**
+	 * The feature id for the '<em><b>Role Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_ROLE__ROLE_ID = BPELPackage.BPEL_EXTENSIBLE_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>User Role</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_ROLE_FEATURE_COUNT = BPELPackage.BPEL_EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link be.edu.fundp.precise.uibpel.model.DataType <em>Data Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1187,7 +1251,7 @@ public interface ModelPackage extends EPackage {
 	 * @see be.edu.fundp.precise.uibpel.model.impl.ModelPackageImpl#getDataType()
 	 * @generated
 	 */
-	int DATA_TYPE = 10;
+	int DATA_TYPE = 11;
 
 
 	/**
@@ -1201,17 +1265,6 @@ public interface ModelPackage extends EPackage {
 	EClass getUserInteraction();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link be.edu.fundp.precise.uibpel.model.UserInteraction#getRoles <em>Roles</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>Roles</em>'.
-	 * @see be.edu.fundp.precise.uibpel.model.UserInteraction#getRoles()
-	 * @see #getUserInteraction()
-	 * @generated
-	 */
-	EAttribute getUserInteraction_Roles();
-
-	/**
 	 * Returns the meta object for the attribute '{@link be.edu.fundp.precise.uibpel.model.UserInteraction#getId <em>Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1221,6 +1274,17 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getUserInteraction_Id();
+
+	/**
+	 * Returns the meta object for the reference list '{@link be.edu.fundp.precise.uibpel.model.UserInteraction#getUserRoles <em>User Roles</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>User Roles</em>'.
+	 * @see be.edu.fundp.precise.uibpel.model.UserInteraction#getUserRoles()
+	 * @see #getUserInteraction()
+	 * @generated
+	 */
+	EReference getUserInteraction_UserRoles();
 
 	/**
 	 * Returns the meta object for class '{@link be.edu.fundp.precise.uibpel.model.DataInteraction <em>Data Interaction</em>}'.
@@ -1412,6 +1476,27 @@ public interface ModelPackage extends EPackage {
 	EReference getEventHandlerUI_UserInteraction();
 
 	/**
+	 * Returns the meta object for class '{@link be.edu.fundp.precise.uibpel.model.UserRole <em>User Role</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>User Role</em>'.
+	 * @see be.edu.fundp.precise.uibpel.model.UserRole
+	 * @generated
+	 */
+	EClass getUserRole();
+
+	/**
+	 * Returns the meta object for the attribute '{@link be.edu.fundp.precise.uibpel.model.UserRole#getRoleId <em>Role Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Role Id</em>'.
+	 * @see be.edu.fundp.precise.uibpel.model.UserRole#getRoleId()
+	 * @see #getUserRole()
+	 * @generated
+	 */
+	EAttribute getUserRole_RoleId();
+
+	/**
 	 * Returns the meta object for enum '{@link be.edu.fundp.precise.uibpel.model.DataType <em>Data Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1454,20 +1539,20 @@ public interface ModelPackage extends EPackage {
 		EClass USER_INTERACTION = eINSTANCE.getUserInteraction();
 
 		/**
-		 * The meta object literal for the '<em><b>Roles</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute USER_INTERACTION__ROLES = eINSTANCE.getUserInteraction_Roles();
-
-		/**
 		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute USER_INTERACTION__ID = eINSTANCE.getUserInteraction_Id();
+
+		/**
+		 * The meta object literal for the '<em><b>User Roles</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference USER_INTERACTION__USER_ROLES = eINSTANCE.getUserInteraction_UserRoles();
 
 		/**
 		 * The meta object literal for the '{@link be.edu.fundp.precise.uibpel.model.impl.DataInteractionImpl <em>Data Interaction</em>}' class.
@@ -1630,6 +1715,24 @@ public interface ModelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference EVENT_HANDLER_UI__USER_INTERACTION = eINSTANCE.getEventHandlerUI_UserInteraction();
+
+		/**
+		 * The meta object literal for the '{@link be.edu.fundp.precise.uibpel.model.impl.UserRoleImpl <em>User Role</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see be.edu.fundp.precise.uibpel.model.impl.UserRoleImpl
+		 * @see be.edu.fundp.precise.uibpel.model.impl.ModelPackageImpl#getUserRole()
+		 * @generated
+		 */
+		EClass USER_ROLE = eINSTANCE.getUserRole();
+
+		/**
+		 * The meta object literal for the '<em><b>Role Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute USER_ROLE__ROLE_ID = eINSTANCE.getUserRole_RoleId();
 
 		/**
 		 * The meta object literal for the '{@link be.edu.fundp.precise.uibpel.model.DataType <em>Data Type</em>}' enum.

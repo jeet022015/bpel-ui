@@ -125,6 +125,10 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 				return createEventHandlerUIAdapter();
 			}
 			@Override
+			public Adapter caseUserRole(UserRole object) {
+				return createUserRoleAdapter();
+			}
+			@Override
 			public Adapter caseWSDLElement(WSDLElement object) {
 				return createWSDLElementAdapter();
 			}
@@ -321,6 +325,20 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createEventHandlerUIAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link be.edu.fundp.precise.uibpel.model.UserRole <em>User Role</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see be.edu.fundp.precise.uibpel.model.UserRole
+	 * @generated
+	 */
+	public Adapter createUserRoleAdapter() {
 		return null;
 	}
 

@@ -69,6 +69,7 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
 			case ModelPackage.PICK_UI: return createPickUI();
 			case ModelPackage.SCOPE_UI: return createScopeUI();
 			case ModelPackage.EVENT_HANDLER_UI: return createEventHandlerUI();
+			case ModelPackage.USER_ROLE: return createUserRole();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -182,6 +183,16 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
 	public EventHandlerUI createEventHandlerUI() {
 		EventHandlerUIImpl eventHandlerUI = new EventHandlerUIImpl();
 		return eventHandlerUI;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public UserRole createUserRole() {
+		UserRoleImpl userRole = new UserRoleImpl();
+		return userRole;
 	}
 
 	/**

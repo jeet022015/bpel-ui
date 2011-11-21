@@ -24,6 +24,7 @@ import be.edu.fundp.precise.uibpel.model.ModelPackage;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.ScopeUI;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
+import be.edu.fundp.precise.uibpel.model.UserRole;
 
 /*
  * Bug 120110 - this class has been updated to include a Variable
@@ -37,6 +38,8 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 			Node parentNode, Process process,
 			BPELWriter bpelWriter) {
 
+
+		System.out.println("============apenteskljsdfhdksjhfkjdshfkljhdqsjkfhkjsdhkjfhkjsdqhkj");
 		Document document = parentNode.getOwnerDocument();
 		Element saElement = null;
 		
@@ -138,14 +141,15 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 				else 
 					saElement.setAttribute(attMaxCardi, Integer.toString(BpelUiUtils.getNewId()));
 				
-				EList<String> roles = sa.getRoles();
-				for (String role : roles) {
-					Element saElement2 = document.createElementNS(elementType.getNamespaceURI(),
-							BpelUiConstants.ND_USER_ROLE);
-					saElement2.setPrefix(BpelUiUtils.addNamespace(process));
-					saElement2.setAttribute(ModelPackage.eINSTANCE.
-							getUserInteraction_Roles().getName(), role);
-					saElement.appendChild(saElement2);
+				EList<UserRole> roles = sa.getUserRoles();
+				for (UserRole role : roles) {
+					//FIXME ADD ROLE HERE
+//					Element saElement2 = document.createElementNS(elementType.getNamespaceURI(),
+//							BpelUiConstants.ND_USER_ROLE);
+//					saElement2.setPrefix(BpelUiUtils.addNamespace(process));
+//					saElement2.setAttribute(ModelPackage.eINSTANCE.
+//							getUserInteraction_Roles().getName(), role);
+//					saElement.appendChild(saElement2);
 				}
 			}
 		}
@@ -153,6 +157,7 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 		//NEVER DELETE IT NETO!!!!
 		// insert the DOM element into the DOM tree
 		parentNode.appendChild(saElement);
+		System.out.println("apenteskljsdfhdksjhfkjdshfkljhdqsjkfhkjsdhkjfhkjsdqhkj");
 	}
 
 	public Node eventUIHandler2XML(EventHandlerUI eventHandler,

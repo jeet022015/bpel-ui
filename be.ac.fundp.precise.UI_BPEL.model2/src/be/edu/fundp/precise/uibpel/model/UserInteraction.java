@@ -18,8 +18,8 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link be.edu.fundp.precise.uibpel.model.UserInteraction#getRoles <em>Roles</em>}</li>
  *   <li>{@link be.edu.fundp.precise.uibpel.model.UserInteraction#getId <em>Id</em>}</li>
+ *   <li>{@link be.edu.fundp.precise.uibpel.model.UserInteraction#getUserRoles <em>User Roles</em>}</li>
  * </ul>
  * </p>
  *
@@ -28,22 +28,6 @@ import org.eclipse.emf.common.util.EList;
  * @generated
  */
 public interface UserInteraction extends BPELExtensibleElement {
-	/**
-	 * Returns the value of the '<em><b>Roles</b></em>' attribute list.
-	 * The list contents are of type {@link java.lang.String}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Roles</em>' attribute list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Roles</em>' attribute list.
-	 * @see be.edu.fundp.precise.uibpel.model.ModelPackage#getUserInteraction_Roles()
-	 * @model
-	 * @generated
-	 */
-	EList<String> getRoles();
-
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -69,5 +53,21 @@ public interface UserInteraction extends BPELExtensibleElement {
 	 * @generated
 	 */
 	void setId(String value);
+
+	/**
+	 * Returns the value of the '<em><b>User Roles</b></em>' reference list.
+	 * The list contents are of type {@link be.edu.fundp.precise.uibpel.model.UserRole}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>User Roles</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>User Roles</em>' reference list.
+	 * @see be.edu.fundp.precise.uibpel.model.ModelPackage#getUserInteraction_UserRoles()
+	 * @model
+	 * @generated
+	 */
+	EList<UserRole> getUserRoles();
 
 } // UserInteraction

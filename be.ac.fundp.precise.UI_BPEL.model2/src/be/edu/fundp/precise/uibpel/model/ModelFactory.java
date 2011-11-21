@@ -98,6 +98,15 @@ public interface ModelFactory extends EFactory {
 	EventHandlerUI createEventHandlerUI();
 
 	/**
+	 * Returns a new object of class '<em>User Role</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>User Role</em>'.
+	 * @generated
+	 */
+	UserRole createUserRole();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

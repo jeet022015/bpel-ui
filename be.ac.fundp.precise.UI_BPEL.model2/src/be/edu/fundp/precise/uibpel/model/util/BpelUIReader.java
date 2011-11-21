@@ -346,11 +346,12 @@ public class BpelUIReader extends BPELReader{
 				if (userRoleElement.getLocalName().equals(BpelUiConstants.ND_USER_ROLE)) {
 					
 					// handle the SampleExtensionAttribute
-					String attName = ModelPackage.eINSTANCE
-							.getUserInteraction_Roles().getName();
-					if (userRoleElement.getAttribute(attName) != null) {
-						sa.getRoles().add(userRoleElement.getAttribute(attName));
-					}
+					//FIXME ADD ROLE HERE
+//					String attName = ModelPackage.eINSTANCE
+//							.getUserInteraction_Roles().getName();
+//					if (userRoleElement.getAttribute(attName) != null) {
+//						sa.getRoles().add(userRoleElement.getAttribute(attName));
+//					}
 				}
 			}
 		}

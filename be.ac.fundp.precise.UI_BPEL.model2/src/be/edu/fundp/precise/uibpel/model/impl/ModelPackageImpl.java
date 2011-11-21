@@ -21,6 +21,7 @@ import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.PickUI;
 import be.edu.fundp.precise.uibpel.model.ScopeUI;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
+import be.edu.fundp.precise.uibpel.model.UserRole;
 import be.edu.fundp.precise.uibpel.model.util.BpelUiConstants;
 import be.edu.fundp.precise.uibpel.model.util.BpelUiDeserializer;
 import be.edu.fundp.precise.uibpel.model.util.BpelUiSerializer;
@@ -122,6 +123,13 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass userRoleEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EEnum dataTypeEEnum = null;
 
 	/**
@@ -160,7 +168,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
-	 * @generated
+	 * @generated NOT
 	 */
 	public static ModelPackage init() {
 		if (isInited) return (ModelPackage)EPackage.Registry.INSTANCE.getEPackage(ModelPackage.eNS_URI);
@@ -264,7 +272,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getUserInteraction_Roles() {
+	public EAttribute getUserInteraction_Id() {
 		return (EAttribute)userInteractionEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -273,8 +281,8 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getUserInteraction_Id() {
-		return (EAttribute)userInteractionEClass.getEStructuralFeatures().get(1);
+	public EReference getUserInteraction_UserRoles() {
+		return (EReference)userInteractionEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -444,6 +452,24 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getUserRole() {
+		return userRoleEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getUserRole_RoleId() {
+		return (EAttribute)userRoleEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EEnum getDataType() {
 		return dataTypeEEnum;
 	}
@@ -477,8 +503,8 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
 		// Create classes and their features
 		userInteractionEClass = createEClass(USER_INTERACTION);
-		createEAttribute(userInteractionEClass, USER_INTERACTION__ROLES);
 		createEAttribute(userInteractionEClass, USER_INTERACTION__ID);
+		createEReference(userInteractionEClass, USER_INTERACTION__USER_ROLES);
 
 		dataInteractionEClass = createEClass(DATA_INTERACTION);
 
@@ -506,6 +532,9 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
 		eventHandlerUIEClass = createEClass(EVENT_HANDLER_UI);
 		createEReference(eventHandlerUIEClass, EVENT_HANDLER_UI__USER_INTERACTION);
+
+		userRoleEClass = createEClass(USER_ROLE);
+		createEAttribute(userRoleEClass, USER_ROLE__ROLE_ID);
 
 		// Create enums
 		dataTypeEEnum = createEEnum(DATA_TYPE);
@@ -556,11 +585,12 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		scopeUIEClass.getESuperTypes().add(theBPELPackage.getScope());
 		scopeUIEClass.getESuperTypes().add(theBPELPackage.getExtensionActivity());
 		eventHandlerUIEClass.getESuperTypes().add(theBPELPackage.getEventHandler());
+		userRoleEClass.getESuperTypes().add(theBPELPackage.getBPELExtensibleElement());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(userInteractionEClass, UserInteraction.class, "UserInteraction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getUserInteraction_Roles(), ecorePackage.getEString(), "roles", null, 0, -1, UserInteraction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getUserInteraction_Id(), ecorePackage.getEString(), "id", null, 0, 1, UserInteraction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getUserInteraction_UserRoles(), this.getUserRole(), null, "userRoles", null, 0, -1, UserInteraction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(dataInteractionEClass, DataInteraction.class, "DataInteraction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -588,6 +618,9 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
 		initEClass(eventHandlerUIEClass, EventHandlerUI.class, "EventHandlerUI", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getEventHandlerUI_UserInteraction(), this.getOnUserEvent(), null, "userInteraction", null, 0, -1, EventHandlerUI.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(userRoleEClass, UserRole.class, "UserRole", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getUserRole_RoleId(), ecorePackage.getEString(), "roleId", null, 0, 1, UserRole.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(dataTypeEEnum, DataType.class, "DataType");
