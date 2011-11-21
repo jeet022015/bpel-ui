@@ -303,8 +303,7 @@ public class WriterUiBpel extends BPELWriter {
 		initCopy.setTo(t);
 		
 		//================== ROLE =====================
-		//String role = activity.getRoles().size() > 1 ? activity.getRoles().get(0).getID() : "roleDefault";
-		String role = activity.getUserRoles().size() > 1 ? activity.getUserRoles().get(0).getRoleId() : "roleDefault";
+		String role = activity.getUserRoles().size() > 0 ? activity.getUserRoles().get(0).getRoleId() : "roleDefault";
 
 		Copy roleCopy = createCopyRole(inputVar, prefix, inputOperation, role);
 		
@@ -445,8 +444,7 @@ public class WriterUiBpel extends BPELWriter {
 		assignBefore.getCopy().add(initCopy);
 		
 		//================== ROLE =====================
-		//String role = activity.getRoles().size() > 1 ? activity.getRoles().get(0).getID() : "roleDefault";
-		String role = activity.getUserRoles().size() > 1 ? activity.getUserRoles().get(0).getRoleId() : "roleDefault";
+		String role = activity.getUserRoles().size() > 0 ? activity.getUserRoles().get(0).getRoleId() : "roleDefault";
 
 		Copy roleCopy = createCopyRole(inputVar, prefix, inputOperation, role);
 		assignBefore.getCopy().add(roleCopy);
@@ -533,8 +531,7 @@ public class WriterUiBpel extends BPELWriter {
 		assignBefore.getCopy().add(c);
 				
 		//================== ROLE =====================
-		String role = activity.getUserRoles().size() > 1 ? activity.getUserRoles().get(0).getRoleId() : "roleDefault";
-		//String role = activity.getRoles().size() > 1 ? activity.getRoles().get(0) : "roleDefault";
+		String role = activity.getUserRoles().size() > 0 ? activity.getUserRoles().get(0).getRoleId() : "roleDefault";
 
 		c = createCopyRole(inputVar, prefix, inputOperation, role);
 		assignBefore.getCopy().add(c);
