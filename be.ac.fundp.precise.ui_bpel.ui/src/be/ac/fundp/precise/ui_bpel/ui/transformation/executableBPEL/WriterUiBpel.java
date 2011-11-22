@@ -70,6 +70,7 @@ public class WriterUiBpel extends BPELWriter {
 	private BpelUIUtil bpel;
 	
 	protected Process process;
+	private Variable outputVarGen;
 	
 	public WriterUiBpel(Process process, IResource iFile) {
 		super();
@@ -189,7 +190,7 @@ public class WriterUiBpel extends BPELWriter {
 			
 			Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
 					getDefaultRequestNames(DataInteractionManager.GEN_ID_OPERATION)) ? vars[0] : vars[1];
-			Variable outputVar = vars[0].getName().startsWith(DataInteractionManager.
+			outputVarGen = vars[0].getName().startsWith(DataInteractionManager.
 					getDefaultResponseNames(DataInteractionManager.GEN_ID_OPERATION)) ? vars[0] : vars[1];
 			
 			//================== Initialization =============
@@ -204,7 +205,7 @@ public class WriterUiBpel extends BPELWriter {
 			Invoke i = BPELFactory.eINSTANCE.createInvoke();
 			i.setName("InvokeDataInput");
 			i.setInputVariable(inputVar);
-			i.setOutputVariable(outputVar);
+			i.setOutputVariable(outputVarGen);
 			i.setOperation(genIdOperation);
 			i.setPartnerLink(bpel.getPartnerLinkBPEL());
 			
@@ -292,6 +293,7 @@ public class WriterUiBpel extends BPELWriter {
 		assignbBefore.setName("DataOutputConfiguration");
 		
 		Operation inputOperation = bpel.getOutputOperation();
+		Operation genOperation = bpel.getGenIdOperation();
 		
 		//================== Initialization =====================
 		Copy initCopy = BPELFactory.eINSTANCE.createCopy();
@@ -310,6 +312,11 @@ public class WriterUiBpel extends BPELWriter {
 		//================== ID =====================
 		Copy idCoppy = createCopyId(activity.getId(), inputVar, prefix, inputOperation);
 		
+		//================== Process ID =====================
+		Part genPart = (Part) genOperation.getInput().getMessage().getPart("parameters");
+		Part outputPart = (Part) inputOperation.getInput().getMessage().getPart("parameters");
+		Copy genCoppy = createCopyProcessID(outputVarGen,genPart, inputVar,outputPart, "processid");
+		
 		//================== COPY DATA ITEM =====================
 		int cont = 1;
 		List<Copy> dataItemCopies = new LinkedList<Copy>();
@@ -324,6 +331,7 @@ public class WriterUiBpel extends BPELWriter {
 		assignbBefore.getCopy().add(initCopy);
 		assignbBefore.getCopy().add(roleCopy);
 		assignbBefore.getCopy().add(idCoppy);
+		assignbBefore.getCopy().add(genCoppy);
 		assignbBefore.getCopy().addAll(dataItemCopies);
 		
 		//================== INVOKE =====================
@@ -338,6 +346,29 @@ public class WriterUiBpel extends BPELWriter {
 		s.getActivities().add(i);
 
 		return super.sequence2XML(s);
+	}
+
+	private Copy createCopyProcessID(Variable genOutputVar, Part genPat, Variable inputVar,
+			Part outputPart ,String string) {
+		Copy c = BPELFactory.eINSTANCE.createCopy();
+		From f = BPELFactory.eINSTANCE.createFrom();
+		Query toQuery = BPELFactory.eINSTANCE.createQuery();
+		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
+		toQuery.setValue("processId");
+		f.setQuery(toQuery);
+		f.setVariable(genOutputVar);
+		
+		To t = BPELFactory.eINSTANCE.createTo();
+		toQuery = BPELFactory.eINSTANCE.createQuery();
+		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
+		toQuery.setValue(string);
+		t.setQuery(toQuery);
+		t.setVariable(inputVar);
+		//FIXME Get the name from some other way or create a constant
+		t.setPart(outputPart);
+		c.setFrom(f);
+		c.setTo(t);
+		return c;
 	}
 
 	private Copy createDataItemBeforeCopy(Variable inputVar, String prefix,
@@ -432,6 +463,7 @@ public class WriterUiBpel extends BPELWriter {
 		String prefix = "";
 		
 		Operation inputOperation = bpel.getSelectionOperation();
+		Operation genOperation = bpel.getGenIdOperation();
 		
 		//================== Initialization =====================
 		Copy initCopy = BPELFactory.eINSTANCE.createCopy();
@@ -452,6 +484,12 @@ public class WriterUiBpel extends BPELWriter {
 		//================== ID =====================
 		Copy idCoppy = createCopyId(activity.getId(), inputVar, prefix, inputOperation);
 		assignBefore.getCopy().add(idCoppy);
+		
+		//================== Process ID =====================
+		Part genPart = (Part) genOperation.getInput().getMessage().getPart("parameters");
+		Part outputPart = (Part) inputOperation.getInput().getMessage().getPart("parameters");
+		Copy genCoppy = createCopyProcessID(outputVarGen,genPart, inputVar,outputPart, "processId");
+		assignBefore.getCopy().add(genCoppy);
 		
 		//================== COPY DATA ITEM =====================
 		int cont = 1;
@@ -507,7 +545,7 @@ public class WriterUiBpel extends BPELWriter {
 				getDefaultRequestNames(DataInteractionManager.INPUT_OPERATION)) ? vars[0] : vars[1];
 		Variable outputVar = vars[0].getName().startsWith(DataInteractionManager.
 				getDefaultResponseNames(DataInteractionManager.INPUT_OPERATION)) ? vars[0] : vars[1];
-		
+				
 		//String prefix = BPELUtils.getNamespacePrefix(inputVar, 
 				//inputVar.getMessageType().getQName().getNamespaceURI());
 		//TODO when do I must to do it?
@@ -519,6 +557,7 @@ public class WriterUiBpel extends BPELWriter {
 		assignBefore.setName("DataInputConfiguration");
 		
 		Operation inputOperation = bpel.getInputOperation();
+		Operation genOperation = bpel.getGenIdOperation();
 		
 		//================== Initialization ====================
 		Copy c = BPELFactory.eINSTANCE.createCopy();
@@ -535,6 +574,12 @@ public class WriterUiBpel extends BPELWriter {
 
 		c = createCopyRole(inputVar, prefix, inputOperation, role);
 		assignBefore.getCopy().add(c);
+		
+		//================== Process ID =====================
+		Part genPart = (Part) genOperation.getInput().getMessage().getPart("parameters");
+		Part outputPart = (Part) inputOperation.getInput().getMessage().getPart("parameters");
+		Copy genCoppy = createCopyProcessID(outputVarGen,genPart, inputVar,outputPart, "processId");
+		assignBefore.getCopy().add(genCoppy);
 		
 		//================== ID =====================
 		Copy idCoppy = createCopyId(activity.getId(), inputVar, prefix, inputOperation);
