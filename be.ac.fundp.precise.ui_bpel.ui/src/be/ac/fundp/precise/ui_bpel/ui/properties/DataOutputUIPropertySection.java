@@ -1,5 +1,8 @@
 package be.ac.fundp.precise.ui_bpel.ui.properties;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.bpel.common.ui.details.IDetailsAreaConstants;
 import org.eclipse.bpel.common.ui.flatui.FlatFormAttachment;
 import org.eclipse.bpel.common.ui.flatui.FlatFormData;
@@ -45,7 +48,10 @@ public class DataOutputUIPropertySection extends BPELPropertySection {
 	private Section mainLabel;
 	private Composite sectionClient;
 	private Button deleteRoleButton;
+	private List<Button> availableDataItemButtons = new LinkedList<Button>();
+	private List<String> dataItemsInButton = new LinkedList<String>();
 	private DataItem currentDataItem;
+	private Button currentDataItemButton;
 
 	private DataOutputUI getActivity() {
 		return (DataOutputUI)getInput();
@@ -125,7 +131,7 @@ public class DataOutputUIPropertySection extends BPELPropertySection {
 					cmd.add(command);
 					cmd.add(command2);
 					getCommandFramework().execute(wrapInShowContextCommand(cmd));
-					refreshAdapters();
+					updateVariableWidgets();
 				}
 			}
 
@@ -158,6 +164,12 @@ public class DataOutputUIPropertySection extends BPELPropertySection {
 				cmd.add(command);
 				cmd.add(command2);
 				getCommandFramework().execute(wrapInShowContextCommand(cmd));
+				
+				dataItemsInButton.remove(currentDataItem.getVariable().getName());
+				currentDataItemButton.setVisible(false);
+				availableDataItemButtons.add(currentDataItemButton);
+				currentDataItemButton = null;
+				updateVariableWidgets();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -165,28 +177,34 @@ public class DataOutputUIPropertySection extends BPELPropertySection {
 			}
 		});
 		
+		for (int i = 0; i < 10; i++) {
+			Button button4 = fWidgetFactory.createButton(sectionClient,
+						"buttonName", SWT.RADIO);
+			button4.setVisible(false);
+			availableDataItemButtons.add(button4);
+		}
+		
 	}
 	
 	public void updateVariableWidgets() {
 		if(getActivity() != null){
 			for (final DataItem dataItem : getActivity().getOutputItem()) {
-				String name;
-				if (dataItem.getVariable() != null)
-					name = dataItem.getVariable().getName();
-				else
-					name = "name";
-				Button button4 = fWidgetFactory.createButton(sectionClient,
-					name, SWT.RADIO);
-				button4.addSelectionListener(new SelectionListener() {
-					public void widgetSelected(SelectionEvent e) {
-						currentDataItem = dataItem;
-					}
-
-					public void widgetDefaultSelected(SelectionEvent e) {
-						widgetSelected(e);
-					}
-				});
-				
+				if (dataItem.getVariable() != null && !dataItemsInButton.contains(dataItem.getVariable().getName())){
+					String name = dataItem.getVariable().getName();
+					final Button button4 = availableDataItemButtons.remove(0);
+					button4.setText(name);
+					button4.addSelectionListener(new SelectionListener() {
+						public void widgetSelected(SelectionEvent e) {
+							currentDataItem = dataItem;
+							currentDataItemButton = button4;
+						}
+	
+						public void widgetDefaultSelected(SelectionEvent e) {
+							widgetSelected(e);
+						}
+					});
+					button4.setVisible(true);
+				}
 			}
 		}
 	}

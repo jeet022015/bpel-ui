@@ -1,5 +1,8 @@
 package be.ac.fundp.precise.ui_bpel.ui.properties;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.bpel.common.ui.details.IDetailsAreaConstants;
 import org.eclipse.bpel.common.ui.flatui.FlatFormAttachment;
 import org.eclipse.bpel.common.ui.flatui.FlatFormData;
@@ -25,6 +28,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import be.ac.fundp.precise.ui_bpel.ui.properties.commands.AddUserRoleCommand;
 import be.ac.fundp.precise.ui_bpel.ui.properties.commands.RemoveUserRoleCommand;
 import be.ac.fundp.precise.ui_bpel.ui.properties.dialogs.UserRoleDialog;
+import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
 import be.edu.fundp.precise.uibpel.model.UserRole;
 
@@ -43,28 +47,13 @@ public class UserRolePropertySection extends BPELPropertySection {
 	private Section mainLabel;
 	private Composite sectionClient;
 	private Button deleteRoleButton;
+	private List<Button> availableDataItemButtons = new LinkedList<Button>();
+	private List<String> dataItemsInButton = new LinkedList<String>();
+	private Button currentDataItemButton;
 	private UserRole currentDataItem;
 
 	private UserInteraction getActivity() {
 		return (UserInteraction)getInput();
-	}
-
-	@Override
-	protected MultiObjectAdapter[] createAdapters() {
-		return new MultiObjectAdapter[] {
-			/* model object */
-			new BatchedMultiObjectAdapter() {
-				
-				@Override
-				public void notify (Notification n) {
-				}
-				
-				@Override
-				public void finish() {
-					updateVariableWidgets();
-				}
-			}
-		};
 	}
 
 	@Override
@@ -119,7 +108,7 @@ public class UserRolePropertySection extends BPELPropertySection {
 					
 					Command command = new AddUserRoleCommand(userActivity, id);
 					getCommandFramework().execute(command);
-					refreshAdapters();
+					updateVariableWidgets();
 				}
 			}
 
@@ -149,6 +138,12 @@ public class UserRolePropertySection extends BPELPropertySection {
 						getActivity(), currentDataItem);
 				cmd.add(command);
 				getCommandFramework().execute(wrapInShowContextCommand(cmd));
+				
+				dataItemsInButton.remove(currentDataItem.getRoleId());
+				currentDataItemButton.setVisible(false);
+				availableDataItemButtons.add(currentDataItemButton);
+				currentDataItemButton = null;
+				updateVariableWidgets();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -156,28 +151,34 @@ public class UserRolePropertySection extends BPELPropertySection {
 			}
 		});
 		
+		for (int i = 0; i < 10; i++) {
+			Button button4 = fWidgetFactory.createButton(sectionClient,
+						"buttonName", SWT.RADIO);
+			button4.setVisible(false);
+			availableDataItemButtons.add(button4);
+		}
 	}
 	
 	public void updateVariableWidgets() {
 		if(getActivity() != null){
 			for (final UserRole dataItem : getActivity().getUserRoles()) {
-				String name;
-				if (dataItem.getRoleId() != null)
-					name = dataItem.getRoleId();
-				else
-					name = "name";
-				Button button4 = fWidgetFactory.createButton(sectionClient,
-					name, SWT.RADIO);
-				button4.addSelectionListener(new SelectionListener() {
-					public void widgetSelected(SelectionEvent e) {
-						currentDataItem = dataItem;
-					}
-
-					public void widgetDefaultSelected(SelectionEvent e) {
-						widgetSelected(e);
-					}
-				});
-				
+				if (dataItem.getRoleId() != null && !dataItemsInButton.contains(dataItem.getRoleId())){
+					String name = dataItem.getRoleId();
+					dataItemsInButton.add(name);
+					final Button button4 = availableDataItemButtons.remove(0);
+					button4.setText(name);
+					button4.addSelectionListener(new SelectionListener() {
+						public void widgetSelected(SelectionEvent e) {
+							currentDataItem = dataItem;
+							currentDataItemButton = button4;
+						}
+	
+						public void widgetDefaultSelected(SelectionEvent e) {
+							widgetSelected(e);
+						}
+					});
+					button4.setVisible(true);
+				}
 			}
 		}
 	}

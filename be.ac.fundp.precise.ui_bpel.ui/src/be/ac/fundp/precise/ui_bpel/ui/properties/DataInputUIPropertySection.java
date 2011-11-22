@@ -1,5 +1,8 @@
 package be.ac.fundp.precise.ui_bpel.ui.properties;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.bpel.common.ui.details.IDetailsAreaConstants;
 import org.eclipse.bpel.common.ui.flatui.FlatFormAttachment;
 import org.eclipse.bpel.common.ui.flatui.FlatFormData;
@@ -7,10 +10,7 @@ import org.eclipse.bpel.ui.commands.AddVariableCommand;
 import org.eclipse.bpel.ui.commands.CompoundCommand;
 import org.eclipse.bpel.ui.properties.BPELPropertySection;
 import org.eclipse.bpel.ui.util.BPELUtil;
-import org.eclipse.bpel.ui.util.BatchedMultiObjectAdapter;
-import org.eclipse.bpel.ui.util.MultiObjectAdapter;
 import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.SWT;
@@ -45,28 +45,14 @@ public class DataInputUIPropertySection extends BPELPropertySection {
 	private Section mainLabel;
 	private Composite sectionClient;
 	private Button deleteRoleButton;
+	private List<Button> availableDataItemButtons = new LinkedList<Button>();
+	private List<String> dataItemsInButton = new LinkedList<String>();
 	private DataItem currentDataItem;
+	private Button currentDataItemButton;
+	
 
 	private DataInputUI getActivity() {
 		return (DataInputUI)getInput();
-	}
-
-	@Override
-	protected MultiObjectAdapter[] createAdapters() {
-		return new MultiObjectAdapter[] {
-			/* model object */
-			new BatchedMultiObjectAdapter() {
-				
-				@Override
-				public void notify (Notification n) {
-				}
-				
-				@Override
-				public void finish() {
-					updateVariableWidgets();
-				}
-			}
-		};
 	}
 
 	@Override
@@ -125,7 +111,7 @@ public class DataInputUIPropertySection extends BPELPropertySection {
 					cmd.add(command);
 					cmd.add(command2);
 					getCommandFramework().execute(wrapInShowContextCommand(cmd));
-					refreshAdapters();
+					updateVariableWidgets();
 				}
 			}
 
@@ -157,6 +143,12 @@ public class DataInputUIPropertySection extends BPELPropertySection {
 				cmd.add(command);
 				cmd.add(command2);
 				getCommandFramework().execute(wrapInShowContextCommand(cmd));
+				
+				dataItemsInButton.remove(currentDataItem.getVariable().getName());
+				currentDataItemButton.setVisible(false);
+				availableDataItemButtons.add(currentDataItemButton);
+				currentDataItemButton = null;
+				updateVariableWidgets();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -164,28 +156,35 @@ public class DataInputUIPropertySection extends BPELPropertySection {
 			}
 		});
 		
+		for (int i = 0; i < 10; i++) {
+			Button button4 = fWidgetFactory.createButton(sectionClient,
+						"buttonName", SWT.RADIO);
+			button4.setVisible(false);
+			availableDataItemButtons.add(button4);
+		}
+		
 	}
-	
+
 	public void updateVariableWidgets() {
 		if(getActivity() != null){
 			for (final DataItem dataItem : getActivity().getInputItem()) {
-				String name;
-				if (dataItem.getVariable() != null)
-					name = dataItem.getVariable().getName();
-				else
-					name = "DefaultName";
-				Button button4 = fWidgetFactory.createButton(sectionClient,
-					name, SWT.RADIO);
-				button4.addSelectionListener(new SelectionListener() {
-					public void widgetSelected(SelectionEvent e) {
-						currentDataItem = dataItem;
-					}
-
-					public void widgetDefaultSelected(SelectionEvent e) {
-						widgetSelected(e);
-					}
-				});
-				
+				if (dataItem.getVariable() != null && !dataItemsInButton.contains(dataItem.getVariable().getName())){
+					String name = dataItem.getVariable().getName();
+					dataItemsInButton.add(name);
+					final Button button4 = availableDataItemButtons.remove(0);
+					button4.setText(name);
+					button4.addSelectionListener(new SelectionListener() {
+						public void widgetSelected(SelectionEvent e) {
+							currentDataItem = dataItem;
+							currentDataItemButton = button4;
+						}
+	
+						public void widgetDefaultSelected(SelectionEvent e) {
+							widgetSelected(e);
+						}
+					});
+					button4.setVisible(true);
+				}
 			}
 		}
 	}
