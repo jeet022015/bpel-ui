@@ -65,7 +65,8 @@ public class UserRolePropertySection extends BPELPropertySection {
 		data = new FlatFormData();
 		data.left = new FlatFormAttachment(0, 0);
 		data.right = new FlatFormAttachment(100, 0);
-		data.top = new FlatFormAttachment(composite, IDetailsAreaConstants.VSPACE);
+		//data.top = new FlatFormAttachment(composite, IDetailsAreaConstants.VSPACE);
+		data.top = new FlatFormAttachment(0, IDetailsAreaConstants.VSPACE);
 		composite.setLayoutData(data);
 		
 		mainLabel = fWidgetFactory.createSection(composite, SWT.NONE); //$NON-NLS-1$
@@ -151,7 +152,7 @@ public class UserRolePropertySection extends BPELPropertySection {
 			}
 		});
 		
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 3; i++) {
 			Button button4 = fWidgetFactory.createButton(sectionClient,
 						"buttonName", SWT.RADIO);
 			button4.setVisible(false);

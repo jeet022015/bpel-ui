@@ -84,7 +84,8 @@ public class DataOutputUIPropertySection extends BPELPropertySection {
 		data = new FlatFormData();
 		data.left = new FlatFormAttachment(0, 0);
 		data.right = new FlatFormAttachment(100, 0);
-		data.top = new FlatFormAttachment(composite, IDetailsAreaConstants.VSPACE);
+		//data.top = new FlatFormAttachment(composite, IDetailsAreaConstants.VSPACE);
+		data.top = new FlatFormAttachment(0, IDetailsAreaConstants.VSPACE);
 		composite.setLayoutData(data);
 		
 		mainLabel = fWidgetFactory.createSection(composite, SWT.NONE); //$NON-NLS-1$
