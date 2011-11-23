@@ -1,6 +1,9 @@
 package be.ac.fundp.precise.ui_bpel.ui.transformation.aui;
 
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -40,34 +43,43 @@ public class AUIGenerator {
 
 	private int idGen = 1;
 	
-	private AbstractUIModel model;
 	private AuiPackageFactory factory = AuiPackageFactory.eINSTANCE;
 	private MediatorConfigurator medConf;
+	private Map<String, AbstractUIModel> roleModels = new HashMap<String, AbstractUIModel>();
+	
 	private int orderingCounter;
 	
 	public AUIGenerator (OutputStream out) throws ParserConfigurationException{
 		medConf = new MediatorConfigurator (out);
 	}
 	
-	public AbstractUIModel createAUI(Process process) throws TransformerException {
-		//AuiPackageFactory.eINSTANCE.eClass();
-		AbstractUIModel model = factory.createAbstractUIModel();
-		this.model = model;
+	public Map<String, AbstractUIModel> createAUI(Process process) throws TransformerException {
+		roleModels = new HashMap<String, AbstractUIModel>();
+		
+		List<String> roles = RolesDetector.getRoles(process);
+		for (String role : roles) {
+			AbstractUIModel model = factory.createAbstractUIModel();
+			roleModels.put(role, model);
+		}
+		String role = "defaultRole";
+		roleModels.put(role, factory.createAbstractUIModel());
+		
 		orderingCounter= 1;
 		
 		activity2AUI(process.getActivity());
 		
 		medConf.finalize();
 		
-		return model;
+		return roleModels;
 	}
 
-	private AbstractCompoundIU createAbstractComponent() {
+	private AbstractCompoundIU createAbstractComponent(String role) {
 		AbstractCompoundIU comp = factory.createAbstractCompoundIU();
 		comp.setHelp("Help");
 		comp.setId(idGen);
 		idGen++;
 		
+		AbstractUIModel model = roleModels.get(role);
 		model.getCompoundIUs().add(comp);
 		comp.setModel(model);
 		
@@ -109,26 +121,52 @@ public class AUIGenerator {
 	}
 
 	private void createDataUiDataSelectionUI(DataSelectionUI activity) {
-		AbstractCompoundIU comp = dataInteraction(activity.getInputItem(), 
-				AbstractDataIUType.INPUT_OUTPUT, new StrategySelectionUI());
+		String role = "defaultRole";
+		if (activity.getUserRoles() != null && activity.getUserRoles().size() > 0){
+			role = activity.getUserRoles().get(0).getRoleId();
+		}
+		AbstractCompoundIU comp = dataInteraction(role, activity.getInputItem(), 
+				AbstractDataIUType.OUTPUT, new StrategySelectionUI());
+		selectionUI(comp,AbstractDataIUType.INPUT, activity.getOutputItem(), new StrategySelectionUI());
 		medConf.createDataSelectionConf(comp, activity);
 	}
 
+	private void selectionUI(AbstractCompoundIU comp,
+			AbstractDataIUType output, EList<DataItem> outputItem, StrategySelectionUI strategy) {
+		for (DataItem item : outputItem) {
+			//AbstractDataIU dataComp = factory.createAbstractDataIU();
+			AbstractDataIU dataComp = strategy.getStrategy();
+			dataComp.setParentIU(comp);
+			dataComp.setDataUIType(output);
+			dataComp.setDataType(item.getType().getName());
+			dataComp.setLabel(item.getVariable().getName());
+			comp.getInteractionUnits().add(dataComp);
+		}
+	}
+
 	private void createDataUiDataOutputUI(DataOutputUI activity) {
-		AbstractCompoundIU comp = dataInteraction(activity.getOutputItem(),
+		String role = "defaultRole";
+		if (activity.getUserRoles() != null && activity.getUserRoles().size() > 0){
+			role = activity.getUserRoles().get(0).getRoleId();
+		}
+		AbstractCompoundIU comp = dataInteraction(role, activity.getOutputItem(),
 				AbstractDataIUType.OUTPUT, new StrategyDataUI());
 		medConf.createDataOutputConf(comp, activity);
 	}
 	
 	private void createDataUiDataInputUI(DataInputUI activity) {
-		AbstractCompoundIU comp = dataInteraction(activity.getInputItem(),
+		String role = "defaultRole";
+		if (activity.getUserRoles() != null && activity.getUserRoles().size() > 0){
+			role = activity.getUserRoles().get(0).getRoleId();
+		}
+		AbstractCompoundIU comp = dataInteraction(role, activity.getInputItem(),
 				AbstractDataIUType.INPUT, new StrategyDataUI());
 		medConf.createDataInputConf(comp, activity);
 	}
 
-	private AbstractCompoundIU dataInteraction(EList<DataItem> dataItems, 
+	private AbstractCompoundIU dataInteraction(String role, EList<DataItem> dataItems, 
 			AbstractDataIUType output, StrategyAUIElement strategy) {
-		AbstractCompoundIU comp = createAbstractComponent();
+		AbstractCompoundIU comp = createAbstractComponent(role);
 		orderingCounter++;
 		
 		for (DataItem item : dataItems) {
@@ -137,6 +175,7 @@ public class AUIGenerator {
 			dataComp.setParentIU(comp);
 			dataComp.setDataUIType(output);
 			dataComp.setDataType(item.getType().getName());
+			dataComp.setLabel(item.getVariable().getName());
 			comp.getInteractionUnits().add(dataComp);
 		}
 		
