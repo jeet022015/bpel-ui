@@ -16,7 +16,7 @@ public class UserInteraction {
 		uniaueId = newUniqueId();
 		done = false;
 		displayName.put("4", "Provide Order Data");
-		displayName.put("7", "Initial Price");
+		displayName.put("7", "See Initial Price");
 		displayName.put("6", "Select Payment Method");
 		displayName.put("8", "Receipt");
 	}

@@ -35,8 +35,7 @@ public class ProcessInteractionActivity extends Activity {
 		tv.setTextSize(30);
 
 		List<UserInteraction> aui= p.getUserInteractions();
-	    //forgot_pswrd.setC
-		
+	    
 		for (final UserInteraction userInteraction : aui) {
 			LinearLayout innerLayout = new LinearLayout(this);
 			LayoutParams parL = new LinearLayout.LayoutParams(
@@ -44,14 +43,11 @@ public class ProcessInteractionActivity extends Activity {
 					LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.HORIZONTAL);
 			parL.setMargins(0, 10, 0, 10);
 			innerLayout.setLayoutParams(parL);
-			//innerLayout.setOrientation(LinearLayout.HORIZONTAL);
 			
 			ImageView i = new ImageView(this);
 			if (userInteraction.isDone()){
-				//i.setImageResource(R.drawable.logoui);
 				i.setImageResource(R.drawable.okicon);
 			} else {
-				//i.setImageResource(R.drawable.logook);
 				i.setImageResource(R.drawable.touchicon);
 			}
 			i.setAdjustViewBounds(true); // set the ImageView bounds to match the
@@ -61,10 +57,9 @@ public class ProcessInteractionActivity extends Activity {
 			par.setMargins(10, 0, 0, 0);
 			i.setLayoutParams(par);
 			
-			TextView forgot_pswrd = new TextView(this);
-		    //forgot_pswrd.setOnTouchListener(this);     
+			TextView forgot_pswrd = new TextView(this);  
 		    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		    llp.setMargins(20, 5, 0, 0); // llp.setMargins(left, top, right, bottom);
+		    llp.setMargins(20, 5, 0, 0);
 		    forgot_pswrd.setLayoutParams(llp);
 		    forgot_pswrd.setTextColor(Color.parseColor("#0B4C5F"));
 		    forgot_pswrd.setText(userInteraction.getDisplayName());
@@ -90,8 +85,6 @@ public class ProcessInteractionActivity extends Activity {
 			
 			l.addView(innerLayout);
 		}
-
-		// a.setContentView(R.layout.processes_page);
 	}
 
 }
