@@ -46,29 +46,61 @@ import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.PickUI;
 import be.edu.fundp.precise.uibpel.model.ScopeUI;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BpelUIUtil.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class BpelUIUtil {
 
+	/** The Constant WSLD_NAME. */
 	private static final String WSLD_NAME = "wsdl";
+	
+	/** The Constant SERVICE_NAME. */
 	private static final String SERVICE_NAME = "UiManager";
+	
+	/** The Constant SERVICE_NAME_USER_EVENT. */
 	private static final String SERVICE_NAME_USER_EVENT = "UserEventListener";
 	
+	/** The ui manager partner link. */
 	protected PartnerLinkRepresentation uiManagerPartnerLink;
+	
+	/** The user event listener partner link. */
 	protected PartnerLinkRepresentation userEventListenerPartnerLink;
 	
+	/** The ui manager import. */
 	protected ImportRepresentation uiManagerImport;
+	
+	/** The user event import. */
 	protected ImportRepresentation userEventImport;
 	
+	/** The ui manager op. */
 	protected DataInteractionManager uiManagerOp;
+	
+	/** The event manager op. */
 	protected EventInteractionManager eventManagerOp;
 	
+	/** The wsdl_ui_bpel. */
 	private Definition wsdl_ui_bpel;
+	
+	/** The wsdl_user_event_listinner. */
 	private Definition wsdl_user_event_listinner;
+	
+	/** The process ws dl. */
 	private Definition processWSDl;
 	
+	/** The p. */
 	private Process p;
 
+	/** The instance. */
 	private static BpelUIUtil instance;
 
+	/**
+	 * Gets the instace.
+	 *
+	 * @return the instace
+	 */
 	public static BpelUIUtil getInstace() {
 		if (instance == null) {
 			instance = new BpelUIUtil();
@@ -76,10 +108,21 @@ public class BpelUIUtil {
 		return instance;
 	}
 
+	/**
+	 * Instantiates a new bpel ui util.
+	 */
 	private BpelUIUtil() {
 
 	}
 
+	/**
+	 * Configure process.
+	 *
+	 * @param processWSDLPath the process wsdl path
+	 * @param ui_bpelWSDLPath the ui_bpel wsdl path
+	 * @param userListnnerPath the user listnner path
+	 * @param process the process
+	 */
 	public void configureProcess(String processWSDLPath,
 			String ui_bpelWSDLPath, String userListnnerPath,  Process process) {
 
@@ -117,6 +160,9 @@ public class BpelUIUtil {
 		treatProcess(process.getActivity());
 	}
 
+	/**
+	 * Save process wsdl.
+	 */
 	public void saveProcessWSDL() {
 		
 		WSDLImportHelperUI.addToolingNamespaces(processWSDl);
@@ -128,6 +174,11 @@ public class BpelUIUtil {
 		}
 	}
 
+	/**
+	 * Gets the ui variables.
+	 *
+	 * @return the ui variables
+	 */
 	public Set<Variable> getUiVariables() {
 		Set<Variable> var = new HashSet<Variable>();
 		var.addAll(uiManagerOp.getVariables());
@@ -135,12 +186,23 @@ public class BpelUIUtil {
 		return var;
 	}
 
+	/**
+	 * Gets the variable for user interaction.
+	 *
+	 * @param id the id
+	 * @return the variable for user interaction
+	 */
 	public Variable[] getVariableForUserInteraction(String id) {
 		if (uiManagerOp.containsUserInteraction(id))
 			return uiManagerOp.getVariable(id);
 		return eventManagerOp.getVariable(id);
 	}
 
+	/**
+	 * Treat process.
+	 *
+	 * @param activity the activity
+	 */
 	private void treatProcess(Activity activity) {
 		if (activity instanceof ExtensionActivity)
 			extensionActivity2XML((ExtensionActivity) activity);
@@ -169,6 +231,11 @@ public class BpelUIUtil {
 			treatProcess(((RepeatUntil) activity).getActivity());
 	}
 
+	/**
+	 * Deal pick.
+	 *
+	 * @param f the f
+	 */
 	private void dealPick(Pick f) {
 		for (OnAlarm intAct : f.getAlarm())
 			treatProcess(intAct.getActivity());
@@ -176,6 +243,11 @@ public class BpelUIUtil {
 			treatProcess(intAct.getActivity());
 	}
 
+	/**
+	 * Extension activity2 xml.
+	 *
+	 * @param activity the activity
+	 */
 	private void extensionActivity2XML(ExtensionActivity activity) {
 		if (activity instanceof DataSelectionUI) {
 			uiManagerOp.createDataSelectionVar((DataSelectionUI) activity);
@@ -206,6 +278,11 @@ public class BpelUIUtil {
 		}
 	}
 
+	/**
+	 * Scope inner.
+	 *
+	 * @param activity the activity
+	 */
 	private void scopeInner(Scope activity) {
 		if (activity.getFaultHandlers() != null) {
 			for (Catch c : activity.getFaultHandlers().getCatch())
@@ -226,34 +303,76 @@ public class BpelUIUtil {
 			treatProcess(activity.getActivity());
 	}
 
+	/**
+	 * Gets the input operation.
+	 *
+	 * @return the input operation
+	 */
 	public Operation getInputOperation() {
 		return uiManagerOp.getInputOperation();
 	}
 
+	/**
+	 * Gets the output operation.
+	 *
+	 * @return the output operation
+	 */
 	public Operation getOutputOperation() {
 		return uiManagerOp.getOutputOperation();
 	}
 
+	/**
+	 * Gets the selection operation.
+	 *
+	 * @return the selection operation
+	 */
 	public Operation getSelectionOperation() {
 		return uiManagerOp.getSelectionOperation();
 	}
 
+	/**
+	 * Gets the event operation.
+	 *
+	 * @return the event operation
+	 */
 	public Operation getEventOperation() {
 		return eventManagerOp.getOperation();
 	}
 	
+	/**
+	 * Gets the import bpel.
+	 *
+	 * @return the import bpel
+	 */
 	public Import getImportBPEL() {
 		return uiManagerImport.getImport();
 	}
 	
+	/**
+	 * Gets the import user event.
+	 *
+	 * @return the import user event
+	 */
 	public Import getImportUserEvent() {
 		return userEventImport.getImport();
 	}
 
+	/**
+	 * Gets the partner link bpel.
+	 *
+	 * @return the partner link bpel
+	 */
 	public PartnerLink getPartnerLinkBPEL() {
 		return uiManagerPartnerLink.getPartnerLink();
 	}
 
+	/**
+	 * Attempt load wsdl.
+	 *
+	 * @param uri the uri
+	 * @param resourceSet the resource set
+	 * @return the object
+	 */
 	public static Object attemptLoadWSDL(URI uri, ResourceSet resourceSet) {
 		Resource resource = null;
 		BPELResourceSetImpl fHackedResourceSet = BPELUtils
@@ -268,18 +387,38 @@ public class BpelUIUtil {
 		return null;
 	}
 
+	/**
+	 * Gets the user event correlation set.
+	 *
+	 * @return the user event correlation set
+	 */
 	public CorrelationSet getUserEventCorrelationSet() {
 		return eventManagerOp.getCorrelationSet();
 	}
 
+	/**
+	 * Gets the partner link user event.
+	 *
+	 * @return the partner link user event
+	 */
 	public PartnerLink getPartnerLinkUserEvent() {
 		return userEventListenerPartnerLink.getPartnerLink();
 	}
 
+	/**
+	 * Gets the gen id operation.
+	 *
+	 * @return the gen id operation
+	 */
 	public Operation getGenIdOperation() {
 		return uiManagerOp.getGenIdOperation();
 	}
 
+	/**
+	 * Gets the gen id var.
+	 *
+	 * @return the gen id var
+	 */
 	public Variable[] getGenIdVar() {
 		return uiManagerOp.getVariable(DataInteractionManager.GEN_ID_INDEX);
 	}

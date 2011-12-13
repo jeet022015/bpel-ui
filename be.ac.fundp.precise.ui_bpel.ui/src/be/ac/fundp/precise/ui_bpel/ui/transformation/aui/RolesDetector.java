@@ -28,8 +28,20 @@ import be.edu.fundp.precise.uibpel.model.PickUI;
 import be.edu.fundp.precise.uibpel.model.ScopeUI;
 import be.edu.fundp.precise.uibpel.model.UserRole;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RolesDetector.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class RolesDetector {
 	
+	/**
+	 * Gets the roles.
+	 *
+	 * @param context the context
+	 * @return the roles
+	 */
 	public static List<String> getRoles(Object context) {
 		List<String> roles = new LinkedList<String>();
 		getRoleModels(context, roles);
@@ -37,6 +49,13 @@ public class RolesDetector {
 	}
 	
 	
+	/**
+	 * Gets the role models.
+	 *
+	 * @param context the context
+	 * @param roles the roles
+	 * @return the role models
+	 */
 	protected static void getRoleModels(Object context, List<String> roles) {
 		
 		if (context == null)
@@ -137,6 +156,12 @@ public class RolesDetector {
 		}
 	}
 
+	/**
+	 * Creates the role models.
+	 *
+	 * @param extensionActivity the extension activity
+	 * @param roles the roles
+	 */
 	protected static void createRoleModels(
 			ExtensionActivity extensionActivity, List<String> roles) {
 		if (extensionActivity instanceof DataInteraction){

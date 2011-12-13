@@ -9,14 +9,31 @@ import org.eclipse.bpel.ui.commands.RemoveFromListCommand;
 import org.eclipse.bpel.ui.util.ModelHelper;
 import org.eclipse.emf.ecore.EObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RemoveVariableCommand.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class RemoveVariableCommand extends RemoveFromListCommand {
 
+	/** The context. */
 	Object context;
+	
+	/**
+	 * Instantiates a new removes the variable command.
+	 *
+	 * @param context the context
+	 * @param var the var
+	 */
 	public RemoveVariableCommand(EObject context, Variable var) {
 		super(ModelHelper.getContainingScope(context), var, 
 				"Delete Variable");	
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.commands.RemoveFromListCommand#getList()
+	 */
 	@Override
 	protected List<Variable> getList() {
 		// https://issues.jboss.org/browse/JBIDE-8048

@@ -25,28 +25,56 @@ import org.eclipse.wst.wsdl.Service;
 
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class EventInteractionManager.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class EventInteractionManager {
 
+	/** The my pa. */
 	private PropertyAlias myPA;
+	
+	/** The property name. */
 	private Property propertyName;
+	
+	/** The my cs. */
 	private CorrelationSet myCS;
 	
+	/** The wsdl_user_event_listinner. */
 	private Definition wsdl_user_event_listinner;
+	
+	/** The process ws dl. */
 	private Definition processWSDl;
 	
+	/** The list. */
 	private Map<String, Set<Variable>> list = new HashMap<String, Set<Variable>>();
 	
+	/** The Constant ON_USER_EVENT_DATA. */
 	public static final String ON_USER_EVENT_DATA = "onUserEventData";
 	
+	/** The event operation. */
 	private Operation eventOperation;
+	
+	/** The event count. */
 	private int eventCount;
 	
+	/**
+	 * Instantiates a new event interaction manager.
+	 *
+	 * @param wsdl_user_event_listinner the wsdl_user_event_listinner
+	 * @param processWSDl the process ws dl
+	 */
 	public EventInteractionManager(Definition wsdl_user_event_listinner, Definition processWSDl) {
 		this.processWSDl = processWSDl;
 		this.wsdl_user_event_listinner= wsdl_user_event_listinner;
 		createCorrelationSet();
 	}
 	
+	/**
+	 * Creates the correlation set.
+	 */
 	private void createCorrelationSet() {
 		myCS = BPELFactory.eINSTANCE.createCorrelationSet();
 		myCS.setName("UserEvent");
@@ -89,6 +117,11 @@ public class EventInteractionManager {
 		processWSDl.getEExtensibilityElements().add(myPA);
 	}
 
+	/**
+	 * Creates the event var.
+	 *
+	 * @param userEvent the user event
+	 */
 	public void createEventVar(OnUserEvent userEvent) {
 		Variable inputVar = BPELFactory.eINSTANCE.createVariable();
 		inputVar.setName(ON_USER_EVENT_DATA + eventCount);
@@ -100,14 +133,29 @@ public class EventInteractionManager {
 		eventCount++;
 	}
 
+	/**
+	 * Gets the operation.
+	 *
+	 * @return the operation
+	 */
 	public Operation getOperation() {
 		return eventOperation;
 	}
 
+	/**
+	 * Gets the correlation set.
+	 *
+	 * @return the correlation set
+	 */
 	public CorrelationSet getCorrelationSet() {
 		return myCS;
 	}
 
+	/**
+	 * Gets the variables.
+	 *
+	 * @return the variables
+	 */
 	public Collection<? extends Variable> getVariables() {
 		Set<Variable> vars = new HashSet<Variable>();
 		for (Set<Variable> variable : list.values()) {
@@ -116,10 +164,21 @@ public class EventInteractionManager {
 		return vars;
 	}
 
+	/**
+	 * Gets the variable.
+	 *
+	 * @param id the id
+	 * @return the variable
+	 */
 	public Variable[] getVariable(String id) {
 		return  list.get(id).toArray(new Variable[0]);
 	}
 
+	/**
+	 * Gets the property.
+	 *
+	 * @return the property
+	 */
 	public Property getProperty() {
 		return propertyName;
 	}

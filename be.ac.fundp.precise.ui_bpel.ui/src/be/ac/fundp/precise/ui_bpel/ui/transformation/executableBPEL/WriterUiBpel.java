@@ -59,19 +59,40 @@ import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.ScopeUI;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class WriterUiBpel.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class WriterUiBpel extends BPELWriter {
 
+	/** The Constant EMPTY_STRING. */
 	private static final String EMPTY_STRING = null;
+	
+	/** The Constant HEAD_STRING. */
 	private static final String HEAD_STRING =  "xmlns:s1=\"http://www.w3.org/2001/XMLSchema-instance\" " +
  		    "xmlns:s2=\"http://www.w3.org/2001/XMLSchema\" " +
  		    "s1:type=\"s2:string\">";
+	
+	/** The Constant NL. */
 	private static final String NL = System.getProperty("line.separator");
 	
+	/** The bpel. */
 	private BpelUIUtil bpel;
 	
+	/** The process. */
 	protected Process process;
+	
+	/** The output var gen. */
 	private Variable outputVarGen;
 	
+	/**
+	 * Instantiates a new writer ui bpel.
+	 *
+	 * @param process the process
+	 * @param iFile the i file
+	 */
 	public WriterUiBpel(Process process, IResource iFile) {
 		super();
 		this.process = process;
@@ -93,12 +114,18 @@ public class WriterUiBpel extends BPELWriter {
 		bpel.configureProcess(processWsldPath, uiManagerWsdlPath, userEventWsdlPath, process);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.model.resource.BPELWriter#write(org.eclipse.bpel.model.resource.BPELResource, java.io.OutputStream, java.util.Map)
+	 */
 	public void write(BPELResource resource, OutputStream out, Map<?, ?> args)
 			throws IOException {
 		super.write(resource, out, args);
 		bpel.saveProcessWSDL();
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.model.resource.BPELWriter#onEvent2XML(org.eclipse.bpel.model.OnEvent)
+	 */
 	@Override
 	protected Element onEvent2XML(OnEvent onEvent) {
 		Element onEventElement = createBPELElement("onEvent");
@@ -160,6 +187,9 @@ public class WriterUiBpel extends BPELWriter {
 		return onEventElement;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.model.resource.BPELWriter#process2XML(org.eclipse.bpel.model.Process)
+	 */
 	protected Element process2XML(Process process) {
 		if (!process.getImports().contains(bpel.getImportBPEL())) {
 			process.getImports().add(bpel.getImportBPEL());
@@ -176,6 +206,11 @@ public class WriterUiBpel extends BPELWriter {
 		return super.process2XML(process);
 	}
 
+	/**
+	 * Adds the invoke.
+	 *
+	 * @param activity the activity
+	 */
 	private void addInvoke(Activity activity) {
 		if (activity instanceof Sequence){
 			
@@ -225,11 +260,17 @@ public class WriterUiBpel extends BPELWriter {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.model.resource.BPELWriter#variables2XML(org.eclipse.bpel.model.Variables)
+	 */
 	protected Element variables2XML(Variables variables) {
 		variables.getChildren().addAll(bpel.getUiVariables());
 		return super.variables2XML(variables);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.model.resource.BPELWriter#partnerLinks2XML(org.eclipse.bpel.model.PartnerLinks)
+	 */
 	protected Element partnerLinks2XML(PartnerLinks partnerLinks) {
 		if (!partnerLinks.getChildren().contains(bpel.getPartnerLinkBPEL())) {
 			partnerLinks.getChildren().add(bpel.getPartnerLinkBPEL());
@@ -240,6 +281,9 @@ public class WriterUiBpel extends BPELWriter {
 		return super.partnerLinks2XML(partnerLinks);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.model.resource.BPELWriter#extensionActivity2XML(org.eclipse.bpel.model.ExtensionActivity)
+	 */
 	protected Element extensionActivity2XML(ExtensionActivity activity) {
 
 		if (activity instanceof DataSelectionUI) {
@@ -255,6 +299,12 @@ public class WriterUiBpel extends BPELWriter {
 		return super.extensionActivity2XML(activity);
 	}
 
+	/**
+	 * Deal with scope ui.
+	 *
+	 * @param activity the activity
+	 * @return the element
+	 */
 	private Element dealWithScopeUI(ScopeUI activity) {
 		EventHandlerUI uiHandler = (EventHandlerUI)activity.getEventHandlers();
 		for (OnUserEvent aOnUserEvent : uiHandler.getUserInteraction()) {
@@ -276,6 +326,12 @@ public class WriterUiBpel extends BPELWriter {
 		return scope2XML(activity);
 	}
 
+	/**
+	 * Deal with data output ui.
+	 *
+	 * @param activity the activity
+	 * @return the element
+	 */
 	private Element dealWithDataOutputUI(DataOutputUI activity) {
 
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
@@ -348,6 +404,16 @@ public class WriterUiBpel extends BPELWriter {
 		return super.sequence2XML(s);
 	}
 
+	/**
+	 * Creates the copy process id.
+	 *
+	 * @param genOutputVar the gen output var
+	 * @param genPat the gen pat
+	 * @param inputVar the input var
+	 * @param outputPart the output part
+	 * @param string the string
+	 * @return the copy
+	 */
 	private Copy createCopyProcessID(Variable genOutputVar, Part genPat, Variable inputVar,
 			Part outputPart ,String string) {
 		Copy c = BPELFactory.eINSTANCE.createCopy();
@@ -371,6 +437,18 @@ public class WriterUiBpel extends BPELWriter {
 		return c;
 	}
 
+	/**
+	 * Creates the data item before copy.
+	 *
+	 * @param inputVar the input var
+	 * @param prefix the prefix
+	 * @param p the p
+	 * @param cont the cont
+	 * @param di the di
+	 * @param primaryNode the primary node
+	 * @param secondaryNode the secondary node
+	 * @return the copy
+	 */
 	private Copy createDataItemBeforeCopy(Variable inputVar, String prefix,
 			Part p, int cont, DataItem di, String primaryNode, String secondaryNode) {
 		Copy c = BPELFactory.eINSTANCE.createCopy();
@@ -394,6 +472,13 @@ public class WriterUiBpel extends BPELWriter {
 		return c;
 	}
 
+	/**
+	 * Creates the to part.
+	 *
+	 * @param inputVar the input var
+	 * @param inputOperation the input operation
+	 * @return the to
+	 */
 	private To createToPart(Variable inputVar, Operation inputOperation) {
 		To t = BPELFactory.eINSTANCE.createTo();
 		t.setVariable(inputVar);
@@ -401,6 +486,15 @@ public class WriterUiBpel extends BPELWriter {
 		return t;
 	}
 
+	/**
+	 * Creates the copy id.
+	 *
+	 * @param id the id
+	 * @param inputVar the input var
+	 * @param prefix the prefix
+	 * @param inputOperation the input operation
+	 * @return the copy
+	 */
 	private Copy createCopyId(String id, Variable inputVar,
 			String prefix, Operation inputOperation) {		
 		Copy c = BPELFactory.eINSTANCE.createCopy();
@@ -422,6 +516,15 @@ public class WriterUiBpel extends BPELWriter {
 		return c;
 	}
 
+	/**
+	 * Creates the copy role.
+	 *
+	 * @param inputVar the input var
+	 * @param prefix the prefix
+	 * @param inputOperation the input operation
+	 * @param role the role
+	 * @return the copy
+	 */
 	private Copy createCopyRole(Variable inputVar, String prefix,
 			Operation inputOperation, String role) {
 		Copy c = BPELFactory.eINSTANCE.createCopy();
@@ -444,6 +547,12 @@ public class WriterUiBpel extends BPELWriter {
 		return c;
 	}
 
+	/**
+	 * Deal with data selection ui.
+	 *
+	 * @param activity the activity
+	 * @return the element
+	 */
 	private Element dealWithDataSelectionUI(DataSelectionUI activity) {
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
 		
@@ -535,6 +644,12 @@ public class WriterUiBpel extends BPELWriter {
 		return super.sequence2XML(s);
 	}
 
+	/**
+	 * Deal with data input ui.
+	 *
+	 * @param activity the activity
+	 * @return the element
+	 */
 	private Element dealWithDataInputUI(DataInputUI activity) {
 		
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
@@ -617,6 +732,18 @@ public class WriterUiBpel extends BPELWriter {
 		return super.sequence2XML(s);
 	}
 
+	/**
+	 * Creates the data item copy.
+	 *
+	 * @param outputVar the output var
+	 * @param prefix the prefix
+	 * @param part the part
+	 * @param cont the cont
+	 * @param di the di
+	 * @param primaryNode the primary node
+	 * @param secondaryNode the secondary node
+	 * @return the copy
+	 */
 	private Copy createDataItemCopy(Variable outputVar, String prefix,
 			Part part, int cont, DataItem di, String primaryNode, String secondaryNode) {
 		Copy c = BPELFactory.eINSTANCE.createCopy();
@@ -639,12 +766,13 @@ public class WriterUiBpel extends BPELWriter {
 	
 	
 	/**
-	 * Construct an appropriate XML literal initializer for the given "from" and "to" parts
-	 *  
-	 * @param bpelEditor
-	 * @param from
-	 * @param to
-	 * @return
+	 * Construct an appropriate XML literal initializer for the given "from" and "to" parts.
+	 *
+	 * @param bpelEditor the bpel editor
+	 * @param from the from
+	 * @param to the to
+	 * @param dataItems the data items
+	 * @return the string
 	 */
 	public static String createDefaultInitializer(BPELEditor bpelEditor, From from, To to, int dataItems) {
 		String literal = EMPTY_STRING;
@@ -660,13 +788,14 @@ public class WriterUiBpel extends BPELWriter {
 	
 	/**
 	 * Construct an appropriate XML literal initializer for the given variable and message part.
-	 *  
-	 * @param bpelEditor
+	 *
+	 * @param bpelEditor the bpel editor
 	 * @param var - the variable to be initialized
 	 * @param part - if the variable is defined as a message, this is the message part
-	 *               otherwise null
+	 * otherwise null
+	 * @param dataItems the data items
 	 * @return - XML string representing an intializer for the given variable
-     * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=330813
+	 * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=330813
 	 * @see https://jira.jboss.org/browse/JBIDE-7351
 	 */
 	public static String createDefaultInitializer(BPELEditor bpelEditor, Variable var, Part part, int dataItems) {
@@ -747,6 +876,12 @@ public class WriterUiBpel extends BPELWriter {
 	// public NamespacePrefixManager getNamespacePrefixManager() {
 	// return bpelNamespacePrefixManager;
 	// }
+	/**
+	 * Serialize prefixes.
+	 *
+	 * @param eObject the e object
+	 * @param context the context
+	 */
 	private void serializePrefixes(EObject eObject, Element context) {
 		INamespaceMap<String, String> nsMap = BPELUtils
 				.getNamespaceMap(eObject);
@@ -764,6 +899,13 @@ public class WriterUiBpel extends BPELWriter {
 		}
 	}
 	
+	/**
+	 * Q name to string.
+	 *
+	 * @param eObject the e object
+	 * @param qname the qname
+	 * @return the string
+	 */
 	private String qNameToString(EObject eObject, QName qname) {
 		EObject context = eObject;
 		List<String> prefixes = null;
@@ -796,6 +938,13 @@ public class WriterUiBpel extends BPELWriter {
 		return addNewRootPrefix("ns", namespace) + ":" + qname.getLocalPart();
 	}
 	
+	/**
+	 * Adds the new root prefix.
+	 *
+	 * @param basePrefix the base prefix
+	 * @param namespace the namespace
+	 * @return the string
+	 */
 	private String addNewRootPrefix(String basePrefix, String namespace) {
 		INamespaceMap<String, String> nsMap = BPELUtils
 				.getNamespaceMap(process);

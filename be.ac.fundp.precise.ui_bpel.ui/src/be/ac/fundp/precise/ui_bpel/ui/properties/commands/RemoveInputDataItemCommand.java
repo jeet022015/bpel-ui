@@ -16,15 +16,27 @@ import org.eclipse.emf.common.util.EList;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 
+// TODO: Auto-generated Javadoc
 /**
  * Removes a Copy from an Assign activity.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  */
 public class RemoveInputDataItemCommand extends RemoveFromListCommand {
 
+	/**
+	 * Instantiates a new removes the input data item command.
+	 *
+	 * @param target the target
+	 * @param oldCopy the old copy
+	 */
 	public RemoveInputDataItemCommand(DataInputUI target, DataItem oldCopy) {
 		super(target, oldCopy,  "Remove DataItem");
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.commands.RemoveFromListCommand#getList()
+	 */
 	@Override
 	protected EList<DataItem> getList() {
 		return ((DataInputUI)target).getInputItem();

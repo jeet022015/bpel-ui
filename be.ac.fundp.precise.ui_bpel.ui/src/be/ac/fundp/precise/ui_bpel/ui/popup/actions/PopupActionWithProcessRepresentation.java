@@ -21,20 +21,38 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartSite;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PopupActionWithProcessRepresentation.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 abstract public class PopupActionWithProcessRepresentation  implements IObjectActionDelegate {
 	
+	/** The shell. */
 	private Shell shell = null;
 
+	/** The resource set. */
 	private ResourceSet resourceSet = new ResourceSetImpl();
 
+	/** The bpel file. */
 	private IFile bpelFile = null;
+	
+	/** The bpel resource. */
 	private Resource bpelResource = null;
 
+	/**
+	 * Instantiates a new popup action with process representation.
+	 */
 	public PopupActionWithProcessRepresentation() {
 		super();
 	}
 
 	/**
+	 * Sets the active part.
+	 *
+	 * @param action the action
+	 * @param targetPart the target part
 	 * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
 	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
@@ -42,9 +60,16 @@ abstract public class PopupActionWithProcessRepresentation  implements IObjectAc
 		shell = site.getShell();
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+	 */
 	abstract public void run(IAction action);
 
 	/**
+	 * Selection changed.
+	 *
+	 * @param action the action
+	 * @param selection the selection
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
@@ -54,6 +79,11 @@ abstract public class PopupActionWithProcessRepresentation  implements IObjectAc
 		}
 	}
 
+	/**
+	 * Load bpel.
+	 *
+	 * @return the process
+	 */
 	protected Process loadBPEL() {
 
 		IPath fullProcessPath = bpelFile.getFullPath();
@@ -77,18 +107,38 @@ abstract public class PopupActionWithProcessRepresentation  implements IObjectAc
 
 	}
 
+	/**
+	 * Gets the resource set.
+	 *
+	 * @return the resource set
+	 */
 	public ResourceSet getResourceSet() {
 		return resourceSet;
 	}
 	
+	/**
+	 * Gets the shell.
+	 *
+	 * @return the shell
+	 */
 	public Shell getShell() {
 		return shell;
 	}
 	
+	/**
+	 * Gets the bpel file.
+	 *
+	 * @return the bpel file
+	 */
 	public IFile getBpelFile() {
 		return bpelFile;
 	}
 	
+	/**
+	 * Gets the bpel resource.
+	 *
+	 * @return the bpel resource
+	 */
 	public Resource getBpelResource() {
 		return bpelResource;
 	}

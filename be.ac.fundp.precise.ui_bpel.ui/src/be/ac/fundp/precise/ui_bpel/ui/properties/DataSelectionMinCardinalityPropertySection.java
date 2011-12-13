@@ -17,6 +17,7 @@ import be.ac.fundp.precise.ui_bpel.ui.details.IntegerIValue;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
+// TODO: Auto-generated Javadoc
 /*
  * Bug 120110
  * This class implements the detail property tab for the "elemental" extension activity.
@@ -24,18 +25,32 @@ import be.edu.fundp.precise.uibpel.model.ModelPackage;
  * 
  * Note that validation of this activity is not yet implemented.
  */
+/**
+ * The Class DataSelectionMinCardinalityPropertySection.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class DataSelectionMinCardinalityPropertySection  extends BPELPropertySection {
 	
+	/** The create instance button. */
 	Text fCreateInstanceButton;	
+	
+	/** The crete instance controller. */
 	EditController fCreteInstanceController ;
 
 
+	/**
+	 * Creates the change trackers.
+	 */
 	protected void createChangeTrackers() {	
 		fCreteInstanceController = createEditController();
 		fCreteInstanceController.setViewIValue(new IntegerIValue(fCreateInstanceButton));
 		fCreteInstanceController.startListeningTo(fCreateInstanceButton);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.properties.BPELPropertySection#basicSetInput(org.eclipse.emf.ecore.EObject)
+	 */
 	@Override
 	protected void basicSetInput(EObject newInput) {
 
@@ -50,6 +65,11 @@ public class DataSelectionMinCardinalityPropertySection  extends BPELPropertySec
 		}
 	}
 
+	/**
+	 * Creates the create instance widgets.
+	 *
+	 * @param composite the composite
+	 */
 	protected void createCreateInstanceWidgets(Composite composite) {
 		FlatFormData data;
 		
@@ -83,6 +103,9 @@ public class DataSelectionMinCardinalityPropertySection  extends BPELPropertySec
 		//fCreateInstanceButton.setLayoutData(data);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.properties.BPELPropertySection#createClient(org.eclipse.swt.widgets.Composite)
+	 */
 	@Override
 	protected void createClient(Composite parent) {
 		Composite composite = createFlatFormComposite(parent);
@@ -98,6 +121,9 @@ public class DataSelectionMinCardinalityPropertySection  extends BPELPropertySec
 
 
 	/**
+	 * Gets the user context.
+	 *
+	 * @return the user context
 	 * @see org.eclipse.bpel.ui.properties.BPELPropertySection#getUserContext()
 	 */
 	@Override
@@ -106,6 +132,9 @@ public class DataSelectionMinCardinalityPropertySection  extends BPELPropertySec
 	}
 	
 	/**
+	 * Restore user context.
+	 *
+	 * @param userContext the user context
 	 * @see org.eclipse.bpel.ui.properties.BPELPropertySection#restoreUserContext(java.lang.Object)
 	 */
 	@Override
@@ -114,6 +143,9 @@ public class DataSelectionMinCardinalityPropertySection  extends BPELPropertySec
 	}
 	
 	/**
+	 * Should use extra space.
+	 *
+	 * @return true, if successful
 	 * @see org.eclipse.ui.views.properties.tabbed.AbstractPropertySection#shouldUseExtraSpace()
 	 */
 	@Override
@@ -122,6 +154,9 @@ public class DataSelectionMinCardinalityPropertySection  extends BPELPropertySec
 	}
 	
 	/**
+	 * Gets the minimum height.
+	 *
+	 * @return the minimum height
 	 * @see org.eclipse.ui.views.properties.tabbed.AbstractPropertySection#getMinimumHeight()
 	 */
 	@Override

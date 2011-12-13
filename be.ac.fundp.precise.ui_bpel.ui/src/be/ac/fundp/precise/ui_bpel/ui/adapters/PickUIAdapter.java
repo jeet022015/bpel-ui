@@ -13,8 +13,17 @@ import org.eclipse.gef.EditPart;
 import be.ac.fundp.precise.ui_bpel.ui.action.editpart.CreateOnUserInteractionAction;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PickUIAdapter.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class PickUIAdapter extends PickAdapter {
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.adapters.PickAdapter#createContainerDelegate()
+	 */
 	@Override
 	public IContainer createContainerDelegate() {
 		MultiContainer omc = new MultiContainer();
@@ -27,6 +36,9 @@ public class PickUIAdapter extends PickAdapter {
 
 	/* IEditPartActionContributor */
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.adapters.PickAdapter#getEditPartActions(org.eclipse.gef.EditPart)
+	 */
 	@Override
 	public List<AbstractAction> getEditPartActions(final EditPart editPart) {
 		List<AbstractAction> actions = super.getEditPartActions(editPart);

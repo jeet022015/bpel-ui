@@ -13,25 +13,35 @@ package be.ac.fundp.precise.ui_bpel.ui.details;
 import org.eclipse.bpel.common.ui.details.IValue;
 import org.eclipse.swt.widgets.Text;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author Michal Chmielewski (michal.chmielewski@oracle.com)
- * @date Jul 27, 2007
+ * The Class IntegerIValue.
  *
+ * @author Waldemar Pires
+ * @date Jul 27, 2007
  */
 
 public class IntegerIValue implements IValue {
 	
+	/** The widget. */
 	Text fWidget;
+	
+	/** The number. */
 	Integer number;
 	
 	/**
-	 * @param fCreateInstanceButton
+	 * Instantiates a new integer i value.
+	 *
+	 * @param fCreateInstanceButton the f create instance button
 	 */
 	public IntegerIValue ( Text fCreateInstanceButton ) {
 		fWidget = fCreateInstanceButton;
 	}
 
 	/**
+	 * Gets the.
+	 *
+	 * @return the object
 	 * @see org.eclipse.bpel.common.ui.details.IValue#get()
 	 */
 	public Object get() {
@@ -40,7 +50,10 @@ public class IntegerIValue implements IValue {
 		return this.number;
 	}
 
-	/** 
+	/**
+	 * Sets the.
+	 *
+	 * @param text the text
 	 * @see org.eclipse.bpel.common.ui.details.IValue#set(java.lang.Object)
 	 */
 	@SuppressWarnings("nls")

@@ -14,19 +14,24 @@ import org.osgi.framework.BundleContext;
 import be.ac.fundp.precise.ui_bpel.ui.factories.ExtensionSampleUIAdapterFactory;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
+// TODO: Auto-generated Javadoc
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  */
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
+	/** The Constant PLUGIN_ID. */
 	public static final String PLUGIN_ID = "be.ac.fundp.precise.ui_bpel.ui";
 
 	// The shared instance
+	/** The plugin. */
 	private static Activator plugin;
 	
 	/**
-	 * The constructor
+	 * The constructor.
 	 */
 	public Activator() {
 		// Bugzilla 324115
@@ -52,7 +57,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the shared instance
+	 * Returns the shared instance.
 	 *
 	 * @return the shared instance
 	 */
@@ -60,6 +65,9 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeImageRegistry(org.eclipse.jface.resource.ImageRegistry)
+	 */
 	@Override
 	protected void initializeImageRegistry(ImageRegistry reg) {
 		URL baseURL = getBundle().getEntry("/");
@@ -85,6 +93,12 @@ public class Activator extends AbstractUIPlugin {
 		createImageDescriptor(ExtensionSampleUIConstants.SCOPE_UI_ICON_20, baseURL);
 	}
 
+	/**
+	 * Creates the image descriptor.
+	 *
+	 * @param id the id
+	 * @param baseURL the base url
+	 */
 	private void createImageDescriptor(String id, URL baseURL) {
 		URL url = null;
 		try {
@@ -96,6 +110,12 @@ public class Activator extends AbstractUIPlugin {
 		getImageRegistry().put(id, descriptor);
 	}
 
+	/**
+	 * Gets the image descriptor.
+	 *
+	 * @param key the key
+	 * @return the image descriptor
+	 */
 	public ImageDescriptor getImageDescriptor(String key) {
 		return getImageRegistry().getDescriptor(key);
 	}

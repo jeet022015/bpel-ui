@@ -32,6 +32,7 @@ import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
 import be.edu.fundp.precise.uibpel.model.UserRole;
 
+// TODO: Auto-generated Javadoc
 /*
  * Bug 120110
  * This class implements the detail property tab for the "elemental" extension activity.
@@ -39,23 +40,55 @@ import be.edu.fundp.precise.uibpel.model.UserRole;
  * 
  * Note that validation of this activity is not yet implemented.
  */
+/**
+ * The Class UserRolePropertySection.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class UserRolePropertySection extends BPELPropertySection {
 
+	/** The parent composite. */
 	protected Composite parentComposite;
+	
+	/** The variable name. */
 	protected Label variableName;
+	
+	/** The variable browse button. */
 	protected Button variableBrowseButton;
+	
+	/** The main label. */
 	private Section mainLabel;
+	
+	/** The section client. */
 	private Composite sectionClient;
+	
+	/** The delete role button. */
 	private Button deleteRoleButton;
+	
+	/** The available data item buttons. */
 	private List<Button> availableDataItemButtons = new LinkedList<Button>();
+	
+	/** The data items in button. */
 	private List<String> dataItemsInButton = new LinkedList<String>();
+	
+	/** The current data item button. */
 	private Button currentDataItemButton;
+	
+	/** The current data item. */
 	private UserRole currentDataItem;
 
+	/**
+	 * Gets the activity.
+	 *
+	 * @return the activity
+	 */
 	private UserInteraction getActivity() {
 		return (UserInteraction)getInput();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.properties.BPELPropertySection#createClient(org.eclipse.swt.widgets.Composite)
+	 */
 	@Override
 	protected void createClient(Composite parent) {
 		FlatFormData data;
@@ -160,6 +193,9 @@ public class UserRolePropertySection extends BPELPropertySection {
 		}
 	}
 	
+	/**
+	 * Update variable widgets.
+	 */
 	public void updateVariableWidgets() {
 		if(getActivity() != null){
 			for (final UserRole dataItem : getActivity().getUserRoles()) {
@@ -184,6 +220,9 @@ public class UserRolePropertySection extends BPELPropertySection {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.properties.BPELPropertySection#basicSetInput(org.eclipse.emf.ecore.EObject)
+	 */
 	@Override
 	protected void basicSetInput(EObject newInput) {
 		if ( newInput instanceof UserInteraction) {

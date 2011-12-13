@@ -21,13 +21,30 @@ import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MediatorConfigurator.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class MediatorConfigurator {
 	
 	//private JSONArray json;
+	/** The root element. */
 	private Element rootElement;
+	
+	/** The doc. */
 	private Document doc;
+	
+	/** The out. */
 	private OutputStream out;
 	
+	/**
+	 * Instantiates a new mediator configurator.
+	 *
+	 * @param outstream the outstream
+	 * @throws ParserConfigurationException the parser configuration exception
+	 */
 	public MediatorConfigurator (OutputStream outstream) throws ParserConfigurationException{
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory
 				.newInstance();
@@ -40,6 +57,12 @@ public class MediatorConfigurator {
 		out = outstream;
 	}
 	
+	/**
+	 * Creates the data input conf.
+	 *
+	 * @param comp the comp
+	 * @param inputActivity the input activity
+	 */
 	public void createDataInputConf(AbstractCompoundIU comp, DataInputUI inputActivity){
 		Element staff = doc.createElement("DataInput");
 		rootElement.appendChild(staff);
@@ -73,6 +96,9 @@ public class MediatorConfigurator {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#finalize()
+	 */
 	public void finalize() throws TransformerException {
 		// write the content into xml file
 		TransformerFactory transformerFactory = TransformerFactory
@@ -84,6 +110,12 @@ public class MediatorConfigurator {
 		transformer.transform(source, result);
 	}
 
+	/**
+	 * Creates the data output conf.
+	 *
+	 * @param comp the comp
+	 * @param activity the activity
+	 */
 	public void createDataOutputConf(AbstractCompoundIU comp,
 			DataOutputUI activity) {
 		Element staff = doc.createElement("DataOutput");
@@ -118,6 +150,12 @@ public class MediatorConfigurator {
 		}
 	}
 
+	/**
+	 * Creates the data selection conf.
+	 *
+	 * @param comp the comp
+	 * @param activity the activity
+	 */
 	public void createDataSelectionConf(AbstractCompoundIU comp,
 			DataSelectionUI activity) {
 		Element staff = doc.createElement("DataSelection");

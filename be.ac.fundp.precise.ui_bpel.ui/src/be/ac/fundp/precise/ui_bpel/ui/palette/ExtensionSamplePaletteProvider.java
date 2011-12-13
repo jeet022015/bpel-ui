@@ -8,8 +8,17 @@ import org.eclipse.gef.palette.PaletteRoot;
 import be.ac.fundp.precise.ui_bpel.ui.factories.ExtensionSampleUIObjectFactory;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ExtensionSamplePaletteProvider.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class ExtensionSamplePaletteProvider implements IPaletteProvider {
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.common.ui.palette.IPaletteProvider#contributeItems(org.eclipse.gef.palette.PaletteRoot)
+	 */
 	@Override
 	public void contributeItems(PaletteRoot paletteRoot) {
 

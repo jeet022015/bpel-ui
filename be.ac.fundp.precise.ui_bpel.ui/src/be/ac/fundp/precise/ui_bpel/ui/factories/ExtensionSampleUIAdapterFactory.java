@@ -13,24 +13,55 @@ import be.ac.fundp.precise.ui_bpel.ui.adapters.SelectionUIAdapter;
 import be.ac.fundp.precise.ui_bpel.ui.adapters.UserRoleAdapter;
 import be.edu.fundp.precise.uibpel.model.util.ModelAdapterFactory;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating ExtensionSampleUIAdapter objects.
+ */
 public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
 
 	// Bugzilla 324115
+	/** The instance. */
 	private static ExtensionSampleUIAdapterFactory instance;
+	
+	/** The data input ui adapter. */
 	private DataInputUIAdapter dataInputUIAdapter;
+	
+	/** The data output ui adapter. */
 	private DataOutputUIAdapter dataOutputUIAdapter;
+	
+	/** The data selection ui adapter. */
 	private SelectionUIAdapter dataSelectionUIAdapter;
+	
+	/** The data item adapter. */
 	private DataItemAdapter dataItemAdapter;
+	
+	/** The on user event adapter. */
 	private OnUserEventAdapter onUserEventAdapter;
+	
+	/** The scope ui adapter. */
 	private ScopeUIAdapter scopeUIAdapter;
+	
+	/** The event handler ui adapter. */
 	private EventHandlerUIAdapter eventHandlerUIAdapter;
+	
+	/** The pick ui adapter. */
 	private PickUIAdapter pickUIAdapter;
+	
+	/** The user role adapter. */
 	private UserRoleAdapter userRoleAdapter;
 	
+	/**
+	 * Instantiates a new extension sample ui adapter factory.
+	 */
 	private ExtensionSampleUIAdapterFactory() {
 		super();
 	}
 	
+	/**
+	 * Gets the single instance of ExtensionSampleUIAdapterFactory.
+	 *
+	 * @return single instance of ExtensionSampleUIAdapterFactory
+	 */
 	public static ExtensionSampleUIAdapterFactory getInstance() {
 		if (instance == null) {
 			instance = new ExtensionSampleUIAdapterFactory();
@@ -38,6 +69,9 @@ public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
 		return instance;
 	}
 		
+	/* (non-Javadoc)
+	 * @see be.edu.fundp.precise.uibpel.model.util.ModelAdapterFactory#createDataInputUIAdapter()
+	 */
 	@Override
 	public Adapter createDataInputUIAdapter() {
 		if (this.dataInputUIAdapter == null) {
@@ -46,6 +80,9 @@ public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
 		return this.dataInputUIAdapter;
 	}
 	
+	/* (non-Javadoc)
+	 * @see be.edu.fundp.precise.uibpel.model.util.ModelAdapterFactory#createDataOutputUIAdapter()
+	 */
 	@Override
 	public Adapter createDataOutputUIAdapter() {
 		if (this.dataOutputUIAdapter == null) {
@@ -54,6 +91,9 @@ public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
 		return this.dataOutputUIAdapter;
 	}
 	
+	/* (non-Javadoc)
+	 * @see be.edu.fundp.precise.uibpel.model.util.ModelAdapterFactory#createDataSelectionUIAdapter()
+	 */
 	@Override
 	public Adapter createDataSelectionUIAdapter() {
 		if (this.dataSelectionUIAdapter == null) {
@@ -62,6 +102,9 @@ public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
 		return this.dataSelectionUIAdapter;
 	}
 	
+	/* (non-Javadoc)
+	 * @see be.edu.fundp.precise.uibpel.model.util.ModelAdapterFactory#createDataItemAdapter()
+	 */
 	@Override
 	public Adapter createDataItemAdapter () {
 		if (this.dataItemAdapter == null) {
@@ -70,6 +113,9 @@ public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
 		return this.dataItemAdapter;
 	}
 	
+	/* (non-Javadoc)
+	 * @see be.edu.fundp.precise.uibpel.model.util.ModelAdapterFactory#createScopeUIAdapter()
+	 */
 	@Override
 	public Adapter createScopeUIAdapter() {
 		if (this.scopeUIAdapter == null) {
@@ -78,6 +124,9 @@ public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
 		return this.scopeUIAdapter;
 	}
 	
+	/* (non-Javadoc)
+	 * @see be.edu.fundp.precise.uibpel.model.util.ModelAdapterFactory#createEventHandlerUIAdapter()
+	 */
 	@Override
 	public Adapter createEventHandlerUIAdapter() {
 		if (this.eventHandlerUIAdapter == null) {
@@ -86,6 +135,9 @@ public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
 		return this.eventHandlerUIAdapter;
 	}
 	
+	/* (non-Javadoc)
+	 * @see be.edu.fundp.precise.uibpel.model.util.ModelAdapterFactory#createPickUIAdapter()
+	 */
 	@Override
 	public Adapter createPickUIAdapter() {
 		if (this.pickUIAdapter == null) {
@@ -94,6 +146,9 @@ public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
 		return this.pickUIAdapter;
 	}
 	
+	/* (non-Javadoc)
+	 * @see be.edu.fundp.precise.uibpel.model.util.ModelAdapterFactory#createOnUserEventAdapter()
+	 */
 	@Override
 	public Adapter createOnUserEventAdapter() {
 		if (this.onUserEventAdapter == null) {
@@ -102,6 +157,9 @@ public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
 		return this.onUserEventAdapter;
 	}
 	
+	/* (non-Javadoc)
+	 * @see be.edu.fundp.precise.uibpel.model.util.ModelAdapterFactory#createUserRoleAdapter()
+	 */
 	@Override
 	public Adapter createUserRoleAdapter() {
 		if (this.userRoleAdapter == null) {

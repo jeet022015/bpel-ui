@@ -15,17 +15,31 @@ import org.eclipse.swt.widgets.Text;
 import be.edu.fundp.precise.uibpel.model.ModelFactory;
 import be.edu.fundp.precise.uibpel.model.UserRole;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserRoleDialog.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class UserRoleDialog  extends Dialog {
 
+	/** The value. */
 	private String value = "NameDefault";
 	
+	/**
+	 * Instantiates a new user role dialog.
+	 *
+	 * @param parent the parent
+	 */
 	public UserRoleDialog(Shell parent) {
 		super(parent);
 	}
 	
 	/**
-	 * @param parent
-	 * @param style
+	 * Instantiates a new user role dialog.
+	 *
+	 * @param parent the parent
+	 * @param style the style
 	 */
 	public UserRoleDialog(Shell parent, int style) {
 		super(parent, style);
@@ -33,8 +47,8 @@ public class UserRoleDialog  extends Dialog {
 
 	/**
 	 * Makes the dialog visible.
-	 * 
-	 * @return
+	 *
+	 * @return the user role
 	 */
 	public UserRole open() {
 		

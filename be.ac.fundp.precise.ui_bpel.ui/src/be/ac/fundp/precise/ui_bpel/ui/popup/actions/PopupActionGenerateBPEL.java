@@ -17,12 +17,24 @@ import org.eclipse.ui.IActionDelegate;
 
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.WriterUiBpel;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PopupActionGenerateBPEL.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class PopupActionGenerateBPEL extends PopupActionWithProcessRepresentation {
 
+	/** The new writer. */
 	private WriterUiBpel newWriter;
+	
+	/** The converter. */
 	private ExtensibleURIConverterImpl converter;
 	
 	/**
+	 * Run.
+	 *
+	 * @param action the action
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {

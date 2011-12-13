@@ -17,20 +17,42 @@ import be.ac.fundp.precise.ui_bpel.ui.factories.ExtensionSampleUIObjectFactory;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CreateOnUserInteractionAction.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class CreateOnUserInteractionAction extends AbstractAction {
 
+	/**
+	 * Instantiates a new creates the on user interaction action.
+	 *
+	 * @param editPart the edit part
+	 */
 	public CreateOnUserInteractionAction(EditPart editPart) {
 		super(editPart);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.actions.editpart.IEditPartAction#getIcon()
+	 */
 	public ImageDescriptor getIcon() {
 		return BPELUIPlugin.INSTANCE.getImageDescriptor(IBPELUIConstants.ICON_ACTION_ONALARM);
 	}
 
+	/**
+	 * Gets the icon img.
+	 *
+	 * @return the icon img
+	 */
 	public Image getIconImg() {
 		return BPELUIPlugin.INSTANCE.getImage(IBPELUIConstants.ICON_ACTION_ONALARM);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.actions.editpart.IEditPartAction#onButtonPressed()
+	 */
 	public boolean onButtonPressed() {
 		CompoundCommand command = new CompoundCommand();
 		ExtensionSampleUIObjectFactory e = new ExtensionSampleUIObjectFactory();
@@ -43,12 +65,22 @@ public class CreateOnUserInteractionAction extends AbstractAction {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.actions.editpart.IEditPartAction#getToolTip()
+	 */
 	public String getToolTip() {
 		return "Add On User Event"; 
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.actions.editpart.AbstractAction#getDisabledIcon()
+	 */
 	@Override
 	public ImageDescriptor getDisabledIcon() { return ImageDescriptor.getMissingImageDescriptor(); }
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.actions.editpart.AbstractAction#isEnabled()
+	 */
 	@Override
 	public boolean isEnabled() { return true; }	
 

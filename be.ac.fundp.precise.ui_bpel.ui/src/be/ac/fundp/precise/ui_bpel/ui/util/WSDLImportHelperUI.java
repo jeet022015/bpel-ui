@@ -12,11 +12,25 @@ import org.eclipse.wst.wsdl.Import;
 import org.eclipse.wst.wsdl.WSDLFactory;
 import org.eclipse.wst.wsdl.WSDLPackage;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class WSDLImportHelperUI.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class WSDLImportHelperUI extends WSDLImportHelper{
 	
+	/** The Constant WSDL_PREFIX_KIND. */
 	public static final String WSDL_PREFIX_KIND = "wsdl";
+	
+	/** The Constant XMLNS_XSD. */
 	public static final String XMLNS_XSD = "http://www.w3.org/2001/XMLSchema";
 
+	/**
+	 * Adds the tooling namespaces.
+	 *
+	 * @param definition the definition
+	 */
 	public static void addToolingNamespaces(Definition definition) {
 		WSDLImportHelper.addToolingNamespaces(definition);
 		addNamespace(definition, XMLNS_XSD, "xsd");
@@ -34,6 +48,12 @@ public class WSDLImportHelperUI extends WSDLImportHelper{
 		// }
 	}
 	
+	/**
+	 * Adds the import and namespace.
+	 *
+	 * @param definition the definition
+	 * @param importedDefinition the imported definition
+	 */
 	public static void addImportAndNamespace(Definition definition, Definition importedDefinition)
 	{
 		if (importedDefinition == null || definition == null) return;
@@ -48,6 +68,15 @@ public class WSDLImportHelperUI extends WSDLImportHelper{
 			importedDefinition.eResource().getURI());
 	}
 	
+	/**
+	 * Adds the import.
+	 *
+	 * @param namespace the namespace
+	 * @param importingDefinition the importing definition
+	 * @param importingUri the importing uri
+	 * @param importedDefinition the imported definition
+	 * @param importedUri the imported uri
+	 */
 	protected static void addImport(String namespace, Definition importingDefinition,
 		URI importingUri, Definition importedDefinition, URI importedUri) {
 		WSDLFactory wsdlFactory = WSDLPackage.eINSTANCE.getWSDLFactory();
@@ -79,6 +108,13 @@ public class WSDLImportHelperUI extends WSDLImportHelper{
 		}
 	}
 	
+	/**
+	 * Creates the build path relative reference.
+	 *
+	 * @param sourceURI the source uri
+	 * @param targetURI the target uri
+	 * @return the string
+	 */
 	public static String createBuildPathRelativeReference(URI sourceURI, URI targetURI) {
 		if (sourceURI == null || targetURI == null)
 			throw new IllegalArgumentException();

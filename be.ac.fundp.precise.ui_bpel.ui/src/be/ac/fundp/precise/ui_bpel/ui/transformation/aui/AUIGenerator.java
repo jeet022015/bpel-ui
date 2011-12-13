@@ -39,20 +39,46 @@ import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AUIGenerator.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class AUIGenerator {
 
+	/** The id gen. */
 	private int idGen = 1;
 	
+	/** The factory. */
 	private AuiPackageFactory factory = AuiPackageFactory.eINSTANCE;
+	
+	/** The med conf. */
 	private MediatorConfigurator medConf;
+	
+	/** The role models. */
 	private Map<String, AbstractUIModel> roleModels = new HashMap<String, AbstractUIModel>();
 	
+	/** The ordering counter. */
 	private int orderingCounter;
 	
+	/**
+	 * Instantiates a new aUI generator.
+	 *
+	 * @param out the out
+	 * @throws ParserConfigurationException the parser configuration exception
+	 */
 	public AUIGenerator (OutputStream out) throws ParserConfigurationException{
 		medConf = new MediatorConfigurator (out);
 	}
 	
+	/**
+	 * Creates the aui.
+	 *
+	 * @param process the process
+	 * @return the map
+	 * @throws TransformerException the transformer exception
+	 */
 	public Map<String, AbstractUIModel> createAUI(Process process) throws TransformerException {
 		roleModels = new HashMap<String, AbstractUIModel>();
 		
@@ -61,8 +87,8 @@ public class AUIGenerator {
 			AbstractUIModel model = factory.createAbstractUIModel();
 			roleModels.put(role, model);
 		}
-		String role = "defaultRole";
-		roleModels.put(role, factory.createAbstractUIModel());
+		//String role = "defaultRole";
+		//roleModels.put(role, factory.createAbstractUIModel());
 		
 		orderingCounter= 1;
 		
@@ -73,6 +99,12 @@ public class AUIGenerator {
 		return roleModels;
 	}
 
+	/**
+	 * Creates the abstract component.
+	 *
+	 * @param role the role
+	 * @return the abstract compound iu
+	 */
 	private AbstractCompoundIU createAbstractComponent(String role) {
 		AbstractCompoundIU comp = factory.createAbstractCompoundIU();
 		comp.setHelp("Help");
@@ -89,6 +121,11 @@ public class AUIGenerator {
 		return comp;
 	}
 	
+	/**
+	 * Activity2 aui.
+	 *
+	 * @param activity the activity
+	 */
 	private void activity2AUI(Activity activity){
 		
 		//Create elements
@@ -120,6 +157,11 @@ public class AUIGenerator {
 			scope2AUI((Scope) activity);
 	}
 
+	/**
+	 * Creates the data ui data selection ui.
+	 *
+	 * @param activity the activity
+	 */
 	private void createDataUiDataSelectionUI(DataSelectionUI activity) {
 		String role = "defaultRole";
 		if (activity.getUserRoles() != null && activity.getUserRoles().size() > 0){
@@ -131,6 +173,14 @@ public class AUIGenerator {
 		medConf.createDataSelectionConf(comp, activity);
 	}
 
+	/**
+	 * Selection ui.
+	 *
+	 * @param comp the comp
+	 * @param output the output
+	 * @param outputItem the output item
+	 * @param strategy the strategy
+	 */
 	private void selectionUI(AbstractCompoundIU comp,
 			AbstractDataIUType output, EList<DataItem> outputItem, StrategySelectionUI strategy) {
 		for (DataItem item : outputItem) {
@@ -144,6 +194,11 @@ public class AUIGenerator {
 		}
 	}
 
+	/**
+	 * Creates the data ui data output ui.
+	 *
+	 * @param activity the activity
+	 */
 	private void createDataUiDataOutputUI(DataOutputUI activity) {
 		String role = "defaultRole";
 		if (activity.getUserRoles() != null && activity.getUserRoles().size() > 0){
@@ -154,6 +209,11 @@ public class AUIGenerator {
 		medConf.createDataOutputConf(comp, activity);
 	}
 	
+	/**
+	 * Creates the data ui data input ui.
+	 *
+	 * @param activity the activity
+	 */
 	private void createDataUiDataInputUI(DataInputUI activity) {
 		String role = "defaultRole";
 		if (activity.getUserRoles() != null && activity.getUserRoles().size() > 0){
@@ -164,6 +224,15 @@ public class AUIGenerator {
 		medConf.createDataInputConf(comp, activity);
 	}
 
+	/**
+	 * Data interaction.
+	 *
+	 * @param role the role
+	 * @param dataItems the data items
+	 * @param output the output
+	 * @param strategy the strategy
+	 * @return the abstract compound iu
+	 */
 	private AbstractCompoundIU dataInteraction(String role, EList<DataItem> dataItems, 
 			AbstractDataIUType output, StrategyAUIElement strategy) {
 		AbstractCompoundIU comp = createAbstractComponent(role);
@@ -184,24 +253,44 @@ public class AUIGenerator {
 		return comp;
 	}
 
+	/**
+	 * Repeat until2 aui.
+	 *
+	 * @param activity the activity
+	 */
 	private void repeatUntil2AUI(RepeatUntil activity) {
 		//FIXME put repetition
 		
 		activity2AUI (activity.getActivity());
 	}
 
+	/**
+	 * For each2 aui.
+	 *
+	 * @param activity the activity
+	 */
 	private void forEach2AUI(ForEach activity) {
 		//FIXME put repetition
 		
 		activity2AUI (activity.getActivity());
 	}
 
+	/**
+	 * While2 aui.
+	 *
+	 * @param activity the activity
+	 */
 	private void while2AUI(While activity) {
 		//FIXME put repetition
 		
 		activity2AUI (activity.getActivity());
 	}
 	
+	/**
+	 * Pick2 aui.
+	 *
+	 * @param activity the activity
+	 */
 	private void pick2AUI(Pick activity) {
 		int pickInitOrdering = orderingCounter;
 		int maxOrdering = orderingCounter;
@@ -223,6 +312,11 @@ public class AUIGenerator {
 		
 	}
 	
+	/**
+	 * Flow2 aui.
+	 *
+	 * @param activity the activity
+	 */
 	private void flow2AUI(Flow activity) {
 		int pickInitOrdering = orderingCounter;
 		int maxOrdering = orderingCounter;
@@ -235,6 +329,11 @@ public class AUIGenerator {
 		orderingCounter = maxOrdering;
 	}
 
+	/**
+	 * If2 aui.
+	 *
+	 * @param activity the activity
+	 */
 	private void if2AUI(If activity) {
 		int pickInitOrdering = orderingCounter;
 		
@@ -259,6 +358,11 @@ public class AUIGenerator {
 		orderingCounter = maxOrdering;
 	}
 	
+	/**
+	 * Sequence2 aui.
+	 *
+	 * @param activity the activity
+	 */
 	private void sequence2AUI(Sequence activity) {
 		EList<Activity> activities = activity.getActivities();
 		for (Activity activity2 : activities) {
@@ -266,6 +370,11 @@ public class AUIGenerator {
 		}
 	}
 	
+	/**
+	 * Scope2 aui.
+	 *
+	 * @param activity the activity
+	 */
 	private void scope2AUI(Scope activity) {
 		int pickInitOrdering = orderingCounter;
 		activity2AUI(activity.getActivity());

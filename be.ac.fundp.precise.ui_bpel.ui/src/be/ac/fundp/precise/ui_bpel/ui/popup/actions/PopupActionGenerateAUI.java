@@ -24,11 +24,21 @@ import org.eclipse.ui.IActionDelegate;
 import auiPackage.AbstractUIModel;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.AUIGenerator;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PopupActionGenerateAUI.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation {
 	
+	/** The converter. */
 	private ExtensibleURIConverterImpl converter;
 	
 	/**
+	 * Run.
+	 *
+	 * @param action the action
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
@@ -44,6 +54,11 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 				"Generated AUI for the Process: " + process.getName());
 	}
 
+	/**
+	 * Creates the aui model.
+	 *
+	 * @param process the process
+	 */
 	private void createAuiModel(Process process) {
 		
 		// Register the XMI resource factory for the .website extension

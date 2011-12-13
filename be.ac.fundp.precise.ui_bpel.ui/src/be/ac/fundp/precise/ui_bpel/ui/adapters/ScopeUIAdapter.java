@@ -24,7 +24,17 @@ import org.eclipse.gef.EditPart;
 import be.ac.fundp.precise.ui_bpel.ui.action.editpart.CreateEventHandlerUIAction;
 import be.ac.fundp.precise.ui_bpel.ui.editpart.ScopeUiEditPart;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ScopeUIAdapter.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class ScopeUIAdapter extends ScopeAdapter {
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.adapters.ScopeAdapter#createContainerDelegate()
+	 */
 	@Override
 	public IContainer createContainerDelegate() {
 		MultiContainer omc = new MultiContainer();
@@ -48,6 +58,9 @@ public class ScopeUIAdapter extends ScopeAdapter {
 	
 	/* EditPartFactory */
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.adapters.ScopeAdapter#createEditPart(org.eclipse.gef.EditPart, java.lang.Object)
+	 */
 	@Override
 	public EditPart createEditPart(EditPart context, Object model) {
 		EditPart result = new ScopeUiEditPart();
@@ -57,6 +70,9 @@ public class ScopeUIAdapter extends ScopeAdapter {
 	
 	/* IEditPartActionContributor */
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.adapters.ScopeAdapter#getEditPartActions(org.eclipse.gef.EditPart)
+	 */
 	public List<AbstractAction> getEditPartActions(final EditPart editPart) {
 		List<AbstractAction> actions = new ArrayList<AbstractAction>();
 		Object modelObject = editPart.getModel();

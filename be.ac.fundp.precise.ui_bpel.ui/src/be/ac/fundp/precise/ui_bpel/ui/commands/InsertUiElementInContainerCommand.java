@@ -17,14 +17,30 @@ import org.w3c.dom.Node;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.util.BpelUiReconciliationHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class InsertUiElementInContainerCommand.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class InsertUiElementInContainerCommand extends InsertInContainerCommand{
 
+	/**
+	 * Instantiates a new insert ui element in container command.
+	 *
+	 * @param aParent the a parent
+	 * @param aChild the a child
+	 * @param aBeforeMarker the a before marker
+	 */
 	public InsertUiElementInContainerCommand(EObject aParent, EObject aChild,
 			EObject aBeforeMarker) {
 		super(aParent, aChild, aBeforeMarker);
 	}
 	
 	/**
+	 * Can do execute.
+	 *
+	 * @return true, if successful
 	 * @see org.eclipse.bpel.ui.commands.util.AutoUndoCommand#canDoExecute()
 	 */
 	@Override
@@ -50,6 +66,8 @@ public class InsertUiElementInContainerCommand extends InsertInContainerCommand{
 	}
 
 	/**
+	 * Do execute.
+	 *
 	 * @see org.eclipse.bpel.ui.commands.util.AutoUndoCommand#doExecute()
 	 */
 	@Override
@@ -63,12 +81,13 @@ public class InsertUiElementInContainerCommand extends InsertInContainerCommand{
 	}
 	
 	/**
-	 * In case we created implicit sequence to hold two children and we want to insert 
-	 * before that sequence that means we want to insert at the beginning of that sequence 
-	 * @param child
-	 * @param parent
-	 * @param before
-	 * @return
+	 * In case we created implicit sequence to hold two children and we want to insert
+	 * before that sequence that means we want to insert at the beginning of that sequence.
+	 *
+	 * @param child the child
+	 * @param parent the parent
+	 * @param before the before
+	 * @return the real before element
 	 */
 	private static Node getRealBeforeElement(EObject child, EObject parent, EObject before) {
 		if (before != null && !(before instanceof org.eclipse.bpel.ui.uiextensionmodel.impl.EndNodeImpl)) {
@@ -82,10 +101,11 @@ public class InsertUiElementInContainerCommand extends InsertInContainerCommand{
 	
 	/**
 	 * In case we created implicit sequence to hold two children we need to patch
-	 * parent element to be that sequence 
-	 * @param child
-	 * @param parent
-	 * @return
+	 * parent element to be that sequence.
+	 *
+	 * @param child the child
+	 * @param parent the parent
+	 * @return the real parent element
 	 */
 	private static Node getRealParentElement(EObject child, EObject parent) {
 		if (ReconciliationHelper.isSingleActivityContainer(parent) && child instanceof Activity && child != ReconciliationHelper.getActivity(parent)) {

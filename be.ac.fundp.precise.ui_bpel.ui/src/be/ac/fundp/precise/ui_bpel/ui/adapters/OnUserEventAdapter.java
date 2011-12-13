@@ -20,12 +20,21 @@ import be.ac.fundp.precise.ui_bpel.ui.ExtensionSampleUIConstants;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OnUserEventAdapter.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElement,
 	EditPartFactory, IOutlineEditPartFactory, IMarkerHolder, IExtensionFactory
 {	
 
 	/* IContainer delegate */
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.adapters.ContainerAdapter#createContainerDelegate()
+	 */
 	@Override
 	public IContainer createContainerDelegate() {
 		return new ActivityContainer(ModelPackage.eINSTANCE.getOnUserEvent_Activity());
@@ -33,18 +42,30 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 
 	/* ILabeledElement */
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.adapters.ILabeledElement#getSmallImage(java.lang.Object)
+	 */
 	public Image getSmallImage(Object object) {
 		return BPELUIPlugin.INSTANCE.getImage(ExtensionSampleUIConstants.ON_USER_EVENT_ICON_16);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.adapters.ILabeledElement#getLargeImage(java.lang.Object)
+	 */
 	public Image getLargeImage(Object object) {
 		return BPELUIPlugin.INSTANCE.getImage(ExtensionSampleUIConstants.ON_USER_EVENT_ICON_20);
 	}	
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.adapters.ILabeledElement#getTypeLabel(java.lang.Object)
+	 */
 	public String getTypeLabel(Object object) {
 		return "OnUserEvent"; 
 	}	
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.adapters.ILabeledElement#getLabel(java.lang.Object)
+	 */
 	public String getLabel(Object object) {
 		String s = ModelHelper.getDisplayName(object);
 		if (s != null && !("".equals(s))) return s; //$NON-NLS-1$
@@ -60,6 +81,9 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 
 	/* EditPartFactory */
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.EditPartFactory#createEditPart(org.eclipse.gef.EditPart, java.lang.Object)
+	 */
 	public EditPart createEditPart(EditPart context, Object model) {
 		//Resource r = ((EObject)model).eResource();
 		EditPart result = new ElseIfEditPart();
@@ -69,6 +93,9 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 
 	/* IOutlineEditPartFactory */
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.adapters.IOutlineEditPartFactory#createOutlineEditPart(org.eclipse.gef.EditPart, java.lang.Object)
+	 */
 	public EditPart createOutlineEditPart(EditPart context, Object model) {
 		EditPart result = new OutlineTreeEditPart();
 		result.setModel(model);
@@ -78,6 +105,9 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 
 	/* IExtensionFactory */
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.adapters.IExtensionFactory#createExtension(org.eclipse.emf.ecore.EObject)
+	 */
 	public EObject createExtension(EObject object) {
 		return null;
 		//return UiextensionmodelFactory.eINSTANCE.createOnEventExtension();

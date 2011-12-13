@@ -9,17 +9,39 @@ import org.eclipse.wst.wsdl.util.WSDLConstants;
 
 import be.ac.fundp.precise.ui_bpel.ui.util.WSDLImportHelperUI;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ImportRepresentation.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class ImportRepresentation {
 	
+	/** The import bpel. */
 	private Import importBPEL;
+	
+	/** The my wsdl. */
 	private Definition myWsdl;
 	
+	/**
+	 * Instantiates a new import representation.
+	 *
+	 * @param myWsdl the my wsdl
+	 * @param processWSDl the process ws dl
+	 * @param processResource the process resource
+	 */
 	public ImportRepresentation(Definition myWsdl, Definition processWSDl, Resource processResource){
 		this.myWsdl = myWsdl;
 		importBPEL = createImportInProcess(processResource);
 		WSDLImportHelperUI.addImportAndNamespace(processWSDl, myWsdl);
 	}
 
+	/**
+	 * Creates the import in process.
+	 *
+	 * @param resource the resource
+	 * @return the import
+	 */
 	private Import createImportInProcess(Resource resource) {
 
 		Import imp = BPELFactory.eINSTANCE.createImport();
@@ -40,6 +62,11 @@ public class ImportRepresentation {
 		return imp;
 	}
 
+	/**
+	 * Gets the import.
+	 *
+	 * @return the import
+	 */
 	public Import getImport() {
 		return importBPEL;
 	}

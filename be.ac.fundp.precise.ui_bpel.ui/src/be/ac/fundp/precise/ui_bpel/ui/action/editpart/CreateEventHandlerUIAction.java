@@ -30,20 +30,42 @@ import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.ModelFactory;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CreateEventHandlerUIAction.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public final class CreateEventHandlerUIAction extends AbstractAction {
 
+	/**
+	 * Instantiates a new creates the event handler ui action.
+	 *
+	 * @param editPart the edit part
+	 */
 	public CreateEventHandlerUIAction(EditPart editPart) {
 		super(editPart);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.actions.editpart.IEditPartAction#getIcon()
+	 */
 	public ImageDescriptor getIcon() {
 		return BPELUIPlugin.INSTANCE.getImageDescriptor(IBPELUIConstants.ICON_ACTION_EVENTHANDLER);
 	}
 
+	/**
+	 * Gets the icon img.
+	 *
+	 * @return the icon img
+	 */
 	public Image getIconImg() {
 		return BPELUIPlugin.INSTANCE.getImage(IBPELUIConstants.ICON_ACTION_EVENTHANDLER);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.actions.editpart.IEditPartAction#onButtonPressed()
+	 */
 	public boolean onButtonPressed() {
 		CompoundCommand command = new CompoundCommand(IBPELUIConstants.CMD_ADD_EVENTHANDLER);
 		
@@ -60,12 +82,22 @@ public final class CreateEventHandlerUIAction extends AbstractAction {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.actions.editpart.IEditPartAction#getToolTip()
+	 */
 	public String getToolTip() {
 		return "My New Event2"; 
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.actions.editpart.AbstractAction#getDisabledIcon()
+	 */
 	@Override
 	public ImageDescriptor getDisabledIcon() { return ImageDescriptor.getMissingImageDescriptor(); }
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.ui.actions.editpart.AbstractAction#isEnabled()
+	 */
 	@Override
 	public boolean isEnabled() { return true; }	
 }

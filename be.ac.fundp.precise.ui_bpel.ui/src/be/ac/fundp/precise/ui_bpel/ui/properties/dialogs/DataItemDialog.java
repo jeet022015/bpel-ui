@@ -20,27 +20,46 @@ import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataType;
 import be.edu.fundp.precise.uibpel.model.ModelFactory;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DataItemDialog.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ */
 public class DataItemDialog extends Dialog {
 	
+	/** The type. */
 	private String type = DataType.STRING_TYPE.getName();
+	
+	/** The value. */
 	private String value = "NameDefault";
+	
+	/** The b1. */
 	private Button b1;
+	
+	/** The b2. */
 	private Button b2;
+	
+	/** The b3. */
 	private Button b3;
+	
+	/** The b4. */
 	private Button b4;
 
 	/**
-	 * @param parent
-	 * @param eObject 
-	 * @param model 
+	 * Instantiates a new data item dialog.
+	 *
+	 * @param parent the parent
 	 */
 	public DataItemDialog(Shell parent) {
 		super(parent);
 	}
 
 	/**
-	 * @param parent
-	 * @param style
+	 * Instantiates a new data item dialog.
+	 *
+	 * @param parent the parent
+	 * @param style the style
 	 */
 	public DataItemDialog(Shell parent, int style) {
 		super(parent, style);
@@ -48,8 +67,8 @@ public class DataItemDialog extends Dialog {
 
 	/**
 	 * Makes the dialog visible.
-	 * 
-	 * @return
+	 *
+	 * @return the data item
 	 */
 	public DataItem open() {
 		
@@ -92,7 +111,8 @@ public class DataItemDialog extends Dialog {
 		g.setText("Types:");
 		b1 = new Button(g, SWT.RADIO);
 		b1.setBounds(10, 5, 75, 15);
-		b1.setText(DataType.DATA_TYPE.getName());
+		//HAck
+		b1.setText("DateType");
 		
 		b2 = new Button(g, SWT.RADIO);
 		b2.setBounds(10, 20, 75, 15);
