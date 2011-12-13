@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpel:process exitOnStandardFault="yes" name="PurchaseOrder"
+    suppressJoinFailure="yes"
+    targetNamespace="http://process.example.org"
+    xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:ns="http://www.w3.org/2001/XMLSchema"
+    xmlns:ns0="http://www.example.org/partnerWS/"
+    xmlns:ns1="http://fundp.ac.be/UiManager/"
+    xmlns:ns2="http://precise.fundp.ac.be/UserEventListener/"
+    xmlns:tns="http://process.example.org" xmlns:ui_bpel="http://fundp.ac.be/precise/">
+    <bpel:import importType="http://schemas.xmlsoap.org/wsdl/"
+        location="partnerWS.wsdl" namespace="http://www.example.org/partnerWS/"/>
+    <bpel:import importType="http://schemas.xmlsoap.org/wsdl/"
+        location="PurchaseOrderArtifacts.wsdl" namespace="http://process.example.org"/>
+    <bpel:import importType="http://schemas.xmlsoap.org/wsdl/"
+        location="UserEventListener.wsdl" namespace="http://precise.fundp.ac.be/UserEventListener/"/>
+    <bpel:partnerLinks>
+        <bpel:partnerLink myRole="PurchaseOrderProvider" name="client" partnerLinkType="tns:PurchaseOrder"/>
+        <bpel:partnerLink name="PartnerStub"
+            partnerLinkType="tns:PartnerStubType" partnerRole="PartnerStubRole"/>
+        <bpel:partnerLink name="UiManagerPartnerLink"
+            partnerLinkType="tns:UiManagerPartnerLinkType" partnerRole="UiManagerRole"/>
+        <bpel:partnerLink myRole="UserEventRole"
+            name="UserEventPartnerLink" partnerLinkType="tns:UserEventPartnerLinkType"/>
+    </bpel:partnerLinks>
+    <bpel:variables>
+        <bpel:variable messageType="tns:PurchaseOrderRequestMessage" name="input"/>
+        <bpel:variable messageType="tns:PurchaseOrderResponseMessage" name="output"/>
+        <bpel:variable name="name" type="ns:string"/>
+        <bpel:variable name="address" type="ns:string"/>
+        <bpel:variable name="zip" type="ns:string"/>
+        <bpel:variable name="product" type="ns:string"/>
+        <bpel:variable messageType="ns0:calculateInitialPriceResponse" name="PartnerStubResponse"/>
+        <bpel:variable messageType="ns0:calculateInitialPriceRequest" name="PartnerStubRequest"/>
+        <bpel:variable messageType="ns0:shipmentPriceResponse" name="PartnerStubResponse1"/>
+        <bpel:variable messageType="ns0:shipmentPriceRequest" name="PartnerStubRequest1"/>
+        <bpel:variable name="customerName" type="ns:string"/>
+        <bpel:variable name="customerAddress" type="ns:string"/>
+        <bpel:variable name="customerProduct" type="ns:string"/>
+        <bpel:variable name="ShipperA" type="ns:string"/>
+        <bpel:variable name="ShipperB" type="ns:string"/>
+        <bpel:variable name="selectedShipper" type="ns:string"/>
+        <bpel:variable name="finalReceipt" type="ns:string"/>
+        <bpel:variable messageType="ns0:calculatePriceResponse" name="PartnerStubResponse2"/>
+        <bpel:variable messageType="ns0:calculatePriceRequest" name="PartnerStubRequest2"/>
+        <bpel:variable messageType="ns0:calculateDiscountResponse" name="PartnerStubResponse3"/>
+        <bpel:variable messageType="ns0:calculateDiscountRequest" name="PartnerStubRequest3"/>
+        <bpel:variable name="InitialPrice" type="ns:string"/>
+        <bpel:variable name="method1" type="ns:string"/>
+        <bpel:variable name="method2" type="ns:string"/>
+        <bpel:variable name="selectedMethod" type="ns:string"/>
+        <bpel:variable messageType="ns1:selectionOperationRequest" name="dataSelectionRequest1"/>
+        <bpel:variable messageType="ns1:outputOperationRequest" name="dataOutputRequest1"/>
+        <bpel:variable messageType="ns1:generateProcessIdRequest" name="genIdResquest"/>
+        <bpel:variable messageType="ns1:generateProcessIdResponse" name="genIdResponse"/>
+        <bpel:variable messageType="ns1:outputOperationRequest" name="dataOutputRequest2"/>
+        <bpel:variable messageType="ns1:selectionOperationResponse" name="dataSelectionResponse2"/>
+        <bpel:variable messageType="ns1:inputOperationResponse" name="dataInputResponse1"/>
+        <bpel:variable messageType="ns1:outputOperationRequest" name="dataOutputRequest3"/>
+        <bpel:variable messageType="ns2:fireEventRequest" name="onUserEventData0"/>
+        <bpel:variable messageType="ns1:inputOperationRequest" name="dataInputRequest1"/>
+        <bpel:variable messageType="ns1:selectionOperationRequest" name="dataSelectionRequest2"/>
+        <bpel:variable messageType="ns1:selectionOperationResponse" name="dataSelectionResponse1"/>
+    </bpel:variables>
+    <bpel:correlationSets>
+        <bpel:correlationSet name="UserEvent" properties="tns:propertyName"/>
+    </bpel:correlationSets>
+    <bpel:sequence name="main">
+        <bpel:receive createInstance="yes" name="receiveInput"
+            operation="process" partnerLink="client"
+            portType="tns:PurchaseOrder" variable="input"/>
+        <bpel:assign validate="no" name="Assign"><bpel:copy><bpel:from>
+                    <bpel:literal>
+                        <tns:PurchaseOrderResponse xmlns:tns="http://process.example.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><tns:result>tns:result</tns:result>
+
+                        </tns:PurchaseOrderResponse>
+                    </bpel:literal>
+                </bpel:from>
+                <bpel:to variable="output" part="payload"></bpel:to>
+            
+                            </bpel:copy><bpel:copy>
+                <bpel:from>
+                    <![CDATA['tests']]>
+                </bpel:from>
+                <bpel:to part="payload" variable="output">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:result]]></bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        
+                
+                        
+        </bpel:assign>
+        <bpel:sequence>
+            <bpel:assign name="IdGenerationConfiguration" validate="no">
+                <bpel:copy>
+                    <bpel:from>
+                        <bpel:literal>
+                            <tns:generateProcessId
+                                xmlns:tns="http://fundp.ac.be/UiManager/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                        </bpel:literal>
+                    </bpel:from>
+                    <bpel:to part="parameters" variable="genIdResquest"/>
+                </bpel:copy>
+            </bpel:assign>
+            <bpel:invoke inputVariable="genIdResquest"
+                name="InvokeDataInput" operation="generateProcessId"
+                outputVariable="genIdResponse"
+                partnerLink="UiManagerPartnerLink" portType="ns1:UiManager">
+                <bpel:correlations>
+                    <bpel:correlation initiate="yes" pattern="response" set="UserEvent"/>
+                </bpel:correlations>
+            </bpel:invoke>
+        </bpel:sequence>
+        <bpel:sequence>
+            <bpel:assign name="DataInputConfiguration" validate="no">
+                <bpel:copy>
+                    <bpel:from>
+                        <bpel:literal>
+                            <tns:inputOperation
+                                xmlns:tns="http://fundp.ac.be/UiManager/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                <userInteracId>userInteracId</userInteracId>
+                                <role>role</role>
+                                <processId>processId</processId>
+                            </tns:inputOperation>
+                        </bpel:literal>
+                    </bpel:from>
+                    <bpel:to part="parameters" variable="dataInputRequest1"/>
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from><![CDATA['neto']]></bpel:from>
+                    <bpel:to part="parameters" variable="dataInputRequest1">
+                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[role]]></bpel:query>
+                    </bpel:to>
+                </bpel:copy>
+                <bpel:copy>
+                   <bpel:from part="parameters" variable="genIdResponse">
+                       <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processId]]></bpel:query>
+                   </bpel:from>
+                   <bpel:to part="parameters" variable="dataInputRequest1">
+                   	    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processId]]></bpel:query>
+                   </bpel:to>
+               </bpel:copy>
+                <bpel:copy>
+                    <bpel:from><![CDATA['0']]></bpel:from>
+                    <bpel:to part="parameters" variable="dataInputRequest1">
+                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[userInteracId]]></bpel:query>
+                    </bpel:to>
+                </bpel:copy>
+            </bpel:assign>
+            <bpel:invoke inputVariable="dataInputRequest1"
+                name="InvokeDataInput" operation="inputOperation"
+                outputVariable="dataInputResponse1"
+                partnerLink="UiManagerPartnerLink" portType="ns1:UiManager"/>
+            <bpel:assign name="ResponseToDataItems" validate="no">
+                <bpel:copy>
+                    <bpel:from part="parameters" variable="dataInputResponse1">
+                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[4]/data]]></bpel:query>
+                    </bpel:from>
+                    <bpel:to variable="name"/>
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from part="parameters" variable="dataInputResponse1">
+                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[3]/data]]></bpel:query>
+                    </bpel:from>
+                    <bpel:to variable="address"/>
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from part="parameters" variable="dataInputResponse1">
+                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[2]/data]]></bpel:query>
+                    </bpel:from>
+                    <bpel:to variable="zip"/>
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from part="parameters" variable="dataInputResponse1">
+                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/data]]></bpel:query>
+                    </bpel:from>
+                    <bpel:to variable="product"/>
+                </bpel:copy>
+            </bpel:assign>
+        </bpel:sequence>
+        <bpel:scope name="ScopeUI">
+            <bpel:eventHandlers>
+                <bpel:onEvent messageType="ns2:fireEventRequest"
+                    operation="fireEvent"
+                    partnerLink="UserEventPartnerLink"
+                    portType="ns2:UserEventListener" variable="onUserEventData0">
+                    <bpel:correlations>
+                        <bpel:correlation initiate="no" set="UserEvent"/>
+                    </bpel:correlations>
+                    <bpel:scope name="Scope1">
+                        <bpel:sequence>
+                            <bpel:assign validate="no" name="Assign1">
+                                <bpel:copy>
+                                    <bpel:from>
+                                        <bpel:literal>
+                                            <tns:PurchaseOrderResponse xmlns:tns="http://process.example.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><tns:result>tns:result</tns:result>
+
+                                            </tns:PurchaseOrderResponse>
+                                        </bpel:literal>
+                                    </bpel:from>
+                                    <bpel:to variable="output" part="payload"></bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from>
+                                        <![CDATA['test333']]>
+                                    </bpel:from>
+                                    <bpel:to part="payload" variable="output">
+                                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:result]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                            </bpel:assign>
+                            <bpel:exit name="Exit" />
+                        </bpel:sequence>
+                    </bpel:scope>
+                </bpel:onEvent>
+            </bpel:eventHandlers>
+            <bpel:sequence>
+                <bpel:flow name="Flow">
+                    <bpel:sequence name="Sequence">
+                        <bpel:assign name="SettingCustomerInformation" validate="no">
+                            <bpel:copy>
+                                <bpel:from variable="name"/>
+                                <bpel:to variable="customerName"/>
+                            </bpel:copy>
+                            <bpel:copy>
+                                <bpel:from variable="address"/>
+                                <bpel:to variable="customerAddress"/>
+                            </bpel:copy>
+                            <bpel:copy>
+                                <bpel:from variable="product"/>
+                                <bpel:to variable="customerProduct"/>
+                            </bpel:copy>
+                        </bpel:assign>
+                        <bpel:sequence>
+                            <bpel:assign name="DataOutputConfiguration" validate="no">
+                                <bpel:copy>
+                                    <bpel:from>
+                                    <bpel:literal>
+                                    <tns:outputOperation
+                                    xmlns:tns="http://fundp.ac.be/UiManager/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                    <userInteracId>userInteracId</userInteracId>
+                                    <role>role</role>
+                                    <processid>processid</processid>
+                                    <data>
+                                    <data
+                                    s1:type="s2:string"
+                                    xmlns:s1="http://www.w3.org/2001/XMLSchema-instance" xmlns:s2="http://www.w3.org/2001/XMLSchema">Data</data>
+                                    <type>type</type>
+                                    <id>id</id>
+                                    </data>
+                                    <data>
+                                    <data
+                                    s1:type="s2:string"
+                                    xmlns:s1="http://www.w3.org/2001/XMLSchema-instance" xmlns:s2="http://www.w3.org/2001/XMLSchema">Data</data>
+                                    <type>type</type>
+                                    <id>id</id>
+                                    </data>
+                                    <data>
+                                    <data
+                                    s1:type="s2:string"
+                                    xmlns:s1="http://www.w3.org/2001/XMLSchema-instance" xmlns:s2="http://www.w3.org/2001/XMLSchema">Data</data>
+                                    <type>type</type>
+                                    <id>id</id>
+                                    </data>
+                                    </tns:outputOperation>
+                                    </bpel:literal>
+                                    </bpel:from>
+                                    <bpel:to part="parameters" variable="dataOutputRequest1"/>
+                                </bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from><![CDATA['philippe']]></bpel:from>
+                                    <bpel:to part="parameters" variable="dataOutputRequest1">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[role]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from part="parameters" variable="genIdResponse">
+                                    	<bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processId]]></bpel:query>
+                                    </bpel:from>
+                                    <bpel:to part="parameters" variable="dataOutputRequest1">
+                                    	<bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processid]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from><![CDATA['1']]></bpel:from>
+                                    <bpel:to part="parameters" variable="dataOutputRequest1">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[userInteracId]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+	                            	<bpel:from>
+                                	<![CDATA['customerName']]>
+                            		</bpel:from>
+		                            <bpel:to part="parameters" variable="dataOutputRequest1">
+	    	                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/id]]></bpel:query>
+	        	                    </bpel:to>
+                	        	</bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from><![CDATA[$customerName]]></bpel:from>
+                                    <bpel:to part="parameters" variable="dataOutputRequest1">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/data]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+	                            	<bpel:from>
+                                	<![CDATA['customerAddress']]>
+                            		</bpel:from>
+		                            <bpel:to part="parameters" variable="dataOutputRequest1">
+	    	                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[2]/id]]></bpel:query>
+	        	                    </bpel:to>
+                	        	</bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from><![CDATA[$customerAddress]]></bpel:from>
+                                    <bpel:to part="parameters" variable="dataOutputRequest1">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[2]/data]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+	                            	<bpel:from>
+                                	<![CDATA['customerProduct']]>
+                            		</bpel:from>
+		                            <bpel:to part="parameters" variable="dataOutputRequest1">
+	    	                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[3]/id]]></bpel:query>
+	        	                    </bpel:to>
+                	        	</bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from><![CDATA[$customerProduct]]></bpel:from>
+                                    <bpel:to part="parameters" variable="dataOutputRequest1">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[3]/data]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                            </bpel:assign>
+                            <bpel:invoke
+                                inputVariable="dataOutputRequest1"
+                                name="InvokeDataOutput"
+                                operation="outputOperation"
+                                partnerLink="UiManagerPartnerLink" portType="ns1:UiManager"/>
+                        </bpel:sequence>
+                        <bpel:assign validate="no" name="SettingShipperInformation">
+                            <bpel:copy>
+                                <bpel:from>
+                                    <![CDATA['DHL']]>
+                                </bpel:from>
+                                <bpel:to variable="ShipperA"></bpel:to>
+                            </bpel:copy>
+                            <bpel:copy>
+                                <bpel:from>
+                                    <![CDATA['normal Mail']]>
+                                </bpel:from>
+                                <bpel:to variable="ShipperB"></bpel:to>
+                            </bpel:copy>
+                        </bpel:assign>
+                        <bpel:sequence>
+                            <bpel:assign
+                                name="DataSelectionConfiguration" validate="no">
+                                <bpel:copy>
+                                    <bpel:from>
+                                    <bpel:literal>
+                                    <tns:selectionOperation
+                                    xmlns:tns="http://fundp.ac.be/UiManager/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                    <userInteracId>userInteracId</userInteracId>
+                                    <role>role</role>
+                                    <processId>processId</processId>
+                                    <data>
+                                    <data
+                                    s1:type="s2:string"
+                                    xmlns:s1="http://www.w3.org/2001/XMLSchema-instance" xmlns:s2="http://www.w3.org/2001/XMLSchema">Data</data>
+                                    <type>type</type>
+                                    <id>id</id>
+                                    </data>
+                                    <data>
+                                    <data
+                                    s1:type="s2:string"
+                                    xmlns:s1="http://www.w3.org/2001/XMLSchema-instance" xmlns:s2="http://www.w3.org/2001/XMLSchema">Data</data>
+                                    <type>type</type>
+                                    <id>id</id>
+                                    </data>
+                                    </tns:selectionOperation>
+                                    </bpel:literal>
+                                    </bpel:from>
+                                    <bpel:to part="parameters" variable="dataSelectionRequest1"/>
+                                </bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from><![CDATA['philippe']]></bpel:from>
+                                    <bpel:to part="parameters" variable="dataSelectionRequest1">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[role]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from part="parameters" variable="genIdResponse">
+                                    	<bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processId]]></bpel:query>
+                                    </bpel:from>
+                                    <bpel:to part="parameters" variable="dataSelectionRequest1">
+                                    	<bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processId]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from><![CDATA['2']]></bpel:from>
+                                    <bpel:to part="parameters" variable="dataSelectionRequest1">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[userInteracId]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+	                            	<bpel:from>
+                                	<![CDATA['ShipperA']]>
+                            		</bpel:from>
+		                            <bpel:to part="parameters" variable="dataSelectionRequest1">
+	    	                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/id]]></bpel:query>
+	        	                    </bpel:to>
+                	        	</bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from><![CDATA[$ShipperA]]></bpel:from>
+                                    <bpel:to part="parameters" variable="dataSelectionRequest1">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/data]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                                <bpel:copy>
+	                            	<bpel:from>
+                                	<![CDATA['ShipperB']]>
+                            		</bpel:from>
+		                            <bpel:to part="parameters" variable="dataSelectionRequest1">
+	    	                            <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[2]/id]]></bpel:query>
+	        	                    </bpel:to>
+                	        	</bpel:copy>
+                                <bpel:copy>
+                                    <bpel:from><![CDATA[$ShipperB]]></bpel:from>
+                                    <bpel:to part="parameters" variable="dataSelectionRequest1">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[2]/data]]></bpel:query>
+                                    </bpel:to>
+                                </bpel:copy>
+                            </bpel:assign>
+                            <bpel:invoke
+                                inputVariable="dataSelectionRequest1"
+                                name="InvokeDataSelection"
+                                operation="selectionOperation"
+                                outputVariable="dataSelectionResponse1"
+                                partnerLink="UiManagerPartnerLink" portType="ns1:UiManager"/>
+                            <bpel:assign name="ResponseToDataItems" validate="no">
+                                <bpel:copy>
+                                    <bpel:from part="parameters" variable="dataSelectionResponse1">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[return[1]/data]]></bpel:query>
+                                    </bpel:from>
+                                    <bpel:to variable="selectedShipper"/>
+                                </bpel:copy>
+                            </bpel:assign>
+                        </bpel:sequence>
+                        <bpel:assign name="SettingShipmentInformation" validate="no">
+                            <bpel:copy>
+                                <bpel:from>
+                                    <bpel:literal>
+                                    <tns:shipmentPrice
+                                    xmlns:tns="http://www.example.org/partnerWS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                    <shipper>shipper</shipper>
+                                    <product>product</product>
+                                    </tns:shipmentPrice>
+                                    </bpel:literal>
+                                </bpel:from>
+                                <bpel:to part="parameters" variable="PartnerStubRequest1"/>
+                            </bpel:copy>
+                            <bpel:copy>
+                                <bpel:from><![CDATA['shipper1']]></bpel:from>
+                                <bpel:to part="parameters" variable="PartnerStubRequest1">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[shipper]]></bpel:query>
+                                </bpel:to>
+                            </bpel:copy>
+                            <bpel:copy>
+                                <bpel:from><![CDATA['test']]></bpel:from>
+                                <bpel:to part="parameters" variable="PartnerStubRequest1">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[product]]></bpel:query>
+                                </bpel:to>
+                            </bpel:copy>
+                        </bpel:assign>
+                        <bpel:invoke inputVariable="PartnerStubRequest1"
+                            name="ShipmentPrice"
+                            operation="shipmentPrice"
+                            outputVariable="PartnerStubResponse1"
+                            partnerLink="PartnerStub" portType="ns0:partnerWS"/>
+                    </bpel:sequence>
+                    <bpel:sequence name="Sequence1">
+                        
+                        <bpel:assign name="SettingInitialPrice" validate="no">
+                            <bpel:copy>
+                                <bpel:from>
+                                    <bpel:literal>
+                                    <tns:calculateInitialPrice
+                                    xmlns:tns="http://www.example.org/partnerWS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                    <product>product</product>
+                                    </tns:calculateInitialPrice>
+                                    </bpel:literal>
+                                </bpel:from>
+                                <bpel:to part="parameters" variable="PartnerStubRequest"/>
+                            </bpel:copy>
+                            <bpel:copy>
+                                <bpel:from><![CDATA['product']]></bpel:from>
+                                <bpel:to part="parameters" variable="PartnerStubRequest">
+                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[product]]></bpel:query>
+                                </bpel:to>
+                            </bpel:copy>
+                        </bpel:assign>
+                        <bpel:invoke inputVariable="PartnerStubRequest"
+                            name="InitialPrice"
+                            operation="calculateInitialPrice"
+                            outputVariable="PartnerStubResponse"
+                            partnerLink="PartnerStub" portType="ns0:partnerWS"/>
+                    </bpel:sequence>
+                </bpel:flow>
+                
+                
+                <bpel:assign name="SettingInitialPrice" validate="no">
+                    <bpel:copy>
+                        <bpel:from><![CDATA['The price of your product is EUR 110']]></bpel:from>
+                        <bpel:to variable="InitialPrice"/>
+                    </bpel:copy>
+                </bpel:assign>
+                
+                <bpel:sequence>
+                    <bpel:assign name="DataOutputConfiguration" validate="no">
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal>
+                                    <tns:outputOperation
+                                    xmlns:tns="http://fundp.ac.be/UiManager/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                    <userInteracId>userInteracId</userInteracId>
+                                    <role>role</role>
+                                    <processid>processid</processid>
+                                    <data>
+                                    <data s1:type="s2:string"
+                                    xmlns:s1="http://www.w3.org/2001/XMLSchema-instance" xmlns:s2="http://www.w3.org/2001/XMLSchema">Data</data>
+                                    <type>type</type>
+                                    <id>id</id>
+                                    </data>
+                                    </tns:outputOperation>
+                                </bpel:literal>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="dataOutputRequest2"/>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from><![CDATA['neto']]></bpel:from>
+                            <bpel:to part="parameters" variable="dataOutputRequest2">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[role]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+		                   <bpel:from part="parameters" variable="genIdResponse">
+		                       <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processId]]></bpel:query>
+		                   </bpel:from>
+		                   <bpel:to part="parameters" variable="dataOutputRequest2">
+		                   	    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processid]]></bpel:query>
+		                   </bpel:to>
+		                </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from><![CDATA['5']]></bpel:from>
+                            <bpel:to part="parameters" variable="dataOutputRequest2">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[userInteracId]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from>
+                                <![CDATA['InitialPrice']]>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="dataOutputRequest2">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/id]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from><![CDATA[$InitialPrice]]></bpel:from>
+                            <bpel:to part="parameters" variable="dataOutputRequest2">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/data]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:invoke inputVariable="dataOutputRequest2"
+                        name="InvokeDataOutput"
+                        operation="outputOperation"
+                        partnerLink="UiManagerPartnerLink" portType="ns1:UiManager"/>
+                </bpel:sequence>
+                <bpel:assign name="SettingPaymentMethod" validate="no">
+                    <bpel:copy>
+                        <bpel:from><![CDATA['cash']]></bpel:from>
+                        <bpel:to variable="method1"/>
+                    </bpel:copy>
+                    <bpel:copy>
+                        <bpel:from><![CDATA['credit card']]></bpel:from>
+                        <bpel:to variable="method2"/>
+                    </bpel:copy>
+                </bpel:assign>
+                <bpel:sequence>
+                    <bpel:assign name="DataSelectionConfiguration" validate="no">
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal>
+                                    <tns:selectionOperation
+                                    xmlns:tns="http://fundp.ac.be/UiManager/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                    <userInteracId>userInteracId</userInteracId>
+                                    <role>role</role>
+                                    <processId>processId</processId>
+                                    <data>
+                                    <data s1:type="s2:string"
+                                    xmlns:s1="http://www.w3.org/2001/XMLSchema-instance" xmlns:s2="http://www.w3.org/2001/XMLSchema">Data</data>
+                                    <type>type</type>
+                                    <id>id</id>
+                                    </data>
+                                    <data>
+                                    <data s1:type="s2:string"
+                                    xmlns:s1="http://www.w3.org/2001/XMLSchema-instance" xmlns:s2="http://www.w3.org/2001/XMLSchema">Data</data>
+                                    <type>type</type>
+                                    <id>id</id>
+                                    </data>
+                                    </tns:selectionOperation>
+                                </bpel:literal>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="dataSelectionRequest2"/>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from><![CDATA['neto']]></bpel:from>
+                            <bpel:to part="parameters" variable="dataSelectionRequest2">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[role]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+		                   <bpel:from part="parameters" variable="genIdResponse">
+		                       <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processId]]></bpel:query>
+		                   </bpel:from>
+		                   <bpel:to part="parameters" variable="dataSelectionRequest2">
+		                   	    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processId]]></bpel:query>
+		                   </bpel:to>
+		                </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from><![CDATA['3']]></bpel:from>
+                            <bpel:to part="parameters" variable="dataSelectionRequest2">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[userInteracId]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from>
+                                <![CDATA['method1']]>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="dataSelectionRequest2">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/id]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from><![CDATA[$method1]]></bpel:from>
+                            <bpel:to part="parameters" variable="dataSelectionRequest2">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/data]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from>
+                                <![CDATA['method2']]>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="dataSelectionRequest2">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[2]/id]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from><![CDATA[$method2]]></bpel:from>
+                            <bpel:to part="parameters" variable="dataSelectionRequest2">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[2]/data]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:invoke inputVariable="dataSelectionRequest2"
+                        name="InvokeDataSelection"
+                        operation="selectionOperation"
+                        outputVariable="dataSelectionResponse2"
+                        partnerLink="UiManagerPartnerLink" portType="ns1:UiManager"/>
+                    <bpel:assign name="ResponseToDataItems" validate="no">
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="dataSelectionResponse2">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[return[1]/data]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to variable="selectedMethod"/>
+                        </bpel:copy>
+                    </bpel:assign>
+                </bpel:sequence>
+                
+            </bpel:sequence>
+        </bpel:scope>
+        <bpel:assign name="FinalReceipt" validate="no">
+            <bpel:copy>
+                <bpel:from><![CDATA['Receipt: you bought an iphone for EUR 100']]></bpel:from>
+                <bpel:to variable="finalReceipt"/>
+            </bpel:copy>
+        </bpel:assign>
+        <bpel:sequence>
+            <bpel:assign name="DataOutputConfiguration" validate="no">
+                <bpel:copy>
+                    <bpel:from>
+                        <bpel:literal>
+                            <tns:outputOperation
+                                xmlns:tns="http://fundp.ac.be/UiManager/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                <userInteracId>userInteracId</userInteracId>
+                                <role>role</role>
+                                <processid>processid</processid>
+                                <data>
+                                    <data s1:type="s2:string"
+                                    xmlns:s1="http://www.w3.org/2001/XMLSchema-instance" xmlns:s2="http://www.w3.org/2001/XMLSchema">Data</data>
+                                    <type>type</type>
+                                    <id>id</id>
+                                </data>
+                            </tns:outputOperation>
+                        </bpel:literal>
+                    </bpel:from>
+                    <bpel:to part="parameters" variable="dataOutputRequest3"/>
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from><![CDATA['neto']]></bpel:from>
+                    <bpel:to part="parameters" variable="dataOutputRequest3">
+                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[role]]></bpel:query>
+                    </bpel:to>
+                </bpel:copy>
+                <bpel:copy>
+                   <bpel:from part="parameters" variable="genIdResponse">
+                       <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processId]]></bpel:query>
+                   </bpel:from>
+                   <bpel:to part="parameters" variable="dataOutputRequest3">
+                   	    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processid]]></bpel:query>
+                   </bpel:to>
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from><![CDATA['4']]></bpel:from>
+                    <bpel:to part="parameters" variable="dataOutputRequest3">
+                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[userInteracId]]></bpel:query>
+                    </bpel:to>
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from>
+                        <![CDATA['finalReceipt']]>
+                    </bpel:from>
+                    <bpel:to part="parameters" variable="dataOutputRequest3">
+                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/id]]></bpel:query>
+                    </bpel:to>
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from><![CDATA[$finalReceipt]]></bpel:from>
+                    <bpel:to part="parameters" variable="dataOutputRequest3">
+                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/data]]></bpel:query>
+                    </bpel:to>
+                </bpel:copy>
+            </bpel:assign>
+            <bpel:invoke inputVariable="dataOutputRequest3"
+                name="InvokeDataOutput" operation="outputOperation"
+                partnerLink="UiManagerPartnerLink" portType="ns1:UiManager"/>
+        </bpel:sequence>
+        
+        <bpel:reply name="replyOutput" operation="process"
+            partnerLink="client" portType="tns:PurchaseOrder" variable="output"/>
+    </bpel:sequence>
+</bpel:process>
