@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="UiManager" targetNamespace="http://fundp.ac.be/UiManager/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://fundp.ac.be/UiManager/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://fundp.ac.be/UiManager/">
+      <xsd:element name="outputOperation">
+        <xsd:complexType>
+          <xsd:sequence>
+          	<xsd:element maxOccurs="1" minOccurs="0" name="userInteracId" type="xsd:string"/>
+          	<xsd:element maxOccurs="1" minOccurs="0" name="role" type="xsd:string"/>
+          	<xsd:element maxOccurs="1" minOccurs="0" name="processid" type="xsd:string"/>
+          	<xsd:element maxOccurs="unbounded" minOccurs="0" name="data" type="tns:UiDataType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="outputOperationResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="out" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="inputOperation">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element maxOccurs="1" minOccurs="0" name="userInteracId" type="xsd:string"/>
+      			<xsd:element maxOccurs="1" minOccurs="0" name="role" type="xsd:string"/>
+      			<xsd:element maxOccurs="1" minOccurs="0" name="processId" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="inputOperationResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element maxOccurs="unbounded" minOccurs="0" name="data" type="tns:UiDataType"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="selectionOperation">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element maxOccurs="1" minOccurs="0" name="userInteracId" type="xsd:string">
+      			</xsd:element>
+      			<xsd:element maxOccurs="1" minOccurs="0" name="role" type="xsd:string">
+      			</xsd:element>
+      			<xsd:element maxOccurs="1" minOccurs="0" name="processId" type="xsd:string">
+      			</xsd:element>
+      			<xsd:element maxOccurs="unbounded" minOccurs="0" name="data" type="tns:UiDataType"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="selectionOperationResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:UiDataType"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="generateProcessId">
+      	<xsd:complexType>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="generateProcessIdResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element maxOccurs="1" minOccurs="0" name="processId" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="NewOperation3">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="in" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="NewOperation3Response">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="out" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+    
+      <xsd:complexType name="UiDataType">
+      	<xsd:sequence>
+      		<xsd:element maxOccurs="1" minOccurs="1" name="data" type="xsd:anyType"/>
+      		<xsd:element maxOccurs="1" minOccurs="1" name="type" type="xsd:string"/>
+      		<xsd:element maxOccurs="1" minOccurs="1" name="id" type="xsd:string"/>
+      	</xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="generateProcessIdRequest">
+    <wsdl:part name="parameters" element="tns:generateProcessId">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="inputOperationResponse">
+    <wsdl:part name="parameters" element="tns:inputOperationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="generateProcessIdResponse">
+    <wsdl:part name="parameters" element="tns:generateProcessIdResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="selectionOperationResponse">
+    <wsdl:part name="parameters" element="tns:selectionOperationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="outputOperationResponse">
+    <wsdl:part name="parameters" element="tns:outputOperationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="NewOperation3Request">
+    <wsdl:part name="parameters" element="tns:NewOperation3">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="selectionOperationRequest">
+    <wsdl:part name="parameters" element="tns:selectionOperation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="inputOperationRequest">
+    <wsdl:part name="parameters" element="tns:inputOperation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="outputOperationRequest">
+    <wsdl:part name="parameters" element="tns:outputOperation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="NewOperation3Response">
+    <wsdl:part name="parameters" element="tns:NewOperation3Response">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="UiManager">
+    <wsdl:operation name="outputOperation">
+      <wsdl:input message="tns:outputOperationRequest">
+    </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="inputOperation">
+      <wsdl:input message="tns:inputOperationRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:inputOperationResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="selectionOperation">
+      <wsdl:input message="tns:selectionOperationRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:selectionOperationResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="generateProcessId">
+      <wsdl:input message="tns:generateProcessIdRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:generateProcessIdResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="UiManagerSOAP" type="tns:UiManager">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="outputOperation">
+      <soap:operation soapAction="http://fundp.ac.be/UiManager/outputOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="inputOperation">
+      <soap:operation soapAction="http://fundp.ac.be/UiManager/inputOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="selectionOperation">
+      <soap:operation soapAction="http://fundp.ac.be/UiManager/selectionOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="generateProcessId">
+      <soap:operation soapAction="http://fundp.ac.be/UiManager/generateProcessId"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UiManager">
+    <wsdl:port name="UiManagerSOAP" binding="tns:UiManagerSOAP">
+      <soap:address location="http://localhost:8050/UI_Manager/services/UiManagerSOAP"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

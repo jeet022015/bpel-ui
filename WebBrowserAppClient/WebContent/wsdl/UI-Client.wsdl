@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="UI-Client" targetNamespace="http://webApp.fundp.ac.be"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://webApp.fundp.ac.be"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://webApp.fundp.ac.be">
+			<xsd:element name="requireSyncInteraction">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="cuiId"
+							type="xsd:string" />
+						<xsd:element maxOccurs="unbounded" minOccurs="0"
+							name="inputData" type="tns:DataItemType" />
+						<xsd:element maxOccurs="1" minOccurs="0" name="role"
+							type="xsd:string" />
+						<xsd:element name="processId" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="requireSyncInteractionResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="unbounded" minOccurs="0" name="outData"
+							type="tns:DataItemType" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+
+			<xsd:complexType name="DataItemType">
+				<xsd:sequence>
+					<xsd:element maxOccurs="1" minOccurs="1" name="dataItemId"
+						type="xsd:string" />
+					<xsd:element maxOccurs="1" minOccurs="1" name="typeName"
+						type="xsd:string" />
+					<xsd:element maxOccurs="1" minOccurs="1" name="data"
+						type="xsd:anyType" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="requireAssyncInteraction">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="cuiId"
+							type="xsd:string" />
+						<xsd:element maxOccurs="unbounded" minOccurs="0"
+							name="inputData" type="tns:DataItemType" />
+						<xsd:element maxOccurs="1" minOccurs="0" name="role"
+							type="xsd:string" />
+						<xsd:element name="processId" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="requireAssyncInteractionResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="out" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="requireSyncInteractionResponse">
+		<wsdl:part name="parameters" element="tns:requireSyncInteractionResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="requireAssyncInteractionResponse">
+		<wsdl:part name="parameters" element="tns:requireAssyncInteractionResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="requireSyncInteractionRequest">
+		<wsdl:part name="parameters" element="tns:requireSyncInteraction">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="requireAssyncInteractionRequest">
+		<wsdl:part name="parameters" element="tns:requireAssyncInteraction">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="UI-Client">
+		<wsdl:operation name="requireSyncInteraction">
+			<wsdl:input message="tns:requireSyncInteractionRequest">
+			</wsdl:input>
+			<wsdl:output message="tns:requireSyncInteractionResponse">
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="requireAssyncInteraction">
+			<wsdl:input message="tns:requireAssyncInteractionRequest">
+			</wsdl:input>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="UI-ClientSOAP" type="tns:UI-Client">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="requireSyncInteraction">
+			<soap:operation soapAction="http://webApp.fundp.ac.be/requireSyncInteraction" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="requireAssyncInteraction">
+			<soap:operation soapAction="http://webApp.fundp.ac.be/requireAssyncInteraction" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="UI-Client">
+		<wsdl:port name="UI-ClientSOAP" binding="tns:UI-ClientSOAP">
+			<soap:address
+				location="http://localhost:8050/WebBrowserAppClient/services/UI-ClientSOAP" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

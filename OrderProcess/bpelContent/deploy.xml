@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:UiManager="http://fundp.ac.be/UiManager/" xmlns:UserEventListener="http://precise.fundp.ac.be/UserEventListener/" xmlns:partnerWS="http://www.example.org/partnerWS/" xmlns:process.example.org="http://process.example.org">
+  <process name="process.example.org:PurchaseOrder">
+    <active>true</active>
+    <retired>false</retired>
+    <process-events generate="all"/>
+    <provide partnerLink="client">
+      <service name="process.example.org:PurchaseOrder" port="PurchaseOrderPort"/>
+    </provide>
+    <provide partnerLink="UserEventPartnerLink">
+      <service name="UserEventListener:UserEventListener" port="UserEventListenerSOAP"/>
+    </provide>
+    <invoke partnerLink="PartnerStub">
+      <service name="partnerWS:partnerWS" port="partnerWSSOAP"/>
+    </invoke>
+    <invoke partnerLink="UiManagerPartnerLink">
+      <service name="UiManager:UiManager" port="UiManagerSOAP"/>
+    </invoke>
+  </process>
+</deploy>
