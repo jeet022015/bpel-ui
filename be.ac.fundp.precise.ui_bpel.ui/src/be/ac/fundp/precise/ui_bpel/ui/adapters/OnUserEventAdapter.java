@@ -16,7 +16,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.swt.graphics.Image;
 
-import be.ac.fundp.precise.ui_bpel.ui.ExtensionSampleUIConstants;
+import be.ac.fundp.precise.ui_bpel.ui.UI_BPEL_Constants;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 
@@ -46,14 +46,14 @@ public class OnUserEventAdapter extends ContainerAdapter implements ILabeledElem
 	 * @see org.eclipse.bpel.ui.adapters.ILabeledElement#getSmallImage(java.lang.Object)
 	 */
 	public Image getSmallImage(Object object) {
-		return BPELUIPlugin.INSTANCE.getImage(ExtensionSampleUIConstants.ON_USER_EVENT_ICON_16);
+		return BPELUIPlugin.INSTANCE.getImage(UI_BPEL_Constants.ON_USER_EVENT_ICON_16);
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.bpel.ui.adapters.ILabeledElement#getLargeImage(java.lang.Object)
 	 */
 	public Image getLargeImage(Object object) {
-		return BPELUIPlugin.INSTANCE.getImage(ExtensionSampleUIConstants.ON_USER_EVENT_ICON_20);
+		return BPELUIPlugin.INSTANCE.getImage(UI_BPEL_Constants.ON_USER_EVENT_ICON_20);
 	}	
 	
 	/* (non-Javadoc)

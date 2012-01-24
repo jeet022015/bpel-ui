@@ -17,9 +17,9 @@ import org.eclipse.ui.IActionDelegate;
 
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.WriterUiBpel;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class PopupActionGenerateBPEL.
+ * This class implements the popup action to generate the executable BPEL
+ *  from the UI-BPEL model.
  *
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  */

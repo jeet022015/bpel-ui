@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
 import be.ac.fundp.precise.ui_bpel.ui.commands.InsertUiElementInContainerCommand;
-import be.ac.fundp.precise.ui_bpel.ui.factories.ExtensionSampleUIObjectFactory;
+import be.ac.fundp.precise.ui_bpel.ui.factories.UI_BPEL_ObjectFactory;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
 
@@ -55,7 +55,7 @@ public class CreateOnUserInteractionAction extends AbstractAction {
 	 */
 	public boolean onButtonPressed() {
 		CompoundCommand command = new CompoundCommand();
-		ExtensionSampleUIObjectFactory e = new ExtensionSampleUIObjectFactory();
+		UI_BPEL_ObjectFactory e = new UI_BPEL_ObjectFactory();
 		e.setModelType(ModelPackage.eINSTANCE.getOnUserEvent());
 		EObject child = e.createInstance();
 		command.add(new InsertUiElementInContainerCommand((EObject)modelObject, child, null));

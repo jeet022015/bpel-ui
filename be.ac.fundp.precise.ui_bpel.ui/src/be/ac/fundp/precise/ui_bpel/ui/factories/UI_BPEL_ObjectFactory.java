@@ -10,23 +10,33 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
 import be.ac.fundp.precise.ui_bpel.ui.Activator;
-import be.ac.fundp.precise.ui_bpel.ui.ExtensionSampleUIConstants;
+import be.ac.fundp.precise.ui_bpel.ui.UI_BPEL_Constants;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 
-// TODO: Auto-generated Javadoc
 /**
- * A factory for creating ExtensionSampleUIObject objects.
+ * Factory that knows how to create one conceptual type of UI object
+ * (and only the one type of object).  The objects created must be EMF model objects
+ * (i.e. instances of EObject) and the types that represent them must be EMF classes
+ * (i.e. instances of EClass).
+ * 
+ * This corresponds to items that you can create with the palette of a DetailsEditor.
+ * 
+ * NOTE: the object returned by getNewEObject() is NOT necessarily an instance of the
+ * same EClass as getEClass returns!
+ * 
+ * Concrete subclasses must still specify where to get icons from, and what the
+ * human-readable type label of the factory should be.
  */
-public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory implements IExtensionUIObjectFactory {
+public class UI_BPEL_ObjectFactory extends AbstractUIObjectFactory implements IExtensionUIObjectFactory {
 
-	/** The model type. */
+	/** The current EMF model object */
 	private EClass modelType;
 	
-	/** The scope counter. */
+	/** The counter to generate a distinct name to Scopes within OnUserEvent. */
 	private static int scopeCounter = 1;
 	
-	/** The class array. */
+	/** The mapping array the to the EMF model objects. */
 	private EClass[] classArray = { ModelPackage.eINSTANCE.getDataInputUI(), 
 			ModelPackage.eINSTANCE.getDataOutputUI(), ModelPackage.eINSTANCE.getDataSelectionUI(),
 			ModelPackage.eINSTANCE.getDataItem(), ModelPackage.eINSTANCE.getPickUI(),
@@ -39,15 +49,15 @@ public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory impl
 	 *
 	 * @param modelType the model type
 	 */
-	public ExtensionSampleUIObjectFactory(EClass modelType) {
+	public UI_BPEL_ObjectFactory(EClass modelType) {
 		super();
 		this.modelType = modelType;
 	}
 	
 	/**
-	 * Instantiates a new extension sample ui object factory.
+	 * This method instantiates a new UI-BPEL object factory.
 	 */
-	public ExtensionSampleUIObjectFactory() {
+	public UI_BPEL_ObjectFactory() {
 		super();
 	}
 	
@@ -59,19 +69,19 @@ public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory impl
 	public Image getLargeImage() {
 		String path = "";
 		if (modelType.getName().equals("DataInputUI"))
-			path = ExtensionSampleUIConstants.DATA_INPUT_ICON_20;
+			path = UI_BPEL_Constants.DATA_INPUT_ICON_20;
 		else if (modelType.getName().equals("DataOutputUI"))
-			path = ExtensionSampleUIConstants.DATA_OUTPUT_ICON_20;
+			path = UI_BPEL_Constants.DATA_OUTPUT_ICON_20;
 		else if (modelType.getName().equals("DataSelectionUI"))
-			path = ExtensionSampleUIConstants.DATA_SELECTION_ICON_20;
+			path = UI_BPEL_Constants.DATA_SELECTION_ICON_20;
 		else if (modelType.getName().equals("OnUserEvent"))
-			path = ExtensionSampleUIConstants.ON_USER_EVENT_ICON_20;
+			path = UI_BPEL_Constants.ON_USER_EVENT_ICON_20;
 		else if (modelType.getName().equals("ScopeUI"))
-			path = ExtensionSampleUIConstants.SCOPE_UI_ICON_20;
+			path = UI_BPEL_Constants.SCOPE_UI_ICON_20;
 		else if (modelType.getName().equals("PickUI"))
-			path = ExtensionSampleUIConstants.PICK_UI_ICON_20;
+			path = UI_BPEL_Constants.PICK_UI_ICON_20;
 		else 
-			path = ExtensionSampleUIConstants.DEFAULT_ICON_20;
+			path = UI_BPEL_Constants.DEFAULT_ICON_20;
 		return Activator.getDefault().getImageRegistry().get(path);
 	}
 
@@ -82,19 +92,19 @@ public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory impl
 	public ImageDescriptor getLargeImageDescriptor() {
 		String path = "";
 		if (modelType.getName().equals("DataInputUI"))
-			path = ExtensionSampleUIConstants.DATA_INPUT_ICON_20;
+			path = UI_BPEL_Constants.DATA_INPUT_ICON_20;
 		else if (modelType.getName().equals("DataOutputUI"))
-			path = ExtensionSampleUIConstants.DATA_OUTPUT_ICON_20;
+			path = UI_BPEL_Constants.DATA_OUTPUT_ICON_20;
 		else if (modelType.getName().equals("DataSelectionUI"))
-			path = ExtensionSampleUIConstants.DATA_SELECTION_ICON_20;
+			path = UI_BPEL_Constants.DATA_SELECTION_ICON_20;
 		else if (modelType.getName().equals("OnUserEvent"))
-			path = ExtensionSampleUIConstants.ON_USER_EVENT_ICON_20;
+			path = UI_BPEL_Constants.ON_USER_EVENT_ICON_20;
 		else if (modelType.getName().equals("ScopeUI"))
-			path = ExtensionSampleUIConstants.SCOPE_UI_ICON_20;
+			path = UI_BPEL_Constants.SCOPE_UI_ICON_20;
 		else if (modelType.getName().equals("PickUI"))
-			path = ExtensionSampleUIConstants.PICK_UI_ICON_20;
+			path = UI_BPEL_Constants.PICK_UI_ICON_20;
 		else 
-			path = ExtensionSampleUIConstants.DEFAULT_ICON_20;
+			path = UI_BPEL_Constants.DEFAULT_ICON_20;
 		return Activator.getDefault().getImageDescriptor(path);
 	}
 
@@ -105,19 +115,19 @@ public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory impl
 	public Image getSmallImage() {
 		String path = "";
 		if (modelType.getName().equals("DataInputUI"))
-			path = ExtensionSampleUIConstants.DATA_INPUT_ICON_16;
+			path = UI_BPEL_Constants.DATA_INPUT_ICON_16;
 		else if (modelType.getName().equals("DataOutputUI"))
-			path = ExtensionSampleUIConstants.DATA_OUTPUT_ICON_16;
+			path = UI_BPEL_Constants.DATA_OUTPUT_ICON_16;
 		else if (modelType.getName().equals("DataSelectionUI"))
-			path = ExtensionSampleUIConstants.DATA_SELECTION_ICON_16;
+			path = UI_BPEL_Constants.DATA_SELECTION_ICON_16;
 		else if (modelType.getName().equals("OnUserEvent"))
-			path = ExtensionSampleUIConstants.ON_USER_EVENT_ICON_16;
+			path = UI_BPEL_Constants.ON_USER_EVENT_ICON_16;
 		else if (modelType.getName().equals("ScopeUI"))
-			path = ExtensionSampleUIConstants.SCOPE_UI_ICON_16;
+			path = UI_BPEL_Constants.SCOPE_UI_ICON_16;
 		else if (modelType.getName().equals("PickUI"))
-			path = ExtensionSampleUIConstants.PICK_UI_ICON_16;
+			path = UI_BPEL_Constants.PICK_UI_ICON_16;
 		else 
-			path = ExtensionSampleUIConstants.DEFAULT_ICON_16;
+			path = UI_BPEL_Constants.DEFAULT_ICON_16;
 		return Activator.getDefault().getImageRegistry().get(path);
 	}
 
@@ -128,19 +138,19 @@ public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory impl
 	public ImageDescriptor getSmallImageDescriptor() {
 		String path = "";
 		if (modelType.getName().equals("DataInputUI"))
-			path = ExtensionSampleUIConstants.DATA_INPUT_ICON_16;
+			path = UI_BPEL_Constants.DATA_INPUT_ICON_16;
 		else if (modelType.getName().equals("DataOutputUI"))
-			path = ExtensionSampleUIConstants.DATA_OUTPUT_ICON_16;
+			path = UI_BPEL_Constants.DATA_OUTPUT_ICON_16;
 		else if (modelType.getName().equals("DataSelectionUI"))
-			path = ExtensionSampleUIConstants.DATA_SELECTION_ICON_16;
+			path = UI_BPEL_Constants.DATA_SELECTION_ICON_16;
 		else if (modelType.getName().equals("OnUserEvent"))
-			path = ExtensionSampleUIConstants.ON_USER_EVENT_ICON_16;
+			path = UI_BPEL_Constants.ON_USER_EVENT_ICON_16;
 		else if (modelType.getName().equals("ScopeUI"))
-			path = ExtensionSampleUIConstants.SCOPE_UI_ICON_16;
+			path = UI_BPEL_Constants.SCOPE_UI_ICON_16;
 		else if (modelType.getName().equals("PickUI"))
-			path = ExtensionSampleUIConstants.PICK_UI_ICON_16;
+			path = UI_BPEL_Constants.PICK_UI_ICON_16;
 		else 
-			path = ExtensionSampleUIConstants.DEFAULT_ICON_16;
+			path = UI_BPEL_Constants.DEFAULT_ICON_16;
 		return Activator.getDefault().getImageDescriptor(path);
 	}
 
@@ -178,17 +188,17 @@ public class ExtensionSampleUIObjectFactory extends AbstractUIObjectFactory impl
 	}
 
 	/**
-	 * Creates a new ExtensionSampleUIObject object.
+	 * Creates a new EMF model objects corresponding to the current EMF class.
 	 *
-	 * @return the e object
+	 * @return the new EMF model object
 	 * @see org.eclipse.bpel.ui.factories.AbstractUIObjectFactory#createInstance()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public EObject createInstance() {
 		EObject result = super.createInstance();
 		
 	 if (result instanceof OnUserEvent) {
-			/** Per bug# 133170 */
 		 	OnUserEvent onAlarm = (OnUserEvent) result;
 		 	Scope innerScope = BPELFactory.eINSTANCE.createScope();
 		 	innerScope.setName("InnerScope"+scopeCounter);

@@ -11,10 +11,9 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import be.ac.fundp.precise.ui_bpel.ui.factories.ExtensionSampleUIAdapterFactory;
+import be.ac.fundp.precise.ui_bpel.ui.factories.UI_BPELAdapterFactory;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
-// TODO: Auto-generated Javadoc
 /**
  * The activator class controls the plug-in life cycle.
  *
@@ -35,7 +34,7 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public Activator() {
 		// Bugzilla 324115
-		BPELUtil.registerAdapterFactory(ModelPackage.eINSTANCE, ExtensionSampleUIAdapterFactory.getInstance());
+		BPELUtil.registerAdapterFactory(ModelPackage.eINSTANCE, UI_BPELAdapterFactory.getInstance());
 	}
 
 	/*
@@ -71,33 +70,33 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	protected void initializeImageRegistry(ImageRegistry reg) {
 		URL baseURL = getBundle().getEntry("/");
-		createImageDescriptor(ExtensionSampleUIConstants.DEFAULT_ICON_16, baseURL);
-		createImageDescriptor(ExtensionSampleUIConstants.DEFAULT_ICON_20, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.DEFAULT_ICON_16, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.DEFAULT_ICON_20, baseURL);
 		
-		createImageDescriptor(ExtensionSampleUIConstants.DATA_INPUT_ICON_16, baseURL);
-		createImageDescriptor(ExtensionSampleUIConstants.DATA_INPUT_ICON_20, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.DATA_INPUT_ICON_16, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.DATA_INPUT_ICON_20, baseURL);
 		
-		createImageDescriptor(ExtensionSampleUIConstants.DATA_OUTPUT_ICON_16, baseURL);
-		createImageDescriptor(ExtensionSampleUIConstants.DATA_OUTPUT_ICON_20, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.DATA_OUTPUT_ICON_16, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.DATA_OUTPUT_ICON_20, baseURL);
 		
-		createImageDescriptor(ExtensionSampleUIConstants.DATA_SELECTION_ICON_16, baseURL);
-		createImageDescriptor(ExtensionSampleUIConstants.DATA_SELECTION_ICON_20, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.DATA_SELECTION_ICON_16, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.DATA_SELECTION_ICON_20, baseURL);
 		
-		createImageDescriptor(ExtensionSampleUIConstants.ON_USER_EVENT_ICON_16, baseURL);
-		createImageDescriptor(ExtensionSampleUIConstants.ON_USER_EVENT_ICON_20, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.ON_USER_EVENT_ICON_16, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.ON_USER_EVENT_ICON_20, baseURL);
 		
-		createImageDescriptor(ExtensionSampleUIConstants.PICK_UI_ICON_16, baseURL);
-		createImageDescriptor(ExtensionSampleUIConstants.PICK_UI_ICON_20, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.PICK_UI_ICON_16, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.PICK_UI_ICON_20, baseURL);
 		
-		createImageDescriptor(ExtensionSampleUIConstants.SCOPE_UI_ICON_16, baseURL);
-		createImageDescriptor(ExtensionSampleUIConstants.SCOPE_UI_ICON_20, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.SCOPE_UI_ICON_16, baseURL);
+		createImageDescriptor(UI_BPEL_Constants.SCOPE_UI_ICON_20, baseURL);
 	}
 
 	/**
 	 * Creates the image descriptor.
 	 *
-	 * @param id the id
-	 * @param baseURL the base url
+	 * @param id the object's id
+	 * @param baseURL the object's base url
 	 */
 	private void createImageDescriptor(String id, URL baseURL) {
 		URL url = null;
@@ -113,7 +112,7 @@ public class Activator extends AbstractUIPlugin {
 	/**
 	 * Gets the image descriptor.
 	 *
-	 * @param key the key
+	 * @param key the object's key
 	 * @return the image descriptor
 	 */
 	public ImageDescriptor getImageDescriptor(String key) {

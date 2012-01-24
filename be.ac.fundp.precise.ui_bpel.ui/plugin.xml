@@ -45,7 +45,7 @@
 	<extension id="ExtensionSampleUIObjectFactory" name="test"
 		point="org.eclipse.bpel.ui.uiObjectFactories">
 		<factory
-			class="be.ac.fundp.precise.ui_bpel.ui.factories.ExtensionSampleUIObjectFactory"
+			class="be.ac.fundp.precise.ui_bpel.ui.factories.UI_BPEL_ObjectFactory"
 			specCompliant="false" categoryId="not.used"
 			id="org.eclipse.bpel.extensionssample.ui.factories.ExtensionSampleUIObjectFactory" />
 	</extension>

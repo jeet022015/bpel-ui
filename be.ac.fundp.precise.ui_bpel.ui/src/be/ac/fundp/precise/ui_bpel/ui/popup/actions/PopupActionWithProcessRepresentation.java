@@ -21,10 +21,16 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartSite;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * The Class PopupActionWithProcessRepresentation.
- *
+ * This abstract class encapsulates all the requirements to the popup actions
+ * in the UI BPEL Designer Plugin.  It extends <code>IObjectActionDelegate</code>
+ * and adds an initialization method for connecting the delegate to the 
+ * part it should work with.
+ * 
+ * @see be.ac.fundp.precise.ui_bpel.ui.popup.actions.PopupActionGenerateBPEL
+ * @see be.ac.fundp.precise.ui_bpel.ui.popup.actions.PopupActionGenerateAUI
+ * 
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  */
 abstract public class PopupActionWithProcessRepresentation  implements IObjectActionDelegate {

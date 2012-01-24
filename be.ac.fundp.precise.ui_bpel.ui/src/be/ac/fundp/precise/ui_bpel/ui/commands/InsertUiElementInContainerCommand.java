@@ -14,12 +14,15 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.PlatformUI;
 import org.w3c.dom.Node;
 
-import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.util.BpelUiReconciliationHelper;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class InsertUiElementInContainerCommand.
+ * This class represents a command  to add a UI element into a parent object which supports IContainer.
+ * A UI Element can be the UI activities (Data Input, Data output, data selection, and Event UI), or its
+ * inner elements, such as role or data item.
+ * 
+ * @see be.edu.fundp.precise.uibpel.model.DataItem
+ * @see be.edu.fundp.precise.uibpel.model.UserRole
  *
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  */

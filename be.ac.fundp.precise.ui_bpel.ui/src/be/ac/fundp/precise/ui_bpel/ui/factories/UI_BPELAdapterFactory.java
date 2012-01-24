@@ -13,58 +13,58 @@ import be.ac.fundp.precise.ui_bpel.ui.adapters.SelectionUIAdapter;
 import be.ac.fundp.precise.ui_bpel.ui.adapters.UserRoleAdapter;
 import be.edu.fundp.precise.uibpel.model.util.ModelAdapterFactory;
 
-// TODO: Auto-generated Javadoc
 /**
- * A factory for creating ExtensionSampleUIAdapter objects.
+ * The class <b>UI_BPELAdapterFactory</b> creates a <b>Adapter Factory</b> for the model.
+ * It provides an adapter method for each class of the UI-BPEL model.
  */
-public class ExtensionSampleUIAdapterFactory extends ModelAdapterFactory {
+public class UI_BPELAdapterFactory extends ModelAdapterFactory {
 
-	// Bugzilla 324115
-	/** The instance. */
-	private static ExtensionSampleUIAdapterFactory instance;
+	/** The single instance of this class. */
+	private static UI_BPELAdapterFactory instance;
 	
-	/** The data input ui adapter. */
+	/** The adapter to DataInputUI class. */
 	private DataInputUIAdapter dataInputUIAdapter;
 	
-	/** The data output ui adapter. */
+	/** The adapter to DataOutputUI class. */
 	private DataOutputUIAdapter dataOutputUIAdapter;
 	
-	/** The data selection ui adapter. */
+	/** The adapter to SelectionUI class. */
 	private SelectionUIAdapter dataSelectionUIAdapter;
 	
-	/** The data item adapter. */
+	/** The adapter to DataItem class. */
 	private DataItemAdapter dataItemAdapter;
 	
-	/** The on user event adapter. */
+	/** The adapter to OnUserEvent class. */
 	private OnUserEventAdapter onUserEventAdapter;
 	
-	/** The scope ui adapter. */
+	/** The adapter to ScopeUI class. */
 	private ScopeUIAdapter scopeUIAdapter;
 	
-	/** The event handler ui adapter. */
+	/** The adapter to EventHandlerUI class. */
 	private EventHandlerUIAdapter eventHandlerUIAdapter;
 	
-	/** The pick ui adapter. */
+	/** The adapter to PickUI class. */
 	private PickUIAdapter pickUIAdapter;
 	
-	/** The user role adapter. */
+	/** The adapter to UserRole class. */
 	private UserRoleAdapter userRoleAdapter;
 	
 	/**
-	 * Instantiates a new extension sample ui adapter factory.
+	 * Instantiates UI_BPEL Adapter factory. Following the 
+	 * Singleton design pattern, this method must be private.
 	 */
-	private ExtensionSampleUIAdapterFactory() {
+	private UI_BPELAdapterFactory() {
 		super();
 	}
 	
 	/**
-	 * Gets the single instance of ExtensionSampleUIAdapterFactory.
+	 * Gets the single instance of UI_BPELAdapterFactory.
 	 *
-	 * @return single instance of ExtensionSampleUIAdapterFactory
+	 * @return the single instance of UI_BPELAdapterFactory
 	 */
-	public static ExtensionSampleUIAdapterFactory getInstance() {
+	public static UI_BPELAdapterFactory getInstance() {
 		if (instance == null) {
-			instance = new ExtensionSampleUIAdapterFactory();
+			instance = new UI_BPELAdapterFactory();
 		}
 		return instance;
 	}

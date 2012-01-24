@@ -5,12 +5,11 @@ import org.eclipse.bpel.common.ui.palette.PaletteCategory;
 import org.eclipse.bpel.ui.util.BPELCreationToolEntry;
 import org.eclipse.gef.palette.PaletteRoot;
 
-import be.ac.fundp.precise.ui_bpel.ui.factories.ExtensionSampleUIObjectFactory;
+import be.ac.fundp.precise.ui_bpel.ui.factories.UI_BPEL_ObjectFactory;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ExtensionSamplePaletteProvider.
+ * This class adds the new UI-BPEL elements to the BPEL Design's palette.
  *
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  */
@@ -28,25 +27,25 @@ public class ExtensionSamplePaletteProvider implements IPaletteProvider {
 
 		category.add(new BPELCreationToolEntry(
 				"Data Input UI", "Data Input UI",
-						new ExtensionSampleUIObjectFactory(ModelPackage.eINSTANCE
+						new UI_BPEL_ObjectFactory(ModelPackage.eINSTANCE
 								.getDataInputUI())));
 		
 		category.add(new BPELCreationToolEntry(
 				"Data Output UI", "Data Output UI",
-				new ExtensionSampleUIObjectFactory(ModelPackage.eINSTANCE
+				new UI_BPEL_ObjectFactory(ModelPackage.eINSTANCE
 						.getDataOutputUI())));
 		
 		category.add(new BPELCreationToolEntry(
 				"Data Selection UI", "Data Selection UI",
-				new ExtensionSampleUIObjectFactory(ModelPackage.eINSTANCE
+				new UI_BPEL_ObjectFactory(ModelPackage.eINSTANCE
 						.getDataSelectionUI())));
 		
 		category.add(new BPELCreationToolEntry("Scope UI", "Scope UI",
-				new ExtensionSampleUIObjectFactory(ModelPackage.eINSTANCE
+				new UI_BPEL_ObjectFactory(ModelPackage.eINSTANCE
 						.getScopeUI())));
 		
 		category.add(new BPELCreationToolEntry("Pick UI", "Pick UI",
-				new ExtensionSampleUIObjectFactory(ModelPackage.eINSTANCE
+				new UI_BPEL_ObjectFactory(ModelPackage.eINSTANCE
 						.getPickUI())));
 
 		paletteRoot.add(category);

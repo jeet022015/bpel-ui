@@ -5,10 +5,15 @@ import org.eclipse.bpel.ui.adapters.IEventHandlerHolder;
 import org.eclipse.bpel.ui.editparts.ScopeEditPart;
 import org.eclipse.bpel.ui.util.BPELUtil;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ScopeUiEditPart.
- *
+ * The panel in the UI ScopeUiEditPart represent the edit part in
+ * eclipse UI that present the information about ScopeUI.
+ * 
+ * In the collapsed state, this class will render the node. In the
+ * expanded state, the subclass will be expected to render the node.
+ * 
+ * @see be.edu.fundp.precise.uibpel.model.ScopeUI
+ * 
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  */
 public class ScopeUiEditPart extends ScopeEditPart {

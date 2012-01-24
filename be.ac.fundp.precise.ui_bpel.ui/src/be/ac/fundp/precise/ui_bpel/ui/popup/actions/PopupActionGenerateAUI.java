@@ -24,9 +24,9 @@ import org.eclipse.ui.IActionDelegate;
 import auiPackage.AbstractUIModel;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.AUIGenerator;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class PopupActionGenerateAUI.
+ * This class implements the popup action to generate the AUI from the UI-BPEL
+ * model.
  *
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  */
