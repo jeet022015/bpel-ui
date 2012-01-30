@@ -15,7 +15,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import auiPackage.AbstractCompoundIU;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.AbstractComponentIU;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
@@ -63,7 +63,7 @@ public class MediatorConfigurator {
 	 * @param comp the comp
 	 * @param inputActivity the input activity
 	 */
-	public void createDataInputConf(AbstractCompoundIU comp, DataInputUI inputActivity){
+	public void createDataInputConf(AbstractComponentIU comp, DataInputUI inputActivity){
 		Element staff = doc.createElement("DataInput");
 		rootElement.appendChild(staff);
 		
@@ -72,7 +72,7 @@ public class MediatorConfigurator {
 		staff.setAttributeNode(attr);
 		
 		attr = doc.createAttribute("ComponentID");
-		attr.setValue(Integer.toString(comp.getId()));
+		attr.setValue(comp.getId());
 		staff.setAttributeNode(attr);
 		
 		attr = doc.createAttribute("role");
@@ -116,7 +116,7 @@ public class MediatorConfigurator {
 	 * @param comp the comp
 	 * @param activity the activity
 	 */
-	public void createDataOutputConf(AbstractCompoundIU comp,
+	public void createDataOutputConf(AbstractComponentIU comp,
 			DataOutputUI activity) {
 		Element staff = doc.createElement("DataOutput");
 		rootElement.appendChild(staff);
@@ -126,7 +126,7 @@ public class MediatorConfigurator {
 		staff.setAttributeNode(attr);
 		
 		attr = doc.createAttribute("ComponentID");
-		attr.setValue(Integer.toString(comp.getId()));
+		attr.setValue(comp.getId());
 		staff.setAttributeNode(attr);
 		
 		attr = doc.createAttribute("role");
@@ -156,7 +156,7 @@ public class MediatorConfigurator {
 	 * @param comp the comp
 	 * @param activity the activity
 	 */
-	public void createDataSelectionConf(AbstractCompoundIU comp,
+	public void createDataSelectionConf(AbstractComponentIU comp,
 			DataSelectionUI activity) {
 		Element staff = doc.createElement("DataSelection");
 		rootElement.appendChild(staff);
@@ -166,7 +166,7 @@ public class MediatorConfigurator {
 		staff.setAttributeNode(attr);
 		
 		attr = doc.createAttribute("ComponentID");
-		attr.setValue(Integer.toString(comp.getId()));
+		attr.setValue(comp.getId());
 		staff.setAttributeNode(attr);
 		
 		attr = doc.createAttribute("role");

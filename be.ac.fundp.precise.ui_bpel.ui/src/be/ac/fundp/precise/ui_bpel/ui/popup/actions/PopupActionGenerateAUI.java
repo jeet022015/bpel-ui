@@ -3,7 +3,6 @@ package be.ac.fundp.precise.ui_bpel.ui.popup.actions;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collections;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,8 +20,9 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IActionDelegate;
 
-import auiPackage.AbstractUIModel;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.AUIGenerator;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.AbstractUIModel;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.XML_Engine;
 
 /**
  * This class implements the popup action to generate the AUI from the UI-BPEL
@@ -68,36 +68,25 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 		
 		IFile f = getBpelFile();
 		IFolder folder = (IFolder) f.getParent();
-		//IFile auiFile = folder.getFile("AUI_Model.aui");
 		IFile mediatorFile = folder.getFile("UI-AUIC_Mapping.xml");
 		try {
-			//IPath fullProcessPath = auiFile.getFullPath();
-			//URI uri = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
-			//OutputStream out1 = new BufferedOutputStream(converter.createOutputStream(uri));
-			
-			
 			IPath fullProcessPath = mediatorFile.getFullPath();
 			URI uri2 = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
 			OutputStream out2 = new BufferedOutputStream(converter.createOutputStream(uri2));
 			
-			//File realFile = mediatorFile.getLocation().toFile();
-			//OutputStream out = new BufferedOutputStream( new FileOutputStream(realFile));
 			AUIGenerator auiGen = new AUIGenerator(out2);
 			Map<String, AbstractUIModel> model = auiGen.createAUI(process);
 			
-			//IPath fullProcessPath = auiFile.getFullPath();
-			//URI uri = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
 			for (String role : model.keySet()) {
 				IFile roleAuiFile = folder.getFile("AUI_Model-"+role+".aui");
 				IPath fullAuiFilePath = roleAuiFile.getFullPath();
 				URI auiFileUri = URI.createPlatformResourceURI(fullAuiFilePath.toString(), false);
-				Resource auiResource = getResourceSet().createResource(auiFileUri);
 				
-				auiResource.getContents().clear();
-				auiResource.getContents().add(model.get(role));
-		
-				// Now save the content.
-				auiResource.save(Collections.EMPTY_MAP);
+				OutputStream out3 = new BufferedOutputStream(converter.createOutputStream(auiFileUri));
+				
+				AbstractUIModel roleModel = model.get(role);
+				XML_Engine engine = new XML_Engine();
+				engine.serialize(roleModel, out3);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -107,5 +96,4 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 			e.printStackTrace();
 		}
 	}
-
 }

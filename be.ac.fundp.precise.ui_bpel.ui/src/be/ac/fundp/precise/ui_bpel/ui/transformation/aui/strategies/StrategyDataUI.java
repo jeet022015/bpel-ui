@@ -1,7 +1,6 @@
 package be.ac.fundp.precise.ui_bpel.ui.transformation.aui.strategies;
 
-import auiPackage.AbstractDataIU;
-import auiPackage.AuiPackageFactory;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.DataIU;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -15,8 +14,8 @@ public class StrategyDataUI implements StrategyAUIElement {
 	 * @see be.ac.fundp.precise.ui_bpel.ui.transformation.aui.strategies.StrategyAUIElement#getStrategy()
 	 */
 	@Override
-	public AbstractDataIU getStrategy() {
-		return AuiPackageFactory.eINSTANCE.createAbstractDataIU();
+	public DataIU getStrategy() {
+		return null;
 	}
 
 }
