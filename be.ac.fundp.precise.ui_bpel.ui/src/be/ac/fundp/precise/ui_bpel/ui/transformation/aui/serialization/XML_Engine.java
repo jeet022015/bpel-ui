@@ -24,10 +24,24 @@ import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml.DataT
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml.ObjectFactory;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml.SelectionType;
 
+/**
+ * This class represent an engine that allow the serialization of a AUI in XML.
+ * The serialization is based on the XSD, proposed by the UsiXML project.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ * @date Dez 9, 2011
+ */
 public class XML_Engine {
 
+	/** The of. */
 	protected ObjectFactory of = new ObjectFactory();
 	
+	/**
+	 * Serialize the core model in XML.
+	 *
+	 * @param roleModel the AbstractUIModel
+	 * @param out the OutputStream where the XML must be saved 
+	 */
 	public void serialize(be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.AbstractUIModel roleModel, OutputStream out3) {
 		AbstractUIModel model = of.createAbstractUIModel();
 		JAXBContext jaxbContext;
@@ -47,6 +61,12 @@ public class XML_Engine {
 		}
 	}
 
+	/**
+	 * Parses the component ui.
+	 *
+	 * @param aComponent the a component
+	 * @return the abstract interaction unit
+	 */
 	private AbstractInteractionUnit parseComponentUI(
 			InteractionUnitIF aComponent) {
 		if (aComponent instanceof AbstractComponentIU){
