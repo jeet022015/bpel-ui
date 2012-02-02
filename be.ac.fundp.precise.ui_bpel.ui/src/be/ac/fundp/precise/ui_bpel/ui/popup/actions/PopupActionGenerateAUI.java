@@ -78,7 +78,7 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 			Map<String, AbstractUIModel> model = auiGen.createAUI(process);
 			
 			for (String role : model.keySet()) {
-				IFile roleAuiFile = folder.getFile("AUI_Model-"+role+".aui");
+				IFile roleAuiFile = folder.getFile("AUI_Model-"+role+".xml");
 				IPath fullAuiFilePath = roleAuiFile.getFullPath();
 				URI auiFileUri = URI.createPlatformResourceURI(fullAuiFilePath.toString(), false);
 				

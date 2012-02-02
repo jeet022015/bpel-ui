@@ -69,7 +69,17 @@ public class XML_Engine {
 	 */
 	private AbstractInteractionUnit parseComponentUI(
 			InteractionUnitIF aComponent) {
-		if (aComponent instanceof AbstractComponentIU){
+		if (aComponent instanceof SelectionUI){
+			SelectionUI anotherData = (SelectionUI)aComponent;
+			AbstractSelectionIU comp = of.createAbstractSelectionIU();
+			comp.setId(anotherData.getId());
+			comp.setSelectionType(SelectionType.UNDEFINED);
+			for (InteractionUnitIF inner : anotherData.getInnerInteractionUnits()) {
+				AbstractInteractionUnit aUnit = parseComponentUI(inner);
+				comp.getAbstractInteractionUnit().add(aUnit);
+			}
+			return comp;
+		} else if (aComponent instanceof AbstractComponentIU){
 			AbstractComponentIU anotherComp = (AbstractComponentIU)aComponent;
 			AbstractCompoundIU comp = of.createAbstractCompoundIU();
 			comp.setId(anotherComp.getId());
@@ -91,7 +101,7 @@ public class XML_Engine {
 		} else if (aComponent instanceof DataIU){
 			DataIU anotherData = (DataIU)aComponent;
 			AbstractDataIU comp = of.createAbstractDataIU();
-			comp.setId(anotherData.getId());
+			comp.setId(anotherData.getLabel());
 			comp.setDataType(DataTypeType.TEXT);
 			if (anotherData.getType().equals(DataIU.INPUT)){
 				comp.setDataIUType(AbstractDataIUType.INPUT);
