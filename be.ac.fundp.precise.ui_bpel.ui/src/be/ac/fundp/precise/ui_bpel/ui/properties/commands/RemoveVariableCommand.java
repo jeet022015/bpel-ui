@@ -3,11 +3,14 @@ package be.ac.fundp.precise.ui_bpel.ui.properties.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.bpel.model.Process;
+import org.eclipse.bpel.model.Scope;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.Variables;
 import org.eclipse.bpel.ui.commands.RemoveFromListCommand;
 import org.eclipse.bpel.ui.util.ModelHelper;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.wst.wsdl.WSDLElement;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -19,6 +22,7 @@ public class RemoveVariableCommand extends RemoveFromListCommand {
 
 	/** The context. */
 	Object context;
+	Variable varDelete;
 	
 	/**
 	 * Instantiates a new removes the variable command.
@@ -29,6 +33,7 @@ public class RemoveVariableCommand extends RemoveFromListCommand {
 	public RemoveVariableCommand(EObject context, Variable var) {
 		super(ModelHelper.getContainingScope(context), var, 
 				"Delete Variable");	
+		varDelete = var;
 	}
 
 	/* (non-Javadoc)
@@ -37,9 +42,26 @@ public class RemoveVariableCommand extends RemoveFromListCommand {
 	@Override
 	protected List<Variable> getList() {
 		// https://issues.jboss.org/browse/JBIDE-8048
-		Variables variables = ModelHelper.getVariables( target );
-		if (variables != null)
+		Variables variables = getCorrectVariables(target);
+		//Variables variables = ModelHelper.getVariables( target );
+		if (variables != null )
 			return variables.getChildren();
 		return new ArrayList<Variable>();
+	}
+
+	private Variables getCorrectVariables(EObject context) {
+		System.out.println(context);
+		if (context instanceof Process) 
+			return ((Process)context).getVariables();
+		if (context instanceof Scope){
+			Scope innerScope = ((Scope)context);
+			Variables variables = innerScope.getVariables();
+			if (variables.getChildren().contains(varDelete))
+				return variables;	
+		}
+		if (context instanceof WSDLElement){
+			return getCorrectVariables(((WSDLElement)context).getContainer());
+		}
+		return null;
 	}
 }

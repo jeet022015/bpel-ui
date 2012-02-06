@@ -311,6 +311,15 @@ public class DataSelectionUIImpl extends DataInputUIImpl implements DataSelectio
 		super.adoptContent(reference, object);
 	}
 
+	@SuppressWarnings("restriction")
+	@Override
+	protected void orphanContent(EReference reference, Object object) {
+		if (object instanceof DataItem) {
+			BpelUiReconciliationHelper.orphanChild(this, (DataItem) object);
+		}
+		super.orphanContent(reference, object);
+	}
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -2,6 +2,7 @@ package be.ac.fundp.precise.ui_bpel.ui.properties;
 
 import org.eclipse.bpel.ui.commands.AddVariableCommand;
 import org.eclipse.bpel.ui.commands.CompoundCommand;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.gef.commands.Command;
 
@@ -10,6 +11,7 @@ import be.ac.fundp.precise.ui_bpel.ui.properties.commands.RemoveInputDataItemCom
 import be.ac.fundp.precise.ui_bpel.ui.properties.commands.RemoveVariableCommand;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataItem;
+import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
 /**
  * The Class DataInputUIPropertySection implements the properties to 
@@ -76,6 +78,21 @@ public class DataInputUIPropertySection extends AbstractDataPropertySection {
 	@Override
 	String getLabel() {
 		return "Data Input Item:";
+	}
+
+	/* (non-Javadoc)
+	 * @see be.ac.fundp.precise.ui_bpel.ui.properties.AbstractDataPropertySection#fixAdapter(org.eclipse.emf.common.notify.Notification)
+	 */
+	@Override
+	protected int fixAdapter(Notification n) {
+		if (n.getFeature() == ModelPackage.eINSTANCE.getDataItem()) {
+			DataItem aDataInputUI = (DataItem) n.getNewValue();
+			DataInputUI dataInputUi = getModel();
+			if (aDataInputUI != null) {
+				return dataInputUi.getInputItem().indexOf(aDataInputUI);
+			}
+		}
+		return -1;
 	}
 
 	

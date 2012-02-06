@@ -1,11 +1,11 @@
+/*
+ * 
+ */
 package be.ac.fundp.precise.ui_bpel.ui.properties;
 
 import org.eclipse.bpel.common.ui.details.IDetailsAreaConstants;
 import org.eclipse.bpel.common.ui.flatui.FlatFormAttachment;
 import org.eclipse.bpel.common.ui.flatui.FlatFormData;
-import org.eclipse.bpel.model.Assign;
-import org.eclipse.bpel.model.BPELPackage;
-import org.eclipse.bpel.model.Copy;
 import org.eclipse.bpel.ui.Messages;
 import org.eclipse.bpel.ui.properties.BPELPropertySection;
 import org.eclipse.bpel.ui.util.BPELUtil;
@@ -92,18 +92,21 @@ abstract class AbstractDataPropertySection extends BPELPropertySection {
 			public void notify(Notification n) {
 
 				adjustCopyRulesList();
-				if (n.getFeature() == BPELPackage.eINSTANCE.getAssign_Copy()) {
-					Copy copy = (Copy) n.getNewValue();
-					Assign assign = getModel();
-					if (copy != null) {
-						selectCopyInList(assign.getCopy().indexOf(copy));
-					}
-
-				}
+				int indexDataItem = fixAdapter(n);
+				if (indexDataItem != -1)
+					selectCopyInList(indexDataItem);
 
 			}
 		}, };
 	}
+	
+	/**
+	 * Fix adapter to the current Data Item.
+	 *
+	 * @param n the Notification of the Property adaptation;
+	 * @return the index of the Current Data Item
+	 */
+	abstract int fixAdapter(Notification n);
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.bpel.ui.properties.BPELPropertySection#addAllAdapters()
