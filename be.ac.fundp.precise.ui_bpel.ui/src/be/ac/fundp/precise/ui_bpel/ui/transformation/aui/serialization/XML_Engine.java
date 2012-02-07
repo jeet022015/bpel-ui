@@ -85,7 +85,6 @@ public class XML_Engine {
 			comp.setId(anotherComp.getId());
 			for (InteractionUnitIF inner : anotherComp.getInnerInteractionUnits()) {
 				AbstractInteractionUnit aUnit = parseComponentUI(inner);
-				System.out.println("inner = "+inner);
 				comp.getAbstractInteractionUnit().add(aUnit);
 			}
 			return comp;

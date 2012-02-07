@@ -1,5 +1,7 @@
 package be.ac.fundp.precise.ui_bpel.ui.transformation.aui;
 
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -22,14 +24,21 @@ import org.eclipse.bpel.model.RepeatUntil;
 import org.eclipse.bpel.model.Scope;
 import org.eclipse.bpel.model.Sequence;
 import org.eclipse.bpel.model.While;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.AuiFactoryBuilder;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.AbstractComponentIU;
-import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.DataIU;
-import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.SelectionUI;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.AbstractUIModel;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.AuiFactory;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.DataIU;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.SelectionUI;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.XML_Engine;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
@@ -43,13 +52,20 @@ import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 public class AUIGenerator {
 	
 	/** The factory. */
-	private AuiFactory factory = AuiFactoryBuilder.newAuiFactory();
+	protected AuiFactory factory = AuiFactoryBuilder.newAuiFactory();
+	
+	/** The converter. */
+	protected ExtensibleURIConverterImpl converter = new ExtensibleURIConverterImpl();
 	
 	/** The med conf. */
-	private MediatorConfigurator medConf;
+	protected MediatorConfigurator medConf;
 	
 	/** The role models. */
-	private Map<String, AbstractUIModel> roleModels = new HashMap<String, AbstractUIModel>();
+	protected Map<String, AbstractUIModel> roleModels = new HashMap<String, AbstractUIModel>();
+	
+	protected IFolder processFolder;
+	
+	protected Process process;
 	
 	/**
 	 * Instantiates a new aUI generator.
@@ -61,6 +77,51 @@ public class AUIGenerator {
 		medConf = new MediatorConfigurator (out);
 	}
 	
+	public AUIGenerator (IFolder processFolder, Process process) throws IOException, ParserConfigurationException, TransformerException, CoreException{
+		this.process = process;
+		this.processFolder = processFolder;
+		//TODO It should be done together with the saveModels
+		OutputStream out2 = coordinatorConf(processFolder);
+		medConf = new MediatorConfigurator (out2);
+		
+		processAUI();
+	}
+
+	private OutputStream coordinatorConf(IFolder processFolder)
+			throws IOException, CoreException {
+		IFolder coordFolder = processFolder.getFolder("coord-artifacts");
+		if (coordFolder.exists()){
+			coordFolder.delete(true, null);
+		}
+		coordFolder.create(true, true, null);
+		IFile mediatorFile = coordFolder.getFile("UI-AUIC_Mapping.xml");
+		IPath fullProcessPath = mediatorFile.getFullPath();
+		URI uri2 = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
+		
+		OutputStream out2 = new BufferedOutputStream(converter.createOutputStream(uri2));
+		return out2;
+	}
+
+	public void saveModels() throws IOException, CoreException {
+		//TODO create the folder and test if the folder exists.
+		IFolder auiFolder = processFolder.getFolder("aui-artifacts");
+		if (auiFolder.exists()){
+			auiFolder.delete(true, null);
+		}
+		auiFolder.create(true, true, null);
+		for (String role : roleModels.keySet()) {
+			IFile roleAuiFile = auiFolder.getFile("AUI_Model-"+role+".xml");
+			IPath fullAuiFilePath = roleAuiFile.getFullPath();
+			URI auiFileUri = URI.createPlatformResourceURI(fullAuiFilePath.toString(), false);
+			
+			OutputStream out3 = new BufferedOutputStream(converter.createOutputStream(auiFileUri));
+			
+			AbstractUIModel roleModel = roleModels.get(role);
+			XML_Engine engine = new XML_Engine();
+			engine.serialize(roleModel, out3);
+		}
+	}
+	
 	/**
 	 * Creates the aui.
 	 *
@@ -68,7 +129,7 @@ public class AUIGenerator {
 	 * @return the map
 	 * @throws TransformerException the transformer exception
 	 */
-	public Map<String, AbstractUIModel> createAUI(Process process) throws TransformerException {
+	public void processAUI() throws TransformerException {
 		roleModels = new HashMap<String, AbstractUIModel>();
 		
 		List<String> roles = RolesDetector.getRoles(process);
@@ -82,8 +143,6 @@ public class AUIGenerator {
 		activity2AUI(process.getActivity());
 		
 		medConf.finalize();
-		
-		return roleModels;
 	}
 
 	/**
