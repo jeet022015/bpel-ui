@@ -1,16 +1,11 @@
 package be.ac.fundp.precise.ui_bpel.ui.popup.actions;
 
-import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.resource.BPELResource;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IActionDelegate;
@@ -18,7 +13,7 @@ import org.eclipse.ui.IActionDelegate;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.WriterUiBpel;
 
 /**
- * This class implements the popup action to generate the executable BPEL
+ * This class implements the pop-up action to generate the executable BPEL
  *  from the UI-BPEL model.
  *
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
@@ -28,33 +23,23 @@ public class PopupActionGenerateBPEL extends PopupActionWithProcessRepresentatio
 	/** The new writer. */
 	private WriterUiBpel newWriter;
 	
-	/** The converter. */
-	private ExtensibleURIConverterImpl converter;
-	
 	/**
-	 * Run.
+	 * This Method perform the actions to generate the executable process.
 	 *
-	 * @param action the action
+	 * @param action Eclipse IAction
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
 		
-		converter = new ExtensibleURIConverterImpl();
-
 		// load BPEL,WSDL,XSDs
 		Process process = loadBPEL();
-		newWriter = new WriterUiBpel(process, getBpelFile());
-
 		try {
 			IFile f = getBpelFile();
-			IFolder folder = (IFolder) f.getParent();
-			IFile file = folder.getFile("UIBPEL_Process.bpel");
-			IPath fullProcessPath = file.getFullPath();
-			URI uri = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
-			OutputStream out = new BufferedOutputStream(converter.createOutputStream(uri));
-			newWriter.write((BPELResource) getBpelResource(), out, null);
-			out.close();
+			newWriter = new WriterUiBpel(process, f);
+			newWriter.write((BPELResource) getBpelResource(), null);
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 

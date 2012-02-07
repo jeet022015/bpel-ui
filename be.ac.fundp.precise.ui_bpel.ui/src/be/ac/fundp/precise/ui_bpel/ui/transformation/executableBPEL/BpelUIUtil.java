@@ -1,6 +1,7 @@
 package be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,6 +28,9 @@ import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.While;
 import org.eclipse.bpel.model.resource.BPELResourceSetImpl;
 import org.eclipse.bpel.model.util.BPELUtils;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -37,6 +41,7 @@ import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.Data
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.EventInteractionManager;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.representation.ImportRepresentation;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.representation.PartnerLinkRepresentation;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.util.ExecutableBpelFileManager;
 import be.ac.fundp.precise.ui_bpel.ui.util.WSDLImportHelperUI;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
@@ -46,9 +51,9 @@ import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.PickUI;
 import be.edu.fundp.precise.uibpel.model.ScopeUI;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class BpelUIUtil.
+ * The BpelUIUtil can be utilized to identify the requirements for parsing a 
+ * UI-BPEL model to its executable version.
  *
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  */
@@ -63,45 +68,48 @@ public class BpelUIUtil {
 	/** The Constant SERVICE_NAME_USER_EVENT. */
 	private static final String SERVICE_NAME_USER_EVENT = "UserEventListener";
 	
-	/** The ui manager partner link. */
+	/** The UI manager partner link. */
 	protected PartnerLinkRepresentation uiManagerPartnerLink;
 	
 	/** The user event listener partner link. */
 	protected PartnerLinkRepresentation userEventListenerPartnerLink;
 	
-	/** The ui manager import. */
+	/** The UI manager import. */
 	protected ImportRepresentation uiManagerImport;
 	
 	/** The user event import. */
 	protected ImportRepresentation userEventImport;
 	
-	/** The ui manager op. */
+	/** The UI manager operation. */
 	protected DataInteractionManager uiManagerOp;
 	
-	/** The event manager op. */
+	/** The event manager operation. */
 	protected EventInteractionManager eventManagerOp;
 	
-	/** The wsdl_ui_bpel. */
+	/** The WSDL Definition of the coordinator WS. */
 	private Definition wsdl_ui_bpel;
 	
-	/** The wsdl_user_event_listinner. */
+	/** The WSDL Definition to allow the process listen User events. */
 	private Definition wsdl_user_event_listinner;
 	
-	/** The process ws dl. */
+	/** The WSDL Definition of the process. */
 	private Definition processWSDl;
 	
-	/** The p. */
+	/** The process. */
 	private Process p;
 
-	/** The instance. */
+	/** The OutputStream to save the executable process. */
+	private OutputStream out;
+
+	/** The singleton instance. */
 	private static BpelUIUtil instance;
 
 	/**
-	 * Gets the instace.
+	 * Gets the singleton instance.
 	 *
-	 * @return the instace
+	 * @return the unique instance
 	 */
-	public static BpelUIUtil getInstace() {
+	public static BpelUIUtil getInstance() {
 		if (instance == null) {
 			instance = new BpelUIUtil();
 		}
@@ -109,40 +117,34 @@ public class BpelUIUtil {
 	}
 
 	/**
-	 * Instantiates a new bpel ui util.
+	 * Instantiates a new BpelUIUtil.
 	 */
 	private BpelUIUtil() {
 
 	}
 
 	/**
-	 * Configure process.
+	 * This method configure the environment to derive the executable process.
+	 * 1. Identify the WSDLs
+	 * 2. Add the import to the new WSDLs into the process WSDL
+	 * 3. Add the CorrelationSet that allow listen User Event into the process WSDL
+	 * 4. Create the variable to the new Invokes.
 	 *
-	 * @param processWSDLPath the process wsdl path
-	 * @param ui_bpelWSDLPath the ui_bpel wsdl path
-	 * @param userListnnerPath the user listnner path
-	 * @param process the process
+	 * @param iFile the process file (bpel file)
+	 * @param process the process representation (EMF representation)
+	 * @throws CoreException this exception can be throued if the new WSDLs cannot be copied from
+	 * the core of plug-in.
+	 * @throws IOException Signals that an I/O exception has occurred during the serialization of
+	 * the new process.
 	 */
-	public void configureProcess(String processWSDLPath,
-			String ui_bpelWSDLPath, String userListnnerPath,  Process process) {
+	public void configureProcess(IFile iFile,  Process process) throws CoreException, IOException {
 
 		if (p != null && p.equals(process))
 			return;
 		else
 			p = process;
 
-		URI uri = URI.createPlatformResourceURI(processWSDLPath, false);
-		processWSDl = (Definition) attemptLoadWSDL(uri, process.eResource()
-				.getResourceSet());
-
-		//uri = URI.createURI(ui_bpelWSDLPath, false);
-		uri = URI.createPlatformResourceURI(ui_bpelWSDLPath, false);
-		wsdl_ui_bpel = (Definition) attemptLoadWSDL(uri, process.eResource()
-				.getResourceSet());
-		
-		uri = URI.createPlatformResourceURI(userListnnerPath, false);
-		wsdl_user_event_listinner = (Definition) attemptLoadWSDL(uri, process.eResource()
-				.getResourceSet());
+		managerFiles(iFile, process);
 		
 		uiManagerPartnerLink = new PartnerLinkRepresentation("UiManagerPartnerLink",
 				"UiManagerPartnerLinkType","UiManagerRole", wsdl_ui_bpel,SERVICE_NAME, processWSDl, false);
@@ -161,7 +163,45 @@ public class BpelUIUtil {
 	}
 
 	/**
-	 * Save process wsdl.
+	 * This method load the new WSDLs and it creates the output Stream to save the executable
+	 * BPEL Process.
+	 *
+	 * @param iFile the process file (bpel file)
+	 * @param process the process representation (EMF representation)
+	 * @throws CoreException this exception can be throued if the new WSDLs cannot be copied from
+	 * the core of plug-in.
+	 * @throws IOException Signals that an I/O exception has occurred during the serialization of
+	 * the new process.
+	 */
+	private void managerFiles(IFile iFile, Process process) throws CoreException, IOException {
+		
+		ExecutableBpelFileManager wsdlManager = new ExecutableBpelFileManager((IFolder) iFile.getParent());
+		
+		String processWsldPath = "";
+		for (Import processImp : process.getImports()) {
+			wsdlManager.getCopyProcessWSDLs(processImp.getLocation());
+			if (process.getTargetNamespace().equals(processImp.getNamespace())){
+				processWsldPath = wsdlManager.getWsdlPath(processImp.getLocation());
+			}
+		}
+		
+		URI uri = URI.createPlatformResourceURI(processWsldPath, false);
+		processWSDl = (Definition) attemptLoadWSDL(uri, process.eResource()
+				.getResourceSet());
+
+		uri = URI.createPlatformResourceURI(wsdlManager.getUiManagerPath(), false);
+		wsdl_ui_bpel = (Definition) attemptLoadWSDL(uri, process.eResource()
+				.getResourceSet());
+		
+		uri = URI.createPlatformResourceURI(wsdlManager.getUserEventListenerPath(), false);
+		wsdl_user_event_listinner = (Definition) attemptLoadWSDL(uri, process.eResource()
+				.getResourceSet());
+		
+		out = wsdlManager.getOutputStream();
+	}
+
+	/**
+	 * This method saves the wsdl pf the executable BPEL process.
 	 */
 	public void saveProcessWSDL() {
 		
@@ -187,9 +227,11 @@ public class BpelUIUtil {
 	}
 
 	/**
-	 * Gets the variable for user interaction.
+	 * For a given user interaction, this method can return a 
+	 * array with all the variables required to derive an BPEL
+	 * action from it.
 	 *
-	 * @param id the id
+	 * @param id the user interaction ID.
 	 * @return the variable for user interaction
 	 */
 	public Variable[] getVariableForUserInteraction(String id) {
@@ -199,13 +241,13 @@ public class BpelUIUtil {
 	}
 
 	/**
-	 * Treat process.
+	 * This method identify the correct treatment for an activity.
 	 *
 	 * @param activity the activity
 	 */
 	private void treatProcess(Activity activity) {
 		if (activity instanceof ExtensionActivity)
-			extensionActivity2XML((ExtensionActivity) activity);
+			dealExtensionActivity((ExtensionActivity) activity);
 		else if (activity instanceof Flow)
 			for (Activity inAct : ((Flow) activity).getActivities())
 				treatProcess(inAct);
@@ -224,7 +266,7 @@ public class BpelUIUtil {
 		else if (activity instanceof Pick) {
 			dealPick((Pick) activity);
 		} else if (activity instanceof Scope)
-			scopeInner((Scope) activity);
+			dealScope((Scope) activity);
 		else if (activity instanceof ForEach)
 			treatProcess(((ForEach) activity).getActivity());
 		else if (activity instanceof RepeatUntil)
@@ -232,9 +274,9 @@ public class BpelUIUtil {
 	}
 
 	/**
-	 * Deal pick.
+	 * Deal with a pick activity.
 	 *
-	 * @param f the f
+	 * @param f the Pick activity
 	 */
 	private void dealPick(Pick f) {
 		for (OnAlarm intAct : f.getAlarm())
@@ -244,11 +286,11 @@ public class BpelUIUtil {
 	}
 
 	/**
-	 * Extension activity2 xml.
+	 * Deal with an extension activity.
 	 *
-	 * @param activity the activity
+	 * @param activity the extension activity
 	 */
-	private void extensionActivity2XML(ExtensionActivity activity) {
+	private void dealExtensionActivity(ExtensionActivity activity) {
 		if (activity instanceof DataSelectionUI) {
 			uiManagerOp.createDataSelectionVar((DataSelectionUI) activity);
 			return;
@@ -267,7 +309,7 @@ public class BpelUIUtil {
 					eventManagerOp.createEventVar(userEvent);
 				}
 			}
-			scopeInner(scope);
+			dealScope(scope);
 			return;
 		} else if (activity instanceof PickUI) {
 			PickUI pick = (PickUI) activity;
@@ -279,11 +321,11 @@ public class BpelUIUtil {
 	}
 
 	/**
-	 * Scope inner.
+	 * Deal with a scope activity.
 	 *
-	 * @param activity the activity
+	 * @param activity the scope activity
 	 */
-	private void scopeInner(Scope activity) {
+	private void dealScope(Scope activity) {
 		if (activity.getFaultHandlers() != null) {
 			for (Catch c : activity.getFaultHandlers().getCatch())
 				treatProcess(c.getActivity());
@@ -367,11 +409,11 @@ public class BpelUIUtil {
 	}
 
 	/**
-	 * Attempt load wsdl.
+	 * Attempt load a wsdl.
 	 *
 	 * @param uri the uri
-	 * @param resourceSet the resource set
-	 * @return the object
+	 * @param resourceSet the resource set of the process
+	 * @return the Definition of the WSDL
 	 */
 	public static Object attemptLoadWSDL(URI uri, ResourceSet resourceSet) {
 		Resource resource = null;
@@ -421,5 +463,14 @@ public class BpelUIUtil {
 	 */
 	public Variable[] getGenIdVar() {
 		return uiManagerOp.getVariable(DataInteractionManager.GEN_ID_INDEX);
+	}
+
+	/**
+	 * Gets the output stream.
+	 *
+	 * @return the output stream
+	 */
+	public OutputStream getOutputStream() {
+		return out;
 	}
 }

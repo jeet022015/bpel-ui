@@ -20,7 +20,6 @@ import org.eclipse.bpel.model.Correlations;
 import org.eclipse.bpel.model.Expression;
 import org.eclipse.bpel.model.ExtensionActivity;
 import org.eclipse.bpel.model.From;
-import org.eclipse.bpel.model.Import;
 import org.eclipse.bpel.model.Invoke;
 import org.eclipse.bpel.model.OnEvent;
 import org.eclipse.bpel.model.PartnerLinks;
@@ -40,7 +39,7 @@ import org.eclipse.bpel.ui.BPELEditor;
 import org.eclipse.bpel.ui.properties.CorrelationSection;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
@@ -51,7 +50,6 @@ import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.Element;
 
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.DataInteractionManager;
-import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.util.WsdlFileManager;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
@@ -60,7 +58,6 @@ import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.ScopeUI;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class WriterUiBpel.
  *
@@ -69,63 +66,48 @@ import be.edu.fundp.precise.uibpel.model.ScopeUI;
 public class WriterUiBpel extends BPELWriter {
 
 	/** The Constant EMPTY_STRING. */
-	private static final String EMPTY_STRING = null;
+	protected static final String EMPTY_STRING = null;
 	
 	/** The Constant HEAD_STRING. */
-	private static final String HEAD_STRING =  "xmlns:s1=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+	protected static final String HEAD_STRING =  "xmlns:s1=\"http://www.w3.org/2001/XMLSchema-instance\" " +
  		    "xmlns:s2=\"http://www.w3.org/2001/XMLSchema\" " +
  		    "s1:type=\"s2:string\">";
 	
 	/** The Constant NL. */
-	private static final String NL = System.getProperty("line.separator");
+	protected static final String NL = System.getProperty("line.separator");
 	
 	/** The bpel. */
-	private BpelUIUtil bpel;
+	protected BpelUIUtil bpel;
 	
 	/** The process. */
 	protected Process process;
 	
 	/** The output var gen. */
-	private Variable outputVarGen;
+	protected Variable outputVarGen;
+
+	protected IFolder processFolder;
 	
 	/**
 	 * Instantiates a new writer ui bpel.
 	 *
 	 * @param process the process
 	 * @param iFile the i file
+	 * @throws CoreException 
+	 * @throws IOException 
 	 */
-	public WriterUiBpel(Process process, IResource iFile) {
+	public WriterUiBpel(Process process, IFile iFile) throws CoreException, IOException {
 		super();
 		this.process = process;
-		bpel = BpelUIUtil.getInstace();
-		IFolder processFolder = null;
-		String processWsldPath = "";
-		//String uiManagerWsdlPath = "";
-		//String userEventWsdlPath = "";
-		for (Import processImp : process.getImports()) {
-			if (process.getTargetNamespace().equals(processImp.getNamespace())){
-				processFolder = (IFolder) iFile.getParent();
-				IFile processFile = processFolder.getFile(processImp.getLocation());
-				processWsldPath = processFile.getFullPath().toString();
-//				file = folder.getFile("UiManager.wsdl");
-//				uiManagerWsdlPath = file.getFullPath().toString();
-//				file = folder.getFile("UserEventListener.wsdl");
-//				userEventWsdlPath = file.getFullPath().toString();
-			}
-		}
-		
-		WsdlFileManager wsdlManager = new WsdlFileManager(processFolder);
-		String uiManagerWsdlPath = wsdlManager.getUiManagerPath();
-		String userEventWsdlPath = wsdlManager.getUserEventListenerPath();
-		
-		bpel.configureProcess(processWsldPath, uiManagerWsdlPath, userEventWsdlPath, process);
+		bpel = BpelUIUtil.getInstance();
+		bpel.configureProcess(iFile, process);
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.bpel.model.resource.BPELWriter#write(org.eclipse.bpel.model.resource.BPELResource, java.io.OutputStream, java.util.Map)
 	 */
-	public void write(BPELResource resource, OutputStream out, Map<?, ?> args)
+	public void write(BPELResource resource, Map<?, ?> args)
 			throws IOException {
+		OutputStream out = bpel.getOutputStream();
 		super.write(resource, out, args);
 		bpel.saveProcessWSDL();
 	}
@@ -163,8 +145,6 @@ public class WriterUiBpel extends BPELWriter {
 			onEventElement.setAttribute("messageType", qNameToString(onEvent,
 					onEvent.getMessageType().getQName()));
 		}
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=336003
-		// "element" attribute was missing from original model
 		if (onEvent.getXSDElement() != null) {
 			onEventElement.setAttribute("element",
 					onEvent.getXSDElement().getQName());
