@@ -51,6 +51,7 @@ import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.Element;
 
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.DataInteractionManager;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.util.WsdlFileManager;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
@@ -96,21 +97,27 @@ public class WriterUiBpel extends BPELWriter {
 	public WriterUiBpel(Process process, IResource iFile) {
 		super();
 		this.process = process;
-		String processWsldPath = "";
-		String uiManagerWsdlPath = "";
-		String userEventWsdlPath = "";
 		bpel = BpelUIUtil.getInstace();
+		IFolder processFolder = null;
+		String processWsldPath = "";
+		//String uiManagerWsdlPath = "";
+		//String userEventWsdlPath = "";
 		for (Import processImp : process.getImports()) {
 			if (process.getTargetNamespace().equals(processImp.getNamespace())){
-				IFolder folder = (IFolder) iFile.getParent();
-				IFile file = folder.getFile(processImp.getLocation());
-				processWsldPath = file.getFullPath().toString();
-				file = folder.getFile("UiManager.wsdl");
-				uiManagerWsdlPath = file.getFullPath().toString();
-				file = folder.getFile("UserEventListener.wsdl");
-				userEventWsdlPath = file.getFullPath().toString();
+				processFolder = (IFolder) iFile.getParent();
+				IFile processFile = processFolder.getFile(processImp.getLocation());
+				processWsldPath = processFile.getFullPath().toString();
+//				file = folder.getFile("UiManager.wsdl");
+//				uiManagerWsdlPath = file.getFullPath().toString();
+//				file = folder.getFile("UserEventListener.wsdl");
+//				userEventWsdlPath = file.getFullPath().toString();
 			}
 		}
+		
+		WsdlFileManager wsdlManager = new WsdlFileManager(processFolder);
+		String uiManagerWsdlPath = wsdlManager.getUiManagerPath();
+		String userEventWsdlPath = wsdlManager.getUserEventListenerPath();
+		
 		bpel.configureProcess(processWsldPath, uiManagerWsdlPath, userEventWsdlPath, process);
 	}
 	

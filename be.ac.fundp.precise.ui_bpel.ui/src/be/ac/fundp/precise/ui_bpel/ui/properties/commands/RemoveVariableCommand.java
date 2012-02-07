@@ -41,16 +41,13 @@ public class RemoveVariableCommand extends RemoveFromListCommand {
 	 */
 	@Override
 	protected List<Variable> getList() {
-		// https://issues.jboss.org/browse/JBIDE-8048
 		Variables variables = getCorrectVariables(target);
-		//Variables variables = ModelHelper.getVariables( target );
 		if (variables != null )
 			return variables.getChildren();
 		return new ArrayList<Variable>();
 	}
 
 	private Variables getCorrectVariables(EObject context) {
-		System.out.println(context);
 		if (context instanceof Process) 
 			return ((Process)context).getVariables();
 		if (context instanceof Scope){
