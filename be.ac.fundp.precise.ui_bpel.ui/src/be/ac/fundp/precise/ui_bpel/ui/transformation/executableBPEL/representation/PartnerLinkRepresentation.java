@@ -115,7 +115,6 @@ public class PartnerLinkRepresentation {
 				//http://www.example.org/UI_BPEL-Mediator/
 			}
 		}
-		
 		//Role and PartnerLinkType
 		role.setPortType(pt);
 		partnerLinkType.getRole().add(role);

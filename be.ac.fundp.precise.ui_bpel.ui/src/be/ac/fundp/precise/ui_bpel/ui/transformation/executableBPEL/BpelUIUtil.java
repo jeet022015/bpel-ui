@@ -146,10 +146,7 @@ public class BpelUIUtil {
 
 		managerFiles(iFile, process);
 		
-		uiManagerPartnerLink = new PartnerLinkRepresentation("UiManagerPartnerLink",
-				"UiManagerPartnerLinkType","UiManagerRole", wsdl_ui_bpel,SERVICE_NAME, processWSDl, false);
-		userEventListenerPartnerLink = new PartnerLinkRepresentation("UserEventPartnerLink",
-				"UserEventPartnerLinkType","UserEventRole", wsdl_user_event_listinner,SERVICE_NAME_USER_EVENT, processWSDl, true);
+		addToolingNamespaces();
 		
 		uiManagerImport = new ImportRepresentation(wsdl_ui_bpel, processWSDl, p.eResource());
 		userEventImport = new ImportRepresentation(wsdl_user_event_listinner,processWSDl, p.eResource());
@@ -157,7 +154,17 @@ public class BpelUIUtil {
 		eventManagerOp = new EventInteractionManager(wsdl_user_event_listinner, processWSDl);
 		uiManagerOp = new DataInteractionManager(wsdl_ui_bpel, processWSDl, eventManagerOp.getProperty());
 		
+		//save the first time to add the namespaces of the new definitions
 		saveProcessWSDL();
+		
+		uiManagerPartnerLink = new PartnerLinkRepresentation("UiManagerPartnerLink",
+				"UiManagerPartnerLinkType","UiManagerRole", wsdl_ui_bpel,SERVICE_NAME, processWSDl, false);
+		userEventListenerPartnerLink = new PartnerLinkRepresentation("UserEventPartnerLink",
+				"UserEventPartnerLinkType","UserEventRole", wsdl_user_event_listinner,SERVICE_NAME_USER_EVENT, processWSDl, true);
+		
+		//save the first time to add the new partner links
+		saveProcessWSDL();
+		
 		uiManagerOp.createGenIdVars();
 		treatProcess(process.getActivity());
 	}
@@ -201,12 +208,19 @@ public class BpelUIUtil {
 	}
 
 	/**
-	 * This method saves the wsdl pf the executable BPEL process.
+	 * This method adds necessary namespaces to the process wsdl.
 	 */
-	public void saveProcessWSDL() {
+	private void addToolingNamespaces() {
 		
 		WSDLImportHelperUI.addToolingNamespaces(processWSDl);
 
+		saveProcessWSDL();
+	}
+
+	/**
+	 * This method saves the wsdl of the executable BPEL process.
+	 */
+	private void saveProcessWSDL() {
 		try {
 			processWSDl.eResource().save(null);
 		} catch (IOException e) {

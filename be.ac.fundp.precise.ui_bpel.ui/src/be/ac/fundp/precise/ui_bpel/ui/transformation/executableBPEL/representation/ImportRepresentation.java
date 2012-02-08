@@ -51,12 +51,10 @@ public class ImportRepresentation {
 		if (t != null) {
 			imp.setNamespace(t);
 		}
+		
 		// location
-		URI schemaURI = URI.createURI(myWsdl.getLocation());
-		imp.setLocation(schemaURI
-				.deresolve(resource.getURI(), true, true, true).toString());
-
-		// importType (the WSDL kind)
+		URI schemaURI = URI.createPlatformPluginURI(myWsdl.getLocation(), true);
+		imp.setLocation(schemaURI.lastSegment());
 		imp.setImportType(WSDLConstants.WSDL_NAMESPACE_URI);
 
 		return imp;

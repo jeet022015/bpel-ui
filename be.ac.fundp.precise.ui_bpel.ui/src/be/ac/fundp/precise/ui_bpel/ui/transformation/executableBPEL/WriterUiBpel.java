@@ -109,7 +109,7 @@ public class WriterUiBpel extends BPELWriter {
 			throws IOException {
 		OutputStream out = bpel.getOutputStream();
 		super.write(resource, out, args);
-		bpel.saveProcessWSDL();
+		//bpel.addToolingNamespaces();
 	}
 	
 	/* (non-Javadoc)
@@ -294,21 +294,23 @@ public class WriterUiBpel extends BPELWriter {
 	 */
 	private Element dealWithScopeUI(ScopeUI activity) {
 		EventHandlerUI uiHandler = (EventHandlerUI)activity.getEventHandlers();
-		for (OnUserEvent aOnUserEvent : uiHandler.getUserInteraction()) {
-			OnEvent userInteractionEvent = BPELFactory.eINSTANCE.createOnEvent();
-			
-			userInteractionEvent.setActivity(aOnUserEvent.getActivity());
-			
-			userInteractionEvent.setPartnerLink(bpel.getPartnerLinkUserEvent());
-			userInteractionEvent.setOperation(bpel.getEventOperation());
-			userInteractionEvent.setVariable(bpel.getVariableForUserInteraction(aOnUserEvent.getId())[0]);
-			Correlations cc = BPELFactory.eINSTANCE.createCorrelations();
-			Correlation processCorrelation = BPELFactory.eINSTANCE.createCorrelation();
-			processCorrelation.setInitiate(CorrelationSection.NO);
-			processCorrelation.setSet(bpel.getUserEventCorrelationSet());
-			cc.getChildren().add(processCorrelation);
-			userInteractionEvent.setCorrelations(cc);
-			uiHandler.getEvents().add(userInteractionEvent);
+		if (uiHandler != null) {
+			for (OnUserEvent aOnUserEvent : uiHandler.getUserInteraction()) {
+				OnEvent userInteractionEvent = BPELFactory.eINSTANCE.createOnEvent();
+				
+				userInteractionEvent.setActivity(aOnUserEvent.getActivity());
+				
+				userInteractionEvent.setPartnerLink(bpel.getPartnerLinkUserEvent());
+				userInteractionEvent.setOperation(bpel.getEventOperation());
+				userInteractionEvent.setVariable(bpel.getVariableForUserInteraction(aOnUserEvent.getId())[0]);
+				Correlations cc = BPELFactory.eINSTANCE.createCorrelations();
+				Correlation processCorrelation = BPELFactory.eINSTANCE.createCorrelation();
+				processCorrelation.setInitiate(CorrelationSection.NO);
+				processCorrelation.setSet(bpel.getUserEventCorrelationSet());
+				cc.getChildren().add(processCorrelation);
+				userInteractionEvent.setCorrelations(cc);
+				uiHandler.getEvents().add(userInteractionEvent);
+			}
 		}
 		return scope2XML(activity);
 	}
