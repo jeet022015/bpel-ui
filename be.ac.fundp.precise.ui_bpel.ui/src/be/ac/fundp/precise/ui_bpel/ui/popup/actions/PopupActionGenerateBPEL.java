@@ -1,6 +1,7 @@
 package be.ac.fundp.precise.ui_bpel.ui.popup.actions;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import org.eclipse.bpel.model.Process;
 import org.eclipse.bpel.model.resource.BPELResource;
@@ -36,7 +37,7 @@ public class PopupActionGenerateBPEL extends PopupActionWithProcessRepresentatio
 		try {
 			IFile f = getBpelFile();
 			newWriter = new WriterUiBpel(process, f);
-			newWriter.write((BPELResource) getBpelResource(), null);
+			newWriter.write((BPELResource) getBpelResource(), Collections.<String,String>emptyMap());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (CoreException e) {

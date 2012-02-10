@@ -412,6 +412,7 @@ public class WriterUiBpel extends BPELWriter {
 		toQuery.setValue("processId");
 		f.setQuery(toQuery);
 		f.setVariable(genOutputVar);
+		f.setPart(genPat);
 		
 		To t = BPELFactory.eINSTANCE.createTo();
 		toQuery = BPELFactory.eINSTANCE.createQuery();
@@ -539,13 +540,13 @@ public class WriterUiBpel extends BPELWriter {
 	/**
 	 * Deal with data selection ui.
 	 *
-	 * @param activity the activity
+	 * @param selctionActivity the activity
 	 * @return the element
 	 */
-	private Element dealWithDataSelectionUI(DataSelectionUI activity) {
+	private Element dealWithDataSelectionUI(DataSelectionUI selctionActivity) {
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
 		
-		Variable[] vars = bpel.getVariableForUserInteraction(activity.getId());
+		Variable[] vars = bpel.getVariableForUserInteraction(selctionActivity.getId());
 		
 		Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
 				getDefaultRequestNames(DataInteractionManager.SELECTION_OPERATION)) ? vars[0] : vars[1];
@@ -560,40 +561,40 @@ public class WriterUiBpel extends BPELWriter {
 		//TODO when should i do it?
 		String prefix = "";
 		
-		Operation inputOperation = bpel.getSelectionOperation();
+		Operation selectionOperation = bpel.getSelectionOperation();
 		Operation genOperation = bpel.getGenIdOperation();
 		
 		//================== Initialization =====================
 		Copy initCopy = BPELFactory.eINSTANCE.createCopy();
 
 		From f = BPELFactory.eINSTANCE.createFrom();
-		To t = createToPart(inputVar, inputOperation);
-		createDefaultInitializer(null, f, t, activity.getInputItem().size());
+		To t = createToPart(inputVar, selectionOperation);
+		createDefaultInitializer(null, f, t, selctionActivity.getOutputItem().size());
 		initCopy.setFrom(f);
 		initCopy.setTo(t);
 		assignBefore.getCopy().add(initCopy);
 		
 		//================== ROLE =====================
-		String role = activity.getUserRoles().size() > 0 ? activity.getUserRoles().get(0).getRoleId() : "roleDefault";
+		String role = selctionActivity.getUserRoles().size() > 0 ? selctionActivity.getUserRoles().get(0).getRoleId() : "roleDefault";
 
-		Copy roleCopy = createCopyRole(inputVar, prefix, inputOperation, role);
+		Copy roleCopy = createCopyRole(inputVar, prefix, selectionOperation, role);
 		assignBefore.getCopy().add(roleCopy);
 		
 		//================== ID =====================
-		Copy idCoppy = createCopyId(activity.getId(), inputVar, prefix, inputOperation);
+		Copy idCoppy = createCopyId(selctionActivity.getId(), inputVar, prefix, selectionOperation);
 		assignBefore.getCopy().add(idCoppy);
 		
 		//================== Process ID =====================
 		Part genPart = (Part) genOperation.getInput().getMessage().getPart("parameters");
-		Part outputPart = (Part) inputOperation.getInput().getMessage().getPart("parameters");
+		Part outputPart = (Part) selectionOperation.getInput().getMessage().getPart("parameters");
 		Copy genCoppy = createCopyProcessID(outputVarGen,genPart, inputVar,outputPart, "processId");
 		assignBefore.getCopy().add(genCoppy);
 		
 		//================== COPY DATA ITEM =====================
 		int cont = 1;
 		List<Copy> dataItemCopiesBefore = new LinkedList<Copy>();
-		for (DataItem di : activity.getInputItem()) {
-			Part p = (Part) inputOperation.getInput().getMessage().getPart("parameters");
+		for (DataItem di : selctionActivity.getOutputItem()) {
+			Part p = (Part) selectionOperation.getInput().getMessage().getPart("parameters");
 			Copy c = createDataItemBeforeCopy(inputVar, prefix, p, cont, di, "data", "data");
 			dataItemCopiesBefore.add(c);
 			cont++;
@@ -607,14 +608,14 @@ public class WriterUiBpel extends BPELWriter {
 		i.setName("InvokeDataSelection");
 		i.setInputVariable(inputVar);
 		i.setOutputVariable(outputVar);
-		i.setOperation(inputOperation);
+		i.setOperation(selectionOperation);
 		i.setPartnerLink(bpel.getPartnerLinkBPEL());
 		
 		//================== COPY DATA ITEM =====================
 		List<Copy> dataItemCopiesAfter = new LinkedList<Copy>();
 		cont = 1;
-		for (DataItem di : activity.getOutputItem()) {
-			Part p = (Part) inputOperation.getOutput().getMessage().getPart("parameters");
+		for (DataItem di : selctionActivity.getInputItem()) {
+			Part p = (Part) selectionOperation.getOutput().getMessage().getPart("parameters");
 			Copy c = createDataItemCopy(outputVar, prefix, p, cont, di, "return", "data");
 			cont++;
 			dataItemCopiesAfter.add(c);
@@ -681,8 +682,9 @@ public class WriterUiBpel extends BPELWriter {
 		
 		//================== Process ID =====================
 		Part genPart = (Part) genOperation.getInput().getMessage().getPart("parameters");
+		System.out.println("genPart = "+ genPart);
 		Part outputPart = (Part) inputOperation.getInput().getMessage().getPart("parameters");
-		Copy genCoppy = createCopyProcessID(outputVarGen,genPart, inputVar,outputPart, "processId");
+		Copy genCoppy = createCopyProcessID(outputVarGen, genPart, inputVar, outputPart, "processId");
 		assignBefore.getCopy().add(genCoppy);
 		
 		//================== ID =====================
@@ -844,7 +846,9 @@ public class WriterUiBpel extends BPELWriter {
 		//this code replace the any xsi:type="anyType" by the representation of string
 		//HEAD_STRING+ "Data" +tail
 		String finalSt = fromString;
+		System.out.println("fromString="+fromString);
 		Pattern pattern = Pattern.compile("<[a-zA-Z]*:?data>.*</[a-zA-Z]*:?data>", Pattern.DOTALL);
+		System.out.println("pattern="+pattern);
 		Matcher matcher = pattern.matcher(fromString);
 		if (matcher.find()){
 			String myShit = matcher.group();
