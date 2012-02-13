@@ -1,0 +1,949 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://UsiXML-XSD/AbstractUIModel"
+	xmlns:usi="http://UsiXML-XSD/AbstractUIModel" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+
+	<xs:element name="abstractUIModel">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				This model describes canonically a user interface in terms of abstract
+				interaction units, relationships and listeners in a way that is
+				independent from the concrete interaction units available on the
+				targets. The abstract user interface model is independent of the
+				target device or modality.
+			</xs:documentation>
+		</xs:annotation>
+
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="abstractCompoundIUs" type="usi:AbstractCompoundIU" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+
+		<xs:key name="id_state">
+			<xs:selector xpath=".//usi:state" />
+			<xs:field xpath="@id" />
+		</xs:key>
+		<xs:keyref name="source_transition" refer="usi:id_state">
+			<xs:selector xpath=".//usi:transition" />
+			<xs:field xpath="@source" />
+		</xs:keyref>
+		<xs:keyref name="target_transition" refer="usi:id_state">
+			<xs:selector xpath=".//usi:transition" />
+			<xs:field xpath="@target" />
+		</xs:keyref>
+
+		<xs:key name="id_event">
+			<xs:selector xpath=".//usi:event" />
+			<xs:field xpath="@id" />
+		</xs:key>
+		<xs:keyref name="event_transition" refer="usi:id_event">
+			<xs:selector xpath=".//usi:transition" />
+			<xs:field xpath="@event" />
+		</xs:keyref>
+
+		<xs:key name="id_action">
+			<xs:selector xpath=".//usi:action" />
+			<xs:field xpath="@id" />
+		</xs:key>
+		<xs:keyref name="action_transition" refer="usi:id_action">
+			<xs:selector xpath=".//usi:transition" />
+			<xs:field xpath="@action" />
+		</xs:keyref>
+
+	</xs:element>
+
+	<xs:complexType name="AbstractCompoundIU">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Composition of one or several AbstractInteractionUnit
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="usi:AbstractInteractionUnit">
+				<xs:sequence>
+ 					<xs:element name="abstractInteractionUnit" type="usi:AbstractInteractionUnit" minOccurs="0" maxOccurs="unbounded" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="AbstractInteractionUnit">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Main entity of the model, every abstract object is an AbstractInteractionUnit.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="listener" type="usi:AbstractListener" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="name" type="usi:AbstractLocalization" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="state" type="usi:State" minOccurs="0"	maxOccurs="unbounded" />
+			<xs:element name="transition" type="usi:Transition"	minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Identification string of the AbstractInteractionUnit.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="role" type="xs:string">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Name of the role played by the AbstractInteractionUnit.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="importance" type="xs:int">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Importance level of the AbstractiInteractionUnit. 
+					To be discussed later, for the moment a 5 level scale can be used like "Very
+					high"/"High"/"Medium"/"Low"/"Very low".
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="repetitionFactor" type="xs:int">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Number of times the AbstractInteractionUnit is repeated in the parent entity.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="hierarchyNumber" type="xs:int">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Allows to order the AbstractionInteractionUnit in its parent entity, 
+					in function of the other AbstractInteractionUnits contained in the same parent.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="securityType" type="usi:AuthenticationType">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Defines the type of authentication for the AbstractInteractionUnit.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="securityMechanism" type="usi:SecurityMechanism">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Defines the type of security mechanism for the AbstractInteractionUnit.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="State">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Possible state of an AstractInteractionUnit. 
+				An AbstractInteractionUnit may have many different states.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Description of the state.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="target" type="usi:Transition" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="source" type="usi:Transition" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required" />
+	</xs:complexType>
+
+	<xs:simpleType name="SecurityMechanism">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NONE" />
+			<xs:enumeration value="CAPTCHA" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="AuthenticationType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NONE" />
+			<xs:enumeration value="USER_PASSWORD" />
+			<xs:enumeration value="INTEGRATED" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="AbstractListener">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Entity used to describe the behavior of the AbstractInteractionUnit by using
+				Event-Condition-Action (ECA) rules.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Name of the AbstractListener.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rules" type="usi:Rule" minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="Rule">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Name of the AbstractListener.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="justification" type="usi:Justification" minOccurs="0" maxOccurs="1" />
+			<xs:element name="event" type="usi:EventExpression" minOccurs="1" maxOccurs="1" />
+			<xs:element name="condition" type="usi:Condition" minOccurs="0" maxOccurs="1" />
+			<xs:element name="action" type="usi:ActionExpression" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="Justification">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				The justification is a kind of motivation for the ECA rules, it is not used for describing
+				the interface itself but more for documentation purposes.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="content" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Text representing the justification itself.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="type" type="usi:JustificationType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Type of justification, the different possibilities are described in the
+						AbstractJustificationType description.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required" />
+	</xs:complexType>
+
+	<xs:simpleType name="JustificationType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CLAIM">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Assertion put forward publicly for general acceptance with the implication that there
+						are underlying 'reasons' that could show it to be 'well founded'
+						and therefore entitled to be generally accepted.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GROUND">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						The term 'ground' refers to the specific facts relied on to support a given claim.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WARRANT">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Assertion that entitles you to interpret or link the grounds (facts) as support of the
+						claim.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BACKING">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						The ‘backing’ consists of a very general set of background assumptions which, in effect,
+						legitimize the basis for believing in the warrant. That is, if the
+						warrant is not accepted on its surface, then the backing is called
+						into play to add deeper support to the argument.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="REBUTTAL">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						The ‘rebuttal’ presents the possible exceptions or objections as to why the claim, the
+						grounds, the warrants, or the backing may not hold for the situation under discussion.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="QUALIFIER">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Word that indicates how strongly the claim is being asserted, or how likely that something
+						might occur.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UNDEFINED" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="EventExpression">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Specifies a set of events with relationships between them. The events are represented by
+				AtomicEvents and are related by TemporalEventExpressions.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Name of the EventExpression.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="TemporalEventExpression">
+		<xs:complexContent>
+			<xs:extension base="usi:EventExpression">
+				<xs:sequence>
+					<xs:element name="type" type="usi:TemporalOperator" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">
+								Type of relationship involved between two AtomicEvents, the different possibilities
+								are described in the TemporalOperator description.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="previous" type="usi:EventExpression" minOccurs="1" maxOccurs="1" />
+					<xs:element name="next" type="usi:EventExpression" minOccurs="1" maxOccurs="1" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:simpleType name="TemporalOperator">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ENABLING" />
+			<xs:enumeration value="CHOICE" />
+			<xs:enumeration value="CONCURRENCY" />
+			<xs:enumeration value="SUSPEND" />
+			<xs:enumeration value="DISABLING" />
+			<xs:enumeration value="ORDERINDEPENDANCE" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="ActionExpression">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Specifies a set of actions with relationships between them. The actions are represented
+				by AtomicActions and are related by TemporalActionExpressions.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Name of the ActionExpression.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="TemporalActionExpression">
+		<xs:complexContent>
+			<xs:extension base="usi:ActionExpression">
+				<xs:sequence>
+					<xs:element name="type" type="usi:TemporalOperator" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">
+								Type of relationship involved between two AtomicActions, the different possibilities
+								are described in the TemporalOperator description.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="Transition">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Is related to State by two relationships meaning that a transition has source state and a
+				target state. Additionally it is related to EventExpression and ActionExpression
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="transitionExpression" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element type="usi:EventExpression" name="event" minOccurs="1" maxOccurs="1" />
+			<xs:element type="usi:ActionExpression" name="action" minOccurs="1" maxOccurs="1" />
+		</xs:all>
+		
+	</xs:complexType>
+
+	<xs:complexType name="Condition">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Logical test that, if satisfied or evaluates to true, causes the action to be carried out.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="specification" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Logical formula representing the condition to evaluate, for the moment under the
+						form of a String.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="id" type="xs:ID" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="AbstractLocalization">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Describes text attributes for AbstractInteractionUnits. It is useful for internationalization.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="label" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Description label of the AbstractInteractionUnit.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="longLabel" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Label as it appears in the interface.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="shortLabel" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Short version of the label.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="descLabel" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Description label of the AbstractInteractionUnit.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="help" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Textual help provided specifically for the AbstractInteractionUnit.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="id" type="xs:ID" use="optional" />
+		<xs:attribute name="lang" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					International code (2 letters) for the language supported by the AbstractLocalization.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="AbstractDataIU">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Interaction unit allowing to link data from the Domain Model with elements of the abstract
+				user interface.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="usi:AbstractElementaryIU">
+				<xs:sequence>
+					<xs:element name="domainReference" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">
+								Reference allowing to link the Domain Model in order to populate the AbstractDataItem.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="defaultValue" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">
+								Default value or concatenation of default values that can be used if the required
+								value is not available in the Domain Model.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dataFormat" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">
+								Format of the data.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="maxCardinality" type="xs:int">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Maximum number of items in the AbstractDataIU.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="minCardinality" type="xs:int">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Minimum number of items in the AbstractDataIU.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="dataType" type="usi:DataTypeType">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Type of the data.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="dataLength" type="xs:int">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Size of the data, in bytes.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="isDynamic" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Specifies if the content can evolve in the time.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="dataIUType" type="usi:AbstractDataIUType">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Type of interaction.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:simpleType name="DataTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BOOLEAN" />
+			<xs:enumeration value="HOUR" />
+			<xs:enumeration value="DATE" />
+			<xs:enumeration value="NATURAL" />
+			<xs:enumeration value="INTEGER" />
+			<xs:enumeration value="REAL" />
+			<xs:enumeration value="TEXT" />
+			<xs:enumeration value="SECRET" />
+			<xs:enumeration value="ARRAY" />
+			<xs:enumeration value="MULTIMEDIA" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="AbstractDataIUType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INPUT" />
+			<xs:enumeration value="OUTPUT" />
+			<xs:enumeration value="INPUT_OUTPUT" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="AbstractElementaryIU">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Atomic AbstractInteractionUnit that can be of 2 types: AbstractDataIU or AbstractTriggerIU.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="usi:AbstractInteractionUnit" />
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="AbstractSelectionIU">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Special type of AbstractCompoundIU representing a way to interact with the interface
+				by selecting an item in a list.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="usi:AbstractCompoundIU">
+				<xs:sequence>
+					<xs:element name="orderCriteria" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">
+								Criteria used to sort the selection.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="isContinuous" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Specifies if the selection is continuous.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="start" type="xs:float">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Starting number (for numerical selection).
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="end" type="xs:float">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Ending number (for numerical selection).
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="step" type="xs:float">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Interval between two successive items, by starting by start and ending by end (for
+							numerical selection).
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="isExpendable" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Specifies if the user can add item in the selection.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="selectionType" type="usi:SelectionType">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Specifies the type of selection of the unit.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="rating" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							Specifies if the unit is used for a rating.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:simpleType name="SelectionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="UNDEFINED" />
+			<xs:enumeration value="NOSELECTION" />
+			<xs:enumeration value="SINGLESELECTION">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						One item in the list is selectable.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SINGLEINTERVAL">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						An interval of the list	is selectable.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MULTIPLEINTERVAL">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Multiple intervals of the list are selectable.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="AbstractTriggerIU">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Interaction unit allowing triggering an event.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="usi:AbstractElementaryIU">
+				<xs:sequence>
+					<xs:element name="triggerIUType" type="usi:AbstractTriggerIUType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">
+								Type of event triggered.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:simpleType name="AbstractTriggerIUType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NAVIGATION" />
+			<xs:enumeration value="OPERATION" />
+			<xs:enumeration value="OPERATION_NAVIGATION" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="modelSearch">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Search for model elements based on logical formula
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="modelCreate">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Create a new model in the Domain Model
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="modelRead">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Read a specified field in the Domain Model
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="modelUpdate">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Update a field in the Domain Model
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="modelDelete">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Delete a field in the Domain Model
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="modelInvoke">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Perform a query external to the current Domain Model
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="modelReset">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Reset the Domain Model with the initial parameters
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="modelCopy">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Copy the Domain Model
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="listenerCreate">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Create a new listener on a specified AbstractInteractionUnit
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="listenerDelete">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Delete a listener of a specified AbstractInteractionUnit
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="eventDispatch">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Dispatch the event to another AbstractInteractionUnit
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IUOpen">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Open a specified AbstractInteractionUnit
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IUClose">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Close a specified AbstractInteractionUnit
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IUActivate">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Activate a specified AbstractInteractionUnit
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IUDesactivate">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Desactivate a specified AbstractInteractionUnit
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IUEmphasize">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Focus in a specified AbstractInteractionUnit
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IUDesemphasize">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Focus out a specified AbstractInteractionUnit
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="AtomicAction">
+		<xs:complexContent>
+			<xs:extension base="usi:ActionExpression">
+				<xs:sequence>
+					<xs:element name="type" type="usi:ActionType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">
+								Type of action, the different possibilities are described in the ActionType
+								description.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="specification" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">
+								Kind of argument that, used in conjunction with type, allows specifying the
+								action to launch.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="AtomicEvent">
+		<xs:complexContent>
+			<xs:extension base="usi:EventExpression">
+				<xs:sequence>
+					<xs:element name="type" type="usi:EventType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">
+								Type of event, the different possibilities are described in the EventType
+								description.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="specification" type="xs:string" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">
+								Kind of argument that, used in conjunction with type, allows specifying Event to
+								listen.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:simpleType name="EventType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="onDataInput">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						New data has been entered by the user
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="onErroneousDataInput">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						New erroneous data has been entered by the user
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="onDataOutput">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						New data has been output through the interface
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="onDataSelection">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Some data has been selected by the user
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="onOperationTrigger">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						An AbstractOperationIU has been activated
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="onNavigationTrigger">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						An AbstractNavigationIU has been activated
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="onFocusIn">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						An AbstractInteractionUnit has been focused in
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="onFocusOut">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						An AbstractInteractionUnit has been focused out
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="onModelUpdate">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						The Domain Model has been updated
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>
