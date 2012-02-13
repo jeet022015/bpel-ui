@@ -26,8 +26,10 @@ import org.eclipse.bpel.model.Sequence;
 import org.eclipse.bpel.model.While;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
@@ -90,10 +92,16 @@ public class AUIGenerator {
 	private OutputStream coordinatorConf(IFolder processFolder)
 			throws IOException, CoreException {
 		IFolder coordFolder = processFolder.getFolder("coord-artifacts");
+		NullProgressMonitor progressMonitor = new NullProgressMonitor();
 		if (coordFolder.exists()){
-			coordFolder.delete(true, null);
+			//coordFolder.delete(true, progressMonitor);
+			for (IResource content : coordFolder.members()) {
+				content.delete(IResource.FOLDER, progressMonitor);
+			}
+			coordFolder.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
+		} else {
+			coordFolder.create(true, true, progressMonitor);
 		}
-		coordFolder.create(true, true, null);
 		IFile mediatorFile = coordFolder.getFile("UI-AUIC_Mapping.xml");
 		IPath fullProcessPath = mediatorFile.getFullPath();
 		URI uri2 = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
@@ -105,10 +113,16 @@ public class AUIGenerator {
 	public void saveModels() throws IOException, CoreException {
 		//TODO create the folder and test if the folder exists.
 		IFolder auiFolder = processFolder.getFolder("aui-artifacts");
+		NullProgressMonitor progressMonitor = new NullProgressMonitor();
 		if (auiFolder.exists()){
-			auiFolder.delete(true, null);
+			//coordFolder.delete(true, progressMonitor);
+			for (IResource content : auiFolder.members()) {
+				content.delete(IResource.FOLDER, progressMonitor);
+			}
+			auiFolder.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
+		} else {
+			auiFolder.create(true, true, progressMonitor);
 		}
-		auiFolder.create(true, true, null);
 		for (String role : roleModels.keySet()) {
 			IFile roleAuiFile = auiFolder.getFile("AUI_Model-"+role+".xml");
 			IPath fullAuiFilePath = roleAuiFile.getFullPath();

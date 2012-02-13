@@ -101,25 +101,10 @@ public class BpelUIUtil {
 	/** The OutputStream to save the executable process. */
 	private OutputStream out;
 
-	/** The singleton instance. */
-	private static BpelUIUtil instance;
-
-	/**
-	 * Gets the singleton instance.
-	 *
-	 * @return the unique instance
-	 */
-	public static BpelUIUtil getInstance() {
-		if (instance == null) {
-			instance = new BpelUIUtil();
-		}
-		return instance;
-	}
-
 	/**
 	 * Instantiates a new BpelUIUtil.
 	 */
-	private BpelUIUtil() {
+	public BpelUIUtil() {
 
 	}
 

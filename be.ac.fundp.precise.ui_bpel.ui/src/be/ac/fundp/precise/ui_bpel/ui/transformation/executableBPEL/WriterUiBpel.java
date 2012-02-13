@@ -98,7 +98,7 @@ public class WriterUiBpel extends BPELWriter {
 	public WriterUiBpel(Process process, IFile iFile) throws CoreException, IOException {
 		super();
 		this.process = process;
-		bpel = BpelUIUtil.getInstance();
+		bpel = new BpelUIUtil();
 		bpel.configureProcess(iFile, process);
 	}
 	
@@ -846,9 +846,7 @@ public class WriterUiBpel extends BPELWriter {
 		//this code replace the any xsi:type="anyType" by the representation of string
 		//HEAD_STRING+ "Data" +tail
 		String finalSt = fromString;
-		System.out.println("fromString="+fromString);
-		Pattern pattern = Pattern.compile("<[a-zA-Z]*:?data>.*</[a-zA-Z]*:?data>", Pattern.DOTALL);
-		System.out.println("pattern="+pattern);
+		Pattern pattern = Pattern.compile("<[a-zA-Z]*:?data>.*</[a-zA-Z]*:?data>", Pattern.DOTALL);;
 		Matcher matcher = pattern.matcher(fromString);
 		if (matcher.find()){
 			String myShit = matcher.group();

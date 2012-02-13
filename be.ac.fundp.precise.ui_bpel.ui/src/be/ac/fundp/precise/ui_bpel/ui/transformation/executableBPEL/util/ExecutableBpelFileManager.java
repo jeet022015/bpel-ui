@@ -7,9 +7,11 @@ import java.io.OutputStream;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
@@ -25,6 +27,10 @@ import be.ac.fundp.precise.ui_bpel.ui.Activator;
  */
 public class ExecutableBpelFileManager {
 	
+	private static final String USER_EVENT_LISTENER_WSDL = "UserEventListener.wsdl";
+
+	private static final String UI_MANAGER_WSDL = "UiManager.wsdl";
+
 	/** The base folder. */
 	protected IFolder baseFolder;
 	
@@ -42,10 +48,15 @@ public class ExecutableBpelFileManager {
 	 */
 	public ExecutableBpelFileManager (IFolder folder) throws CoreException{
 		IFolder coordFolder = folder.getFolder("executable-artifacts");
+		NullProgressMonitor progressMonitor = new NullProgressMonitor();
 		if (coordFolder.exists()){
-			coordFolder.delete(true, null);
+			for (IResource content : coordFolder.members()) {
+				content.delete(IResource.FOLDER, progressMonitor);
+			}
+			coordFolder.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
+		}else{
+			coordFolder.create(true, true, progressMonitor);
 		}
-		coordFolder.create(true, true, null);
 		baseFolder = coordFolder;
 		processFolder = folder;
 	}
@@ -56,7 +67,7 @@ public class ExecutableBpelFileManager {
 	 * @return the ui manager path
 	 */
 	public String getUiManagerPath(){
-		IFile file = baseFolder.getFile("UiManager.wsdl");
+		IFile file = baseFolder.getFile(UI_MANAGER_WSDL);
 		if (!file.exists()){
 			try {
 				copyWsdlManagerFromPlugin(file, "wsdl/UiManager.wsdl");
@@ -75,7 +86,7 @@ public class ExecutableBpelFileManager {
 	 * @return the user event listener path
 	 */
 	public String getUserEventListenerPath(){
-		IFile file = baseFolder.getFile("UserEventListener.wsdl");
+		IFile file = baseFolder.getFile(USER_EVENT_LISTENER_WSDL);
 		if (!file.exists()){
 			try {
 				copyWsdlManagerFromPlugin(file, "wsdl/UserEventListener.wsdl");
@@ -111,6 +122,12 @@ public class ExecutableBpelFileManager {
 	 * @throws CoreException the core exception
 	 */
 	public void getCopyProcessWSDLs(String location) throws CoreException {
+		
+		//TODO fix it, these locations cannot appear in the process.
+		if (location.equals(UI_MANAGER_WSDL) || location.equals(USER_EVENT_LISTENER_WSDL) ){
+			return;
+		}
+		
 		IFile originalWsdlFile = processFolder.getFile(location);
 		IFile newWsdlFile = baseFolder.getFile(location);
 		newWsdlFile.create(originalWsdlFile.getContents(), true, null);

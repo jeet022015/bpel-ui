@@ -33,7 +33,8 @@ public class ImportRepresentation {
 	public ImportRepresentation(Definition myWsdl, Definition processWSDl, Resource processResource){
 		this.myWsdl = myWsdl;
 		importBPEL = createImportInProcess(processResource);
-		WSDLImportHelperUI.addImportAndNamespace(processWSDl, myWsdl);
+		if (!processWSDl.getImports().keySet().contains(myWsdl.getTargetNamespace()))
+			WSDLImportHelperUI.addImportAndNamespace(processWSDl, myWsdl);
 	}
 
 	/**
