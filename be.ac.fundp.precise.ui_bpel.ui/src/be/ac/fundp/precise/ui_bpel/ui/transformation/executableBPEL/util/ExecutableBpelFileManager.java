@@ -129,8 +129,6 @@ public class ExecutableBpelFileManager {
 			return;
 		}
 		
-		System.out.println("location = "+ location);
-		
 		IFile originalWsdlFile = processFolder.getFile(location);
 		IFile newWsdlFile = baseFolder.getFile(location);
 		if (!newWsdlFile.exists())
