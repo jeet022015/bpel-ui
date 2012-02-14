@@ -23,9 +23,6 @@ import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.AUIGenerator;
  */
 public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation {
 	
-	/** The converter. */
-	//private ExtensibleURIConverterImpl converter;
-	
 	/**
 	 * Run.
 	 *
@@ -34,8 +31,6 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 	 */
 	public void run(IAction action) {
 
-		//converter = new ExtensibleURIConverterImpl();
-		
 		// load BPEL,WSDL,XSDs
 		Process process = loadBPEL();
 
@@ -51,11 +46,6 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 	 * @param process the process
 	 */
 	private void createAuiModel(Process process) {
-		
-		// Register the XMI resource factory for the .website extension
-//		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
-//		Map<String, Object> m = reg.getExtensionToFactoryMap();
-//		m.put("aui", new XMIResourceFactoryImpl());
 		
 		IFile f = getBpelFile();
 		IFolder folder = (IFolder) f.getParent();

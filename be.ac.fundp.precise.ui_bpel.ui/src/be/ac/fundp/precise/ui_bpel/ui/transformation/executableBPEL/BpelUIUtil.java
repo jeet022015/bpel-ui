@@ -29,7 +29,6 @@ import org.eclipse.bpel.model.While;
 import org.eclipse.bpel.model.resource.BPELResourceSetImpl;
 import org.eclipse.bpel.model.util.BPELUtils;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -123,14 +122,14 @@ public class BpelUIUtil {
 	 * @throws IOException Signals that an I/O exception has occurred during the serialization of
 	 * the new process.
 	 */
-	public void configureProcess(IFile iFile,  Process process, IFolder folder) throws CoreException, IOException {
+	public void configureProcess(IFile iFile,  Process process) throws CoreException, IOException {
 
 		if (p != null && p.equals(process))
 			return;
 		else
 			p = process;
 
-		managerFiles(iFile, process, folder);
+		managerFiles(iFile, process);
 		
 		addToolingNamespaces();
 		
@@ -167,9 +166,9 @@ public class BpelUIUtil {
 	 * @throws IOException Signals that an I/O exception has occurred during the serialization of
 	 * the new process.
 	 */
-	private void managerFiles(IFile iFile, Process process, IFolder folder) throws CoreException, IOException {
+	private void managerFiles(IFile iFile, Process process) throws CoreException, IOException {
 		
-		ExecutableBpelFileManager wsdlManager = new ExecutableBpelFileManager((IFolder) iFile.getParent(), folder);
+		ExecutableBpelFileManager wsdlManager = new ExecutableBpelFileManager(iFile);
 		
 		String processWsldPath = "";
 		for (Import processImp : process.getImports()) {

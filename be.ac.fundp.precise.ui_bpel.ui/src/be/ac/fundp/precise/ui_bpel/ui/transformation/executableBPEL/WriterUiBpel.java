@@ -99,11 +99,11 @@ public class WriterUiBpel extends BPELWriter {
 	 * @throws CoreException 
 	 * @throws IOException 
 	 */
-	public WriterUiBpel(Process process, IFile iFile, IFolder folder) throws CoreException, IOException {
+	public WriterUiBpel(Process process, IFile iFile) throws CoreException, IOException {
 		super();
 		this.process = process;
 		bpel = new BpelUIUtil();
-		bpel.configureProcess(iFile, process, folder);
+		bpel.configureProcess(iFile, process);
 	}
 	
 	/* (non-Javadoc)
@@ -353,45 +353,6 @@ public class WriterUiBpel extends BPELWriter {
 		cc.getChildren().add(processCorrelation);
 		i.setCorrelations(cc);
 		return i;
-	}
-	
-	/**
-	 * Adds the invoke.
-	 *
-	 * @param activity the activity
-	 */
-	private void addInvoke(Activity activity) {
-		if (activity instanceof Sequence){
-			
-			Sequence mainSequence = (Sequence)activity;
-			
-			Sequence s = BPELFactory.eINSTANCE.createSequence();
-			Assign assignBefore = BPELFactory.eINSTANCE.createAssign();
-			assignBefore.setName("IdGenerationConfiguration");
-			Operation genIdOperation = bpel.getGenIdOperation();
-			
-			Variable[] vars = bpel.getGenIdVar();
-			
-			Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
-					getDefaultRequestNames(DataInteractionManager.GEN_ID_OPERATION)) ? vars[0] : vars[1];
-			outputVarGen = vars[0].getName().startsWith(DataInteractionManager.
-					getDefaultResponseNames(DataInteractionManager.GEN_ID_OPERATION)) ? vars[0] : vars[1];
-			
-			//================== Initialization =============
-			Copy c = BPELFactory.eINSTANCE.createCopy();
-			From f = BPELFactory.eINSTANCE.createFrom();
-			To t = createToPart(inputVar, genIdOperation);
-			createDefaultInitializer(null, f, t, 0);
-			c.setFrom(f);
-			c.setTo(t);
-			assignBefore.getCopy().add(c);
-			Invoke i = genIdInvoke(genIdOperation, inputVar);
-			
-			s.getActivities().add(assignBefore);
-			s.getActivities().add(i);
-			
-			mainSequence.getActivities().add(1, s);
-		}
 	}
 
 	/* (non-Javadoc)

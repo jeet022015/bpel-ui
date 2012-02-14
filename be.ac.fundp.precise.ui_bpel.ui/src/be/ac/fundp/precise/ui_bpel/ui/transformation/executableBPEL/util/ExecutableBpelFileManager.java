@@ -7,10 +7,15 @@ import java.io.OutputStream;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
@@ -40,25 +45,40 @@ public class ExecutableBpelFileManager {
 	/** The default file name. */
 	protected String newFileName = "UIBPEL_Process.bpel";
 	
+	/** The project counter. */
+	protected int projectCounter = 1;
+	
 	/**
 	 * Instantiates a new wsdl file manager.
 	 *
 	 * @param folder the folder
 	 * @throws CoreException the core exception
 	 */
-	public ExecutableBpelFileManager (IFolder processFolder, IFolder newFolder) throws CoreException{
-//		IFolder coordFolder = processFolder.getFolder("executable-artifacts");
-//		NullProgressMonitor progressMonitor = new NullProgressMonitor();
-//		if (coordFolder.exists()){
-//			for (IResource content : coordFolder.members()) {
-//				content.delete(IResource.FOLDER, progressMonitor);
-//			}
-//			coordFolder.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
-//		}else{
-//			coordFolder.create(true, true, progressMonitor);
-//		}
-		baseFolder = newFolder;
-		this.processFolder = processFolder;
+	public ExecutableBpelFileManager (IFile f) throws CoreException{
+		IProgressMonitor progressMonitor = new NullProgressMonitor();
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		
+		IProject project = f.getProject();
+		IProject newProject = root.getProject(project.getName()+"-executable"+projectCounter++);
+		if (!newProject.exists())
+			newProject.create(progressMonitor);
+		newProject.open(progressMonitor);
+		
+		IFolder folder = newProject.getFolder("bpelContent");
+		if (!folder.exists()){
+			folder.create(true, true, progressMonitor);
+		} else {
+			for (IResource content : folder.members()) {
+				content.delete(IResource.FOLDER, progressMonitor);
+			}
+			folder.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
+		}
+		
+		IProjectDescription description = project.getDescription();
+		
+		newProject.setDescription(description, progressMonitor);
+		baseFolder = (IFolder) f.getParent();
+		this.processFolder = folder;
 	}
 	
 	/**

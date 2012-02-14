@@ -6,16 +6,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.namespace.QName;
-
 import org.eclipse.bpel.model.BPELFactory;
-import org.eclipse.bpel.model.CorrelationSet;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.messageproperties.MessagepropertiesFactory;
 import org.eclipse.bpel.model.messageproperties.Property;
 import org.eclipse.bpel.model.messageproperties.PropertyAlias;
 import org.eclipse.bpel.model.messageproperties.Query;
-import org.eclipse.bpel.ui.util.XSDUtils;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;
