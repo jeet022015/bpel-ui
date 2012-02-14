@@ -16,6 +16,7 @@ import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml.Abstr
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml.AbstractDataIU;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml.AbstractDataIUType;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml.AbstractInteractionUnit;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml.AbstractLocalization;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml.AbstractSelectionIU;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml.AbstractTriggerIU;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml.AbstractTriggerIUType;
@@ -98,6 +99,10 @@ public class XML_Engine {
 			}else {
 				comp.setDataIUType(AbstractDataIUType.OUTPUT);
 			}
+			AbstractLocalization loc = of.createAbstractLocalization();
+			loc.setLabel(anotherData.getLabel());
+			loc.setLang("ENG");
+			comp.getName().add(loc);
 			return comp;
 		} else if (aComponent instanceof TriggerUI){
 			TriggerUI anotherData = (TriggerUI)aComponent;

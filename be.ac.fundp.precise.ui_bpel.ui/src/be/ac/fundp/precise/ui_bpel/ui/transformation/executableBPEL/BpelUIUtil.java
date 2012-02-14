@@ -117,19 +117,20 @@ public class BpelUIUtil {
 	 *
 	 * @param iFile the process file (bpel file)
 	 * @param process the process representation (EMF representation)
+	 * @param folder 
 	 * @throws CoreException this exception can be throued if the new WSDLs cannot be copied from
 	 * the core of plug-in.
 	 * @throws IOException Signals that an I/O exception has occurred during the serialization of
 	 * the new process.
 	 */
-	public void configureProcess(IFile iFile,  Process process) throws CoreException, IOException {
+	public void configureProcess(IFile iFile,  Process process, IFolder folder) throws CoreException, IOException {
 
 		if (p != null && p.equals(process))
 			return;
 		else
 			p = process;
 
-		managerFiles(iFile, process);
+		managerFiles(iFile, process, folder);
 		
 		addToolingNamespaces();
 		
@@ -160,14 +161,15 @@ public class BpelUIUtil {
 	 *
 	 * @param iFile the process file (bpel file)
 	 * @param process the process representation (EMF representation)
+	 * @param folder 
 	 * @throws CoreException this exception can be throued if the new WSDLs cannot be copied from
 	 * the core of plug-in.
 	 * @throws IOException Signals that an I/O exception has occurred during the serialization of
 	 * the new process.
 	 */
-	private void managerFiles(IFile iFile, Process process) throws CoreException, IOException {
+	private void managerFiles(IFile iFile, Process process, IFolder folder) throws CoreException, IOException {
 		
-		ExecutableBpelFileManager wsdlManager = new ExecutableBpelFileManager((IFolder) iFile.getParent());
+		ExecutableBpelFileManager wsdlManager = new ExecutableBpelFileManager((IFolder) iFile.getParent(), folder);
 		
 		String processWsldPath = "";
 		for (Import processImp : process.getImports()) {

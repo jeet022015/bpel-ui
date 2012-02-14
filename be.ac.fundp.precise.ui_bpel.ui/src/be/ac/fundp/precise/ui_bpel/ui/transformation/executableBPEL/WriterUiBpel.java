@@ -16,10 +16,12 @@ import org.eclipse.bpel.model.BPELFactory;
 import org.eclipse.bpel.model.Copy;
 import org.eclipse.bpel.model.Correlation;
 import org.eclipse.bpel.model.CorrelationPattern;
+import org.eclipse.bpel.model.CorrelationSets;
 import org.eclipse.bpel.model.Correlations;
 import org.eclipse.bpel.model.Expression;
 import org.eclipse.bpel.model.ExtensionActivity;
 import org.eclipse.bpel.model.From;
+import org.eclipse.bpel.model.Import;
 import org.eclipse.bpel.model.Invoke;
 import org.eclipse.bpel.model.OnEvent;
 import org.eclipse.bpel.model.PartnerLinks;
@@ -92,14 +94,15 @@ public class WriterUiBpel extends BPELWriter {
 	 *
 	 * @param process the process
 	 * @param iFile the i file
+	 * @param folder 
 	 * @throws CoreException 
 	 * @throws IOException 
 	 */
-	public WriterUiBpel(Process process, IFile iFile) throws CoreException, IOException {
+	public WriterUiBpel(Process process, IFile iFile, IFolder folder) throws CoreException, IOException {
 		super();
 		this.process = process;
 		bpel = new BpelUIUtil();
-		bpel.configureProcess(iFile, process);
+		bpel.configureProcess(iFile, process, folder);
 	}
 	
 	/* (non-Javadoc)
@@ -109,7 +112,6 @@ public class WriterUiBpel extends BPELWriter {
 			throws IOException {
 		OutputStream out = bpel.getOutputStream();
 		super.write(resource, out, args);
-		//bpel.addToolingNamespaces();
 	}
 	
 	/* (non-Javadoc)
@@ -174,23 +176,113 @@ public class WriterUiBpel extends BPELWriter {
 		return onEventElement;
 	}
 	
+	protected Element correlationSets2XML(CorrelationSets correlationSets) {
+
+		System.out.println("correlation Set!!!!!!!!!!!!!!!");
+		Element correlationSetsElement = super.correlationSets2XML(correlationSets);
+		if (correlationSetsElement == null) {
+			correlationSetsElement = createBPELElement("correlationSets");
+
+			// serialize local namespace prefixes to XML
+			serializePrefixes(correlationSets, correlationSetsElement);
+			extensibleElement2XML(correlationSets, correlationSetsElement);
+		}
+		System.out.println("correlationSetsElement="+correlationSetsElement);
+		correlationSetsElement.appendChild(correlationSet2XML(bpel.getUserEventCorrelationSet()));
+		return correlationSetsElement;
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.bpel.model.resource.BPELWriter#process2XML(org.eclipse.bpel.model.Process)
 	 */
 	protected Element process2XML(Process process) {
-		if (!process.getImports().contains(bpel.getImportBPEL())) {
-			process.getImports().add(bpel.getImportBPEL());
-		}
-		if (!process.getImports().contains(bpel.getImportUserEvent())) {
-			process.getImports().add(bpel.getImportUserEvent());
+		
+		addInvoke(process.getActivity());
+		
+		Element processElement = createBPELElement("process");
+		if (process.getName() != null)
+			processElement.setAttribute("name", process.getName());
+		if (process.getTargetNamespace() != null)
+			processElement.setAttribute("targetNamespace", process
+					.getTargetNamespace());
+		if (process.isSetSuppressJoinFailure())
+			processElement.setAttribute("suppressJoinFailure", BPELUtils
+					.boolean2XML(process.getSuppressJoinFailure()));
+		if (process.getExitOnStandardFault() != null)
+			processElement.setAttribute("exitOnStandardFault", BPELUtils
+					.boolean2XML(process.getExitOnStandardFault()));
+		if (process.isSetVariableAccessSerializable())
+			processElement.setAttribute("variableAccessSerializable", BPELUtils
+					.boolean2XML(process.getVariableAccessSerializable()));
+		if (process.isSetQueryLanguage())
+			processElement.setAttribute("queryLanguage", process
+					.getQueryLanguage());
+		if (process.isSetExpressionLanguage())
+			processElement.setAttribute("expressionLanguage", process
+					.getExpressionLanguage());
+		if (process.isSetAbstractProcessProfile())
+			processElement.setAttribute("abstractProcessProfile", process
+					.getAbstractProcessProfile());
+
+		Import uiManager = bpel.getImportBPEL();
+		Import userEvent = bpel.getImportUserEvent();
+		
+		List<String> importNamespaces = new LinkedList<String>();
+		for (Import next : process.getImports()) {
+			importNamespaces.add(next.getNamespace());
+			if (next.getNamespace().equals(uiManager.getNamespace()))
+				processElement.appendChild(import2XML(uiManager));
+			if (next.getNamespace().equals(userEvent.getNamespace()))
+				processElement.appendChild(import2XML(userEvent));
+			processElement.appendChild(import2XML(next));
 		}
 		
+		if(!importNamespaces.contains(uiManager.getNamespace())){
+			processElement.appendChild(import2XML(uiManager));
+		}
+
+		if(!importNamespaces.contains(userEvent.getNamespace())){
+			processElement.appendChild(import2XML(userEvent));
+		}
+
+		if (process.getPartnerLinks() != null
+				&& !process.getPartnerLinks().getChildren().isEmpty())
+			processElement.appendChild(partnerLinks2XML(process
+					.getPartnerLinks()));
+
+		if (process.getVariables() != null
+				&& !process.getVariables().getChildren().isEmpty())
+			processElement.appendChild(variables2XML(process.getVariables()));
+
 		if (process.getCorrelationSets() == null){
 			process.setCorrelationSets(BPELFactory.eINSTANCE.createCorrelationSets());
 		}
-		process.getCorrelationSets().getChildren().add(bpel.getUserEventCorrelationSet());
-		addInvoke(process.getActivity());
-		return super.process2XML(process);
+		processElement.appendChild(correlationSets2XML(process
+					.getCorrelationSets()));
+
+		if (process.getExtensions() != null)
+			processElement.appendChild(extensions2XML(process.getExtensions()));
+
+		if (process.getFaultHandlers() != null)
+			processElement.appendChild(faultHandlers2XML(process
+					.getFaultHandlers()));
+
+		if (process.getEventHandlers() != null)
+			processElement.appendChild(eventHandler2XML(process
+					.getEventHandlers()));
+
+		if (process.getMessageExchanges() != null
+				&& !process.getMessageExchanges().getChildren().isEmpty())
+			processElement.appendChild(messageExchanges2XML(process
+					.getMessageExchanges()));
+
+		if (process.getActivity() != null)
+			processElement.appendChild(activity2XML(process.getActivity()));
+
+		extensibleElement2XML(process, processElement);
+
+		return processElement;
 	}
 
 	/**
@@ -251,21 +343,25 @@ public class WriterUiBpel extends BPELWriter {
 	 * @see org.eclipse.bpel.model.resource.BPELWriter#variables2XML(org.eclipse.bpel.model.Variables)
 	 */
 	protected Element variables2XML(Variables variables) {
-		variables.getChildren().addAll(bpel.getUiVariables());
-		return super.variables2XML(variables);
+		Element original = super.variables2XML(variables);
+		//variables.getChildren().addAll(bpel.getUiVariables());
+		for (Variable next : bpel.getUiVariables()) {
+			original.appendChild(variable2XML(next));
+		}
+		return original;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.bpel.model.resource.BPELWriter#partnerLinks2XML(org.eclipse.bpel.model.PartnerLinks)
 	 */
 	protected Element partnerLinks2XML(PartnerLinks partnerLinks) {
-		if (!partnerLinks.getChildren().contains(bpel.getPartnerLinkBPEL())) {
-			partnerLinks.getChildren().add(bpel.getPartnerLinkBPEL());
-		}
-		if (!partnerLinks.getChildren().contains(bpel.getPartnerLinkUserEvent())) {
-			partnerLinks.getChildren().add(bpel.getPartnerLinkUserEvent());
-		}
-		return super.partnerLinks2XML(partnerLinks);
+		
+		Element original = super.partnerLinks2XML(partnerLinks);
+		
+		original.appendChild(partnerLink2XML(bpel.getPartnerLinkBPEL()));
+		original.appendChild(partnerLink2XML(bpel.getPartnerLinkUserEvent()));
+		
+		return original;
 	}
 
 	/* (non-Javadoc)
@@ -682,7 +778,6 @@ public class WriterUiBpel extends BPELWriter {
 		
 		//================== Process ID =====================
 		Part genPart = (Part) genOperation.getInput().getMessage().getPart("parameters");
-		System.out.println("genPart = "+ genPart);
 		Part outputPart = (Part) inputOperation.getInput().getMessage().getPart("parameters");
 		Copy genCoppy = createCopyProcessID(outputVarGen, genPart, inputVar, outputPart, "processId");
 		assignBefore.getCopy().add(genCoppy);

@@ -165,13 +165,13 @@ public class AUIGenerator {
 	 * @param role the role
 	 * @return the abstract compound iu
 	 */
-	private SelectionUI createSelectionUI(String role) {
+	private SelectionUI createSelectionUI(String role, String name) {
 		
 		AbstractUIModel model = roleModels.get(role);
 		SelectionUI comp = model.createInnerSelectionUI();
 		
 		comp.setHelp("Help");
-		comp.setId("ID");
+		comp.setId(name);
 		return comp;
 	}
 	
@@ -179,14 +179,15 @@ public class AUIGenerator {
 	 * Creates the abstract component.
 	 *
 	 * @param role the role
+	 * @param name 
 	 * @return the abstract compound iu
 	 */
-	private AbstractComponentIU createAbstractComponent(String role) {
+	private AbstractComponentIU createAbstractComponent(String role, String name) {
 		
 		AbstractUIModel model = roleModels.get(role);
 		AbstractComponentIU comp = model.createInnerAbstractCompoundIU();
 		comp.setHelp("Help");
-		comp.setId("ID");
+		comp.setId(name);
 		return comp;
 	}
 	
@@ -237,7 +238,7 @@ public class AUIGenerator {
 			role = activity.getUserRoles().get(0).getRoleId();
 		}
 		
-		SelectionUI comp = createSelectionUI(role);
+		SelectionUI comp = createSelectionUI(role, activity.getName());
 		
 		for (DataItem item : activity.getInputItem()) {
 			DataIU dataComp = comp.createInnerDataInputUI();
@@ -269,7 +270,7 @@ public class AUIGenerator {
 			role = activity.getUserRoles().get(0).getRoleId();
 		}
 		
-		AbstractComponentIU comp = createAbstractComponent(role);
+		AbstractComponentIU comp = createAbstractComponent(role, activity.getName());
 		
 		for (DataItem item : activity.getOutputItem()) {
 			DataIU dataComp = comp.createInnerDataInputUI();
@@ -293,7 +294,7 @@ public class AUIGenerator {
 		if (activity.getUserRoles() != null && activity.getUserRoles().size() > 0){
 			role = activity.getUserRoles().get(0).getRoleId();
 		}
-		AbstractComponentIU comp = createAbstractComponent(role);
+		AbstractComponentIU comp = createAbstractComponent(role, activity.getName());
 		
 		for (DataItem item : activity.getInputItem()) {
 			DataIU dataComp = comp.createInnerDataInputUI();

@@ -46,19 +46,19 @@ public class ExecutableBpelFileManager {
 	 * @param folder the folder
 	 * @throws CoreException the core exception
 	 */
-	public ExecutableBpelFileManager (IFolder folder) throws CoreException{
-		IFolder coordFolder = folder.getFolder("executable-artifacts");
-		NullProgressMonitor progressMonitor = new NullProgressMonitor();
-		if (coordFolder.exists()){
-			for (IResource content : coordFolder.members()) {
-				content.delete(IResource.FOLDER, progressMonitor);
-			}
-			coordFolder.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
-		}else{
-			coordFolder.create(true, true, progressMonitor);
-		}
-		baseFolder = coordFolder;
-		processFolder = folder;
+	public ExecutableBpelFileManager (IFolder processFolder, IFolder newFolder) throws CoreException{
+//		IFolder coordFolder = processFolder.getFolder("executable-artifacts");
+//		NullProgressMonitor progressMonitor = new NullProgressMonitor();
+//		if (coordFolder.exists()){
+//			for (IResource content : coordFolder.members()) {
+//				content.delete(IResource.FOLDER, progressMonitor);
+//			}
+//			coordFolder.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
+//		}else{
+//			coordFolder.create(true, true, progressMonitor);
+//		}
+		baseFolder = newFolder;
+		this.processFolder = processFolder;
 	}
 	
 	/**
@@ -118,6 +118,7 @@ public class ExecutableBpelFileManager {
 	 * Gets the copy process wsd ls.
 	 *
 	 * @param location the location
+	 * @param folder 
 	 * @return the copy process wsd ls
 	 * @throws CoreException the core exception
 	 */
@@ -128,9 +129,12 @@ public class ExecutableBpelFileManager {
 			return;
 		}
 		
+		System.out.println("location = "+ location);
+		
 		IFile originalWsdlFile = processFolder.getFile(location);
 		IFile newWsdlFile = baseFolder.getFile(location);
-		newWsdlFile.create(originalWsdlFile.getContents(), true, null);
+		if (!newWsdlFile.exists())
+			newWsdlFile.create(originalWsdlFile.getContents(), true, null);
 	}
 
 	/**
