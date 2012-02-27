@@ -77,8 +77,10 @@ public class ExecutableBpelFileManager {
 		IProjectDescription description = project.getDescription();
 		
 		newProject.setDescription(description, progressMonitor);
-		baseFolder = (IFolder) f.getParent();
-		this.processFolder = folder;
+		//baseFolder = (IFolder) f.getParent();
+		//this.processFolder = folder;
+		baseFolder = folder;
+		this.processFolder = (IFolder) f.getParent();
 	}
 	
 	/**

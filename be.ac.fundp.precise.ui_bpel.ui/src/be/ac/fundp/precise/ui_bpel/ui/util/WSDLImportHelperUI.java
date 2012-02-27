@@ -3,8 +3,6 @@ package be.ac.fundp.precise.ui_bpel.ui.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.bpel.model.messageproperties.MessagepropertiesPackage;
-import org.eclipse.bpel.model.messageproperties.util.MessagepropertiesConstants;
 import org.eclipse.bpel.ui.util.WSDLImportHelper;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.wst.wsdl.Definition;

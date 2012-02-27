@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 import javax.xml.namespace.QName;
 
-import org.eclipse.bpel.model.Activity;
 import org.eclipse.bpel.model.Assign;
 import org.eclipse.bpel.model.BPELFactory;
 import org.eclipse.bpel.model.Copy;
@@ -709,6 +708,8 @@ public class WriterUiBpel extends BPELWriter {
 			Part p = (Part) selectionOperation.getInput().getMessage().getPart("parameters");
 			Copy c = createDataItemBeforeCopy(inputVar, prefix, p, cont, di, "data", "data");
 			dataItemCopiesBefore.add(c);
+			Copy cid = createIdDataItemBeforeCopy(inputVar, prefix, p, cont, di, "data", "id");
+			dataItemCopiesBefore.add(cid);
 			cont++;
 		}
 		
@@ -744,6 +745,28 @@ public class WriterUiBpel extends BPELWriter {
 		}
 
 		return super.sequence2XML(s);
+	}
+
+	private Copy createIdDataItemBeforeCopy(Variable inputVar, String prefix,
+			Part p, int cont, DataItem di, String primaryNode, String secondaryNode) {
+		Copy c = BPELFactory.eINSTANCE.createCopy();
+		
+		From f = BPELFactory.eINSTANCE.createFrom();
+		Expression e = BPELFactory.eINSTANCE.createExpression();
+		e.setBody("'"+di.getVariable().getName()+"'");
+		f.setExpression(e);
+
+		To t = BPELFactory.eINSTANCE.createTo();
+		Query toQuery = BPELFactory.eINSTANCE.createQuery();
+		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
+		toQuery.setValue(prefix+primaryNode+"["+cont+"]/"+secondaryNode);
+		t.setQuery(toQuery);
+		t.setVariable(inputVar);
+		t.setPart(p);
+		
+		c.setFrom(f);
+		c.setTo(t);
+		return c;
 	}
 
 	/**

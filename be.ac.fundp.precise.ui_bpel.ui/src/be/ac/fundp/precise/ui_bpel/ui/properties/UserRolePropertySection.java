@@ -9,10 +9,7 @@ import org.eclipse.bpel.common.ui.flatui.FlatFormData;
 import org.eclipse.bpel.ui.commands.CompoundCommand;
 import org.eclipse.bpel.ui.properties.BPELPropertySection;
 import org.eclipse.bpel.ui.util.BPELUtil;
-import org.eclipse.bpel.ui.util.BatchedMultiObjectAdapter;
-import org.eclipse.bpel.ui.util.MultiObjectAdapter;
 import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.swt.SWT;
@@ -28,7 +25,6 @@ import org.eclipse.ui.forms.widgets.Section;
 import be.ac.fundp.precise.ui_bpel.ui.properties.commands.AddUserRoleCommand;
 import be.ac.fundp.precise.ui_bpel.ui.properties.commands.RemoveUserRoleCommand;
 import be.ac.fundp.precise.ui_bpel.ui.properties.dialogs.UserRoleDialog;
-import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
 import be.edu.fundp.precise.uibpel.model.UserRole;
 
