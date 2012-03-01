@@ -15,6 +15,7 @@ import org.eclipse.bpel.model.BPELFactory;
 import org.eclipse.bpel.model.Copy;
 import org.eclipse.bpel.model.Correlation;
 import org.eclipse.bpel.model.CorrelationPattern;
+import org.eclipse.bpel.model.CorrelationSet;
 import org.eclipse.bpel.model.CorrelationSets;
 import org.eclipse.bpel.model.Correlations;
 import org.eclipse.bpel.model.Expression;
@@ -194,9 +195,9 @@ public class WriterUiBpel extends BPELWriter {
 		Variable[] vars = bpel.getGenIdVar();
 		
 		Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
-				getDefaultRequestNames(DataInteractionManager.GEN_ID_OPERATION)) ? vars[0] : vars[1];
+				getDefaultRequestNames(DataInteractionManager.OPERATION_GEN_ID)) ? vars[0] : vars[1];
 		outputVarGen = vars[0].getName().startsWith(DataInteractionManager.
-				getDefaultResponseNames(DataInteractionManager.GEN_ID_OPERATION)) ? vars[0] : vars[1];
+				getDefaultResponseNames(DataInteractionManager.OPERATION_GEN_ID)) ? vars[0] : vars[1];
 		
 		//================== Initialization =============
 		Assign assignBefore = genIdInit(genIdOperation, inputVar);
@@ -226,6 +227,9 @@ public class WriterUiBpel extends BPELWriter {
 			extensibleElement2XML(correlationSets, correlationSetsElement);
 		}
 		correlationSetsElement.appendChild(correlationSet2XML(bpel.getUserEventCorrelationSet()));
+		for (CorrelationSet innerCS : bpel.getInputCorrelationSets()) {
+			correlationSetsElement.appendChild(correlationSet2XML(innerCS));
+		}
 		return correlationSetsElement;
 	}
 	
@@ -480,6 +484,8 @@ public class WriterUiBpel extends BPELWriter {
 			Part p = (Part) inputOperation.getInput().getMessage().getPart("parameters");
 			Copy c = createDataItemBeforeCopy(inputVar, prefix, p, cont, di, "data", "data");
 			dataItemCopies.add(c);
+			Copy cid = createIdDataItemBeforeCopy(inputVar, prefix, p, cont, di, "data", "id");
+			dataItemCopies.add(cid);
 			cont++;
 		}
 
@@ -660,9 +666,9 @@ public class WriterUiBpel extends BPELWriter {
 		Variable[] vars = bpel.getVariableForUserInteraction(selctionActivity.getId());
 		
 		Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
-				getDefaultRequestNames(DataInteractionManager.SELECTION_OPERATION)) ? vars[0] : vars[1];
+				getDefaultRequestNames(DataInteractionManager.OPERATION_SELECTION)) ? vars[0] : vars[1];
 		Variable outputVar = vars[0].getName().startsWith(DataInteractionManager.
-				getDefaultResponseNames(DataInteractionManager.SELECTION_OPERATION)) ? vars[0] : vars[1];
+				getDefaultResponseNames(DataInteractionManager.OPERATION_SELECTION)) ? vars[0] : vars[1];
 
 		Assign assignBefore = BPELFactory.eINSTANCE.createAssign();
 		assignBefore.setName("DataSelectionConfiguration");
@@ -782,9 +788,9 @@ public class WriterUiBpel extends BPELWriter {
 		Variable[] vars = bpel.getVariableForUserInteraction(activity.getId());
 		
 		Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
-				getDefaultRequestNames(DataInteractionManager.INPUT_OPERATION)) ? vars[0] : vars[1];
+				getDefaultRequestNames(DataInteractionManager.OPERATION_INPUT)) ? vars[0] : vars[1];
 		Variable outputVar = vars[0].getName().startsWith(DataInteractionManager.
-				getDefaultResponseNames(DataInteractionManager.INPUT_OPERATION)) ? vars[0] : vars[1];
+				getDefaultResponseNames(DataInteractionManager.OPERATION_INPUT)) ? vars[0] : vars[1];
 				
 		//String prefix = BPELUtils.getNamespacePrefix(inputVar, 
 				//inputVar.getMessageType().getQName().getNamespaceURI());

@@ -3,6 +3,7 @@ package be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.bpel.model.Activity;
@@ -436,6 +437,15 @@ public class BpelUIUtil {
 	 */
 	public CorrelationSet getUserEventCorrelationSet() {
 		return eventManagerOp.getCorrelationSet();
+	}
+	
+	/**
+	 * Gets the user event correlation set.
+	 *
+	 * @return the user event correlation set
+	 */
+	public List<CorrelationSet> getInputCorrelationSets() {
+		return uiManagerOp.getInputCorrelationSets();
 	}
 
 	/**

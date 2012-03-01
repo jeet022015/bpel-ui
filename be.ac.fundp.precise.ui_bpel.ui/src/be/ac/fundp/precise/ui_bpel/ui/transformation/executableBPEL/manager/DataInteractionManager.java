@@ -3,15 +3,21 @@ package be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.namespace.QName;
+
 import org.eclipse.bpel.model.BPELFactory;
+import org.eclipse.bpel.model.CorrelationSet;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.messageproperties.MessagepropertiesFactory;
 import org.eclipse.bpel.model.messageproperties.Property;
 import org.eclipse.bpel.model.messageproperties.PropertyAlias;
 import org.eclipse.bpel.model.messageproperties.Query;
+import org.eclipse.bpel.ui.util.XSDUtils;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;
@@ -41,16 +47,16 @@ public class DataInteractionManager {
 	public static final String GEN_ID_INDEX = "GEN_ID_INDEX";
 	
 	/** The Constant INPUT_OPERATION. */
-	public static final int INPUT_OPERATION = 0;
+	public static final int OPERATION_INPUT = 0;
 	
 	/** The Constant OUTPUT_OPERATION. */
-	public static final int OUTPUT_OPERATION = 1;
+	public static final int OPERATION_OUTPUT = 1;
 	
 	/** The Constant SELECTION_OPERATION. */
-	public static final int SELECTION_OPERATION = 2;
+	public static final int OPERATION_SELECTION = 2;
 	
 	/** The Constant GEN_ID_OPERATION. */
-	public static final int GEN_ID_OPERATION = 3;
+	public static final int OPERATION_GEN_ID = 3;
 	
 	/** The Constant responseNames. */
 	protected static final String[] responseNames = {"dataInputResponse", 
@@ -66,8 +72,12 @@ public class DataInteractionManager {
 	/** The list. */
 	private Map<String, Set<Variable>> list = new HashMap<String, Set<Variable>>();
 	
+	protected List<CorrelationSet> innerCSs = new LinkedList<CorrelationSet>();
+
+	private Property propertyName;
+	
 	/** The my pa. */
-	private PropertyAlias myPA;
+	//private PropertyAlias myPA;
 	
 	/**
 	 * Instantiates a new data interaction manager.
@@ -80,8 +90,85 @@ public class DataInteractionManager {
 		this.wsdl_ui_bpel= wsdl_ui_bpel;
 		operationConfiguration();
 		createCorrelationSet(processWSDl, propertyName);
+		createPropertyName(processWSDl);
+		createParallelCorrelSets(processWSDl);
 	}
 	
+	private void createPropertyName(Definition processWSDl) {
+		propertyName = MessagepropertiesFactory.eINSTANCE.createProperty();
+		propertyName.setType(XSDUtils.getPrimitive("string"));
+		QName qname = new QName("test", "propertyTest2");
+		propertyName.setQName(qname);
+		propertyName.setName("propertyTest2");
+		propertyName.setEnclosingDefinition(processWSDl);
+		processWSDl.getEExtensibilityElements().add(propertyName);
+	}
+
+	private void createParallelCorrelSets(Definition processWSDl) {
+		Service s1 = (Service) wsdl_ui_bpel.getEServices().get(0);
+		Port p1 = (Port) s1.getEPorts().get(0);
+		for (Object op : p1.getBinding().getBindingOperations()) {
+			BindingOperation opera = (BindingOperation) op;
+			if (opera.getName().equals("inputOperation"))
+				createInputProperty(opera.getEOperation(), processWSDl, 3);
+			else if (opera.getName().equals("selectionOperation"))
+				createSelectProperty(opera.getEOperation(), 3);
+		}
+	}
+
+	private void createSelectProperty(Operation eOperation, int i) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void createInputProperty(Operation eOperation, Definition processWSDl, int i) {
+		PropertyAlias myPA = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
+		myPA.setMessageType(uiManagerOperations[OPERATION_INPUT].getOutput().getMessage());
+
+		myPA.setPart("parameters");
+		myPA.setPropertyName(propertyName);
+		
+		//The query
+		String query = "";
+		String prefix = processWSDl.getPrefix("test");
+		if (prefix!=null)
+			query = query + "/" + prefix + ":" + "processId";
+		else
+			query = query + "/" + "processId";
+		Query q = MessagepropertiesFactory.eINSTANCE.createQuery();
+		q.setValue(query);
+		myPA.setQuery(q);
+		
+		processWSDl.getEExtensibilityElements().add(myPA);
+		
+		myPA = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
+		myPA.setMessageType(uiManagerOperations[OPERATION_INPUT].getInput().getMessage());
+
+		myPA.setPart("parameters");
+		myPA.setPropertyName(propertyName);
+		
+		//The query
+		query = "";
+		prefix = processWSDl.getPrefix("test");
+		if (prefix!=null)
+			query = query + "/" + prefix + ":" + "processId";
+		else
+			query = query + "/" + "processId";
+		q = MessagepropertiesFactory.eINSTANCE.createQuery();
+		q.setValue(query);
+		myPA.setQuery(q);
+		
+		processWSDl.getEExtensibilityElements().add(myPA);
+		
+		for (int j = 0; j < i; j++) {
+			CorrelationSet myCS = BPELFactory.eINSTANCE.createCorrelationSet();
+			myCS.setName("Test"+j);
+			myCS.getProperties().add(propertyName);
+			innerCSs.add(myCS);
+		}
+		
+	}
+
 	/**
 	 * Creates the correlation set.
 	 *
@@ -90,8 +177,8 @@ public class DataInteractionManager {
 	 */
 	private void createCorrelationSet(Definition processWSDl, Property propertyName) {
 
-		myPA = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
-		myPA.setMessageType(uiManagerOperations[GEN_ID_OPERATION].getOutput().getMessage());
+		PropertyAlias myPA = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
+		myPA.setMessageType(uiManagerOperations[OPERATION_GEN_ID].getOutput().getMessage());
 
 		myPA.setPart("parameters");
 		myPA.setPropertyName(propertyName);
@@ -119,13 +206,13 @@ public class DataInteractionManager {
 		for (Object op : p1.getBinding().getBindingOperations()) {
 			BindingOperation opera = (BindingOperation) op;
 			if (opera.getName().equals("inputOperation"))
-				uiManagerOperations[INPUT_OPERATION] = opera.getEOperation();
+				uiManagerOperations[OPERATION_INPUT] = opera.getEOperation();
 			else if (opera.getName().equals("outputOperation"))
-				uiManagerOperations[OUTPUT_OPERATION] = opera.getEOperation();
+				uiManagerOperations[OPERATION_OUTPUT] = opera.getEOperation();
 			else if (opera.getName().equals("selectionOperation"))
-				uiManagerOperations[SELECTION_OPERATION] = opera.getEOperation();
+				uiManagerOperations[OPERATION_SELECTION] = opera.getEOperation();
 			else if (opera.getName().equals("generateProcessId"))
-				uiManagerOperations[GEN_ID_OPERATION] = opera.getEOperation();
+				uiManagerOperations[OPERATION_GEN_ID] = opera.getEOperation();
 		}
 	}
 
@@ -134,12 +221,12 @@ public class DataInteractionManager {
 	 */
 	public void createGenIdVars() {
 		Variable inputVar = BPELFactory.eINSTANCE.createVariable();
-		inputVar.setName(requestNames[GEN_ID_OPERATION]);
-		inputVar.setMessageType((Message) uiManagerOperations[GEN_ID_OPERATION].getInput()
+		inputVar.setName(requestNames[OPERATION_GEN_ID]);
+		inputVar.setMessageType((Message) uiManagerOperations[OPERATION_GEN_ID].getInput()
 				.getMessage());
 		Variable outputVar = BPELFactory.eINSTANCE.createVariable();
-		outputVar.setName(responseNames[GEN_ID_OPERATION]);
-		outputVar.setMessageType((Message) uiManagerOperations[GEN_ID_OPERATION].getOutput()
+		outputVar.setName(responseNames[OPERATION_GEN_ID]);
+		outputVar.setMessageType((Message) uiManagerOperations[OPERATION_GEN_ID].getOutput()
 				.getMessage());
 		Set<Variable> var = new HashSet<Variable>();
 		var.add(outputVar);
@@ -155,18 +242,18 @@ public class DataInteractionManager {
 	 */
 	public void createDataSelectionVar(DataSelectionUI s) {
 		Variable inputVar = BPELFactory.eINSTANCE.createVariable();
-		inputVar.setName(requestNames[SELECTION_OPERATION] + operationCounter[SELECTION_OPERATION]);
-		inputVar.setMessageType((Message) uiManagerOperations[SELECTION_OPERATION].getInput()
+		inputVar.setName(requestNames[OPERATION_SELECTION] + operationCounter[OPERATION_SELECTION]);
+		inputVar.setMessageType((Message) uiManagerOperations[OPERATION_SELECTION].getInput()
 				.getMessage());
 		Variable outputVar = BPELFactory.eINSTANCE.createVariable();
-		outputVar.setName(responseNames[SELECTION_OPERATION] + operationCounter[SELECTION_OPERATION]);
-		outputVar.setMessageType((Message) uiManagerOperations[SELECTION_OPERATION].getOutput()
+		outputVar.setName(responseNames[OPERATION_SELECTION] + operationCounter[OPERATION_SELECTION]);
+		outputVar.setMessageType((Message) uiManagerOperations[OPERATION_SELECTION].getOutput()
 				.getMessage());
 		Set<Variable> var = new HashSet<Variable>();
 		var.add(outputVar);
 		var.add(inputVar);
 		list.put(s.getId(), var);
-		operationCounter[SELECTION_OPERATION]++;
+		operationCounter[OPERATION_SELECTION]++;
 	}
 
 	/**
@@ -176,18 +263,18 @@ public class DataInteractionManager {
 	 */
 	public void createDataInputVar(DataInputUI s) {
 		Variable inputVar = BPELFactory.eINSTANCE.createVariable();
-		inputVar.setName(requestNames[INPUT_OPERATION] + operationCounter[INPUT_OPERATION]);
-		inputVar.setMessageType((Message) uiManagerOperations[INPUT_OPERATION].getInput()
+		inputVar.setName(requestNames[OPERATION_INPUT] + operationCounter[OPERATION_INPUT]);
+		inputVar.setMessageType((Message) uiManagerOperations[OPERATION_INPUT].getInput()
 				.getMessage());
 		Variable outputVar = BPELFactory.eINSTANCE.createVariable();
-		outputVar.setName(responseNames[INPUT_OPERATION] + operationCounter[INPUT_OPERATION]);
-		outputVar.setMessageType((Message) uiManagerOperations[INPUT_OPERATION].getOutput()
+		outputVar.setName(responseNames[OPERATION_INPUT] + operationCounter[OPERATION_INPUT]);
+		outputVar.setMessageType((Message) uiManagerOperations[OPERATION_INPUT].getOutput()
 				.getMessage());
 		Set<Variable> var = new HashSet<Variable>();
 		var.add(outputVar);
 		var.add(inputVar);
 		list.put(s.getId(), var);
-		operationCounter[INPUT_OPERATION]++;
+		operationCounter[OPERATION_INPUT]++;
 	}
 
 	/**
@@ -197,13 +284,13 @@ public class DataInteractionManager {
 	 */
 	public void createDataOutputVar(DataOutputUI s) {
 		Variable inputVar = BPELFactory.eINSTANCE.createVariable();
-		inputVar.setName(requestNames[OUTPUT_OPERATION] + operationCounter[OUTPUT_OPERATION]);
-		inputVar.setMessageType((Message) uiManagerOperations[OUTPUT_OPERATION].getInput()
+		inputVar.setName(requestNames[OPERATION_OUTPUT] + operationCounter[OPERATION_OUTPUT]);
+		inputVar.setMessageType((Message) uiManagerOperations[OPERATION_OUTPUT].getInput()
 				.getMessage());
 		Set<Variable> var = new HashSet<Variable>();
 		var.add(inputVar);
 		list.put(s.getId(), var);
-		operationCounter[OUTPUT_OPERATION]++;
+		operationCounter[OPERATION_OUTPUT]++;
 	}
 
 	/**
@@ -212,7 +299,7 @@ public class DataInteractionManager {
 	 * @return the input operation
 	 */
 	public Operation getInputOperation() {
-		return uiManagerOperations[INPUT_OPERATION];
+		return uiManagerOperations[OPERATION_INPUT];
 	}
 	
 	/**
@@ -221,7 +308,7 @@ public class DataInteractionManager {
 	 * @return the output operation
 	 */
 	public Operation getOutputOperation() {
-		return uiManagerOperations[OUTPUT_OPERATION];
+		return uiManagerOperations[OPERATION_OUTPUT];
 	}
 	
 	/**
@@ -230,7 +317,7 @@ public class DataInteractionManager {
 	 * @return the selection operation
 	 */
 	public Operation getSelectionOperation() {
-		return uiManagerOperations[SELECTION_OPERATION];
+		return uiManagerOperations[OPERATION_SELECTION];
 	}
 
 	/**
@@ -292,6 +379,10 @@ public class DataInteractionManager {
 	 * @return the gen id operation
 	 */
 	public Operation getGenIdOperation() {
-		return uiManagerOperations[GEN_ID_OPERATION];
+		return uiManagerOperations[OPERATION_GEN_ID];
+	}
+
+	public List<CorrelationSet> getInputCorrelationSets() {
+		return innerCSs;
 	}
 }

@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
 
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.AbstractComponentIU;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.DataIU;
@@ -51,8 +52,15 @@ public class XML_Engine {
 				AbstractInteractionUnit comp = parseComponentUI(aComponent);
 				model.getAbstractCompoundIUs().add((AbstractCompoundIU) comp);
 			}
-			jaxbContext = JAXBContext.newInstance("be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml");
-			Marshaller marshaller =jaxbContext.createMarshaller();
+			jaxbContext = JAXBContext.newInstance(model.getClass());
+			Marshaller marshaller = jaxbContext.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://UsiXML-XSD/AbstractUIModel Final_aui.xsd");
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+	        try{
+	        	marshaller.setProperty("com.sun.xml.internal.bind.namespacePrefixMapper", new NamespaceMapperUsiXML());
+			} catch(PropertyException e) {
+			    // In case another JAXB implementation is used
+			}
 			marshaller.marshal(model, out3) ;
 			out3.close();
 		} catch (JAXBException e) {
@@ -101,7 +109,7 @@ public class XML_Engine {
 			}
 			AbstractLocalization loc = of.createAbstractLocalization();
 			loc.setLabel(anotherData.getLabel());
-			loc.setLang("ENG");
+			loc.setLang("En");
 			comp.getName().add(loc);
 			return comp;
 		} else if (aComponent instanceof TriggerUI){

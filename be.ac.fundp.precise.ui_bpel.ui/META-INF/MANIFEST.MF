@@ -18,4 +18,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.bpel.common.extension.model,
  org.eclipse.emf.ecore.xmi.impl
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/jaxb-api.jar,
+ lib/jaxb-impl.jar
