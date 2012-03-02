@@ -1,16 +1,13 @@
 package be.ac.fundp.webapp.service.manager;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import be.ac.fundp.webapp.service.provider.DataItemType;
-import be.ac.fundp.webapp.service.representation.DataItem;
 import be.ac.fundp.webapp.service.representation.Process;
 import be.ac.fundp.webapp.service.representation.UserInteraction;
-import be.ac.fundp.webapp.service.util.ThreadEvent;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -25,10 +22,10 @@ public class UiManager {
 	protected static UiManager self;
 	
 	/** The processes. */
-	protected Map<String, Map<String, Process>> processes = new HashMap<String, Map<String, Process>>();
+	protected Map<String, List<Process>> processesByRoles = new HashMap<String, List<Process>>();
 	
 	/** The waiters. */
-	protected Map<String, ThreadEvent> waiters = new HashMap<String, ThreadEvent>();
+	//protected Map<String, ThreadEvent> waiters = new HashMap<String, ThreadEvent>();
 	
 	/**
 	 * Instantiates a new ui manager.
@@ -58,20 +55,16 @@ public class UiManager {
 	public void addUserInteraction(String cuiId, String role, String processId, List<DataItemType> dataToPresent){
 		Process myProcess = retrieveProcess(role, processId);
 		if (myProcess == null) {
-			Map<String, Process> myProcessMap = processes.get(role);
-			myProcess = new Process(processId, role);
-			myProcessMap.put(processId, myProcess);
-			processes.put(role, myProcessMap);
-			System.out.println("created a New process with id = "+ processId);
+			return;
 		}
 		
 		//FIXME put the responsibility to create the User Interaction for the Process.
-		UserInteraction thisUserInteraction = new UserInteraction(cuiId);
+		UserInteraction thisUserInteraction = myProcess.createUserInteraction(cuiId);
+		
 		for (DataItemType dataItemType : dataToPresent) {
 			thisUserInteraction.addPresentedDataItem(dataItemType.getDataItemId(),
 					dataItemType.getTypeName(), dataItemType.getData());
 		}
-		myProcess.addUserInteraction(thisUserInteraction);
 	}
 	
 	/**
@@ -83,24 +76,24 @@ public class UiManager {
 	 * @return the list
 	 * @throws InterruptedException the interrupted exception
 	 */
-	public List<DataItem> waitDataFromUser(String cuiId, String role, String processId) throws InterruptedException{
-		String token = role+processId+cuiId;
-		ThreadEvent locker;
-		synchronized (this) {
-			if (waiters.containsKey(token)){
-				locker = waiters.get(token);
-			} else {
-				locker = new ThreadEvent();
-				waiters.put(token, locker);
-			}
-		}
-		
-		System.out.println("is waiting for "+token);
-		locker.await();
-		System.out.println("token released "+token);
-		Process myProcess = retrieveProcess(role, processId);
-		return myProcess.getProvidedData(cuiId);
-	}
+//	public List<DataItem> waitDataFromUser(String cuiId, String role, String processId) throws InterruptedException{
+//		String token = role+processId+cuiId;
+//		ThreadEvent locker;
+//		synchronized (this) {
+//			if (waiters.containsKey(token)){
+//				locker = waiters.get(token);
+//			} else {
+//				locker = new ThreadEvent();
+//				waiters.put(token, locker);
+//			}
+//		}
+//		
+//		System.out.println("is waiting for "+token);
+//		locker.await();
+//		System.out.println("token released "+token);
+//		Process myProcess = retrieveProcess(role, processId);
+//		return myProcess.getProvidedData(cuiId);
+//	}
 	
 	/**
 	 * User interacion performed.
@@ -109,13 +102,13 @@ public class UiManager {
 	 * @param role the role
 	 * @param processId the process id
 	 */
-	public void userInteracionPerformed(String cuiId, String role, String processId){
-		String token = role+processId+cuiId;
-		ThreadEvent locker = waiters.get(token);
-		if (locker !=  null){
-			locker.signal();
-		}
-	}
+//	public void userInteracionPerformed(String cuiId, String role, String processId){
+//		String token = role+processId+cuiId;
+//		ThreadEvent locker = waiters.get(token);
+//		if (locker !=  null){
+//			locker.signal();
+//		}
+//	}
 
 	/**
 	 * Retrieve process.
@@ -125,22 +118,23 @@ public class UiManager {
 	 * @return the process
 	 */
 	public Process retrieveProcess(String role, String processId) {
-		Map<String, Process> myProcessMap;
-		if (processes.containsKey(role)) {
-			System.out.println("contains ROLE");
-			myProcessMap = processes.get(role);
+		System.out.println("retrieve role = "+role);
+		System.out.println("retrieve processId = "+processId);
+		List<Process> innerProcesses;
+		if (!processesByRoles.containsKey(role)) {
+			innerProcesses = new LinkedList<Process>();
+			processesByRoles.put(role, innerProcesses);
 		} else {
-			myProcessMap = new HashMap<String, Process>();
-			processes.put(role, myProcessMap);
+			innerProcesses = processesByRoles.get(role);
 		}
 		
-		Process myProcess = null;
-		if (myProcessMap.containsKey(processId)) {
-			myProcess = myProcessMap.get(processId);
-		}else {
-			System.out.println("but havent the process.");
+		for (Process process : innerProcesses) {
+			if (process.getId().equals(processId))
+				return process;
 		}
-		return myProcess;
+		Process newProcess = new Process(processId);
+		innerProcesses.add(newProcess);
+		return newProcess;
 	}
 	
 	/**
@@ -150,13 +144,17 @@ public class UiManager {
 	 * @return true, if successful
 	 */
 	public boolean hasPendingUserInteracions(String role){
-		if (!processes.containsKey(role)){;
+		System.out.println("pending interaction for ="+role);
+		if (!processesByRoles.containsKey(role)){
+			System.out.println("does not exist.");
 			return false;
 		}
-		for (Process aProcess : processes.get(role).values()) {
+		for (Process aProcess : processesByRoles.get(role)) {
+			System.out.println("process="+ aProcess);
 			if (aProcess.hasPendingUserInteracions()) 
 				return true;
 		}
+		System.out.println("does not pending.");
 		return false;
 	}
 	
@@ -168,8 +166,9 @@ public class UiManager {
 	 */
 	public List<Process> getPendingProcesses(String role){
 		List<Process> pendingProcesses = new LinkedList<Process>();
-		Collection<Process> myprocesses = processes.get(role).values();
-		for (Process aProcess : myprocesses) {
+		System.out.println("role : "+role);
+		for (Process aProcess : processesByRoles.get(role)) {
+			System.out.println("a Process : "+aProcess.getId());
 			if (aProcess.hasPendingUserInteracions()) 
 				pendingProcesses.add(aProcess);
 		}

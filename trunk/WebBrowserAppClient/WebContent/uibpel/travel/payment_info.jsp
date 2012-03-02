@@ -1,5 +1,7 @@
-<%@page import="be.ac.fundp.webapp.service.manager.UiManager"%>
+<%@page import="be.ac.fundp.webapp.service.representation.DataItem"%>
 <%@page import="be.ac.fundp.webapp.service.representation.UserInteraction"%>
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
+<%@page import="be.ac.fundp.webapp.service.manager.UiManager"%>
 <%@page import="java.util.List"%>
 <%@page import="be.ac.fundp.webapp.service.representation.Process"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -79,7 +81,9 @@
 	//response.setIntHeader("Refresh", 5);
 	String role = (String) request.getSession().getAttribute("role");
 	String processId = (String) request.getParameter("processId");
-	Process process = r.retrieveProcess(role, processId);
+	String cuiId = (String) request.getParameter("cuiId");
+	UserInteraction cui = r.retrieveProcess(role, processId).getUserInteracion(cuiId);
+	List<DataItem> l = cui.getPresentedData();
 %>
 </head>
 
@@ -160,7 +164,7 @@
 																									<p align="left">
 																										<span lang="en-us"><b> <font
 																												face="Verdana" style="font-size: 14pt"
-																												color="#FFFFFF"> Your Orders</font>
+																												color="#FFFFFF"> PUT HERE ORDERS </font>
 																										</b>
 																										</span>
 																								</td>
@@ -216,33 +220,23 @@
 										<table border="0" width="100%" id="table215" cellpadding="3">
 											<tr>
 												<td>
-													<h1>Management Panel</h1>
-													<%
-													if (!process.getUserInter(false).isEmpty()){
-													%>
-													<h2>Past interactions</h2>
-                									<div id="list3">
-		   												<ul>
-													<%
-													}
-													for (UserInteraction ui: process.getUserInter(false)){
-													%>
-														<li><%=ui.getDisplayableName()%>: <FONT COLOR="#006633">done</FONT> <a href="/WebBrowserAppClient/uibpel/detailUserInter.jsp?processId=<%=process.getId()%>&cuiId=<%=ui.getId()%>">Details</a></li> 
-													<% } %>
-													</ul>
-													</div>
-                									<h2>Pending interactions are the following</h2>
-                									<div id="list3">
-		   												<ul>
-														<%
-														for (UserInteraction ui: process.getUserInter(true)){
-														%>
-															<li><%=ui.getDisplayableName()%>: <FONT COLOR="#DAA520">pending</FONT> <a href="/WebBrowserAppClient/UiControler?processId=<%=process.getId()%>&cuiId=<%=ui.getId()%>">Perform</a></li> 
-														<% } %>
-														</ul>
-													</div>
+													<h1>User Interaction</h1>
+													<form action='/WebBrowserAppClient/InteractionManager' method="get">
+														<input type="hidden" name="processId" value="<%=processId%>">
+														<input type="hidden" name="cuiId" value="<%=cuiId%>">
+													    <ul id="contactform">
+													        <li>
+													            <label for="name">Banking Account Identification</label>
+													            <span class="fieldbox"><input type="text" name="account" id="account" value=""/></span>
+													        </li>
+													        <li>
+													            <label for="email">Security Code</label>
+													            <span class="fieldbox"><input type="text" name="code" id="code" value=""/></span>
+													        </li>
+													    </ul>
+													    <input type="submit" value="Send" id="sendbutton" name="sendbutton"/>
+													</form>
 												</td>
-												<td width="4">&nbsp;</td>
 											</tr>
 										</table></td>
 								</tr>

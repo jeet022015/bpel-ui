@@ -213,48 +213,30 @@
 									<td ALIGN="left"  VALIGN="top">
 										<table border="0" width="100%" id="table215" cellpadding="3">
 											<tr>
-												<td ALIGN="left"  VALIGN="top">
-													<p>&nbsp;</p>
-													<p>&nbsp;</p>
-													<% String userName = (String)session.getAttribute("role"); 
-													   if (userName == null){
-														   userName = "Default User";
-													   }
-													%>
-													<p class="MsoNormal" style="text-align: justify">
-														<span style="font-size: 30pt" lang="en-us"><b>
-																<span style="font-family: Arial">Manager</span>
-														</b>
-														</span>
-													</p>
+												<td>
+													<h1>Management Panel</h1>
 													<%
 													   if (!r.hasPendingUserInteracions(role)) {
 													%>
-													
-													<p class="MsoNormal" style="text-indent: 0cm" align="justify">
-														<font size="5" face="Arial">
-															&nbsp; You haven't any pending action
-														</font>
-                									</p>
+														<h2>You haven't any pending interactions</h2>
 													 
 													<% } else { 
 														List<Process> myProcesses = r.getPendingProcesses(role);
 													
 														%>
-														<p class="MsoNormal" style="text-indent: 0cm" align="justify">
-															<font size="5" face="Arial">
-																&nbsp; You have pending actions on the following orders
-															</font>
-														</p>
-														<ul>
-														<%
-														int i = 1;
-														for (Process aProcess: myProcesses) {
-														%>
-															<li>&nbsp;<font size="4" face="Arial"> Order <%=i++%>: <a href="/WebBrowserAppClient/uibpel/processDetail.jsp?processId=<%=aProcess.getId()%>">perform pending actions</a> </font></li>
-															
-														<% } %>
-														</ul>
+														<h2>You have pending actions on the following Processes</h2>
+														<div id="list3">
+	   														<ul>
+															<%
+															int i = 1;
+															for (Process aProcess: myProcesses) {
+															%>
+																<li>Process <%=i++%>: <a href="/WebBrowserAppClient/uibpel/processDetail.jsp?processId=<%=aProcess.getId()%>"> Details </a>
+																</li>
+																
+															<% } %>
+															</ul>
+														</div>
 													<% } %>
 												</td>
 												<td width="4">&nbsp;</td>

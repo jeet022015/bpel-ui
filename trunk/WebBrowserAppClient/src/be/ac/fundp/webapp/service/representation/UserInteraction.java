@@ -1,7 +1,11 @@
 package be.ac.fundp.webapp.service.representation;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import be.ac.fundp.webapp.service.util.ThreadEvent;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -19,7 +23,19 @@ public class UserInteraction {
 	protected List<DataItem> presentedData = new LinkedList<DataItem>();
 	
 	/** The provided data. */
-	protected List<DataItem> providedData = new LinkedList<DataItem>();;
+	protected List<DataItem> providedData = new LinkedList<DataItem>();
+	
+	/** The provided data. */
+	static protected Map<String, String> displayNames = new HashMap<String, String>();
+	
+	static {
+		displayNames.put("27", "Employee's Travel Demand");
+		displayNames.put("28", "Veredict about the Travel");
+		displayNames.put("30", "Travel Information");
+		displayNames.put("31", "Travel Payment");
+	}
+	
+	protected ThreadEvent locker = new ThreadEvent();
 	
 	/** The performed. */
 	protected boolean performed;
@@ -89,14 +105,8 @@ public class UserInteraction {
 	 * Sets the performed.
 	 */
 	public void setPerformed(){
+		locker.signal();
 		performed = true;
-	}
-	
-	/**
-	 * Reset performed.
-	 */
-	public void resetPerformed(){
-		performed = false;
 	}
 
 	/**
@@ -107,14 +117,31 @@ public class UserInteraction {
 	public String getId() {
 		return userInteractionId;
 	}
+	
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public String getDisplayableName() {
+		String displayName = displayNames.get(userInteractionId);
+		if (displayName != null)
+			return displayName;
+		return "Interaction "+userInteractionId;
+	}
 
 	/**
 	 * Gets the provided data.
 	 *
 	 * @return the provided data
+	 * @throws InterruptedException 
 	 */
-	public List<DataItem> getProvidedData() {
+	public List<DataItem> getProvidedData() throws InterruptedException {
+		if (isPerformed())
+			return providedData;
+		locker.await();
 		return providedData;
+		
 	}
 	
 	/**
