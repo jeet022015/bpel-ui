@@ -15,9 +15,6 @@ public class Process {
 	/** The process id. */
 	protected String processId;
 	
-	/** The role. */
-	protected String role;
-	
 	/** The process interactions. */
 	protected List<UserInteraction> processInteractions = new LinkedList<UserInteraction>();
 	
@@ -27,9 +24,8 @@ public class Process {
 	 * @param id the id
 	 * @param role the role
 	 */
-	public Process (String id, String role){
+	public Process (String id){
 		processId = id;
-		this.role = role;
 	}
 	
 	/**
@@ -42,28 +38,19 @@ public class Process {
 	}
 
 	/**
-	 * Adds the user interaction.
-	 *
-	 * @param thisUserInteraction the this user interaction
-	 */
-	public void addUserInteraction(UserInteraction thisUserInteraction) {
-		processInteractions.add(thisUserInteraction);
-	}
-
-	/**
 	 * Contain user inter.
 	 *
 	 * @param cuiId the cui id
 	 * @return true, if successful
 	 */
-	public boolean containUserInter(String cuiId) {
-		for (UserInteraction aUserInteraction : processInteractions) {
-			if (aUserInteraction.getId().equals(cuiId)){
-				return true;
-			}
-		}
-		return false;
-	}
+//	public boolean containUserInter(String cuiId) {
+//		for (UserInteraction aUserInteraction : processInteractions) {
+//			if (aUserInteraction.getId().equals(cuiId)){
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	/**
 	 * Retrieve user inter.
@@ -86,10 +73,10 @@ public class Process {
 	 * @param cuiId the cui id
 	 * @return the provided data
 	 */
-	public List<DataItem> getProvidedData(String cuiId) {
-		UserInteraction thisUserInt = retrieveUserInter(cuiId);
-		return thisUserInt.getProvidedData();
-	}
+//	public List<DataItem> getProvidedData(String cuiId) {
+//		UserInteraction thisUserInt = retrieveUserInter(cuiId);
+//		return thisUserInt.getProvidedData();
+//	}
 
 	/**
 	 * Checks for pending user interacions.
@@ -132,6 +119,12 @@ public class Process {
 			if (aCui.getId().equals(cuiId))
 				return aCui;
 		}
-		return null;
+		return createUserInteraction(cuiId);
+	}
+
+	public UserInteraction createUserInteraction(String cuiId) {
+		UserInteraction thisUserInteraction = new UserInteraction(cuiId);
+		processInteractions.add(thisUserInteraction);
+		return thisUserInteraction;
 	}
 }

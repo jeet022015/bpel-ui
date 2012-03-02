@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import be.ac.fundp.webapp.service.manager.UiManager;
 import be.ac.fundp.webapp.service.representation.UserInteraction;
 
-// TODO: Auto-generated Javadoc
 /**
  * Servlet implementation class UiManager.
  *
@@ -53,18 +52,17 @@ public class InteractionManager extends HttpServlet {
 		String cuiId = para.get("cuiId")[0];
 		UserInteraction cui = uiManager.retrieveProcess(role, process).getUserInteracion(cuiId);
 		for (String key : para.keySet()) {
-			if (!key.equals("processId") && !key.equals("cuiId")){
+			if (!key.equals("processId") && !key.equals("cuiId") && !key.equals("sendbutton")){
 				System.out.println("the key = "+key);
 				cui.addProvidedDataItem(key, "String", para.get(key)[0]);
 			}
 		}
 		cui.setPerformed();
 		
-		uiManager.userInteracionPerformed(cuiId, role, process);
+		//uiManager.userInteracionPerformed(cuiId, role, process);
 		String forward = "/uibpel/welcome.jsp";
 		String fullURL = request.getRequestURL().toString();
-		String myURL = fullURL.replaceAll("/InteractionManager", forward); 
-		System.out.println("request URL = "+request.getRequestURL());
+		String myURL = fullURL.replaceAll("/InteractionManager", forward);
 		System.out.println("request URI = "+request.getRequestURI());
 		System.out.println("I'm going to = "+myURL);
 		response.sendRedirect(myURL);

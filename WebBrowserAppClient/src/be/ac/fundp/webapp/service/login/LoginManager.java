@@ -1,8 +1,8 @@
 package be.ac.fundp.webapp.service.login;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +25,7 @@ public class LoginManager extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	/** The users. */
-	protected List<String> users= new LinkedList<String>();
+	protected Map<String, String> users= new HashMap<String, String>();
        
     /**
      * Instantiates a new login manager.
@@ -34,9 +34,9 @@ public class LoginManager extends HttpServlet {
      */
     public LoginManager() {
         super();
-        users.add("neto");
-        users.add("philippe");
-        users.add("manager1");
+        users.put("neto", "employee");
+        users.put("philippe", "manager");
+        users.put("mohamed", "administrator");
     }
 
 	/**
@@ -52,13 +52,13 @@ public class LoginManager extends HttpServlet {
 		HttpSession session = request.getSession();
 		String login = request.getParameter("login");
 		String forward = "/uibpel/index.html";
-		if(login != null && users.contains(login)){
-			session.setAttribute("role", login);
+		if(login != null && users.keySet().contains(login)){
+			session.setAttribute("role", users.get(login));
 			forward = "/uibpel/welcome.jsp";
 		}
 		String fullURL = request.getRequestURL().toString();
-		String myURL = fullURL.replaceAll("/LoginManager", forward); 
-		System.out.println("request URL = "+request.getRequestURL());
+		System.out.println("fullURL = "+fullURL);
+		String myURL = fullURL.replaceAll("/LoginManager", forward);
 		System.out.println("request URI = "+request.getRequestURI());
 		System.out.println("I'm going to = "+myURL);
 		response.sendRedirect(myURL);
