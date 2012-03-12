@@ -23,6 +23,7 @@ import org.eclipse.bpel.model.ExtensionActivity;
 import org.eclipse.bpel.model.From;
 import org.eclipse.bpel.model.Import;
 import org.eclipse.bpel.model.Invoke;
+import org.eclipse.bpel.model.OnAlarm;
 import org.eclipse.bpel.model.OnEvent;
 import org.eclipse.bpel.model.PartnerLinks;
 import org.eclipse.bpel.model.Process;
@@ -51,6 +52,7 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.DataInteractionManager;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
@@ -408,26 +410,82 @@ public class WriterUiBpel extends BPELWriter {
 	 * @return the element
 	 */
 	private Element dealWithScopeUI(ScopeUI activity) {
-		EventHandlerUI uiHandler = (EventHandlerUI)activity.getEventHandlers();
-		if (uiHandler != null) {
-			for (OnUserEvent aOnUserEvent : uiHandler.getUserInteraction()) {
-				OnEvent userInteractionEvent = BPELFactory.eINSTANCE.createOnEvent();
-				
-				userInteractionEvent.setActivity(aOnUserEvent.getActivity());
-				
-				userInteractionEvent.setPartnerLink(bpel.getPartnerLinkUserEvent());
-				userInteractionEvent.setOperation(bpel.getEventOperation());
-				userInteractionEvent.setVariable(bpel.getVariableForUserInteraction(aOnUserEvent.getId())[0]);
-				Correlations cc = BPELFactory.eINSTANCE.createCorrelations();
-				Correlation processCorrelation = BPELFactory.eINSTANCE.createCorrelation();
-				processCorrelation.setInitiate(CorrelationSection.NO);
-				processCorrelation.setSet(bpel.getUserEventCorrelationSet());
-				cc.getChildren().add(processCorrelation);
-				userInteractionEvent.setCorrelations(cc);
-				uiHandler.getEvents().add(userInteractionEvent);
-			}
+		Element activityElement = createBPELElement("scope");
+
+		if (activity.isSetIsolated())
+			activityElement.setAttribute("isolated", BPELUtils
+					.boolean2XML(activity.getIsolated()));
+		if (activity.isSetExitOnStandardFault())
+			activityElement.setAttribute("exitOnStandardFault", BPELUtils
+					.boolean2XML(activity.getExitOnStandardFault()));
+		if (activity.getVariables() != null
+				&& !activity.getVariables().getChildren().isEmpty())
+			activityElement.appendChild(variables2XML(activity.getVariables()));
+		if (activity.getCorrelationSets() != null
+				&& !activity.getCorrelationSets().getChildren().isEmpty())
+			activityElement.appendChild(correlationSets2XML(activity
+					.getCorrelationSets()));
+		if (activity.getPartnerLinks() != null
+				&& !activity.getPartnerLinks().getChildren().isEmpty())
+			activityElement.appendChild(partnerLinks2XML(activity
+					.getPartnerLinks()));
+		if (activity.getFaultHandlers() != null)
+			activityElement.appendChild(faultHandlers2XML(activity
+					.getFaultHandlers()));
+		if (activity.getCompensationHandler() != null)
+			activityElement.appendChild(compensationHandler2XML(activity
+					.getCompensationHandler()));
+		if (activity.getTerminationHandler() != null)
+			activityElement.appendChild(terminationHandler2XML(activity
+					.getTerminationHandler()));
+		if (activity.getEventHandlers() != null)
+			activityElement.appendChild(eventHandlerUi2XML((EventHandlerUI)activity
+					.getEventHandlers()));
+		if (activity.getMessageExchanges() != null
+				&& !activity.getMessageExchanges().getChildren().isEmpty())
+			activityElement.appendChild(messageExchanges2XML(activity
+					.getMessageExchanges()));
+		if (activity.getActivity() != null)
+			activityElement.appendChild(activity2XML(activity.getActivity()));
+
+		addCommonActivityItems(activityElement, activity);
+		return activityElement;
+	}
+
+	private Node eventHandlerUi2XML(EventHandlerUI eventHandler) {
+		Element eventHandlerElement = createBPELElement("eventHandlers");
+
+		// TODO: For backwards compatibility with 1.1 we should serialize
+		// OnMessages here.
+		for (Object name : eventHandler.getEvents()) {
+			OnEvent onEvent = (OnEvent) name;
+			eventHandlerElement.appendChild(onEvent2XML(onEvent));
 		}
-		return scope2XML(activity);
+		for (Object name : eventHandler.getAlarm()) {
+			OnAlarm onAlarm = (OnAlarm) name;
+			eventHandlerElement.appendChild(onAlarm2XML(onAlarm));
+		}
+		for (Object name : eventHandler.getUserInteraction()) {
+			OnUserEvent onUiEvent = (OnUserEvent) name;
+			onUiEvent.setElement(eventHandlerElement);
+			OnEvent userInteractionEvent = BPELFactory.eINSTANCE.createOnEvent();
+			userInteractionEvent.setActivity(onUiEvent.getActivity());
+			userInteractionEvent.setPartnerLink(bpel.getPartnerLinkUserEvent());
+			userInteractionEvent.setOperation(bpel.getEventOperation());
+			userInteractionEvent.setVariable(bpel.getVariableForUserInteraction(onUiEvent.getId())[0]);
+			Correlations cc = BPELFactory.eINSTANCE.createCorrelations();
+			Correlation processCorrelation = BPELFactory.eINSTANCE.createCorrelation();
+			processCorrelation.setInitiate(CorrelationSection.NO);
+			processCorrelation.setSet(bpel.getUserEventCorrelationSet());
+			cc.getChildren().add(processCorrelation);
+			userInteractionEvent.setCorrelations(cc);
+			
+			eventHandlerElement.appendChild(onEvent2XML(userInteractionEvent));
+		}
+		// serialize local namespace prefixes to XML
+		serializePrefixes(eventHandler, eventHandlerElement);
+		extensibleElement2XML(eventHandler, eventHandlerElement);
+		return eventHandlerElement;
 	}
 
 	/**

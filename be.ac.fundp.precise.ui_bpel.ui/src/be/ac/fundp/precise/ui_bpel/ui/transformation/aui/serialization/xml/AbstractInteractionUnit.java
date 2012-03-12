@@ -10,6 +10,7 @@ package be.ac.fundp.precise.ui_bpel.ui.transformation.aui.serialization.xml;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
