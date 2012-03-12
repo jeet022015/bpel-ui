@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="event_interaction2">
+        <item>Cancel</item>
+    </string-array>
+    <string-array name="event_interaction19">
+        <item>Cancel</item>
+    </string-array>
+    <string-array name="event_interaction20">
+        <item>Cancel</item>
+    </string-array>
+    <string-array name="event_interaction21">
+        <item>Cancel</item>
+    </string-array>
+    <string-array name="event_interaction22">
+        <item>Cancel</item>
+    </string-array>
+    <string-array name="event_interaction23">
+        <item>Cancel</item>
+    </string-array>
+    <string-array name="event_interaction24">
+        <item>Cancel</item>
+    </string-array>
+    <string-array name="event_interaction25">
+        <item>Cancel</item>
+    </string-array>
+    <string-array name="event_interaction26">
+        <item>Cancel</item>
+    </string-array>
+</resources>

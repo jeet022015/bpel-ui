@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="interaction0">
+        <item>firstName</item>
+        <item>lastName</item>
+        <item>gender</item>
+        <item>email</item>
+        <item>address</item>
+    </string-array>
+    <string-array name="interaction1">
+        <item>departCity</item>
+        <item>arriveCity</item>
+        <item>departDate</item>
+        <item>returnDate</item>
+    </string-array>
+    <string-array name="interaction2">
+        <item>selectedMeanOp</item>
+    </string-array>
+    <string-array name="interaction19">
+        <item>selectedFlight</item>
+    </string-array>
+    <string-array name="interaction20">
+        <item>selectedTrain</item>
+    </string-array>
+    <string-array name="interaction21">
+        <item>rentCarOp</item>
+    </string-array>
+    <string-array name="interaction22">
+        <item>color</item>
+        <item>option</item>
+        <item>model</item>
+        <item>carLowerPrice</item>
+        <item>carHigherPrice</item>
+    </string-array>
+        <string-array name="interaction23">
+        <item>selectedCar</item>
+    </string-array>
+    <string-array name="interaction24">
+        <item>hotelOp</item>
+    </string-array>
+    <string-array name="interaction25">
+        <item>neighborhood</item>
+        <item>hotelLowerPrice</item>
+        <item>hotelHigherPrice</item>
+    </string-array>
+    <string-array name="interaction26">
+        <item>selectedHotel</item>
+    </string-array>
+</resources>
