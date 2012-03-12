@@ -16,7 +16,7 @@ public class EventTrigger {
 				"/" + processId +
 				"/" + eventId);
 		itemsResource.get();
-		System.out.println("I did it!!!");
+		System.out.println("I did it.");
 	}
 
 }
