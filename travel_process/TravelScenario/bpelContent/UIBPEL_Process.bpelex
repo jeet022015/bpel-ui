@@ -273,14 +273,6 @@
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:VariableExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="UIBPEL_Process.bpel#//@variables/@children.68"/>
-    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:VariableExtension"/>
-  </extensions>
-  <extensions>
-    <extendedObject href="UIBPEL_Process.bpel#//@variables/@children.69"/>
-    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:VariableExtension"/>
-  </extensions>
-  <extensions>
     <extendedObject href="UIBPEL_Process.bpel#//@variables/@children.70"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:VariableExtension"/>
   </extensions>
@@ -394,6 +386,14 @@
   </extensions>
   <extensions>
     <extendedObject href="UIBPEL_Process.bpel#//@variables/@children.98"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:VariableExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@variables/@children.99"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:VariableExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@variables/@children.100"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:VariableExtension"/>
   </extensions>
   <extensions>
@@ -1570,7 +1570,7 @@
   </extensions>
   <extensions>
     <extendedObject href="UIBPEL_Process.bpel#/"/>
-    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ProcessExtension" modificationStamp="1331026342000"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ProcessExtension" modificationStamp="1331554602000"/>
   </extensions>
   <extensions>
     <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.2/@activities.1"/>
@@ -1593,7 +1593,7 @@
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="UIBPEL_Process.bpel#//@variables/@children.99"/>
+    <extendedObject href="UIBPEL_Process.bpel#//@variables/@children.101"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:VariableExtension"/>
   </extensions>
   <extensions>
@@ -1609,7 +1609,7 @@
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.1"/>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.3"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
   <extensions>
@@ -1617,7 +1617,7 @@
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:VariableExtension"/>
   </extensions>
   <extensions>
-    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.0"/>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.2"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
   <extensions>
@@ -1650,6 +1650,58 @@
   </extensions>
   <extensions>
     <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@activity/@activities.2/@activities.2/@activity/@activities.4/@activities.1"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@variables/@children.68"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:VariableExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@variables/@children.69"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:VariableExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.0"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.0/@copy.0"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.1"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.1/@activities.0"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.1/@activities.0/@copy.0"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.1/@activities.0/@copy.1"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.1/@activities.0/@copy.2"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.1/@activities.0/@copy.3"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.1/@activities.0/@copy.4"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.1/@activities.0/@copy.5"/>
+    <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:CopyExtension"/>
+  </extensions>
+  <extensions>
+    <extendedObject href="UIBPEL_Process.bpel#//@activity/@activities.4/@eventHandlers/@events.0/@activity/@activity/@activities.1/@activities.1"/>
     <extensionObject xsi:type="org.eclipse.bpel.ui.uiextensionmodel:ActivityExtension"/>
   </extensions>
 </extensionmodel:ExtensionMap>

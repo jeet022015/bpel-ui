@@ -108,9 +108,6 @@
         <bpel:variable name="hotelOp3" type="ns:string"/>
         <bpel:variable name="backAccountID" type="ns:string"/>
         <bpel:variable name="address" type="ns:string"/>
-        <bpel:variable name="cancelMsg" type="ns:string"/>
-        
-        <bpel:variable messageType="ns4:outputOperationRequest" name="dataInputRequest6"/>
         <bpel:variable messageType="ns4:inputOperationRequest" name="dataInputRequest3"/>
         <bpel:variable messageType="ns4:selectionOperationResponse" name="dataSelectionResponse7"/>
         <bpel:variable messageType="ns4:outputOperationRequest" name="dataOutputRequest2"/>
@@ -149,9 +146,6 @@
         <bpel:correlationSet name="Test0" properties="tns:propertyTest2"/>
         <bpel:correlationSet name="Test1" properties="tns:propertyTest2"/>
         <bpel:correlationSet name="Test2" properties="tns:propertyTest2"/>
-        <bpel:correlationSet name="Test3" properties="tns:propertyTest3"/>
-        <bpel:correlationSet name="Test4" properties="tns:propertyTest3"/>
-        <bpel:correlationSet name="Test5" properties="tns:propertyTest3"/>
     </bpel:correlationSets>
     <bpel:sequence name="main">
         <bpel:sequence name="initializationSequence">
@@ -352,74 +346,7 @@
                     <bpel:scope name="InnerScope1">
                         <bpel:sequence>
                             
-                            <bpel:assign name="CancelingMessaging" validate="no">
-                                <bpel:copy>
-                                    <bpel:from><![CDATA['The process was canceled.']]></bpel:from>
-                                    <bpel:to variable="cancelMsg"/>
-                                </bpel:copy>
-                            </bpel:assign>
-                            <bpel:sequence>
-                                <bpel:assign
-                                    name="DataOutputConfiguration" validate="no">
-                                    <bpel:copy>
-                                    <bpel:from>
-                                    <bpel:literal>
-                                    <tns:outputOperation
-                                    xmlns:tns="http://fundp.ac.be/UiManager/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-                                    <userInteracId>userInteracId</userInteracId>
-                                    <role>role</role>
-                                    <processid>processid</processid>
-                                    <data>
-                                    <data
-                                    s1:type="s2:string"
-                                    xmlns:s1="http://www.w3.org/2001/XMLSchema-instance" xmlns:s2="http://www.w3.org/2001/XMLSchema">Data</data>
-                                    <type>type</type>
-                                    <id>id</id>
-                                    </data>
-                                    </tns:outputOperation>
-                                    </bpel:literal>
-                                    </bpel:from>
-                                    <bpel:to part="parameters" variable="dataInputRequest6"/>
-                                    </bpel:copy>
-                                    <bpel:copy>
-                                    <bpel:from><![CDATA['employee']]></bpel:from>
-                                    <bpel:to part="parameters" variable="dataInputRequest6">
-                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[role]]></bpel:query>
-                                    </bpel:to>
-                                    </bpel:copy>
-                                    <bpel:copy>
-                                    <bpel:from><![CDATA['31']]></bpel:from>
-                                    <bpel:to part="parameters" variable="dataInputRequest6">
-                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[userInteracId]]></bpel:query>
-                                    </bpel:to>
-                                    </bpel:copy>
-                                    <bpel:copy>
-                                    <bpel:from part="parameters" variable="genIdResponse">
-                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processId]]></bpel:query>
-                                    </bpel:from>
-                                    <bpel:to part="parameters" variable="dataInputRequest6">
-                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[processid]]></bpel:query>
-                                    </bpel:to>
-                                    </bpel:copy>
-                                    <bpel:copy>
-                                    <bpel:from><![CDATA[$cancelMsg]]></bpel:from>
-                                    <bpel:to part="parameters" variable="dataInputRequest6">
-                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/data]]></bpel:query>
-                                    </bpel:to>
-                                    </bpel:copy>
-                                    <bpel:copy>
-                                    <bpel:from><![CDATA['cancelMsg']]></bpel:from>
-                                    <bpel:to part="parameters" variable="dataInputRequest6">
-                                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[data[1]/id]]></bpel:query>
-                                    </bpel:to>
-                                    </bpel:copy>
-                                </bpel:assign>
-                                <bpel:invoke
-                                    inputVariable="dataInputRequest6"
-                                    name="InvokeDataOutput"
-                                    operation="outputOperation"
-                                    partnerLink="UiManagerPartnerLink" portType="ns4:UiManager"/>
-                            </bpel:sequence>
+                            
                             <bpel:reply name="Reply" partnerLink="client" operation="process" variable="output"></bpel:reply>
                             <bpel:exit name="Exit" />
                             
@@ -522,7 +449,6 @@
                             partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
                             <bpel:correlations>
                                 <bpel:correlation set="Test0" initiate="yes" pattern="request-response"></bpel:correlation>
-                                <bpel:correlation set="Test3" initiate="yes" pattern="request-response"></bpel:correlation>
                             </bpel:correlations>
                         </bpel:invoke>
                         <bpel:assign name="ResponseToDataItems" validate="no">
@@ -686,7 +612,6 @@
                                     partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
 		                            <bpel:correlations>
 		                                <bpel:correlation set="Test0" initiate="yes" pattern="request-response"></bpel:correlation>
-		                                <bpel:correlation set="Test3" initiate="yes" pattern="request-response"></bpel:correlation>
 		                            </bpel:correlations>
 		                        </bpel:invoke>
                                 <bpel:assign name="ResponseToDataItems" validate="no">
@@ -857,7 +782,6 @@
                                     partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
 			                            <bpel:correlations>
 			                                <bpel:correlation set="Test0" initiate="yes" pattern="request-response"></bpel:correlation>
-			                                <bpel:correlation set="Test3" initiate="yes" pattern="request-response"></bpel:correlation>
 			                            </bpel:correlations>
 			                        </bpel:invoke>
                                     <bpel:assign
@@ -973,7 +897,6 @@
                             partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
                             <bpel:correlations>
                                 <bpel:correlation set="Test1" initiate="yes" pattern="request-response"></bpel:correlation>
-                                <bpel:correlation set="Test4" initiate="yes" pattern="request-response"></bpel:correlation>
                             </bpel:correlations>
                         </bpel:invoke>
                         <bpel:assign name="ResponseToDataItems" validate="no">
@@ -1034,7 +957,6 @@
                                     partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
 		                            <bpel:correlations>
 		                                <bpel:correlation set="Test1" initiate="yes" pattern="request-response"></bpel:correlation>
-		                                <bpel:correlation set="Test4" initiate="yes" pattern="request-response"></bpel:correlation>
 		                            </bpel:correlations>
 		                        </bpel:invoke>
                                 <bpel:assign name="ResponseToDataItems" validate="no">
@@ -1221,7 +1143,6 @@
                                     partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
 		                            <bpel:correlations>
 		                                <bpel:correlation set="Test1" initiate="yes" pattern="request-response"></bpel:correlation>
-		                                <bpel:correlation set="Test4" initiate="yes" pattern="request-response"></bpel:correlation>
 		                            </bpel:correlations>
 		                        </bpel:invoke>
                                 <bpel:assign name="ResponseToDataItems" validate="no">
@@ -1337,7 +1258,6 @@
                             partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
                             <bpel:correlations>
                                 <bpel:correlation set="Test2" initiate="yes" pattern="request-response"></bpel:correlation>
-                                <bpel:correlation set="Test5" initiate="yes" pattern="request-response"></bpel:correlation>
                             </bpel:correlations>
                         </bpel:invoke>
                         <bpel:assign name="ResponseToDataItems" validate="no">
@@ -1397,7 +1317,6 @@
                                     partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
 		                            <bpel:correlations>
 		                                <bpel:correlation set="Test2" initiate="yes" pattern="request-response"></bpel:correlation>
-		                                <bpel:correlation set="Test5" initiate="yes" pattern="request-response"></bpel:correlation>
 		                            </bpel:correlations>
 		                        </bpel:invoke>
                                 <bpel:assign name="ResponseToDataItems" validate="no">
@@ -1572,7 +1491,6 @@
                                     partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
 		                            <bpel:correlations>
 		                                <bpel:correlation set="Test2" initiate="yes" pattern="request-response"></bpel:correlation>
-		                                <bpel:correlation set="Test5" initiate="yes" pattern="request-response"></bpel:correlation>
 		                            </bpel:correlations>
 		                        </bpel:invoke>
                                 <bpel:assign name="ResponseToDataItems" validate="no">

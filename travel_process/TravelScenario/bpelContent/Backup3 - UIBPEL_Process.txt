@@ -149,9 +149,6 @@
         <bpel:correlationSet name="Test0" properties="tns:propertyTest2"/>
         <bpel:correlationSet name="Test1" properties="tns:propertyTest2"/>
         <bpel:correlationSet name="Test2" properties="tns:propertyTest2"/>
-        <bpel:correlationSet name="Test3" properties="tns:propertyTest3"/>
-        <bpel:correlationSet name="Test4" properties="tns:propertyTest3"/>
-        <bpel:correlationSet name="Test5" properties="tns:propertyTest3"/>
     </bpel:correlationSets>
     <bpel:sequence name="main">
         <bpel:sequence name="initializationSequence">
@@ -522,7 +519,6 @@
                             partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
                             <bpel:correlations>
                                 <bpel:correlation set="Test0" initiate="yes" pattern="request-response"></bpel:correlation>
-                                <bpel:correlation set="Test3" initiate="yes" pattern="request-response"></bpel:correlation>
                             </bpel:correlations>
                         </bpel:invoke>
                         <bpel:assign name="ResponseToDataItems" validate="no">
@@ -686,7 +682,6 @@
                                     partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
 		                            <bpel:correlations>
 		                                <bpel:correlation set="Test0" initiate="yes" pattern="request-response"></bpel:correlation>
-		                                <bpel:correlation set="Test3" initiate="yes" pattern="request-response"></bpel:correlation>
 		                            </bpel:correlations>
 		                        </bpel:invoke>
                                 <bpel:assign name="ResponseToDataItems" validate="no">
@@ -857,7 +852,6 @@
                                     partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
 			                            <bpel:correlations>
 			                                <bpel:correlation set="Test0" initiate="yes" pattern="request-response"></bpel:correlation>
-			                                <bpel:correlation set="Test3" initiate="yes" pattern="request-response"></bpel:correlation>
 			                            </bpel:correlations>
 			                        </bpel:invoke>
                                     <bpel:assign
@@ -973,7 +967,6 @@
                             partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
                             <bpel:correlations>
                                 <bpel:correlation set="Test1" initiate="yes" pattern="request-response"></bpel:correlation>
-                                <bpel:correlation set="Test4" initiate="yes" pattern="request-response"></bpel:correlation>
                             </bpel:correlations>
                         </bpel:invoke>
                         <bpel:assign name="ResponseToDataItems" validate="no">
@@ -1034,7 +1027,6 @@
                                     partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
 		                            <bpel:correlations>
 		                                <bpel:correlation set="Test1" initiate="yes" pattern="request-response"></bpel:correlation>
-		                                <bpel:correlation set="Test4" initiate="yes" pattern="request-response"></bpel:correlation>
 		                            </bpel:correlations>
 		                        </bpel:invoke>
                                 <bpel:assign name="ResponseToDataItems" validate="no">
@@ -1221,7 +1213,6 @@
                                     partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
 		                            <bpel:correlations>
 		                                <bpel:correlation set="Test1" initiate="yes" pattern="request-response"></bpel:correlation>
-		                                <bpel:correlation set="Test4" initiate="yes" pattern="request-response"></bpel:correlation>
 		                            </bpel:correlations>
 		                        </bpel:invoke>
                                 <bpel:assign name="ResponseToDataItems" validate="no">
@@ -1337,7 +1328,6 @@
                             partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
                             <bpel:correlations>
                                 <bpel:correlation set="Test2" initiate="yes" pattern="request-response"></bpel:correlation>
-                                <bpel:correlation set="Test5" initiate="yes" pattern="request-response"></bpel:correlation>
                             </bpel:correlations>
                         </bpel:invoke>
                         <bpel:assign name="ResponseToDataItems" validate="no">
@@ -1397,7 +1387,6 @@
                                     partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
 		                            <bpel:correlations>
 		                                <bpel:correlation set="Test2" initiate="yes" pattern="request-response"></bpel:correlation>
-		                                <bpel:correlation set="Test5" initiate="yes" pattern="request-response"></bpel:correlation>
 		                            </bpel:correlations>
 		                        </bpel:invoke>
                                 <bpel:assign name="ResponseToDataItems" validate="no">
@@ -1572,7 +1561,6 @@
                                     partnerLink="UiManagerPartnerLink" portType="ns4:UiManager">
 		                            <bpel:correlations>
 		                                <bpel:correlation set="Test2" initiate="yes" pattern="request-response"></bpel:correlation>
-		                                <bpel:correlation set="Test5" initiate="yes" pattern="request-response"></bpel:correlation>
 		                            </bpel:correlations>
 		                        </bpel:invoke>
                                 <bpel:assign name="ResponseToDataItems" validate="no">
