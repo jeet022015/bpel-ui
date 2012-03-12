@@ -1,7 +1,10 @@
 <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
-<%@page import="be.ac.fundp.webapp.service.manager.UiManager"%>
+<%@page import="be.ac.fundp.usiwsc.webapp.manager.UiManager"%>
+<%@page import="be.ac.fundp.usiwsc.webapp.model.Process"%>
 <%@page import="java.util.List"%>
-<%@page import="be.ac.fundp.webapp.service.representation.Process"%>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -11,7 +14,7 @@
 	xmlns="http://www.w3.org/TR/REC-html40">
 <head>
 <title>UsiWSC project</title>
-<link rel="stylesheet" type="text/css" href="/WebBrowserAppClient/uibpel/style.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/uibpel/style.css">
 <script language="JavaScript">
 <!--
 	function FP_swapImg() {//v1.0
@@ -75,9 +78,9 @@
 </script>
 
 <%
-	UiManager r = UiManager.getInstance();
 	response.setIntHeader("Refresh", 5);
 	String role = (String) request.getSession().getAttribute("role");
+	List<Process> pendingProcesses = UiManager.getInstance().getPendingProcesses(role);
 %>
 </head>
 
@@ -88,17 +91,17 @@
 	<table border="0" cellspacing="0" cellpadding="0" width="100%"
 		height="100%">
 		<tr>
-			<td width="50%" background="/WebBrowserAppClient/uibpel/images/bg.gif" valign="top"><img
-				src="/WebBrowserAppClient/uibpel/images/px1.gif" width="1" height="1" alt="" border="0">
+			<td width="50%" background="${pageContext.request.contextPath}/uibpel/images/bg.gif" valign="top"><img
+				src="${pageContext.request.contextPath}/uibpel/images/px1.gif" width="1" height="1" alt="" border="0">
 			</td>
-			<td valign="bottom" background="/WebBrowserAppClient/uibpel/images/bg_left.gif"><img
-				src="/WebBrowserAppClient/uibpel/images/bg_left.gif" alt="" width="17" height="16" border="0">
+			<td valign="bottom" background="${pageContext.request.contextPath}/uibpel/images/bg_left.gif"><img
+				src="${pageContext.request.contextPath}/uibpel/images/bg_left.gif" alt="" width="17" height="16" border="0">
 			</td>
 			<td valign="top">
 				<table border="0" cellspacing="0" cellpadding="0" width="780"
 					align="center">
 					<tr>
-						<td background="/WebBrowserAppClient/uibpel/images/fon_top.gif" height="22">
+						<td background="${pageContext.request.contextPath}/uibpel/images/fon_top.gif" height="22">
 							<div align="right" style="margin-right: 25px;">
 								&nbsp;&nbsp;</div></td>
 					</tr>
@@ -108,7 +111,7 @@
 								id="table1">
 								<tr>
 									<td width="728"><img border="0"
-										src="/WebBrowserAppClient/uibpel/images/usiwsc-bannier.png" width="829" height="93">
+										src="${pageContext.request.contextPath}/uibpel/images/usiwsc-bannier.png" width="829" height="93">
 									</td>
 								</tr>
 								<tr>
@@ -150,7 +153,7 @@
 																								<td width="13" align="center"><span
 																									lang="en-us"> <font face="Verdana"
 																										style="font-size: 8pt"> <img
-																											src="/WebBrowserAppClient/uibpel/images/Puce_carre.gif" align="bottom">
+																											src="${pageContext.request.contextPath}/uibpel/images/Puce_carre.gif" align="bottom">
 																									</font>
 																								</span>
 																								</td>
@@ -178,7 +181,7 @@
 																											<td width="13" align="center"><span
 																												lang="en-us"> <font face="Verdana">
 																														<span style="font-size: 8pt"> <img
-																															src="/WebBrowserAppClient/uibpel/images/Puce.gif" height="12"
+																															src="${pageContext.request.contextPath}/uibpel/images/Puce.gif" height="12"
 																															width="12">
 																													</span>
 																												</font>
@@ -216,23 +219,18 @@
 												<td>
 													<h1>Management Panel</h1>
 													<%
-													   if (!r.hasPendingUserInteracions(role)) {
+													   if (pendingProcesses.isEmpty()) {
 													%>
 														<h2>You haven't any pending interactions</h2>
 													 
-													<% } else { 
-														List<Process> myProcesses = r.getPendingProcesses(role);
-													
-														%>
+													<% } else { %>
 														<h2>You have pending actions on the following Processes</h2>
 														<div id="list3">
 	   														<ul>
 															<%
-															int i = 1;
-															for (Process aProcess: myProcesses) {
+															for (Process aProcess: pendingProcesses) {
 															%>
-																<li>Process <%=i++%>: <a href="/WebBrowserAppClient/uibpel/processDetail.jsp?processId=<%=aProcess.getId()%>"> Details </a>
-																</li>
+																<li>Process <%=aProcess.getId()%>: <a href="${pageContext.request.contextPath}/uibpel/processDetail.jsp?processId=<%=aProcess.getId()%>"> Details </a></li>
 																
 															<% } %>
 															</ul>
@@ -247,11 +245,11 @@
 					</tr>
 				</table>
 				</td>
-			<td valign="bottom" background="/WebBrowserAppClient/uibpel/images/bg_right.gif"><img
-				src="/WebBrowserAppClient/uibpel/images/bg_right.gif" alt="" width="17" height="16" border="0">
+			<td valign="bottom" background="${pageContext.request.contextPath}/uibpel/images/bg_right.gif"><img
+				src="${pageContext.request.contextPath}/uibpel/images/bg_right.gif" alt="" width="17" height="16" border="0">
 			</td>
-			<td width="50%" background="/WebBrowserAppClient/uibpel/images/bg.gif" valign="top"><img
-				src="/WebBrowserAppClient/uibpel/images/px1.gif" width="1" height="1" alt="" border="0">
+			<td width="50%" background="${pageContext.request.contextPath}/uibpel/images/bg.gif" valign="top"><img
+				src="${pageContext.request.contextPath}/uibpel/images/px1.gif" width="1" height="1" alt="" border="0">
 			</td>
 		</tr>
 	</table>
