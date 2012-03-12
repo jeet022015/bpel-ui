@@ -1,9 +1,11 @@
-<%@page import="be.ac.fundp.webapp.service.representation.DataItem"%>
-<%@page import="be.ac.fundp.webapp.service.representation.UserInteraction"%>
+<%@page import="be.ac.fundp.usiwsc.webapp.model.UserInteraction"%>
 <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
-<%@page import="be.ac.fundp.webapp.service.manager.UiManager"%>
-<%@page import="java.util.List"%>
-<%@page import="be.ac.fundp.webapp.service.representation.Process"%>
+<%@page import="be.ac.fundp.usiwsc.webapp.manager.UiManager"%>
+<%@page import="java.util.Set"%>
+<%@page import="be.ac.fundp.usiwsc.webapp.model.Process"%>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -13,7 +15,7 @@
 	xmlns="http://www.w3.org/TR/REC-html40">
 <head>
 <title>UsiWSC project</title>
-<link rel="stylesheet" type="text/css" href="/WebBrowserAppClient/uibpel/style.css">
+<link rel="stylesheet" type="text/css" href="./style.css">
 <script language="JavaScript">
 <!--
 	function FP_swapImg() {//v1.0
@@ -82,8 +84,8 @@
 	String role = (String) request.getSession().getAttribute("role");
 	String processId = (String) request.getParameter("processId");
 	String cuiId = (String) request.getParameter("cuiId");
-	UserInteraction cui = r.retrieveProcess(role, processId).getUserInteracion(cuiId);
-	List<DataItem> l = cui.getPresentedData();
+	UserInteraction cui = r.getProcess(role,processId).getUserInteraction(cuiId);
+	Set<String> l = cui.getAvailableItemIds();
 	
 	String name = "";
 	String surname = "";
@@ -91,17 +93,17 @@
 	String car = "";
 	String travel = "";
 	
-	for (DataItem dt: l){
-		if (dt.getDataItemId().equals("employeeFirstName")){
-			name = dt.getData().toString();
-		} else if (dt.getDataItemId().equals("employeeSurname")){
-			surname = dt.getData().toString();
-		} else if (dt.getDataItemId().equals("employeeSelectedHotel")){
-			hotel = dt.getData().toString();
-		} else if (dt.getDataItemId().equals("employeeSelectedTransport")){
-			travel = dt.getData().toString();
-		} else if (dt.getDataItemId().equals("employeeSelectedCar")){
-			car = dt.getData().toString();
+	for (String dt: l){
+		if (dt.equals("employeeFirstName")){
+			name = cui.getAvailableItemContent(dt).toString();
+		} else if (dt.equals("employeeSurname")){
+			surname = cui.getAvailableItemContent(dt).toString();
+		} else if (dt.equals("employeeSelectedHotel")){
+			hotel = cui.getAvailableItemContent(dt).toString();
+		} else if (dt.equals("employeeSelectedTransport")){
+			travel = cui.getAvailableItemContent(dt).toString();
+		} else if (dt.equals("employeeSelectedCar")){
+			car = cui.getAvailableItemContent(dt).toString();
 		}
 		
 	}
@@ -115,17 +117,17 @@
 	<table border="0" cellspacing="0" cellpadding="0" width="100%"
 		height="100%">
 		<tr>
-			<td width="50%" background="/WebBrowserAppClient/uibpel/images/bg.gif" valign="top"><img
-				src="/WebBrowserAppClient/uibpel/images/px1.gif" width="1" height="1" alt="" border="0">
+			<td width="50%" background="/UsiXML-WebClient/uibpel/images/bg.gif" valign="top"><img
+				src="/UsiXML-WebClient/uibpel/images/px1.gif" width="1" height="1" alt="" border="0">
 			</td>
-			<td valign="bottom" background="/WebBrowserAppClient/uibpel/images/bg_left.gif"><img
-				src="/WebBrowserAppClient/uibpel/images/bg_left.gif" alt="" width="17" height="16" border="0">
+			<td valign="bottom" background="/UsiXML-WebClient/uibpel/images/bg_left.gif"><img
+				src="/UsiXML-WebClient/uibpel/images/bg_left.gif" alt="" width="17" height="16" border="0">
 			</td>
 			<td valign="top">
 				<table border="0" cellspacing="0" cellpadding="0" width="780"
 					align="center">
 					<tr>
-						<td background="/WebBrowserAppClient/uibpel/images/fon_top.gif" height="22">
+						<td background="/UsiXML-WebClient/uibpel/images/fon_top.gif" height="22">
 							<div align="right" style="margin-right: 25px;">
 								&nbsp;&nbsp;</div></td>
 					</tr>
@@ -135,7 +137,7 @@
 								id="table1">
 								<tr>
 									<td width="728"><img border="0"
-										src="/WebBrowserAppClient/uibpel/images/usiwsc-bannier.png" width="829" height="93">
+										src="/UsiXML-WebClient/uibpel/images/usiwsc-bannier.png" width="829" height="93">
 									</td>
 								</tr>
 								<tr>
@@ -177,7 +179,7 @@
 																								<td width="13" align="center"><span
 																									lang="en-us"> <font face="Verdana"
 																										style="font-size: 8pt"> <img
-																											src="/WebBrowserAppClient/uibpel/images/Puce_carre.gif" align="bottom">
+																											src="/UsiXML-WebClient/uibpel/images/Puce_carre.gif" align="bottom">
 																									</font>
 																								</span>
 																								</td>
@@ -205,7 +207,7 @@
 																											<td width="13" align="center"><span
 																												lang="en-us"> <font face="Verdana">
 																														<span style="font-size: 8pt"> <img
-																															src="/WebBrowserAppClient/uibpel/images/Puce.gif" height="12"
+																															src="/UsiXML-WebClient/uibpel/images/Puce.gif" height="12"
 																															width="12">
 																													</span>
 																												</font>
@@ -241,24 +243,8 @@
 										<table border="0" width="100%" id="table215" cellpadding="3">
 											<tr>
 												<td>
-													<!-- 
-													<form action="/WebBrowserAppClient/InteractionManager" method="get">
-													    <ul id="contactform">
-													        <li>
-													            <label for="name">Login</label>
-													            <span class="fieldbox"><input type="text" name="login" id="login" value=""/></span>
-													        </li>
-													        <li>
-													            <label for="email">Password</label>
-													            <span class="fieldbox"><input type="password" name="password" id="password" value=""/></span>
-													        </li>
-													    </ul>
-													    <p></p>
-													    <input type="submit" value="Send" id="sendbutton" name="sendbutton"/>
-													</form>
-													-->
 													<h1>User Interaction</h1> 
-													<form action='/WebBrowserAppClient/InteractionManager' method="get">
+													<form action='/UsiXML-WebClient/interactionManager' method="get">
 														<input type="hidden" name="processId" value="<%=processId%>">
 														<input type="hidden" name="cuiId" value="<%=cuiId%>">
 													 
@@ -281,11 +267,11 @@
 					</tr>
 				</table>
 				</td>
-			<td valign="bottom" background="/WebBrowserAppClient/uibpel/images/bg_right.gif"><img
-				src="/WebBrowserAppClient/uibpel/images/bg_right.gif" alt="" width="17" height="16" border="0">
+			<td valign="bottom" background="/UsiXML-WebClient/uibpel/images/bg_right.gif"><img
+				src="/UsiXML-WebClient/uibpel/images/bg_right.gif" alt="" width="17" height="16" border="0">
 			</td>
-			<td width="50%" background="/WebBrowserAppClient/uibpel/images/bg.gif" valign="top"><img
-				src="/WebBrowserAppClient/uibpel/images/px1.gif" width="1" height="1" alt="" border="0">
+			<td width="50%" background="/UsiXML-WebClient/uibpel/images/bg.gif" valign="top"><img
+				src="/UsiXML-WebClient/uibpel/images/px1.gif" width="1" height="1" alt="" border="0">
 			</td>
 		</tr>
 	</table>

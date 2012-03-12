@@ -4,7 +4,7 @@
 }
 
 a.button {
-    background: transparent url('/WebBrowserAppClient/uibpel/images/bg_button_a.png') no-repeat scroll top right;
+    background: transparent url('../images/bg_button_a.png') no-repeat scroll top right;
     color: #444;
     display: block;
     float: left;
@@ -16,7 +16,7 @@ a.button {
 }
 
 a.button span {
-    background: transparent url('//WebBrowserAppClient/uibpel/images/bg_button_span.png') no-repeat ;
+    background: transparent url('../images/bg_button_span.png') no-repeat ;
     display: block;
     line-height: 30px;
     padding: 5px 0 5px 18px;
@@ -89,14 +89,14 @@ label {
 }
 
 #contactform li .fieldbox {
-	background:transparent url(/WebBrowserAppClient/uibpel/images/subfield.jpg) no-repeat top left; 
+	background:transparent url(../images/subfield.jpg) no-repeat top left; 
 	float:left; 
 	height:27px; 
 	padding-left:5px;
 }
 
 #contactform li .fieldbox input {
-	background:transparent url(/WebBrowserAppClient/uibpel/images/subfield.jpg) no-repeat top right; 
+	background:transparent url(../images/subfield.jpg) no-repeat top right; 
 	height:27px; 
 	padding-top:5px;
 	width:400px;
@@ -107,14 +107,14 @@ label {
 }
 
 #contactform li .msgbox {
-	background:transparent url(/WebBrowserAppClient/uibpel/images/msgfield.jpg) no-repeat top left; 
+	background:transparent url(../images/msgfield.jpg) no-repeat top left; 
 	float:left; 
 	height:110px; 
 	padding-left:5px;
 }
 
 #contactform li .msgbox textarea {
-	background:transparent url(/WebBrowserAppClient/uibpel/images/msgfield.jpg) no-repeat top right; 
+	background:transparent url(../images/msgfield.jpg) no-repeat top right; 
 	height:110px;
 	padding-top:5px;
 	width:500px;	 
@@ -133,7 +133,7 @@ label {
 	
 }
 #list3 ul {
-	list-style-image: url(/WebBrowserAppClient/uibpel/images/arrow.png);
+	list-style-image: url(../images/arrow.png);
 	color:#0054a6;
 	font-size:18px;
 	padding:0 0 0 50px;
