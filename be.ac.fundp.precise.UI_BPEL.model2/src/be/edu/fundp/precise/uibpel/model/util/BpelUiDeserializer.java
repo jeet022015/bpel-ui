@@ -29,7 +29,17 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 	public Activity unmarshall(QName elementType, Node node, Activity activity, Process process,
 			Map nsMap, ExtensionRegistry extReg, URI uri, BPELReader bpelReader) {
 		
-		inBpelUIReader.setInnerReader(bpelReader);
+		Process realProcess = null;
+		
+		if (bpelReader instanceof BpelUIReader) {
+			BpelUIReader uiBpelReader = (BpelUIReader) bpelReader;
+			inBpelUIReader.setInnerReader(uiBpelReader.getInnerReader());
+			realProcess = inBpelUIReader.getInnerProcess();
+		} else {
+			inBpelUIReader.setInnerReader(bpelReader);
+			inBpelUIReader.setInnerProcess(process);
+			realProcess = process;
+		}
 	
 		if (codes.contains(node.hashCode())) {
 			return null;
@@ -42,7 +52,7 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 
 			// create a new DataInputUI model object if not already created
 			Element saElement = (Element)node;
-			return inBpelUIReader.xml2DataInputUI(activity,saElement, process);
+			return inBpelUIReader.xml2DataInputUI(activity,saElement, realProcess);
 			//return sa;
 		}
 		
@@ -52,7 +62,7 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 		if (BpelUiConstants.ND_DATA_OUTPUT_UI.equals(elementType.getLocalPart())) {
 			// create a new DataInputUI model object if not already created
 			Element saElement = (Element)node;
-			return inBpelUIReader.xml2DataOutputUI(activity,saElement, process);
+			return inBpelUIReader.xml2DataOutputUI(activity,saElement, realProcess);
 		}
 		
 		/*
@@ -62,7 +72,7 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 
 			// create a new SampleSimpleActivity model object if not already created
 			Element saElement = (Element)node;
-			return inBpelUIReader.xml2DataSelectionUI(activity,saElement, process);
+			return inBpelUIReader.xml2DataSelectionUI(activity,saElement, realProcess);
 		}
 		
 		/*
@@ -70,7 +80,7 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 		 */
 		if (BpelUiConstants.ND_PICK_UI.equals(elementType.getLocalPart())) {
 			Element saElement = (Element)node;
-			return inBpelUIReader.xml2PickUI(activity,saElement, process);
+			return inBpelUIReader.xml2PickUI(activity,saElement, realProcess);
 		}
 		
 		/*

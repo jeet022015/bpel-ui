@@ -59,6 +59,8 @@ public class BpelUIReader extends BPELReader{
 	
 	BPELReader myInnerReader;
 	
+	Process myInnerProcess;
+	
 	protected ScopeUI xml2ScopeUI(Element scopeElement) {
 		ScopeUI scope = ModelFactory.eINSTANCE
 				.createScopeUI();
@@ -318,7 +320,6 @@ public class BpelUIReader extends BPELReader{
 			//Variable[] vars = ModelHelper.getVisibleVariables(activity.getContainer());
 			//Set<Variable> myVars = getMyVars(activity);
 			//TODO deal with Scope Variables
-			System.out.println("process="+process);
 			for (Variable variable : process.getVariables().getChildren()) {
 				if (inputVarName.equals(variable.getName())) {
 					aDataItem.setVariable(variable);
@@ -617,5 +618,17 @@ public class BpelUIReader extends BPELReader{
 	public void myPass2() {
 		pass2();
 		
+	}
+
+	public BPELReader getInnerReader() {
+		return myInnerReader;
+	}
+
+	public void setInnerProcess(Process process) {
+		myInnerProcess = process;
+	}
+
+	public Process getInnerProcess() {
+		return myInnerProcess;
 	}
 }
