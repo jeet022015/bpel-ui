@@ -793,7 +793,9 @@ public class WriterUiBpel extends BPELWriter {
 		cont = 1;
 		for (DataItem di : selctionActivity.getInputItem()) {
 			Part p = (Part) selectionOperation.getOutput().getMessage().getPart("parameters");
-			Copy c = createDataItemCopy(outputVar, prefix, p, cont, di, "return", "data");
+			String index = "id='"+di.getVariable().getName()+"'";
+			//Copy c = createDataItemCopy(outputVar, prefix, p, Integer.toString(cont), di, "return", "data");
+			Copy c = createDataItemCopy(outputVar, prefix, p, index, di, "return", "data");
 			cont++;
 			dataItemCopiesAfter.add(c);
 		}
@@ -902,7 +904,10 @@ public class WriterUiBpel extends BPELWriter {
 		int cont = 1;
 		for (DataItem di : activity.getInputItem()) {
 			Part p = (Part) inputOperation.getOutput().getMessage().getPart("parameters");
-			c = createDataItemCopy(outputVar, prefix, p, cont, di, "data", "data");
+			//id='gender'
+			String index = "id='"+di.getVariable().getName()+"'";
+			//c = createDataItemCopy(outputVar, prefix, p, Integer.toString(cont), di, "data", "data");
+			c = createDataItemCopy(outputVar, prefix, p, index, di, "data", "data");
 			cont++;
 			copies.add(c);
 		}
@@ -934,7 +939,7 @@ public class WriterUiBpel extends BPELWriter {
 	 * @return the copy
 	 */
 	private Copy createDataItemCopy(Variable outputVar, String prefix,
-			Part part, int cont, DataItem di, String primaryNode, String secondaryNode) {
+			Part part, String cont, DataItem di, String primaryNode, String secondaryNode) {
 		Copy c = BPELFactory.eINSTANCE.createCopy();
 
 		From f = BPELFactory.eINSTANCE.createFrom();
