@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="RentingCarWS" targetNamespace="http://www.scenario.org/RentingCarWS/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.scenario.org/RentingCarWS/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.scenario.org/RentingCarWS/">
+      <xsd:element name="availableCars">
+        <xsd:complexType>
+          <xsd:sequence>
+          	<xsd:element name="color" type="xsd:string"/>
+          	<xsd:element name="option" type="xsd:string"/>
+          	<xsd:element name="model" type="xsd:string"/>
+          	<xsd:element name="carLowerPrice" type="xsd:string"/>
+          	<xsd:element name="carHigherPrice" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="availableCarsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" name="availableCars" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="rentCar">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="accountID" type="xsd:string"/>
+      			<xsd:element name="carDescription" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="rentCarResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="reservationNumber" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="availableCarsResponse">
+    <wsdl:part name="parameters" element="tns:availableCarsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="rentCarResponse">
+    <wsdl:part name="parameters" element="tns:rentCarResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="rentCarRequest">
+    <wsdl:part name="parameters" element="tns:rentCar">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="availableCarsRequest">
+    <wsdl:part name="parameters" element="tns:availableCars">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="RentingCarWS">
+    <wsdl:operation name="availableCars">
+      <wsdl:input message="tns:availableCarsRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:availableCarsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="rentCar">
+      <wsdl:input message="tns:rentCarRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:rentCarResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RentingCarWSSOAP" type="tns:RentingCarWS">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="availableCars">
+      <soap:operation soapAction="http://www.scenario.org/RentingCarWS/availableCars"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="rentCar">
+      <soap:operation soapAction="http://www.scenario.org/RentingCarWS/rentCar"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RentingCarWS">
+    <wsdl:port name="RentingCarWSSOAP" binding="tns:RentingCarWSSOAP">
+      <soap:address location="http://localhost:8090/CarRenting-WS/services/RentingCarWSSOAP"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

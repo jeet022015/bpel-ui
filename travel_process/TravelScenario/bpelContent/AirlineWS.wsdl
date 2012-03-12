@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="AirlineWS" targetNamespace="http://www.scenario.org/AirlineWS/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.scenario.org/AirlineWS/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.scenario.org/AirlineWS/">
+      <xsd:element name="availableFlights">
+        <xsd:complexType>
+          <xsd:sequence>
+          	<xsd:element name="Date" type="xsd:string"/>
+          	<xsd:element name="DepartCity" type="xsd:string"/>
+          	<xsd:element name="ArriveCity" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="availableFlightsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" name="fligthDesc" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="bookFlight">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="accountID" type="xsd:string"/>
+      			<xsd:element name="fligthDesc" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="bookFlightResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="reservation" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="bookFlightRequest">
+    <wsdl:part name="parameters" element="tns:bookFlight">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="availableFlightsRequest">
+    <wsdl:part name="parameters" element="tns:availableFlights">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="availableFlightsResponse">
+    <wsdl:part name="parameters" element="tns:availableFlightsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="bookFlightResponse">
+    <wsdl:part name="parameters" element="tns:bookFlightResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="AirlineWS">
+    <wsdl:operation name="availableFlights">
+      <wsdl:input message="tns:availableFlightsRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:availableFlightsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="bookFlight">
+      <wsdl:input message="tns:bookFlightRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:bookFlightResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AirlineWSSOAP" type="tns:AirlineWS">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="availableFlights">
+      <soap:operation soapAction="http://www.scenario.org/AirlineWS/availableFlights"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="bookFlight">
+      <soap:operation soapAction="http://www.scenario.org/AirlineWS/bookFlight"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AirlineWS">
+    <wsdl:port name="AirlineWSSOAP" binding="tns:AirlineWSSOAP">
+      <soap:address location="http://localhost:8090/Arilines-WS/services/AirlineWSSOAP"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

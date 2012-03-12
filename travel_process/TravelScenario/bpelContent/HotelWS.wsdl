@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="HotelWS" targetNamespace="http://www.scenario.org/HotelWS/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.scenario.org/HotelWS/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.scenario.org/HotelWS/">
+      <xsd:element name="availableHotel">
+        <xsd:complexType>
+          <xsd:sequence>
+          	<xsd:element name="neighborhood" type="xsd:string"/>
+          	<xsd:element name="CheckInDate" type="xsd:string"/>
+          	<xsd:element name="CheckOutDate" type="xsd:string"/>
+          	<xsd:element name="lowerPrice" type="xsd:string"/>
+          	<xsd:element name="higherPrice" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="availableHotelResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" name="hotelDesc" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="bookRoom">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="checkInDate" type="xsd:string"/>
+      			<xsd:element name="checkOutDate" type="xsd:string"/>
+      			<xsd:element name="hotelDesc" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="bookRoomResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="reservationNumber" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="bookRoomResponse">
+    <wsdl:part name="parameters" element="tns:bookRoomResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="availableHotelRequest">
+    <wsdl:part name="parameters" element="tns:availableHotel">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="bookRoomRequest">
+    <wsdl:part name="parameters" element="tns:bookRoom">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="availableHotelResponse">
+    <wsdl:part name="parameters" element="tns:availableHotelResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="HotelWS">
+    <wsdl:operation name="availableHotel">
+      <wsdl:input message="tns:availableHotelRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:availableHotelResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="bookRoom">
+      <wsdl:input message="tns:bookRoomRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:bookRoomResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="HotelWSSOAP" type="tns:HotelWS">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="availableHotel">
+      <soap:operation soapAction="http://www.scenario.org/HotelWS/availableHotel"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="bookRoom">
+      <soap:operation soapAction="http://www.scenario.org/HotelWS/bookRoom"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HotelWS">
+    <wsdl:port name="HotelWSSOAP" binding="tns:HotelWSSOAP">
+      <soap:address location="http://localhost:8090/Hotel-WS/services/HotelWSSOAP"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
