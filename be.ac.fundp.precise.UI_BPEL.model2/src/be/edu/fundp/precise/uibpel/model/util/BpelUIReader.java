@@ -318,6 +318,7 @@ public class BpelUIReader extends BPELReader{
 			//Variable[] vars = ModelHelper.getVisibleVariables(activity.getContainer());
 			//Set<Variable> myVars = getMyVars(activity);
 			//TODO deal with Scope Variables
+			System.out.println("process="+process);
 			for (Variable variable : process.getVariables().getChildren()) {
 				if (inputVarName.equals(variable.getName())) {
 					aDataItem.setVariable(variable);
@@ -611,5 +612,10 @@ public class BpelUIReader extends BPELReader{
 	
 	public Resource getResource () {
 		return myInnerReader.getResource();
+	}
+
+	public void myPass2() {
+		pass2();
+		
 	}
 }

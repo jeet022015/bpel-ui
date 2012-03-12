@@ -78,7 +78,9 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 		 */
 		if (BpelUiConstants.ND_SCOPE_UI.equals(elementType.getLocalPart())) {
 			Element saElement = (Element)node;
-			return inBpelUIReader.xml2ScopeUI(saElement);
+			Activity scope = inBpelUIReader.xml2ScopeUI(saElement);
+			inBpelUIReader.myPass2();
+			return scope;
 		}
 
 		System.err.println("Cannot handle this kind of element");
