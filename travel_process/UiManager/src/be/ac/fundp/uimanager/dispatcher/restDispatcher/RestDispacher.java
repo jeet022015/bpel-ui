@@ -26,7 +26,7 @@ import be.ac.fundp.uimanager.model.ProvidedData;
  */
 public class RestDispacher implements Dispatcher {
 
-	public static final String DEFAULT_HOST = "http://10.0.1.12:8182/uibpel/";
+	public static final String DEFAULT_HOST = "http://10.0.1.2:8182/uibpel/";
 	
 	public static final int MAX_WAITING_TIME = 86400 *1000;// One day
 	
