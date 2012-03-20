@@ -15,55 +15,65 @@ import be.edu.fundp.precise.uibpel.model.ModelPackage;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 
 /**
- * Factory that knows how to create one conceptual type of UI object
- * (and only the one type of object).  The objects created must be EMF model objects
- * (i.e. instances of EObject) and the types that represent them must be EMF classes
+ * Factory that knows how to create one conceptual type of UI object (and only
+ * the one type of object). The objects created must be EMF model objects (i.e.
+ * instances of EObject) and the types that represent them must be EMF classes
  * (i.e. instances of EClass).
  * 
- * This corresponds to items that you can create with the palette of a DetailsEditor.
+ * This corresponds to items that you can create with the palette of a
+ * DetailsEditor.
  * 
- * NOTE: the object returned by getNewEObject() is NOT necessarily an instance of the
- * same EClass as getEClass returns!
+ * NOTE: the object returned by getNewEObject() is NOT necessarily an instance
+ * of the same EClass as getEClass returns!
  * 
  * Concrete subclasses must still specify where to get icons from, and what the
  * human-readable type label of the factory should be.
  */
-public class UI_BPEL_ObjectFactory extends AbstractUIObjectFactory implements IExtensionUIObjectFactory {
+public class UI_BPEL_ObjectFactory extends AbstractUIObjectFactory implements
+		IExtensionUIObjectFactory {
 
 	/** The current EMF model object */
 	private EClass modelType;
-	
+
 	/** The counter to generate a distinct name to Scopes within OnUserEvent. */
 	private static int scopeCounter = 1;
-	
+
 	/** The mapping array the to the EMF model objects. */
-	private EClass[] classArray = { ModelPackage.eINSTANCE.getDataInputUI(), 
-			ModelPackage.eINSTANCE.getDataOutputUI(), ModelPackage.eINSTANCE.getDataSelectionUI(),
-			ModelPackage.eINSTANCE.getDataItem(), ModelPackage.eINSTANCE.getPickUI(),
-			ModelPackage.eINSTANCE.getOnUserEvent(), ModelPackage.eINSTANCE.getScopeUI(),
-			ModelPackage.eINSTANCE.getEventHandlerUI(), ModelPackage.eINSTANCE.getUserRole(), 
-			ModelPackage.eINSTANCE.getUserInteraction()};
+	private EClass[] classArray = { ModelPackage.eINSTANCE.getDataInputUI(),
+			ModelPackage.eINSTANCE.getDataOutputUI(),
+			ModelPackage.eINSTANCE.getDataSelectionUI(),
+			ModelPackage.eINSTANCE.getDataItem(),
+			ModelPackage.eINSTANCE.getPickUI(),
+			ModelPackage.eINSTANCE.getOnUserEvent(),
+			ModelPackage.eINSTANCE.getScopeUI(),
+			ModelPackage.eINSTANCE.getEventHandlerUI(),
+			ModelPackage.eINSTANCE.getUserRole(),
+			ModelPackage.eINSTANCE.getUserInteraction() };
 
 	/**
 	 * Instantiates a new extension sample ui object factory.
-	 *
-	 * @param modelType the model type
+	 * 
+	 * @param modelType
+	 *            the model type
 	 */
 	public UI_BPEL_ObjectFactory(EClass modelType) {
 		super();
 		this.modelType = modelType;
 	}
-	
+
 	/**
 	 * This method instantiates a new UI-BPEL object factory.
 	 */
 	public UI_BPEL_ObjectFactory() {
 		super();
 	}
-	
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.bpel.ui.factories.AbstractUIObjectFactory#getLargeImage()
+	// TODO Create constants for these values
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.bpel.ui.factories.AbstractUIObjectFactory#getLargeImage()
 	 */
 	@Override
 	public Image getLargeImage() {
@@ -80,13 +90,17 @@ public class UI_BPEL_ObjectFactory extends AbstractUIObjectFactory implements IE
 			path = UI_BPEL_Constants.SCOPE_UI_ICON_20;
 		else if (modelType.getName().equals("PickUI"))
 			path = UI_BPEL_Constants.PICK_UI_ICON_20;
-		else 
+		else
 			path = UI_BPEL_Constants.DEFAULT_ICON_20;
 		return Activator.getDefault().getImageRegistry().get(path);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.bpel.ui.factories.AbstractUIObjectFactory#getLargeImageDescriptor()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.bpel.ui.factories.AbstractUIObjectFactory#getLargeImageDescriptor
+	 * ()
 	 */
 	@Override
 	public ImageDescriptor getLargeImageDescriptor() {
@@ -103,13 +117,16 @@ public class UI_BPEL_ObjectFactory extends AbstractUIObjectFactory implements IE
 			path = UI_BPEL_Constants.SCOPE_UI_ICON_20;
 		else if (modelType.getName().equals("PickUI"))
 			path = UI_BPEL_Constants.PICK_UI_ICON_20;
-		else 
+		else
 			path = UI_BPEL_Constants.DEFAULT_ICON_20;
 		return Activator.getDefault().getImageDescriptor(path);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.bpel.ui.factories.AbstractUIObjectFactory#getSmallImage()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.bpel.ui.factories.AbstractUIObjectFactory#getSmallImage()
 	 */
 	@Override
 	public Image getSmallImage() {
@@ -126,13 +143,17 @@ public class UI_BPEL_ObjectFactory extends AbstractUIObjectFactory implements IE
 			path = UI_BPEL_Constants.SCOPE_UI_ICON_16;
 		else if (modelType.getName().equals("PickUI"))
 			path = UI_BPEL_Constants.PICK_UI_ICON_16;
-		else 
+		else
 			path = UI_BPEL_Constants.DEFAULT_ICON_16;
 		return Activator.getDefault().getImageRegistry().get(path);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.bpel.ui.factories.AbstractUIObjectFactory#getSmallImageDescriptor()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.bpel.ui.factories.AbstractUIObjectFactory#getSmallImageDescriptor
+	 * ()
 	 */
 	@Override
 	public ImageDescriptor getSmallImageDescriptor() {
@@ -149,12 +170,14 @@ public class UI_BPEL_ObjectFactory extends AbstractUIObjectFactory implements IE
 			path = UI_BPEL_Constants.SCOPE_UI_ICON_16;
 		else if (modelType.getName().equals("PickUI"))
 			path = UI_BPEL_Constants.PICK_UI_ICON_16;
-		else 
+		else
 			path = UI_BPEL_Constants.DEFAULT_ICON_16;
 		return Activator.getDefault().getImageDescriptor(path);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.bpel.ui.factories.AbstractUIObjectFactory#getModelType()
 	 */
 	@Override
@@ -162,8 +185,9 @@ public class UI_BPEL_ObjectFactory extends AbstractUIObjectFactory implements IE
 		return this.modelType;
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.bpel.ui.factories.AbstractUIObjectFactory#getTypeLabel()
 	 */
 	@Override
@@ -171,16 +195,23 @@ public class UI_BPEL_ObjectFactory extends AbstractUIObjectFactory implements IE
 		return getModelType().getName();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.bpel.ui.factories.IExtensionUIObjectFactory#getClassArray()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.bpel.ui.factories.IExtensionUIObjectFactory#getClassArray()
 	 */
 	@Override
 	public EClass[] getClassArray() {
 		return this.classArray;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.bpel.ui.factories.IExtensionUIObjectFactory#setModelType(org.eclipse.emf.ecore.EClass)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.bpel.ui.factories.IExtensionUIObjectFactory#setModelType(
+	 * org.eclipse.emf.ecore.EClass)
 	 */
 	@Override
 	public void setModelType(EClass modelType) {
@@ -189,7 +220,7 @@ public class UI_BPEL_ObjectFactory extends AbstractUIObjectFactory implements IE
 
 	/**
 	 * Creates a new EMF model objects corresponding to the current EMF class.
-	 *
+	 * 
 	 * @return the new EMF model object
 	 * @see org.eclipse.bpel.ui.factories.AbstractUIObjectFactory#createInstance()
 	 */
@@ -197,15 +228,15 @@ public class UI_BPEL_ObjectFactory extends AbstractUIObjectFactory implements IE
 	@Override
 	public EObject createInstance() {
 		EObject result = super.createInstance();
-		
-	 if (result instanceof OnUserEvent) {
-		 	OnUserEvent onAlarm = (OnUserEvent) result;
-		 	Scope innerScope = BPELFactory.eINSTANCE.createScope();
-		 	innerScope.setName("InnerScope"+scopeCounter);
-			onAlarm.setActivity(innerScope);
+
+		if (result instanceof OnUserEvent) {
+			OnUserEvent onUserEvent = (OnUserEvent) result;
+			Scope innerScope = BPELFactory.eINSTANCE.createScope();
+			innerScope.setName("InnerScope" + scopeCounter);
+			onUserEvent.setActivity(innerScope);
 		}
 
 		return result;
 	}
-	
+
 }

@@ -3,8 +3,6 @@ package be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,10 +24,10 @@ import org.eclipse.wst.wsdl.Port;
 import org.eclipse.wst.wsdl.Service;
 
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
+import be.edu.fundp.precise.uibpel.model.DataInteraction;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DataInteractionManager.
  *
@@ -72,9 +70,11 @@ public class DataInteractionManager {
 	/** The list. */
 	private Map<String, Set<Variable>> list = new HashMap<String, Set<Variable>>();
 	
-	protected List<CorrelationSet> innerCSs = new LinkedList<CorrelationSet>();
+	protected Map<String, CorrelationSet[]> innerCSs = new HashMap<String, CorrelationSet[]>();
 
-	private Property propertyName;
+	private Property propertyProcessId;
+	
+	private Property propertyInteractionId;
 	
 	/** The my pa. */
 	//private PropertyAlias myPA;
@@ -91,17 +91,28 @@ public class DataInteractionManager {
 		operationConfiguration();
 		createCorrelationSet(processWSDl, propertyName);
 		createPropertyName(processWSDl);
+		createPropertyInteractionId(processWSDl);
 		createParallelCorrelSets(processWSDl);
 	}
 	
 	private void createPropertyName(Definition processWSDl) {
-		propertyName = MessagepropertiesFactory.eINSTANCE.createProperty();
-		propertyName.setType(XSDUtils.getPrimitive("string"));
+		propertyProcessId = MessagepropertiesFactory.eINSTANCE.createProperty();
+		propertyProcessId.setType(XSDUtils.getPrimitive("string"));
 		QName qname = new QName("test", "propertyTest2");
-		propertyName.setQName(qname);
-		propertyName.setName("propertyTest2");
-		propertyName.setEnclosingDefinition(processWSDl);
-		processWSDl.getEExtensibilityElements().add(propertyName);
+		propertyProcessId.setQName(qname);
+		propertyProcessId.setName("propertyTest2");
+		propertyProcessId.setEnclosingDefinition(processWSDl);
+		processWSDl.getEExtensibilityElements().add(propertyProcessId);
+	}
+	
+	private void createPropertyInteractionId(Definition processWSDl) {
+		propertyInteractionId = MessagepropertiesFactory.eINSTANCE.createProperty();
+		propertyInteractionId.setType(XSDUtils.getPrimitive("string"));
+		QName qname = new QName("test", "propertyTest3");
+		propertyInteractionId.setQName(qname);
+		propertyInteractionId.setName("propertyTest3");
+		propertyInteractionId.setEnclosingDefinition(processWSDl);
+		processWSDl.getEExtensibilityElements().add(propertyInteractionId);
 	}
 
 	private void createParallelCorrelSets(Definition processWSDl) {
@@ -112,13 +123,86 @@ public class DataInteractionManager {
 			if (opera.getName().equals("inputOperation"))
 				createInputProperty(opera.getEOperation(), processWSDl, 3);
 			else if (opera.getName().equals("selectionOperation"))
-				createSelectProperty(opera.getEOperation(), 3);
+				createSelectProperty(opera.getEOperation(), processWSDl, 3);
 		}
 	}
 
-	private void createSelectProperty(Operation eOperation, int i) {
-		// TODO Auto-generated method stub
+	private void createSelectProperty(Operation eOperation, Definition processWSDl, int i) {
+		PropertyAlias myPA = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
+		myPA.setMessageType(uiManagerOperations[OPERATION_SELECTION].getOutput().getMessage());
+
+		myPA.setPart("parameters");
+		myPA.setPropertyName(propertyProcessId);
 		
+		//The query
+		String query = "";
+		String prefix = processWSDl.getPrefix("test");
+		if (prefix!=null)
+			query = query + "/" + prefix + ":" + "processId";
+		else
+			query = query + "/" + "processId";
+		Query q = MessagepropertiesFactory.eINSTANCE.createQuery();
+		q.setValue(query);
+		myPA.setQuery(q);
+		
+		processWSDl.getEExtensibilityElements().add(myPA);
+		
+		myPA = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
+		myPA.setMessageType(uiManagerOperations[OPERATION_SELECTION].getInput().getMessage());
+
+		myPA.setPart("parameters");
+		myPA.setPropertyName(propertyProcessId);
+		
+		//The query
+		query = "";
+		prefix = processWSDl.getPrefix("test");
+		if (prefix!=null)
+			query = query + "/" + prefix + ":" + "processId";
+		else
+			query = query + "/" + "processId";
+		q = MessagepropertiesFactory.eINSTANCE.createQuery();
+		q.setValue(query);
+		myPA.setQuery(q);
+		
+		processWSDl.getEExtensibilityElements().add(myPA);
+		
+		myPA = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
+		myPA.setMessageType(uiManagerOperations[OPERATION_SELECTION].getOutput().getMessage());
+
+		myPA.setPart("parameters");
+		myPA.setPropertyName(propertyInteractionId);
+		
+		//The query
+		query = "";
+		prefix = processWSDl.getPrefix("test");
+		if (prefix!=null)
+			query = query + "/" + prefix + ":" + "userInteracId";
+		else
+			query = query + "/" + "userInteracId";
+		q = MessagepropertiesFactory.eINSTANCE.createQuery();
+		q.setValue(query);
+		myPA.setQuery(q);
+		
+		processWSDl.getEExtensibilityElements().add(myPA);
+		
+		myPA = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
+		myPA.setMessageType(uiManagerOperations[OPERATION_SELECTION].getInput().getMessage());
+
+		myPA.setPart("parameters");
+		myPA.setPropertyName(propertyInteractionId);
+		
+		//The query
+		query = "";
+		prefix = processWSDl.getPrefix("test");
+		if (prefix!=null)
+			query = query + "/" + prefix + ":" + "userInteracId";
+		else
+			query = query + "/" + "userInteracId";
+		q = MessagepropertiesFactory.eINSTANCE.createQuery();
+		q.setValue(query);
+		myPA.setQuery(q);
+		
+		processWSDl.getEExtensibilityElements().add(myPA);
 	}
 
 	private void createInputProperty(Operation eOperation, Definition processWSDl, int i) {
@@ -126,7 +210,7 @@ public class DataInteractionManager {
 		myPA.setMessageType(uiManagerOperations[OPERATION_INPUT].getOutput().getMessage());
 
 		myPA.setPart("parameters");
-		myPA.setPropertyName(propertyName);
+		myPA.setPropertyName(propertyProcessId);
 		
 		//The query
 		String query = "";
@@ -145,7 +229,7 @@ public class DataInteractionManager {
 		myPA.setMessageType(uiManagerOperations[OPERATION_INPUT].getInput().getMessage());
 
 		myPA.setPart("parameters");
-		myPA.setPropertyName(propertyName);
+		myPA.setPropertyName(propertyProcessId);
 		
 		//The query
 		query = "";
@@ -160,12 +244,51 @@ public class DataInteractionManager {
 		
 		processWSDl.getEExtensibilityElements().add(myPA);
 		
-		for (int j = 0; j < i; j++) {
-			CorrelationSet myCS = BPELFactory.eINSTANCE.createCorrelationSet();
-			myCS.setName("Test"+j);
-			myCS.getProperties().add(propertyName);
-			innerCSs.add(myCS);
-		}
+		myPA = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
+		myPA.setMessageType(uiManagerOperations[OPERATION_INPUT].getOutput().getMessage());
+
+		myPA.setPart("parameters");
+		myPA.setPropertyName(propertyInteractionId);
+		
+		//The query
+		query = "";
+		prefix = processWSDl.getPrefix("test");
+		if (prefix!=null)
+			query = query + "/" + prefix + ":" + "userInteracId";
+		else
+			query = query + "/" + "userInteracId";
+		q = MessagepropertiesFactory.eINSTANCE.createQuery();
+		q.setValue(query);
+		myPA.setQuery(q);
+		
+		processWSDl.getEExtensibilityElements().add(myPA);
+		
+		myPA = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
+		myPA.setMessageType(uiManagerOperations[OPERATION_INPUT].getInput().getMessage());
+
+		myPA.setPart("parameters");
+		myPA.setPropertyName(propertyInteractionId);
+		
+		//The query
+		query = "";
+		prefix = processWSDl.getPrefix("test");
+		if (prefix!=null)
+			query = query + "/" + prefix + ":" + "userInteracId";
+		else
+			query = query + "/" + "userInteracId";
+		q = MessagepropertiesFactory.eINSTANCE.createQuery();
+		q.setValue(query);
+		myPA.setQuery(q);
+		
+		processWSDl.getEExtensibilityElements().add(myPA);
+		
+		//TODO DO IT for each operation
+//		for (int j = 0; j < i; j++) {
+//			CorrelationSet myCS = BPELFactory.eINSTANCE.createCorrelationSet();
+//			myCS.setName("Test"+j);
+//			myCS.getProperties().add(propertyName);
+//			//innerCSs.add(myCS);
+//		}
 		
 	}
 
@@ -253,7 +376,18 @@ public class DataInteractionManager {
 		var.add(outputVar);
 		var.add(inputVar);
 		list.put(s.getId(), var);
+		innerCSs.put(s.getId(), createCorrelationSets(s));
 		operationCounter[OPERATION_SELECTION]++;
+	}
+
+	private CorrelationSet[] createCorrelationSets(DataInteraction d) {
+		CorrelationSet myCS = BPELFactory.eINSTANCE.createCorrelationSet();
+		myCS.setName("Test-"+d.getId());
+		myCS.getProperties().add(propertyProcessId);
+		CorrelationSet otherCS = BPELFactory.eINSTANCE.createCorrelationSet();
+		otherCS.setName("Test2-"+d.getId());
+		otherCS.getProperties().add(propertyProcessId);
+		return new CorrelationSet [] {myCS, otherCS};
 	}
 
 	/**
@@ -274,6 +408,7 @@ public class DataInteractionManager {
 		var.add(outputVar);
 		var.add(inputVar);
 		list.put(s.getId(), var);
+		innerCSs.put(s.getId(), createCorrelationSets(s));
 		operationCounter[OPERATION_INPUT]++;
 	}
 
@@ -382,7 +517,16 @@ public class DataInteractionManager {
 		return uiManagerOperations[OPERATION_GEN_ID];
 	}
 
-	public List<CorrelationSet> getInputCorrelationSets() {
-		return innerCSs;
+	public Collection<CorrelationSet> getInputCorrelationSets() {
+		Collection<CorrelationSet> cc = new HashSet<CorrelationSet>();
+		for (CorrelationSet[] correlationSet : innerCSs.values()) {
+			cc.add(correlationSet[0]);
+			cc.add(correlationSet[1]);
+		}
+		return cc;
+	}
+	
+	public CorrelationSet[] getCorrelationSets(String id) {
+		return innerCSs.get(id);
 	}
 }

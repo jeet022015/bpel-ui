@@ -787,6 +787,14 @@ public class WriterUiBpel extends BPELWriter {
 		i.setOutputVariable(outputVar);
 		i.setOperation(selectionOperation);
 		i.setPartnerLink(bpel.getPartnerLinkBPEL());
+		Correlations ci = BPELFactory.eINSTANCE.createCorrelations();
+		for (CorrelationSet cs : bpel.getCorrelationSets(selctionActivity.getId())) {
+			Correlation cr = BPELFactory.eINSTANCE.createCorrelation();
+			cr.setSet(cs);
+			cr.setInitiate(CorrelationSection.YES);
+			ci.getChildren().add(cr);
+		}
+		i.setCorrelations(ci);
 		
 		//================== COPY DATA ITEM =====================
 		List<Copy> dataItemCopiesAfter = new LinkedList<Copy>();
@@ -898,6 +906,14 @@ public class WriterUiBpel extends BPELWriter {
 		i.setOutputVariable(outputVar);
 		i.setOperation(inputOperation);
 		i.setPartnerLink(bpel.getPartnerLinkBPEL());
+		Correlations ci = BPELFactory.eINSTANCE.createCorrelations();
+		for (CorrelationSet cs : bpel.getCorrelationSets(activity.getId())) {
+			Correlation cr = BPELFactory.eINSTANCE.createCorrelation();
+			cr.setSet(cs);
+			cr.setInitiate(CorrelationSection.YES);
+			ci.getChildren().add(cr);
+		}
+		i.setCorrelations(ci);
 		
 		//================== COPY DATA ITEM =====================
 		List<Copy> copies = new LinkedList<Copy>();

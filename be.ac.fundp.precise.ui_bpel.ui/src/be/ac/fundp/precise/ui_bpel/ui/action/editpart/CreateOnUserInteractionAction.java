@@ -69,6 +69,7 @@ public class CreateOnUserInteractionAction extends AbstractAction {
 	 * @see org.eclipse.bpel.ui.actions.editpart.IEditPartAction#getToolTip()
 	 */
 	public String getToolTip() {
+		//TODO Create a constant
 		return "Add On User Event"; 
 	}
 	

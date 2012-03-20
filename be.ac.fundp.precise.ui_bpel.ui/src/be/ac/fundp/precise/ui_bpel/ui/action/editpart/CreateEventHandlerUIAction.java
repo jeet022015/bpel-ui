@@ -86,6 +86,7 @@ public final class CreateEventHandlerUIAction extends AbstractAction {
 	 * @see org.eclipse.bpel.ui.actions.editpart.IEditPartAction#getToolTip()
 	 */
 	public String getToolTip() {
+		//TODO Create a constant
 		return "My New Event2"; 
 	}
 	
