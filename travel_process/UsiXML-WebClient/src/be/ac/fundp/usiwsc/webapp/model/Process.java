@@ -83,6 +83,7 @@ public class Process {
 		try {
 			addUserInteraction(cuiId, null);
 		} catch (JSONException e) {
+			e.printStackTrace();
 		}
 	}
 

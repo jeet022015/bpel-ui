@@ -13,7 +13,7 @@ public class UserInteraction {
 		diplayNames.put("28", "Veredict");
 		diplayNames.put("27", "Employee Information");
 		diplayNames.put("30", "Employee Information");
-		diplayNames.put("31", "Payment Informatio");
+		diplayNames.put("31", "Payment Information");
 	}
 	private String id;
 	private boolean isDone;
@@ -47,7 +47,7 @@ public class UserInteraction {
 
 	public String getDisplayableName() {
 		if (diplayNames.keySet().contains(id))
-			diplayNames.get(id);
+			return diplayNames.get(id);
 		return id;
 	}
 	

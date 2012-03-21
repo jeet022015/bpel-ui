@@ -96,7 +96,7 @@ public class ResourceUsiXML extends ServerResource {
 	}
 	
 	@Put
-	public void newUserInteraction(Representation entity) throws ResourceException {
+	public synchronized void newUserInteraction(Representation entity) throws ResourceException {
 		
 		lock = true;
 		
