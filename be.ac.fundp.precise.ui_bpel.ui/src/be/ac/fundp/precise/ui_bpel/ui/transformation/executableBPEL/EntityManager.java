@@ -39,11 +39,13 @@ import org.eclipse.wst.wsdl.Operation;
 
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.DataInteractionManager;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.EventInteractionManager;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.GeneratorOperationManager;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.representation.ImportRepresentation;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.representation.PartnerLinkRepresentation;
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.util.ExecutableBpelFileManager;
 import be.ac.fundp.precise.ui_bpel.ui.util.WSDLImportHelperUI;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
+import be.edu.fundp.precise.uibpel.model.DataInteraction;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
@@ -57,7 +59,7 @@ import be.edu.fundp.precise.uibpel.model.ScopeUI;
  *
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  */
-public class BpelUIUtil {
+public class EntityManager {
 
 	/** The Constant WSLD_NAME. */
 	private static final String WSLD_NAME = "wsdl";
@@ -86,6 +88,9 @@ public class BpelUIUtil {
 	/** The event manager operation. */
 	protected EventInteractionManager eventManagerOp;
 	
+	/** The event manager operation. */
+	private GeneratorOperationManager genetatorManagerOp;
+	
 	/** The WSDL Definition of the coordinator WS. */
 	private Definition wsdl_ui_bpel;
 	
@@ -101,10 +106,11 @@ public class BpelUIUtil {
 	/** The OutputStream to save the executable process. */
 	private OutputStream out;
 
+
 	/**
 	 * Instantiates a new BpelUIUtil.
 	 */
-	public BpelUIUtil() {
+	public EntityManager() {
 
 	}
 
@@ -137,8 +143,10 @@ public class BpelUIUtil {
 		uiManagerImport = new ImportRepresentation(wsdl_ui_bpel, processWSDl, p.eResource());
 		userEventImport = new ImportRepresentation(wsdl_user_event_listinner,processWSDl, p.eResource());
 		
+		genetatorManagerOp = new GeneratorOperationManager(wsdl_ui_bpel, processWSDl);
 		eventManagerOp = new EventInteractionManager(wsdl_user_event_listinner, processWSDl);
-		uiManagerOp = new DataInteractionManager(wsdl_ui_bpel, processWSDl, eventManagerOp.getProperty());
+		uiManagerOp = new DataInteractionManager(wsdl_ui_bpel, processWSDl,
+				genetatorManagerOp.getProperty(), genetatorManagerOp.getOutputVar());
 		
 		//save the first time to add the namespaces of the new definitions
 		saveProcessWSDL();
@@ -151,7 +159,6 @@ public class BpelUIUtil {
 		//save the first time to add the new partner links
 		saveProcessWSDL();
 		
-		uiManagerOp.createGenIdVars();
 		treatProcess(process.getActivity());
 	}
 
@@ -224,21 +231,9 @@ public class BpelUIUtil {
 		Set<Variable> var = new HashSet<Variable>();
 		var.addAll(uiManagerOp.getVariables());
 		var.addAll(eventManagerOp.getVariables());
+		var.add(genetatorManagerOp.getInputVar());
+		var.add(genetatorManagerOp.getOutputVar());
 		return var;
-	}
-
-	/**
-	 * For a given user interaction, this method can return a 
-	 * array with all the variables required to derive an BPEL
-	 * action from it.
-	 *
-	 * @param id the user interaction ID.
-	 * @return the variable for user interaction
-	 */
-	public Variable[] getVariableForUserInteraction(String id) {
-		if (uiManagerOp.containsUserInteraction(id))
-			return uiManagerOp.getVariable(id);
-		return eventManagerOp.getVariable(id);
 	}
 
 	/**
@@ -293,13 +288,13 @@ public class BpelUIUtil {
 	 */
 	private void dealExtensionActivity(ExtensionActivity activity) {
 		if (activity instanceof DataSelectionUI) {
-			uiManagerOp.createDataSelectionVar((DataSelectionUI) activity);
+			uiManagerOp.createDataSelection(((DataSelectionUI) activity).getId());
 			return;
 		} else if (activity instanceof DataInputUI) {
-			uiManagerOp.createDataInputVar((DataInputUI) activity);
+			uiManagerOp.createDataInput(((DataInputUI) activity).getId());
 			return;
 		} else if (activity instanceof DataOutputUI) {
-			uiManagerOp.createDataOutputVar((DataOutputUI) activity);
+			uiManagerOp.createDataOutput(((DataOutputUI) activity).getId());
 			return;
 		} else if (activity instanceof ScopeUI) {
 			ScopeUI scope = (ScopeUI) activity;
@@ -308,6 +303,7 @@ public class BpelUIUtil {
 				EventHandlerUI eventHandUI = (EventHandlerUI) eventHand;
 				for (OnUserEvent userEvent : eventHandUI.getUserInteraction()) {
 					eventManagerOp.createEventVar(userEvent);
+					treatProcess(userEvent.getActivity());
 				}
 			}
 			dealScope(scope);
@@ -344,33 +340,6 @@ public class BpelUIUtil {
 		}
 		if (activity.getActivity() != null)
 			treatProcess(activity.getActivity());
-	}
-
-	/**
-	 * Gets the input operation.
-	 *
-	 * @return the input operation
-	 */
-	public Operation getInputOperation() {
-		return uiManagerOp.getInputOperation();
-	}
-
-	/**
-	 * Gets the output operation.
-	 *
-	 * @return the output operation
-	 */
-	public Operation getOutputOperation() {
-		return uiManagerOp.getOutputOperation();
-	}
-
-	/**
-	 * Gets the selection operation.
-	 *
-	 * @return the selection operation
-	 */
-	public Operation getSelectionOperation() {
-		return uiManagerOp.getSelectionOperation();
 	}
 
 	/**
@@ -458,24 +427,6 @@ public class BpelUIUtil {
 	}
 
 	/**
-	 * Gets the gen id operation.
-	 *
-	 * @return the gen id operation
-	 */
-	public Operation getGenIdOperation() {
-		return uiManagerOp.getGenIdOperation();
-	}
-
-	/**
-	 * Gets the gen id var.
-	 *
-	 * @return the gen id var
-	 */
-	public Variable[] getGenIdVar() {
-		return uiManagerOp.getVariable(DataInteractionManager.GEN_ID_INDEX);
-	}
-
-	/**
 	 * Gets the output stream.
 	 *
 	 * @return the output stream
@@ -484,7 +435,15 @@ public class BpelUIUtil {
 		return out;
 	}
 
-	public CorrelationSet[] getCorrelationSets(String id) {
-		return uiManagerOp.getCorrelationSets(id);
+	public GeneratorOperationManager getGeneratorOperationManager() {
+		return genetatorManagerOp;
+	}
+
+	public EventInteractionManager getEventInteractionManager() {
+		return eventManagerOp;
+	}
+	
+	public DataInteractionManager getDataInteractionManager() {
+		return uiManagerOp;
 	}
 }

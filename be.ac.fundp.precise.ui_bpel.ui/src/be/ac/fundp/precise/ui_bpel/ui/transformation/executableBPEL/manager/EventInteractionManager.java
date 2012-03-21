@@ -2,9 +2,7 @@ package be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -49,7 +47,7 @@ public class EventInteractionManager {
 	private Definition processWSDl;
 	
 	/** The list. */
-	private Map<String, Set<Variable>> list = new HashMap<String, Set<Variable>>();
+	private Map<String, Variable> variableList = new HashMap<String, Variable>();
 	
 	/** The Constant ON_USER_EVENT_DATA. */
 	public static final String ON_USER_EVENT_DATA = "onUserEventData";
@@ -75,6 +73,7 @@ public class EventInteractionManager {
 	/**
 	 * Creates the correlation set.
 	 */
+	@SuppressWarnings("unchecked")
 	private void createCorrelationSet() {
 		myCS = BPELFactory.eINSTANCE.createCorrelationSet();
 		myCS.setName("UserEvent");
@@ -127,9 +126,7 @@ public class EventInteractionManager {
 		inputVar.setName(ON_USER_EVENT_DATA + eventCount);
 		inputVar.setMessageType((Message) eventOperation.getInput()
 				.getMessage());
-		Set<Variable> var = new HashSet<Variable>();
-		var.add(inputVar);
-		list.put(userEvent.getId(), var);
+		variableList.put(userEvent.getId(), inputVar);
 		eventCount++;
 	}
 
@@ -157,11 +154,7 @@ public class EventInteractionManager {
 	 * @return the variables
 	 */
 	public Collection<? extends Variable> getVariables() {
-		Set<Variable> vars = new HashSet<Variable>();
-		for (Set<Variable> variable : list.values()) {
-			vars.addAll(variable);
-		}
-		return vars;
+		return variableList.values();
 	}
 
 	/**
@@ -170,8 +163,8 @@ public class EventInteractionManager {
 	 * @param id the id
 	 * @return the variable
 	 */
-	public Variable[] getVariable(String id) {
-		return  list.get(id).toArray(new Variable[0]);
+	public Variable getVariable(String id) {
+		return  variableList.get(id);
 	}
 
 	/**

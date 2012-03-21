@@ -5,10 +5,6 @@ import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.xml.namespace.QName;
 
 import org.eclipse.bpel.model.Assign;
 import org.eclipse.bpel.model.BPELFactory;
@@ -38,30 +34,30 @@ import org.eclipse.bpel.model.resource.BPELResource;
 import org.eclipse.bpel.model.resource.BPELWriter;
 import org.eclipse.bpel.model.util.BPELConstants;
 import org.eclipse.bpel.model.util.BPELUtils;
-import org.eclipse.bpel.model.util.XSD2XMLGenerator;
-import org.eclipse.bpel.ui.BPELEditor;
 import org.eclipse.bpel.ui.properties.CorrelationSection;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
-import org.eclipse.xsd.XSDElementDeclaration;
-import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.DataInteractionManager;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.data_interaction.InteractionOperation;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.EventInteractionManager;
+import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.manager.GeneratorOperationManager;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
+import be.edu.fundp.precise.uibpel.model.DataInteraction;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.ScopeUI;
+import be.edu.fundp.precise.uibpel.model.UserRole;
 
 /**
  * The Class WriterUiBpel.
@@ -69,20 +65,9 @@ import be.edu.fundp.precise.uibpel.model.ScopeUI;
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  */
 public class WriterUiBpel extends BPELWriter {
-
-	/** The Constant EMPTY_STRING. */
-	protected static final String EMPTY_STRING = null;
-	
-	/** The Constant HEAD_STRING. */
-	protected static final String HEAD_STRING =  "xmlns:s1=\"http://www.w3.org/2001/XMLSchema-instance\" " +
- 		    "xmlns:s2=\"http://www.w3.org/2001/XMLSchema\" " +
- 		    "s1:type=\"s2:string\">";
-	
-	/** The Constant NL. */
-	protected static final String NL = System.getProperty("line.separator");
 	
 	/** The bpel. */
-	protected BpelUIUtil bpel;
+	protected EntityManager bpel;
 	
 	/** The process. */
 	protected Process process;
@@ -104,7 +89,7 @@ public class WriterUiBpel extends BPELWriter {
 	public WriterUiBpel(Process process, IFile iFile) throws CoreException, IOException {
 		super();
 		this.process = process;
-		bpel = new BpelUIUtil();
+		bpel = new EntityManager();
 		bpel.configureProcess(iFile, process);
 	}
 	
@@ -130,8 +115,8 @@ public class WriterUiBpel extends BPELWriter {
 		}
 		if (onEvent.getPortType() != null
 				&& onEvent.getPortType().getQName() != null) {
-			onEventElement.setAttribute("portType", qNameToString(onEvent,
-					onEvent.getPortType().getQName()));
+			onEventElement.setAttribute("portType", ExecutableTransUtil.qNameToString(onEvent,
+					onEvent.getPortType().getQName(), process));
 		}
 		
 		if (onEvent.getOperation() != null) {
@@ -147,8 +132,8 @@ public class WriterUiBpel extends BPELWriter {
 			onEventElement.setAttribute("messageExchange", onEvent
 					.getMessageExchange().getName());
 		if (onEvent.getMessageType() != null) {
-			onEventElement.setAttribute("messageType", qNameToString(onEvent,
-					onEvent.getMessageType().getQName()));
+			onEventElement.setAttribute("messageType", ExecutableTransUtil.qNameToString(onEvent,
+					onEvent.getMessageType().getQName(), process));
 		}
 		if (onEvent.getXSDElement() != null) {
 			onEventElement.setAttribute("element",
@@ -174,17 +159,13 @@ public class WriterUiBpel extends BPELWriter {
 		// serialize local namespace prefixes to XML
 		serializePrefixes(onEvent, onEventElement);
 
-		// TODO: Why do we have this? I don't think OnEvent is extensible.
 		extensibleElement2XML(onEvent, onEventElement);
 		return onEventElement;
 	}
 	
 	protected Element receive2XML(Receive activity) {
-		
 		Element activityElement = super.receive2XML(activity);
-		
 		if (!activity.isSetCreateInstance()){
-			
 			return activityElement;
 		}
 
@@ -192,14 +173,10 @@ public class WriterUiBpel extends BPELWriter {
 		s.setName("initializationSequence");
 		Element seqElement = createBPELElement("sequence");
 
-		Operation genIdOperation = bpel.getGenIdOperation();
-		
-		Variable[] vars = bpel.getGenIdVar();
-		
-		Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
-				getDefaultRequestNames(DataInteractionManager.OPERATION_GEN_ID)) ? vars[0] : vars[1];
-		outputVarGen = vars[0].getName().startsWith(DataInteractionManager.
-				getDefaultResponseNames(DataInteractionManager.OPERATION_GEN_ID)) ? vars[0] : vars[1];
+		GeneratorOperationManager genOpManager = bpel.getGeneratorOperationManager();
+		Operation genIdOperation = genOpManager.getOperation();
+		Variable inputVar = genOpManager.getInputVar();
+		outputVarGen = genOpManager.getOutputVar();
 		
 		//================== Initialization =============
 		Assign assignBefore = genIdInit(genIdOperation, inputVar);
@@ -214,7 +191,6 @@ public class WriterUiBpel extends BPELWriter {
 		s.getActivities().add(i);
 		
 		addCommonActivityItems(seqElement, s);
-		
 		return seqElement;
 	}
 	
@@ -334,7 +310,9 @@ public class WriterUiBpel extends BPELWriter {
 		Copy c = BPELFactory.eINSTANCE.createCopy();
 		From f = BPELFactory.eINSTANCE.createFrom();
 		To t = createToPart(inputVar, genIdOperation);
-		createDefaultInitializer(null, f, t, 0);
+		f.setLiteral(ExecutableTransUtil.
+				createDefaultInitializer(t.getVariable(), t.getPart(), 
+				new String[0]));
 		c.setFrom(f);
 		c.setTo(t);
 		assignBefore.getCopy().add(c);
@@ -343,13 +321,11 @@ public class WriterUiBpel extends BPELWriter {
 
 	private Invoke genIdInvoke(Operation genIdOperation, Variable inputVar) {
 		Invoke i = BPELFactory.eINSTANCE.createInvoke();
-		i.setName("InvokeDataInput");
+		i.setName("InvokeGenProcessId");
 		i.setInputVariable(inputVar);
 		i.setOutputVariable(outputVarGen);
 		i.setOperation(genIdOperation);
 		i.setPartnerLink(bpel.getPartnerLinkBPEL());
-		
-		
 		Correlations cc = BPELFactory.eINSTANCE.createCorrelations();
 		Correlation processCorrelation = BPELFactory.eINSTANCE.createCorrelation();
 		processCorrelation.setInitiate(CorrelationSection.YES);
@@ -365,7 +341,6 @@ public class WriterUiBpel extends BPELWriter {
 	 */
 	protected Element variables2XML(Variables variables) {
 		Element original = super.variables2XML(variables);
-		//variables.getChildren().addAll(bpel.getUiVariables());
 		for (Variable next : bpel.getUiVariables()) {
 			original.appendChild(variable2XML(next));
 		}
@@ -455,8 +430,6 @@ public class WriterUiBpel extends BPELWriter {
 	private Node eventHandlerUi2XML(EventHandlerUI eventHandler) {
 		Element eventHandlerElement = createBPELElement("eventHandlers");
 
-		// TODO: For backwards compatibility with 1.1 we should serialize
-		// OnMessages here.
 		for (Object name : eventHandler.getEvents()) {
 			OnEvent onEvent = (OnEvent) name;
 			eventHandlerElement.appendChild(onEvent2XML(onEvent));
@@ -466,13 +439,14 @@ public class WriterUiBpel extends BPELWriter {
 			eventHandlerElement.appendChild(onAlarm2XML(onAlarm));
 		}
 		for (Object name : eventHandler.getUserInteraction()) {
+			EventInteractionManager genOpManager = bpel.getEventInteractionManager();
 			OnUserEvent onUiEvent = (OnUserEvent) name;
 			onUiEvent.setElement(eventHandlerElement);
 			OnEvent userInteractionEvent = BPELFactory.eINSTANCE.createOnEvent();
 			userInteractionEvent.setActivity(onUiEvent.getActivity());
 			userInteractionEvent.setPartnerLink(bpel.getPartnerLinkUserEvent());
 			userInteractionEvent.setOperation(bpel.getEventOperation());
-			userInteractionEvent.setVariable(bpel.getVariableForUserInteraction(onUiEvent.getId())[0]);
+			userInteractionEvent.setVariable(genOpManager.getVariable(onUiEvent.getId()));
 			Correlations cc = BPELFactory.eINSTANCE.createCorrelations();
 			Correlation processCorrelation = BPELFactory.eINSTANCE.createCorrelation();
 			processCorrelation.setInitiate(CorrelationSection.NO);
@@ -498,74 +472,126 @@ public class WriterUiBpel extends BPELWriter {
 
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
 		
-		Variable[] vars = bpel.getVariableForUserInteraction(activity.getId());
+		InteractionOperation op = bpel.getDataInteractionManager().getOperation(activity.getId());
 		
-		Variable inputVar = vars[0];
-		
+		//TODO when should I do it?
 		//String prefix = BPELUtils.getNamespacePrefix(inputVar, 
 		//inputVar.getMessageType().getQName().getNamespaceURI())+":";
-		//TODO when should I do it?
-		String prefix = "";
 
 		Assign assignbBefore = BPELFactory.eINSTANCE.createAssign();
 		assignbBefore.setName("DataOutputConfiguration");
 		
-		Operation inputOperation = bpel.getOutputOperation();
-		Operation genOperation = bpel.getGenIdOperation();
+		DataItem[] dataItems = activity.getOutputItem().toArray(new DataItem[0]);
 		
 		//================== Initialization =====================
-		Copy initCopy = BPELFactory.eINSTANCE.createCopy();
-
-		From f = BPELFactory.eINSTANCE.createFrom();
-		To t = createToPart(inputVar, inputOperation);
-		createDefaultInitializer(null, f, t, activity.getOutputItem().size());
-		initCopy.setFrom(f);
-		initCopy.setTo(t);
+		Copy initCopy = createInitCopy(op, dataItems);
 		
 		//================== ROLE =====================
-		String role = activity.getUserRoles().size() > 0 ? activity.getUserRoles().get(0).getRoleId() : "roleDefault";
-
-		Copy roleCopy = createCopyRole(inputVar, prefix, inputOperation, role);
+		Copy roleCopy = createCopyRole(activity, op);
 		
 		//================== ID =====================
-		Copy idCoppy = createCopyId(activity.getId(), inputVar, prefix, inputOperation);
+		Copy idCopy = createCopyId(activity, op);
 		
 		//================== Process ID =====================
-		Part genPart = (Part) genOperation.getInput().getMessage().getPart("parameters");
-		Part outputPart = (Part) inputOperation.getInput().getMessage().getPart("parameters");
-		Copy genCoppy = createCopyProcessID(outputVarGen,genPart, inputVar,outputPart, "processid");
+		Copy genCopy = createCopyProcessID(activity, op);
 		
 		//================== COPY DATA ITEM =====================
-		int cont = 1;
 		List<Copy> dataItemCopies = new LinkedList<Copy>();
-		for (DataItem di : activity.getOutputItem()) {
-			Part p = (Part) inputOperation.getInput().getMessage().getPart("parameters");
-			Copy c = createDataItemBeforeCopy(inputVar, prefix, p, cont, di, "data", "data");
-			dataItemCopies.add(c);
-			Copy cid = createIdDataItemBeforeCopy(inputVar, prefix, p, cont, di, "data", "id");
-			dataItemCopies.add(cid);
-			cont++;
-		}
-
+		if (dataItems != null)
+			for (int i = 0; i < dataItems.length; i++) {
+				DataItem dataItem = dataItems[i];
+				Copy dataItemContentCopy = createCopyDataItemContentBefore(
+						dataItem, i, op, "data", "data");
+				Copy cid = createCopyDataItemIdBefore(
+						dataItem, i, op, "data", "id");
+				
+				dataItemCopies.add(dataItemContentCopy);
+				dataItemCopies.add(cid);
+			}
 		//================== Configuring the ASSIGN BEFORE =====================
 		assignbBefore.getCopy().add(initCopy);
 		assignbBefore.getCopy().add(roleCopy);
-		assignbBefore.getCopy().add(idCoppy);
-		assignbBefore.getCopy().add(genCoppy);
+		assignbBefore.getCopy().add(idCopy);
+		assignbBefore.getCopy().add(genCopy);
 		assignbBefore.getCopy().addAll(dataItemCopies);
 		
 		//================== INVOKE =====================
 		Invoke i = BPELFactory.eINSTANCE.createInvoke();
 		i.setName("InvokeDataOutput");
-		i.setInputVariable(inputVar);
-		i.setOperation(inputOperation);
+		i.setInputVariable(op.getInputVariable());
+		i.setOutputVariable(op.getOutputVariable());
+		i.setOperation(op.getOperation());
 		i.setPartnerLink(bpel.getPartnerLinkBPEL());
+		Correlations ci = BPELFactory.eINSTANCE.createCorrelations();
+		for (CorrelationSet cs : op.getCorrelationSet()) {
+			Correlation cr = BPELFactory.eINSTANCE.createCorrelation();
+			cr.setSet(cs);
+			cr.setInitiate(CorrelationSection.YES);
+			cr.setPattern(CorrelationPattern.get(CorrelationPattern.REQUESTRESPONSE));
+			ci.getChildren().add(cr);
+		}
+		i.setCorrelations(ci);
 		
 		//================== Configuring the SEQUENCE =====================
 		s.getActivities().add(assignbBefore);
 		s.getActivities().add(i);
 
 		return super.sequence2XML(s);
+	}
+
+	//TODO refactory here with the createCopyDataItemContentBefore
+	private Copy createCopyDataItemIdBefore(DataItem dataItem, int index,
+			InteractionOperation op, String primaryNode, String secondaryNode) {
+		String dataItemName = dataItem.getVariable().getName();
+		
+		Copy c = BPELFactory.eINSTANCE.createCopy();
+		From f = BPELFactory.eINSTANCE.createFrom();
+		String expression = "'"+dataItemName+"'";
+		Expression fromExpr = BPELFactory.eINSTANCE.createExpression();
+		f.setExpression(fromExpr);
+		fromExpr.setBody(expression);
+
+		To t = BPELFactory.eINSTANCE.createTo();
+		Query toQuery = BPELFactory.eINSTANCE.createQuery();
+		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
+		toQuery.setValue(primaryNode+"["+index+"]/"+secondaryNode);
+		t.setQuery(toQuery);
+		t.setVariable(op.getInputVariable());
+		t.setPart(op.getInputOperationPart());
+		
+		c.setFrom(f);
+		c.setTo(t);
+		return c;
+	}
+
+	private Copy createInitCopy(InteractionOperation op,
+			final DataItem[] dataItems) {
+		String[] dataItemTypes = parseDataItems(dataItems);
+		
+		Copy initCopy = BPELFactory.eINSTANCE.createCopy();
+		From f = BPELFactory.eINSTANCE.createFrom();
+		To t = BPELFactory.eINSTANCE.createTo();
+		t.setVariable(op.getInputVariable());
+		t.setPart(op.getInputOperationPart());
+		f.setLiteral(ExecutableTransUtil.
+				createDefaultInitializer(t.getVariable(), t.getPart(), 
+				dataItemTypes));
+		initCopy.setFrom(f);
+		initCopy.setTo(t);
+		return initCopy;
+	}
+
+	private String[] parseDataItems(final DataItem[] dataItems) {
+		String[] types;
+		if (dataItems == null)
+			types = new String[0];
+		else {
+			types = new String[dataItems.length];
+			for (int i = 0; i < dataItems.length; i++) {
+				types[i] = dataItems[i].getType().getName();
+			}
+		}
+		return types;
 	}
 
 	/**
@@ -578,25 +604,23 @@ public class WriterUiBpel extends BPELWriter {
 	 * @param string the string
 	 * @return the copy
 	 */
-	private Copy createCopyProcessID(Variable genOutputVar, Part genPat, Variable inputVar,
-			Part outputPart ,String string) {
+	private Copy createCopyProcessID(DataInteraction dataInteraction, InteractionOperation op) {
 		Copy c = BPELFactory.eINSTANCE.createCopy();
 		From f = BPELFactory.eINSTANCE.createFrom();
 		Query toQuery = BPELFactory.eINSTANCE.createQuery();
 		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
 		toQuery.setValue("processId");
 		f.setQuery(toQuery);
-		f.setVariable(genOutputVar);
-		f.setPart(genPat);
+		f.setVariable(op.getGenVariable());
+		f.setPart(op.getGenOperationPart());
 		
 		To t = BPELFactory.eINSTANCE.createTo();
 		toQuery = BPELFactory.eINSTANCE.createQuery();
 		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
-		toQuery.setValue(string);
+		toQuery.setValue("processId");
 		t.setQuery(toQuery);
-		t.setVariable(inputVar);
-		//FIXME Get the name from some other way or create a constant
-		t.setPart(outputPart);
+		t.setVariable(op.getInputVariable());
+		t.setPart(op.getInputOperationPart());
 		c.setFrom(f);
 		c.setTo(t);
 		return c;
@@ -614,12 +638,12 @@ public class WriterUiBpel extends BPELWriter {
 	 * @param secondaryNode the secondary node
 	 * @return the copy
 	 */
-	private Copy createDataItemBeforeCopy(Variable inputVar, String prefix,
-			Part p, int cont, DataItem di, String primaryNode, String secondaryNode) {
+	private Copy createCopyDataItemContentBefore(DataItem dataItem, int index, InteractionOperation op, String primaryNode, String secondaryNode) {
+		String dataItemName = dataItem.getVariable().getName();
+		
 		Copy c = BPELFactory.eINSTANCE.createCopy();
-
 		From f = BPELFactory.eINSTANCE.createFrom();
-		String expression = "$"+di.getVariable().getName();
+		String expression = "$"+dataItemName;
 		Expression fromExpr = BPELFactory.eINSTANCE.createExpression();
 		f.setExpression(fromExpr);
 		fromExpr.setBody(expression);
@@ -627,10 +651,10 @@ public class WriterUiBpel extends BPELWriter {
 		To t = BPELFactory.eINSTANCE.createTo();
 		Query toQuery = BPELFactory.eINSTANCE.createQuery();
 		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
-		toQuery.setValue(prefix+primaryNode+"["+cont+"]/"+secondaryNode);
+		toQuery.setValue(primaryNode+"["+index+"]/"+secondaryNode);
 		t.setQuery(toQuery);
-		t.setVariable(inputVar);
-		t.setPart(p);
+		t.setVariable(op.getInputVariable());
+		t.setPart(op.getInputOperationPart());
 		
 		c.setFrom(f);
 		c.setTo(t);
@@ -660,22 +684,21 @@ public class WriterUiBpel extends BPELWriter {
 	 * @param inputOperation the input operation
 	 * @return the copy
 	 */
-	private Copy createCopyId(String id, Variable inputVar,
-			String prefix, Operation inputOperation) {		
+	private Copy createCopyId(DataInteraction dataInteraction, InteractionOperation op) {		
 		Copy c = BPELFactory.eINSTANCE.createCopy();
 		From f = BPELFactory.eINSTANCE.createFrom();
 		Expression e = BPELFactory.eINSTANCE.createExpression();
-		e.setBody("'"+id+"'");
+		e.setBody("'"+dataInteraction.getId()+"'");
 		f.setExpression(e);
 
 		To t = BPELFactory.eINSTANCE.createTo();
 		Query toQuery = BPELFactory.eINSTANCE.createQuery();
 		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
-		toQuery.setValue(prefix+"userInteracId");
+		toQuery.setValue("userInteracId");
 		t.setQuery(toQuery);
-		t.setVariable(inputVar);
+		t.setVariable(op.getInputVariable());
 		//FIXME Get the name from some other way or create a constant
-		t.setPart((Part) inputOperation.getInput().getMessage().getPart("parameters"));
+		t.setPart(op.getInputOperationPart());
 		c.setFrom(f);
 		c.setTo(t);
 		return c;
@@ -690,23 +713,23 @@ public class WriterUiBpel extends BPELWriter {
 	 * @param role the role
 	 * @return the copy
 	 */
-	private Copy createCopyRole(Variable inputVar, String prefix,
-			Operation inputOperation, String role) {
+	private Copy createCopyRole(DataInteraction dataInteraction, InteractionOperation op) {
 		Copy c = BPELFactory.eINSTANCE.createCopy();
 
 		From f = BPELFactory.eINSTANCE.createFrom();
 		Expression e = BPELFactory.eINSTANCE.createExpression();
-		e.setBody("'"+role+"'");
+		UserRole role = dataInteraction.getUserRoles().get(0);
+		e.setBody("'"+role.getRoleId()+"'");
 		f.setExpression(e);
 
 		To t = BPELFactory.eINSTANCE.createTo();
 		Query toQuery = BPELFactory.eINSTANCE.createQuery();
 		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
-		toQuery.setValue(prefix+"role");
+		toQuery.setValue("role");
 		t.setQuery(toQuery);
-		t.setVariable(inputVar);
-		//FIXME Get the name from some other way or create a constant
-		t.setPart((Part) inputOperation.getInput().getMessage().getPart("parameters"));
+		t.setVariable(op.getInputVariable());
+		t.setPart(op.getInputOperationPart());
+		
 		c.setFrom(f);
 		c.setTo(t);
 		return c;
@@ -718,95 +741,74 @@ public class WriterUiBpel extends BPELWriter {
 	 * @param selctionActivity the activity
 	 * @return the element
 	 */
-	private Element dealWithDataSelectionUI(DataSelectionUI selctionActivity) {
+	private Element dealWithDataSelectionUI(DataSelectionUI activity) {
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
 		
-		Variable[] vars = bpel.getVariableForUserInteraction(selctionActivity.getId());
-		
-		Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
-				getDefaultRequestNames(DataInteractionManager.OPERATION_SELECTION)) ? vars[0] : vars[1];
-		Variable outputVar = vars[0].getName().startsWith(DataInteractionManager.
-				getDefaultResponseNames(DataInteractionManager.OPERATION_SELECTION)) ? vars[0] : vars[1];
+		InteractionOperation op = bpel.getDataInteractionManager().getOperation(activity.getId());
+
+		//TODO when should I do it?
+		//String prefix = BPELUtils.getNamespacePrefix(inputVar, 
+		//inputVar.getMessageType().getQName().getNamespaceURI())+":";
 
 		Assign assignBefore = BPELFactory.eINSTANCE.createAssign();
 		assignBefore.setName("DataSelectionConfiguration");
 		
-		//String prefix = BPELUtils.getNamespacePrefix(inputVar, 
-		//inputVar.getMessageType().getQName().getNamespaceURI())+":";
-		//TODO when should i do it?
-		String prefix = "";
-		
-		Operation selectionOperation = bpel.getSelectionOperation();
-		Operation genOperation = bpel.getGenIdOperation();
+		DataItem[] dataItems = activity.getOutputItem().toArray(new DataItem[0]);
 		
 		//================== Initialization =====================
-		Copy initCopy = BPELFactory.eINSTANCE.createCopy();
-
-		From f = BPELFactory.eINSTANCE.createFrom();
-		To t = createToPart(inputVar, selectionOperation);
-		createDefaultInitializer(null, f, t, selctionActivity.getOutputItem().size());
-		initCopy.setFrom(f);
-		initCopy.setTo(t);
-		assignBefore.getCopy().add(initCopy);
+		Copy initCopy = createInitCopy(op, dataItems);
 		
 		//================== ROLE =====================
-		String role = selctionActivity.getUserRoles().size() > 0 ? selctionActivity.getUserRoles().get(0).getRoleId() : "roleDefault";
-
-		Copy roleCopy = createCopyRole(inputVar, prefix, selectionOperation, role);
-		assignBefore.getCopy().add(roleCopy);
+		Copy roleCopy = createCopyRole(activity, op);
 		
 		//================== ID =====================
-		Copy idCoppy = createCopyId(selctionActivity.getId(), inputVar, prefix, selectionOperation);
-		assignBefore.getCopy().add(idCoppy);
+		Copy idCopy = createCopyId(activity, op);
 		
 		//================== Process ID =====================
-		Part genPart = (Part) genOperation.getInput().getMessage().getPart("parameters");
-		Part outputPart = (Part) selectionOperation.getInput().getMessage().getPart("parameters");
-		Copy genCoppy = createCopyProcessID(outputVarGen,genPart, inputVar,outputPart, "processId");
-		assignBefore.getCopy().add(genCoppy);
+		Copy genCopy = createCopyProcessID(activity, op);
 		
 		//================== COPY DATA ITEM =====================
-		int cont = 1;
-		List<Copy> dataItemCopiesBefore = new LinkedList<Copy>();
-		for (DataItem di : selctionActivity.getOutputItem()) {
-			Part p = (Part) selectionOperation.getInput().getMessage().getPart("parameters");
-			Copy c = createDataItemBeforeCopy(inputVar, prefix, p, cont, di, "data", "data");
-			dataItemCopiesBefore.add(c);
-			Copy cid = createIdDataItemBeforeCopy(inputVar, prefix, p, cont, di, "data", "id");
-			dataItemCopiesBefore.add(cid);
-			cont++;
-		}
-		
-		if (dataItemCopiesBefore.size() > 0)
-			assignBefore.getCopy().addAll(dataItemCopiesBefore);
+		List<Copy> dataItemCopies = new LinkedList<Copy>();
+		if (activity.getOutputItem() != null)
+			for (int i = 0; i < dataItems.length; i++) {
+				DataItem dataItem = dataItems[i];
+				Copy dataItemContentCopy = createCopyDataItemContentBefore(dataItem, i, op, "data", "data");
+				Copy cid = createCopyDataItemIdBefore(dataItem, i, op, "data", "id");
+
+				dataItemCopies.add(dataItemContentCopy);
+				dataItemCopies.add(cid);
+			}
+		//================== Configuring the ASSIGN BEFORE =====================
+		assignBefore.getCopy().add(initCopy);
+		assignBefore.getCopy().add(roleCopy);
+		assignBefore.getCopy().add(idCopy);
+		assignBefore.getCopy().add(genCopy);
+		assignBefore.getCopy().addAll(dataItemCopies);
 
 		//================== INVOKE =====================
 		Invoke i = BPELFactory.eINSTANCE.createInvoke();
 		i.setName("InvokeDataSelection");
-		i.setInputVariable(inputVar);
-		i.setOutputVariable(outputVar);
-		i.setOperation(selectionOperation);
+		i.setInputVariable(op.getInputVariable());
+		i.setOutputVariable(op.getOutputVariable());
+		i.setOperation(op.getOperation());
 		i.setPartnerLink(bpel.getPartnerLinkBPEL());
 		Correlations ci = BPELFactory.eINSTANCE.createCorrelations();
-		for (CorrelationSet cs : bpel.getCorrelationSets(selctionActivity.getId())) {
+		for (CorrelationSet cs : op.getCorrelationSet()) {
 			Correlation cr = BPELFactory.eINSTANCE.createCorrelation();
 			cr.setSet(cs);
 			cr.setInitiate(CorrelationSection.YES);
+			cr.setPattern(CorrelationPattern.get(CorrelationPattern.REQUESTRESPONSE));
 			ci.getChildren().add(cr);
 		}
 		i.setCorrelations(ci);
 		
 		//================== COPY DATA ITEM =====================
 		List<Copy> dataItemCopiesAfter = new LinkedList<Copy>();
-		cont = 1;
-		for (DataItem di : selctionActivity.getInputItem()) {
-			Part p = (Part) selectionOperation.getOutput().getMessage().getPart("parameters");
-			String index = "id='"+di.getVariable().getName()+"'";
-			//Copy c = createDataItemCopy(outputVar, prefix, p, Integer.toString(cont), di, "return", "data");
-			Copy c = createDataItemCopy(outputVar, prefix, p, index, di, "return", "data");
-			cont++;
-			dataItemCopiesAfter.add(c);
-		}
+		if (activity.getInputItem() != null)
+			for (DataItem di : activity.getInputItem()) {
+				Copy dataItemContentCopy = createDataItemContentAfterCopy(di, op, "data", "data");
+				dataItemCopiesAfter.add(dataItemContentCopy);
+			}
 		
 		s.getActivities().add(assignBefore);
 		s.getActivities().add(i);
@@ -821,22 +823,22 @@ public class WriterUiBpel extends BPELWriter {
 		return super.sequence2XML(s);
 	}
 
-	private Copy createIdDataItemBeforeCopy(Variable inputVar, String prefix,
-			Part p, int cont, DataItem di, String primaryNode, String secondaryNode) {
-		Copy c = BPELFactory.eINSTANCE.createCopy();
+	private Copy createDataItemContentAfterCopy(DataItem di,
+			InteractionOperation op, String primaryNode, String secondaryNode) {
+		String dataItemName = di.getVariable().getName();
 		
-		From f = BPELFactory.eINSTANCE.createFrom();
-		Expression e = BPELFactory.eINSTANCE.createExpression();
-		e.setBody("'"+di.getVariable().getName()+"'");
-		f.setExpression(e);
+		Copy c = BPELFactory.eINSTANCE.createCopy();
 
-		To t = BPELFactory.eINSTANCE.createTo();
+		From f = BPELFactory.eINSTANCE.createFrom();
 		Query toQuery = BPELFactory.eINSTANCE.createQuery();
 		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
-		toQuery.setValue(prefix+primaryNode+"["+cont+"]/"+secondaryNode);
-		t.setQuery(toQuery);
-		t.setVariable(inputVar);
-		t.setPart(p);
+		toQuery.setValue(primaryNode+"[id='"+dataItemName+"']/"+secondaryNode);
+		f.setQuery(toQuery);
+		f.setVariable(op.getOutputVariable());
+		f.setPart(op.getOutputOperationPart());
+
+		To t = BPELFactory.eINSTANCE.createTo();
+		t.setVariable(di.getVariable());
 		
 		c.setFrom(f);
 		c.setTo(t);
@@ -850,242 +852,73 @@ public class WriterUiBpel extends BPELWriter {
 	 * @return the element
 	 */
 	private Element dealWithDataInputUI(DataInputUI activity) {
-		
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
 		
-		Variable[] vars = bpel.getVariableForUserInteraction(activity.getId());
-		
-		Variable inputVar = vars[0].getName().startsWith(DataInteractionManager.
-				getDefaultRequestNames(DataInteractionManager.OPERATION_INPUT)) ? vars[0] : vars[1];
-		Variable outputVar = vars[0].getName().startsWith(DataInteractionManager.
-				getDefaultResponseNames(DataInteractionManager.OPERATION_INPUT)) ? vars[0] : vars[1];
-				
+		InteractionOperation op = bpel.getDataInteractionManager().getOperation(activity.getId());
+
+		//TODO when should I do it?
 		//String prefix = BPELUtils.getNamespacePrefix(inputVar, 
-				//inputVar.getMessageType().getQName().getNamespaceURI());
-		//TODO when do I must to do it?
-		//definition.getPrefix
-		//Ask it from BpelUIUtil
-		String prefix = "";
+		//inputVar.getMessageType().getQName().getNamespaceURI())+":";
 
 		Assign assignBefore = BPELFactory.eINSTANCE.createAssign();
 		assignBefore.setName("DataInputConfiguration");
 		
-		Operation inputOperation = bpel.getInputOperation();
-		Operation genOperation = bpel.getGenIdOperation();
+		//================== Initialization =====================
+		Copy initCopy = createInitCopy(op, null);
 		
-		//================== Initialization ====================
-		Copy c = BPELFactory.eINSTANCE.createCopy();
-
-		From f = BPELFactory.eINSTANCE.createFrom();
-		To t = createToPart(inputVar, inputOperation);
-		createDefaultInitializer(null, f, t, 0);
-		c.setFrom(f);
-		c.setTo(t);
-		assignBefore.getCopy().add(c);
-				
 		//================== ROLE =====================
-		String role = activity.getUserRoles().size() > 0 ? activity.getUserRoles().get(0).getRoleId() : "roleDefault";
-
-		c = createCopyRole(inputVar, prefix, inputOperation, role);
-		assignBefore.getCopy().add(c);
-		
-		//================== Process ID =====================
-		Part genPart = (Part) genOperation.getInput().getMessage().getPart("parameters");
-		Part outputPart = (Part) inputOperation.getInput().getMessage().getPart("parameters");
-		Copy genCoppy = createCopyProcessID(outputVarGen, genPart, inputVar, outputPart, "processId");
-		assignBefore.getCopy().add(genCoppy);
+		Copy roleCopy = createCopyRole(activity, op);
 		
 		//================== ID =====================
-		Copy idCoppy = createCopyId(activity.getId(), inputVar, prefix, inputOperation);
-		assignBefore.getCopy().add(idCoppy);
+		Copy idCopy = createCopyId(activity, op);
+		
+		//================== Process ID =====================
+		Copy genCopy = createCopyProcessID(activity, op);
+
+		//================== Configuring the ASSIGN BEFORE =====================
+		assignBefore.getCopy().add(initCopy);
+		assignBefore.getCopy().add(roleCopy);
+		assignBefore.getCopy().add(idCopy);
+		assignBefore.getCopy().add(genCopy);
 
 		//================== INVOKE =====================
 		Invoke i = BPELFactory.eINSTANCE.createInvoke();
 		i.setName("InvokeDataInput");
-		i.setInputVariable(inputVar);
-		i.setOutputVariable(outputVar);
-		i.setOperation(inputOperation);
+		i.setInputVariable(op.getInputVariable());
+		i.setOutputVariable(op.getOutputVariable());
+		i.setOperation(op.getOperation());
 		i.setPartnerLink(bpel.getPartnerLinkBPEL());
 		Correlations ci = BPELFactory.eINSTANCE.createCorrelations();
-		for (CorrelationSet cs : bpel.getCorrelationSets(activity.getId())) {
+		for (CorrelationSet cs : op.getCorrelationSet()) {
 			Correlation cr = BPELFactory.eINSTANCE.createCorrelation();
 			cr.setSet(cs);
 			cr.setInitiate(CorrelationSection.YES);
+			cr.setPattern(CorrelationPattern.get(CorrelationPattern.REQUESTRESPONSE));
 			ci.getChildren().add(cr);
 		}
 		i.setCorrelations(ci);
 		
 		//================== COPY DATA ITEM =====================
-		List<Copy> copies = new LinkedList<Copy>();
-		int cont = 1;
-		for (DataItem di : activity.getInputItem()) {
-			Part p = (Part) inputOperation.getOutput().getMessage().getPart("parameters");
-			//id='gender'
-			String index = "id='"+di.getVariable().getName()+"'";
-			//c = createDataItemCopy(outputVar, prefix, p, Integer.toString(cont), di, "data", "data");
-			c = createDataItemCopy(outputVar, prefix, p, index, di, "data", "data");
-			cont++;
-			copies.add(c);
-		}
+		List<Copy> dataItemCopiesAfter = new LinkedList<Copy>();
+		if (activity.getInputItem() != null)
+			for (DataItem di : activity.getInputItem()) {
+				Copy dataItemContentCopy = createDataItemContentAfterCopy(di, op, "data", "data");
+				dataItemCopiesAfter.add(dataItemContentCopy);
+			}
 		
-		//================== Configuring the SEQUENCE =====================
 		s.getActivities().add(assignBefore);
 		s.getActivities().add(i);
 		
-		if (copies.size() > 0) {
-			Assign assignaAfter = BPELFactory.eINSTANCE.createAssign();
-			assignaAfter.setName("ResponseToDataItems");
-			assignaAfter.getCopy().addAll(copies);
-			s.getActivities().add(assignaAfter);
+		if (dataItemCopiesAfter.size() > 0) {
+			Assign after = BPELFactory.eINSTANCE.createAssign();
+			after.setName("ResponseToDataItems");
+			after.getCopy().addAll(dataItemCopiesAfter);
+			s.getActivities().add(after);
 		}
 
 		return super.sequence2XML(s);
 	}
 
-	/**
-	 * Creates the data item copy.
-	 *
-	 * @param outputVar the output var
-	 * @param prefix the prefix
-	 * @param part the part
-	 * @param cont the cont
-	 * @param di the di
-	 * @param primaryNode the primary node
-	 * @param secondaryNode the secondary node
-	 * @return the copy
-	 */
-	private Copy createDataItemCopy(Variable outputVar, String prefix,
-			Part part, String cont, DataItem di, String primaryNode, String secondaryNode) {
-		Copy c = BPELFactory.eINSTANCE.createCopy();
-
-		From f = BPELFactory.eINSTANCE.createFrom();
-		Query toQuery = BPELFactory.eINSTANCE.createQuery();
-		toQuery.setQueryLanguage(BPELConstants.XMLNS_XPATH_QUERY_LANGUAGE);
-		toQuery.setValue(prefix+primaryNode+"["+cont+"]/"+prefix+secondaryNode);
-		f.setQuery(toQuery);
-		f.setVariable(outputVar);
-		f.setPart(part);
-
-		To t = BPELFactory.eINSTANCE.createTo();
-		t.setVariable(di.getVariable());
-		
-		c.setFrom(f);
-		c.setTo(t);
-		return c;
-	}
-	
-	
-	/**
-	 * Construct an appropriate XML literal initializer for the given "from" and "to" parts.
-	 *
-	 * @param bpelEditor the bpel editor
-	 * @param from the from
-	 * @param to the to
-	 * @param dataItems the data items
-	 * @return the string
-	 */
-	public static String createDefaultInitializer(BPELEditor bpelEditor, From from, To to, int dataItems) {
-		String literal = EMPTY_STRING;
-		if ( from!=null && to!=null) {
-			literal = from.getLiteral();
-			if (literal==null || literal.isEmpty()) {
-				literal = createDefaultInitializer(bpelEditor, to.getVariable(), to.getPart(), dataItems);
-				from.setLiteral(literal);
-			}
-		}
-		return literal;
-	}
-	
-	/**
-	 * Construct an appropriate XML literal initializer for the given variable and message part.
-	 *
-	 * @param bpelEditor the bpel editor
-	 * @param var - the variable to be initialized
-	 * @param part - if the variable is defined as a message, this is the message part
-	 * otherwise null
-	 * @param dataItems the data items
-	 * @return - XML string representing an intializer for the given variable
-	 * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=330813
-	 * @see https://jira.jboss.org/browse/JBIDE-7351
-	 */
-	public static String createDefaultInitializer(BPELEditor bpelEditor, Variable var, Part part, int dataItems) {
-		String fromString = EMPTY_STRING;
-		try {
-			String rootElement = null;
-			String uriWSDL = null;
-
-			// Variable is defined using "messageType"
-			Message msg = (Message)var.getMessageType();
-			if (msg != null) {
-				//if (msg.eIsProxy()) {
-					//FIXME it works???
-					//msg = (Message)EmfModelQuery.resolveProxy(bpelEditor.getProcess(), msg);
-				//}
-				if (part==null) {
-					Map parts = msg.getParts();
-					if (parts!=null && !parts.isEmpty()) {
-						Map.Entry entry = (Map.Entry)parts.entrySet().iterator().next();
-						part = (Part)entry.getValue();
-					}
-				}
-				if (part!=null) {
-					XSDElementDeclaration declaration = part.getElementDeclaration();
-					if (declaration != null) {
-						uriWSDL = declaration.getSchema().getSchemaLocation();
-						rootElement = declaration.getName();
-					}
-				}
-			}
-
-			// Variable is defined using "type"
-			XSDTypeDefinition type = var.getType();
-			if (type != null) {
-				QName qname = new QName(type.getTargetNamespace(), type.getName());
-				rootElement = qname.getLocalPart();
-				uriWSDL = type.eResource().getURI().toString();
-			}
-
-			// Variable is defined using "element"
-			XSDElementDeclaration element = var.getXSDElement();
-			if (element != null) {
-				QName qname = new QName(element.getTargetNamespace(), element
-						.getName());
-				rootElement = qname.getLocalPart();
-				uriWSDL = element.eResource().getURI().toString();
-			}
-
-			XSD2XMLGenerator generator = new XSD2XMLGenerator(uriWSDL, rootElement);
-			fromString = generator.createXML();
-		}
-		catch (Exception e) {
-		}
-		//fromString = fromString.replaceAll("", "");
-		
-		//TODO this regex is just to String type
-		//this code replace the any xsi:type="anyType" by the representation of string
-		//HEAD_STRING+ "Data" +tail
-		String finalSt = fromString;
-		Pattern pattern = Pattern.compile("<[a-zA-Z]*:?data>.*</[a-zA-Z]*:?data>", Pattern.DOTALL);;
-		Matcher matcher = pattern.matcher(fromString);
-		if (matcher.find()){
-			String myShit = matcher.group();
-			String tail = ("</"+ myShit.split("data")[1].replaceAll("\\s|<|>|"+NL, "") + "data>").trim();
-			String head = myShit.replaceAll("xsi:type=\"anyType\"/>", HEAD_STRING+ "Data" +tail);
-			
-			String body = "";
-			
-			for (int i = 0; i < dataItems; i++) {
-				body += head;
-			}
-			
-			finalSt = pattern.split(fromString)[0] + body + pattern.split(fromString)[1];
-		}
-		return finalSt;
-	}
-	
-	// public NamespacePrefixManager getNamespacePrefixManager() {
-	// return bpelNamespacePrefixManager;
-	// }
 	/**
 	 * Serialize prefixes.
 	 *
@@ -1108,69 +941,5 @@ public class WriterUiBpel extends BPELWriter {
 			}
 		}
 	}
-	
-	/**
-	 * Q name to string.
-	 *
-	 * @param eObject the e object
-	 * @param qname the qname
-	 * @return the string
-	 */
-	private String qNameToString(EObject eObject, QName qname) {
-		EObject context = eObject;
-		List<String> prefixes = null;
-		String namespace = qname.getNamespaceURI();
 
-		if (namespace == null || namespace.length() == 0) {
-			return qname.getLocalPart();
-		}
-
-		// Transform BPEL namespaces to the latest version so that
-		// references to the old namespace are not serialized.
-		if (BPELConstants.isBPELNamespace(namespace)) {
-			namespace = BPELConstants.NAMESPACE;
-		}
-		while (context != null) {
-			INamespaceMap<String, String> prefixNSMap = BPELUtils
-					.getNamespaceMap(context);
-			prefixes = prefixNSMap.getReverse(namespace);
-			if (!prefixes.isEmpty()) {
-				String prefix = prefixes.get(0);
-				if (!prefix.equals(""))
-					return prefix + ":" + qname.getLocalPart();
-				else
-					return qname.getLocalPart();
-			}
-			context = context.eContainer();
-		}
-		// if a prefix is not found for the namespaceURI, create a new
-		// prefix
-		return addNewRootPrefix("ns", namespace) + ":" + qname.getLocalPart();
-	}
-	
-	/**
-	 * Adds the new root prefix.
-	 *
-	 * @param basePrefix the base prefix
-	 * @param namespace the namespace
-	 * @return the string
-	 */
-	private String addNewRootPrefix(String basePrefix, String namespace) {
-		INamespaceMap<String, String> nsMap = BPELUtils
-				.getNamespaceMap(process);
-
-		List<String> prefixes = nsMap.getReverse(namespace);
-		if (prefixes.isEmpty()) {
-			int i = 0;
-			String prefix = basePrefix;
-			while (nsMap.containsKey(prefix)) {
-				prefix = basePrefix + i;
-				i++;
-			}
-			nsMap.put(prefix, namespace);
-			return prefix;
-		} else {
-			return prefixes.get(0);
-		}
-	}
 }
