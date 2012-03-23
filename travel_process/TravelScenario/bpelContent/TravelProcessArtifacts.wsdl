@@ -6,75 +6,69 @@
      The BPEL Designer will generate default request and response types
      but you can define or import any XML Schema type and use them as part 
      of the message types.
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<plnk:partnerLinkType name="AirlinePLT">
-		<plnk:role name="AirlineRole" portType="wsdl:AirlineWS" />
-	</plnk:partnerLinkType>
-	<plnk:partnerLinkType name="TrainPLT">
-		<plnk:role name="TrainRole" portType="wsdl1:TrainWS" />
-	</plnk:partnerLinkType>
-	<plnk:partnerLinkType name="CarRentingPLT">
-		<plnk:role name="RentingCarRole" portType="wsdl2:RentingCarWS" />
-	</plnk:partnerLinkType>
-	<plnk:partnerLinkType name="HotelingPLT">
-		<plnk:role name="HotelingRole" portType="wsdl3:HotelWS" />
-	</plnk:partnerLinkType>
-	<vprop:property name="propertyName" type="xsd:string" />
-	<vprop:propertyAlias messageType="wsdl5:fireEventRequest"
-		part="parameters" propertyName="tns:propertyName">
-		<vprop:query><![CDATA[/processId]]></vprop:query>
-	</vprop:propertyAlias>
-	<vprop:propertyAlias messageType="wsdl4:generateProcessIdResponse"
-		part="parameters" propertyName="tns:propertyName">
-		<vprop:query><![CDATA[/processId]]></vprop:query>
-	</vprop:propertyAlias>
-	
-	<vprop:property name="propertyTest2" type="xsd:string" />
-	
-	<vprop:propertyAlias messageType="wsdl4:inputOperationResponse"
-		part="parameters" propertyName="tns:propertyTest2">
-		<vprop:query><![CDATA[/processId]]></vprop:query>
-	</vprop:propertyAlias>
-	<vprop:propertyAlias messageType="wsdl4:inputOperationRequest"
-		part="parameters" propertyName="tns:propertyTest2">
-		<vprop:query><![CDATA[/processId]]></vprop:query>
-	</vprop:propertyAlias>
-	
-	<vprop:propertyAlias messageType="wsdl4:selectionOperationResponse"
-		part="parameters" propertyName="tns:propertyTest2">
-		<vprop:query><![CDATA[/processId]]></vprop:query>
-	</vprop:propertyAlias>
-	<vprop:propertyAlias messageType="wsdl4:selectionOperationRequest"
-		part="parameters" propertyName="tns:propertyTest2">
-		<vprop:query><![CDATA[/processId]]></vprop:query>
-	</vprop:propertyAlias>
-	
-	<vprop:property name="propertyTest3" type="xsd:string" />
-	
-	<vprop:propertyAlias messageType="wsdl4:inputOperationResponse"
-		part="parameters" propertyName="tns:propertyTest3">
-		<vprop:query><![CDATA[/userInteracId]]></vprop:query>
-	</vprop:propertyAlias>
-	<vprop:propertyAlias messageType="wsdl4:inputOperationRequest"
-		part="parameters" propertyName="tns:propertyTest3">
-		<vprop:query><![CDATA[/userInteracId]]></vprop:query>
-	</vprop:propertyAlias>
-	
-	<vprop:propertyAlias messageType="wsdl4:selectionOperationResponse"
-		part="parameters" propertyName="tns:propertyTest3">
-		<vprop:query><![CDATA[/userInteracId]]></vprop:query>
-	</vprop:propertyAlias>
-	<vprop:propertyAlias messageType="wsdl4:selectionOperationRequest"
-		part="parameters" propertyName="tns:propertyTest3">
-		<vprop:query><![CDATA[/userInteracId]]></vprop:query>
-	</vprop:propertyAlias>
-	
-	<plnk:partnerLinkType name="UiManagerPartnerLinkType">
-		<plnk:role name="UiManagerRole" portType="wsdl4:UiManager" />
-	</plnk:partnerLinkType>
-	<plnk:partnerLinkType name="UserEventPartnerLinkType">
-		<plnk:role name="UserEventRole" portType="wsdl5:UserEventListener" />
-	</plnk:partnerLinkType>
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <plnk:partnerLinkType name="AirlinePLT">
+    <plnk:role name="AirlineRole" portType="wsdl:AirlineWS"/>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="TrainPLT">
+    <plnk:role name="TrainRole" portType="wsdl1:TrainWS"/>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="CarRentingPLT">
+    <plnk:role name="RentingCarRole" portType="wsdl2:RentingCarWS"/>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="HotelingPLT">
+    <plnk:role name="HotelingRole" portType="wsdl3:HotelWS"/>
+  </plnk:partnerLinkType>
+    <vprop:property name="processId" type="xsd:string"/>
+    <vprop:propertyAlias messageType="wsdl4:generateProcessIdResponse" part="parameters" propertyName="tns:processId">
+    <vprop:query><![CDATA[/processId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="wsdl5:fireEventRequest" part="parameters" propertyName="tns:processId">
+    <vprop:query><![CDATA[/processId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:property name="interactionId" type="xsd:string"/>
+    <vprop:propertyAlias messageType="wsdl4:inputOperationResponse" part="parameters" propertyName="tns:processId">
+    <vprop:query><![CDATA[/processId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="wsdl4:inputOperationRequest" part="parameters" propertyName="tns:processId">
+    <vprop:query><![CDATA[/processId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="wsdl4:inputOperationResponse" part="parameters" propertyName="tns:interactionId">
+    <vprop:query><![CDATA[/userInteracId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="wsdl4:inputOperationRequest" part="parameters" propertyName="tns:interactionId">
+    <vprop:query><![CDATA[/userInteracId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="wsdl4:outputOperationResponse" part="parameters" propertyName="tns:processId">
+    <vprop:query><![CDATA[/processId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="wsdl4:outputOperationRequest" part="parameters" propertyName="tns:processId">
+    <vprop:query><![CDATA[/processId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="wsdl4:outputOperationResponse" part="parameters" propertyName="tns:interactionId">
+    <vprop:query><![CDATA[/userInteracId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="wsdl4:outputOperationRequest" part="parameters" propertyName="tns:interactionId">
+    <vprop:query><![CDATA[/userInteracId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="wsdl4:selectionOperationResponse" part="parameters" propertyName="tns:processId">
+    <vprop:query><![CDATA[/processId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="wsdl4:selectionOperationRequest" part="parameters" propertyName="tns:processId">
+    <vprop:query><![CDATA[/processId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="wsdl4:selectionOperationResponse" part="parameters" propertyName="tns:interactionId">
+    <vprop:query><![CDATA[/userInteracId]]></vprop:query>
+  </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="wsdl4:selectionOperationRequest" part="parameters" propertyName="tns:interactionId">
+    <vprop:query><![CDATA[/userInteracId]]></vprop:query>
+  </vprop:propertyAlias>
+    <plnk:partnerLinkType name="UiManagerPartnerLinkType">
+    <plnk:role name="UiManagerRole" portType="wsdl4:UiManager"/>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="UserEventPartnerLinkType">
+    <plnk:role name="UserEventRole" portType="wsdl5:UserEventListener"/>
+  </plnk:partnerLinkType>
     <import location="AirlineWS.wsdl" namespace="http://www.scenario.org/AirlineWS/"/>
     <import location="TrainWS.wsdl" namespace="http://www.scenario.org/TrainWS/"/>
     <import location="RentingCarWS.wsdl" namespace="http://www.scenario.org/RentingCarWS/"/>

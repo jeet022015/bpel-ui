@@ -7,7 +7,7 @@
           <xsd:sequence>
           	<xsd:element maxOccurs="1" minOccurs="1" name="userInteracId" type="xsd:string"/>
           	<xsd:element maxOccurs="1" minOccurs="1" name="role" type="xsd:string"/>
-          	<xsd:element maxOccurs="1" minOccurs="1" name="processid" type="xsd:string"/>
+          	<xsd:element maxOccurs="1" minOccurs="1" name="processId" type="xsd:string"/>
           	<xsd:element maxOccurs="unbounded" minOccurs="0" name="data" type="tns:UiDataType"/>
           </xsd:sequence>
         </xsd:complexType>
@@ -15,7 +15,9 @@
       <xsd:element name="outputOperationResponse">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="out" type="xsd:string"/>
+          	<xsd:element maxOccurs="1" minOccurs="1" name="userInteracId" type="xsd:string"/>
+          	<xsd:element maxOccurs="1" minOccurs="1" name="role" type="xsd:string"/>
+          	<xsd:element maxOccurs="1" minOccurs="1" name="processId" type="xsd:string"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -56,7 +58,7 @@
       	<xsd:complexType>
       		<xsd:sequence>
       			<xsd:element maxOccurs="unbounded" minOccurs="0"
-      				name="return" type="tns:UiDataType" />
+      				name="data" type="tns:UiDataType" />
       			<xsd:element name="processId" type="xsd:string"></xsd:element>
       			<xsd:element name="userInteracId" type="xsd:string"></xsd:element>
       			<xsd:element name="role" type="xsd:string"></xsd:element>
@@ -168,6 +170,7 @@
     <wsdl:operation name="outputOperation">
       <wsdl:input message="tns:outputOperationRequest">
     </wsdl:input>
+      <wsdl:output message="tns:outputOperationResponse"></wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="inputOperation">
       <wsdl:input message="tns:inputOperationRequest">
@@ -196,53 +199,63 @@
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="UiManagerSOAP" type="tns:UiManager">
-  	<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+  	<soap:binding style="document"
+  		transport="http://schemas.xmlsoap.org/soap/http" />
   	<wsdl:operation name="outputOperation">
-  		<soap:operation soapAction="http://fundp.ac.be/UiManager/outputOperation"/>
+  		<soap:operation
+  			soapAction="http://fundp.ac.be/UiManager/outputOperation" />
   		<wsdl:input>
-  			<soap:body use="literal"/>
-  		</wsdl:input>
-  	</wsdl:operation>
-  	<wsdl:operation name="inputOperation">
-  		<soap:operation soapAction="http://fundp.ac.be/UiManager/inputOperation"/>
-  		<wsdl:input>
-  			<soap:body use="literal"/>
+  			<soap:body use="literal" />
   		</wsdl:input>
   		<wsdl:output>
-  			<soap:body use="literal"/>
+  			<soap:body use="literal" />
+  		</wsdl:output>
+  	</wsdl:operation>
+  	<wsdl:operation name="inputOperation">
+  		<soap:operation
+  			soapAction="http://fundp.ac.be/UiManager/inputOperation" />
+  		<wsdl:input>
+  			<soap:body use="literal" />
+  		</wsdl:input>
+  		<wsdl:output>
+  			<soap:body use="literal" />
   		</wsdl:output>
   	</wsdl:operation>
   	<wsdl:operation name="selectionOperation">
-  		<soap:operation soapAction="http://fundp.ac.be/UiManager/selectionOperation"/>
+  		<soap:operation
+  			soapAction="http://fundp.ac.be/UiManager/selectionOperation" />
   		<wsdl:input>
-  			<soap:body use="literal"/>
+  			<soap:body use="literal" />
   		</wsdl:input>
   		<wsdl:output>
-  			<soap:body use="literal"/>
+  			<soap:body use="literal" />
   		</wsdl:output>
   	</wsdl:operation>
   	<wsdl:operation name="generateProcessId">
-  		<soap:operation soapAction="http://fundp.ac.be/UiManager/generateProcessId"/>
+  		<soap:operation
+  			soapAction="http://fundp.ac.be/UiManager/generateProcessId" />
   		<wsdl:input>
-  			<soap:body use="literal"/>
+  			<soap:body use="literal" />
   		</wsdl:input>
   		<wsdl:output>
-  			<soap:body use="literal"/>
+  			<soap:body use="literal" />
   		</wsdl:output>
   	</wsdl:operation>
   	<wsdl:operation name="registryRole">
-  		<soap:operation soapAction="http://fundp.ac.be/UiManager/registryRole"/>
+  		<soap:operation
+  			soapAction="http://fundp.ac.be/UiManager/registryRole" />
   		<wsdl:input>
-  			<soap:body use="literal"/>
+  			<soap:body use="literal" />
   		</wsdl:input>
   	</wsdl:operation>
   	<wsdl:operation name="pendingActions">
-  		<soap:operation soapAction="http://fundp.ac.be/UiManager/pendingActions"/>
+  		<soap:operation
+  			soapAction="http://fundp.ac.be/UiManager/pendingActions" />
   		<wsdl:input>
-  			<soap:body use="literal"/>
+  			<soap:body use="literal" />
   		</wsdl:input>
   		<wsdl:output>
-  			<soap:body use="literal"/>
+  			<soap:body use="literal" />
   		</wsdl:output>
   	</wsdl:operation>
   </wsdl:binding>
