@@ -9,14 +9,8 @@ package be.ac.fundp.uimanager.userevent.client;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import javax.xml.namespace.QName;
-import javax.jws.Oneway;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.ws.Action;
-import javax.xml.ws.RequestWrapper;
 
 // TODO: Auto-generated Javadoc
 /**
