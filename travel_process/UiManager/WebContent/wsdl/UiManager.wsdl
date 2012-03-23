@@ -7,7 +7,7 @@
           <xsd:sequence>
           	<xsd:element maxOccurs="1" minOccurs="1" name="userInteracId" type="xsd:string"/>
           	<xsd:element maxOccurs="1" minOccurs="1" name="role" type="xsd:string"/>
-          	<xsd:element maxOccurs="1" minOccurs="1" name="processid" type="xsd:string"/>
+          	<xsd:element maxOccurs="1" minOccurs="1" name="processId" type="xsd:string"/>
           	<xsd:element maxOccurs="unbounded" minOccurs="0" name="data" type="tns:UiDataType"/>
           </xsd:sequence>
         </xsd:complexType>
@@ -15,7 +15,9 @@
       <xsd:element name="outputOperationResponse">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="out" type="xsd:string"/>
+          	<xsd:element maxOccurs="1" minOccurs="1" name="userInteracId" type="xsd:string"/>
+          	<xsd:element maxOccurs="1" minOccurs="1" name="role" type="xsd:string"/>
+          	<xsd:element maxOccurs="1" minOccurs="1" name="processId" type="xsd:string"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -54,7 +56,7 @@
       <xsd:element name="selectionOperationResponse">
       	<xsd:complexType>
       		<xsd:sequence>
-      			<xsd:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:UiDataType"/>
+      			<xsd:element maxOccurs="unbounded" minOccurs="0" name="data" type="tns:UiDataType"/>
       			<xsd:element name="processId" type="xsd:string"/>
       			<xsd:element name="userInteracId" type="xsd:string"/>
       			<xsd:element name="role" type="xsd:string"/>
@@ -170,6 +172,8 @@
     <wsdl:operation name="outputOperation">
       <wsdl:input message="tns:outputOperationRequest">
     </wsdl:input>
+      <wsdl:output message="tns:outputOperationResponse">
+    </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="inputOperation">
       <wsdl:input message="tns:inputOperationRequest">

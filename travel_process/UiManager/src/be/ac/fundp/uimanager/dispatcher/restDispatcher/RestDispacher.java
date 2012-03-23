@@ -97,11 +97,12 @@ public class RestDispacher implements Dispatcher {
 	 * @see be.ac.fundp.uimanager.client.Dispatcher#requireOutputInteracion(java.lang.String, java.lang.String, java.util.List, java.lang.String)
 	 */
 	@Override
-	public void requireOutputInteracion(String processid, String userInteracId,
+	public void requireOutputInteracion(String processId, String userInteracId,
 			List<ProvidedData> data2, String role) {
 		ClientResource cr = null;
 		try {
-			cr = putInteraction(role, processid, userInteracId, data2);
+			cr = putInteraction(role, processId, userInteracId, data2);
+			getProvidedData(cr, processId);
 		} catch (Exception e) {
 			//TODO deal with Exception
 			e.printStackTrace();

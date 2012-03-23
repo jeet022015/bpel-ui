@@ -30,22 +30,20 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
-  
-  <!-- Application class name -->
-	<context-param>
-		<param-name>org.restlet.application</param-name>
-		<param-value>
+  <context-param>
+    <param-name>org.restlet.application</param-name>
+    <param-value>
 			be.ac.fundp.uimanager.restServer.FirstStepsApplication
 		</param-value>
-	</context-param>
-	<servlet>
-		<servlet-name>RestletServlet</servlet-name>
-		<servlet-class>
+  </context-param>
+  <servlet>
+    <servlet-name>RestletServlet</servlet-name>
+    <servlet-class>
 			org.restlet.ext.servlet.ServerServlet
 		</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>RestletServlet</servlet-name>
-		<url-pattern>/restlet/*</url-pattern>
-	</servlet-mapping>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RestletServlet</servlet-name>
+    <url-pattern>/restlet/*</url-pattern>
+  </servlet-mapping>
 </web-app>

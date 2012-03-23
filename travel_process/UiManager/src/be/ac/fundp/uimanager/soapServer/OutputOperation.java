@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="userInteracId" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="role" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="processid" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="processId" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="data" type="{http://fundp.ac.be/UiManager/}UiDataType" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "userInteracId",
     "role",
-    "processid",
+    "processId",
     "data"
 })
 @XmlRootElement(name = "outputOperation")
@@ -47,7 +47,7 @@ public class OutputOperation {
     @XmlElement(required = true)
     protected String role;
     @XmlElement(required = true)
-    protected String processid;
+    protected String processId;
     protected List<UiDataType> data;
 
     /**
@@ -99,27 +99,27 @@ public class OutputOperation {
     }
 
     /**
-     * Gets the value of the processid property.
+     * Gets the value of the processId property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getProcessid() {
-        return processid;
+    public String getProcessId() {
+        return processId;
     }
 
     /**
-     * Sets the value of the processid property.
+     * Sets the value of the processId property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setProcessid(String value) {
-        this.processid = value;
+    public void setProcessId(String value) {
+        this.processId = value;
     }
 
     /**
