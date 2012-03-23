@@ -6,5 +6,7 @@
     <string name="process_desc">Process Description</string>
     <string name="avail_processes">Available Processes</string>
     <string name="interaction">Interaction UI</string>
+    <string name="register"><u>This is <font color="red">simple</font>.</u></string> 
+    <string name="signup">Sign Up</string>
 
 </resources>

@@ -3,9 +3,9 @@ package be.ac.precise.usixml.androidapp.service.server;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.engine.Engine;
+import org.restlet.ext.httpclient.HttpClientHelper;
 import org.restlet.ext.jackson.JacksonConverter;
 import org.restlet.routing.Router;
-import org.restlet.ext.httpclient.HttpClientHelper;
 
 import be.ac.precise.usixml.androidapp.service.server.resource.TestServerResource;
 import be.ac.precise.usixml.androidapp.service.server.resource.UsixmlServerResource;

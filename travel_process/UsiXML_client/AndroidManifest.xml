@@ -26,6 +26,9 @@
         <activity
             android:label="@string/interaction"
             android:name=".activities.UserInteractionActivity" />
+        <activity
+            android:label="@string/signup"
+            android:name=".activities.SignUpActivity" />
 
         <service
             android:enabled="true"

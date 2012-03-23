@@ -7,9 +7,12 @@ public class Process {
 
 	protected String id;
 	protected List<UserInteraction> innerInteractions = new LinkedList<UserInteraction>();
+	protected String displayablename;
+	public static int processCounter = 1;
 	
 	public Process (String processId){
 		id = processId;
+		displayablename = "Trip "+processCounter++;
 	}
 	
 	public boolean hasPendingAct() {

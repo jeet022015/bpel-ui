@@ -29,9 +29,9 @@ public class UsixmlServerResource extends ServerResource {
 		final String cuiId = (String) getRequestAttributes().get(AndroidAppConstants.PARAM_INTERACTION);
 		
 		JSONObject obj = new JSONObject();
-		System.out.println("role="+role);
-		System.out.println("processId="+processId);
-		System.out.println("cuiId="+cuiId);
+		System.out.println("role ="+role);
+		System.out.println("processId ="+processId);
+		System.out.println("cuiId ="+cuiId);
 		UserInteraction performedInteraction = actManager.getDataProvidedByUser(role, processId, cuiId);
 		
 		if (performedInteraction == null || !performedInteraction.isDone()){
@@ -45,7 +45,8 @@ public class UsixmlServerResource extends ServerResource {
 		
 		JSONArray dataJson = new JSONArray();
 		
-		if (performedInteraction != null && performedInteraction.getProvidedItemIds() != null)
+		if (performedInteraction.getProvidedItemIds() != null &&
+				!performedInteraction.getProvidedItemIds().isEmpty())
 			for (String itemId : performedInteraction.getProvidedItemIds()) {
 				try {
 					JSONObject aData = new JSONObject();
@@ -56,14 +57,12 @@ public class UsixmlServerResource extends ServerResource {
 					dataJson.put(aData);
 				} catch (JSONException e) {
 					e.printStackTrace();
-					obj = new JSONObject();
 				}
 			}
 		
 		try {
 			obj.put(AndroidAppConstants.JSON_DATA, dataJson);
 		} catch (JSONException e) {
-			obj = new JSONObject();
 			e.printStackTrace();
 		}
 		return new JsonRepresentation(obj);
