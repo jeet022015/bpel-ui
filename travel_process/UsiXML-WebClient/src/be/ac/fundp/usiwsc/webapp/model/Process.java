@@ -11,18 +11,18 @@ public class Process {
 	
 	protected String id;
 	protected List<UserInteraction> innerInteractions = new LinkedList<UserInteraction>();
+	static int processCounter = 1;
+	protected String displayableId;
 	
 	public Process (String processId){
 		id = processId;
+		displayableId = "Trip "+ processCounter++;
 	}
 	
 	public List<UserInteraction> getPendingInteractions(){
 		List<UserInteraction> interacDone = new LinkedList<UserInteraction>();
-		System.out.println("heeeree");
 		for (UserInteraction aUserInteraction : innerInteractions) {
-			System.out.println("aUserInteraction="+aUserInteraction.getDisplayableName());
 			if (!aUserInteraction.isDone()){
-				System.out.println("pending="+aUserInteraction.getDisplayableName());
 				interacDone.add(aUserInteraction);
 			}
 		}
@@ -34,7 +34,7 @@ public class Process {
 	}
 
 	public String getDisplayableName() {
-		return id;
+		return displayableId;
 	}
 
 	public synchronized UserInteraction addUserInteraction(String cuiId, JSONArray data) throws JSONException {
