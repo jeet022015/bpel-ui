@@ -23,6 +23,7 @@ public class UserInteraction {
 		diplayNames.put("25", "Hotel Options");
 		diplayNames.put("29", "Travel Veredict");
 		diplayNames.put("31", "Canceled Trip");
+		diplayNames.put("32", "Canceled Trip");
 	}
 	private String id;
 	private boolean isDone;
@@ -55,7 +56,9 @@ public class UserInteraction {
 	}
 
 	public CharSequence getDisplayableName() {
-		return diplayNames.get(id);
+		if (diplayNames.keySet().contains(id))
+			return diplayNames.get(id);
+		else return id;
 	}
 	
 	public Set<String> getAvailableItemIds() {

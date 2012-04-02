@@ -36,11 +36,11 @@ public class ProcessDescriptionActivity  extends Activity {
     public void onResume() {
         super.onResume();
         
-        TextView processText = (TextView) findViewById(R.id.textViewActivities1);
-        processText.setText(processId);
-        
-       
         Process myProcess = manager.getProcess(processId);
+        
+        TextView processText = (TextView) findViewById(R.id.textViewActivities1);
+        processText.setText(myProcess.getDisplayableName());
+
         LinearLayout processLayout = (LinearLayout) findViewById(R.id.mainLayoutProcess);
         processLayout.removeAllViews();
         

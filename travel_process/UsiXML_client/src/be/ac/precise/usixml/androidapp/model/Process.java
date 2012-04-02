@@ -29,7 +29,7 @@ public class Process {
 	}
 
 	public String getDisplayableName() {
-		return id;
+		return displayablename;
 	}
 
 	public UserInteraction addUserInteraction(String cuiId) {

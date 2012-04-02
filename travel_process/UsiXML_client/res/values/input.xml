@@ -26,9 +26,9 @@
         <item>rentCarOp</item>
     </string-array>
     <string-array name="interaction22">
-        <item>color</item>
-        <item>option</item>
-        <item>model</item>
+        <item>carColor</item>
+        <item>carOption</item>
+        <item>carModel</item>
         <item>carLowerPrice</item>
         <item>carHigherPrice</item>
     </string-array>

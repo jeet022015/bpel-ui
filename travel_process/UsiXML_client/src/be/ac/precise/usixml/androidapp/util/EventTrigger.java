@@ -38,6 +38,7 @@ public class EventTrigger {
 		Engine.getInstance().getRegisteredClients().clear();
     	Engine.getInstance().getRegisteredConverters().add(new JacksonConverter());
     	Engine.getInstance().getRegisteredClients().add(new HttpClientHelper(null));
+    	//TODO Update Ip here
 		ClientResource itemsResource = new ClientResource("http://10.0.1.14:8090/UiManager/restlet/login" +
 				"/" + login +
 				"/" + password);

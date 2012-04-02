@@ -55,7 +55,7 @@ public class LoginActivity extends Activity {
 		});
 		
 		TextView mBox = (TextView) findViewById(R.id.singup);
-		mBox.setText(Html.fromHtml("<b><font color=\"#A69430\">Sign up </font><font color=\"#438699\"> to subscribe in UsiWSC</font></b>"));
+		mBox.setText(Html.fromHtml("<b><font color=\"#A69430\">Sign up </font><font color=\"#438699\"> to UsiWSC</font></b>"));
 		mBox.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -86,8 +86,6 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 		}
         if (result.equalsIgnoreCase("fail")){
-			//set up button
-//			final Dialog dialog2 = new Dialog(LoginActivity.this);
 			dialog.setContentView(R.layout.fail_dialog);
 	        Button button = (Button) dialog.findViewById(R.id.failButton);
 	        button.setOnClickListener(new OnClickListener() {
@@ -100,8 +98,6 @@ public class LoginActivity extends Activity {
 	        });
 	        return;
 		} else {
-			//set up button
-//			final Dialog dialog = new Dialog(LoginActivity.this);
 			LoginActivity.isloged = true;
     		LoginActivity.this.setRole(result);
 			dialog.setContentView(R.layout.sucess_dialog);
@@ -115,7 +111,6 @@ public class LoginActivity extends Activity {
 	        });
 	        return;
 		}
-        //new Thread(new VerifyUser(dialog, role, pw)).start();
 	}
 	
 	public  CharSequence getRole() {
@@ -125,55 +120,4 @@ public class LoginActivity extends Activity {
 	public void setRole(CharSequence role) {
 		this.role = role;
 	}
-
-//	class VerifyUser implements Runnable{
-//
-//		private Dialog dialog;
-//		private CharSequence login;
-//		private CharSequence password;
-//
-//		public VerifyUser(Dialog dialog, CharSequence login, CharSequence password){
-//			this.dialog = dialog;
-//			this.login = login;
-//			this.password = password;
-//			
-//		}
-//		
-//		@Override
-//		public void run() {
-//			final String result = EventTrigger.verifyUser(login, password);
-//			dialog.dismiss();
-//			if (result.equalsIgnoreCase("fail")){
-//				//set up button
-////				final Dialog dialog2 = new Dialog(LoginActivity.this);
-////				dialog2.setContentView(R.layout.fail_dialog);
-////		        Button button = (Button) dialog2.findViewById(R.id.failButton);
-////		        button.setOnClickListener(new OnClickListener() {
-////		        	@Override
-////		            public void onClick(View v) {
-////		        		dialog2.dismiss();
-//		        		LoginActivity.isloged = false;
-//		        		LoginActivity.this.finish();
-////		            }
-////		        });
-//		        return;
-//			} else {
-//				//set up button
-////				final Dialog dialog = new Dialog(LoginActivity.this);
-////				dialog.setContentView(R.layout.sucess_dialog);
-////		        Button button = (Button) dialog.findViewById(R.id.sucessButton);
-////		        button.setOnClickListener(new OnClickListener() {
-////		        	@Override
-////		            public void onClick(View v) {
-////		        		dialog.dismiss();
-//		        		LoginActivity.isloged = true;
-//		        		LoginActivity.this.setRole(result);
-//		        		LoginActivity.this.finish();
-////		            }
-////		        });
-//		        return;
-//			}
-//		}
-//		
-//	}
 }
