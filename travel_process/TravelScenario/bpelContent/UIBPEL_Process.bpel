@@ -357,6 +357,29 @@
                     </bpel:correlations>
                     <bpel:scope name="InnerScope1">
                         <bpel:sequence>
+                            <bpel:assign name="finalization" validate="no"><bpel:copy>
+					                <bpel:from>
+					                    <bpel:literal>
+					                        <tns:TravelProcessResponse xmlns:tns="http://process.travel.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+					                            <tns:result>tns:result</tns:result>
+					                        </tns:TravelProcessResponse>
+					                    </bpel:literal>
+					                </bpel:from>
+					                <bpel:to part="payload" variable="output" />
+					            </bpel:copy>
+					            <bpel:copy>
+					                <bpel:from xmlns:http="urn:http:namesapce">
+                                        <![CDATA['process canceled']]>
+                                    </bpel:from>
+					                <bpel:to part="payload" variable="output">
+					                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+					                        <![CDATA[tns:result]]>
+					                    </bpel:query>
+					                </bpel:to>
+					            </bpel:copy>
+					        
+                            </bpel:assign>
+                            <bpel:reply name="replyTravel" operation="process" partnerLink="client" portType="tns:TravelProcess" variable="output" />
                             <bpel:assign name="CancelingMessaging" validate="no">
                                 <bpel:copy>
                                     <bpel:from><![CDATA['The process was canceled.']]></bpel:from>
@@ -433,32 +456,8 @@
                                     </bpel:correlations>
                                 </bpel:invoke>
                             </bpel:sequence>
-                            <bpel:assign name="finalization2" validate="no">
-                                
-                                
-                                
-                                <bpel:copy>
-                                    <bpel:from>
-                                        <bpel:literal>
-                                            <tns:TravelProcessResponse xmlns:tns="http://process.travel.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><tns:result>tns:result</tns:result>
-
-                                            </tns:TravelProcessResponse>
-                                        </bpel:literal>
-                                    </bpel:from>
-                                    <bpel:to variable="output" part="payload"></bpel:to>
-                                </bpel:copy>
-                                <bpel:copy>
-                                    <bpel:from>
-                                        <![CDATA['eventCancel']]>
-                                    </bpel:from>
-                                    <bpel:to part="payload" variable="output">
-                                        <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:result]]></bpel:query>
-                                    </bpel:to>
-                                </bpel:copy>
-                            </bpel:assign>
-                            <bpel:reply name="replyTravel"
-                                operation="process" partnerLink="client"
-                                portType="tns:TravelProcess" variable="output"/>
+                            
+					        
                             <bpel:exit name="Exit"/>
                         </bpel:sequence>
                     </bpel:scope>
