@@ -40,7 +40,7 @@ public class UserEventResource extends ServerResource {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-        manager.releaseInteracitons(role, processId);
+        //manager.releaseInteracitons(role, processId);
         return "event fired";
     }
 

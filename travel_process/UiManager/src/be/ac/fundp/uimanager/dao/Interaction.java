@@ -6,19 +6,23 @@ import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
 @Entity(name="INTERACTIONS")
 public class Interaction {
 	
 	@Id @GeneratedValue
-	private int id;
+	private int interactionRealId;
 	private String interactionId;
 	private boolean isFinished;
-	@OneToMany(mappedBy="itemId")
+	@OneToMany
+	@JoinTable(name = "availableData", joinColumns = { @JoinColumn(name = "availableData_ID") })
 	private Collection<DataItem> availableData = new ArrayList<DataItem>();
-//	@OneToMany(mappedBy="realId")
-//	private Collection<DataItem> providedData = new ArrayList<DataItem>();
+	@OneToMany
+	@JoinTable(name = "providedData", joinColumns = { @JoinColumn(name = "providedData_ID") })
+	private Collection<DataItem> providedData = new ArrayList<DataItem>();
 	
 	public String getInteractionId() {
 		return interactionId;
@@ -38,17 +42,16 @@ public class Interaction {
 	public void setAvailableData(Collection<DataItem> availableData) {
 		this.availableData = availableData;
 	}
-//	public Collection<DataItem> getProvidedData() {
-//		return providedData;
-//	}
-//	public void setProvidedData(Collection<DataItem> providedData) {
-//		this.providedData = providedData;
-//	}
-	public int getId() {
-		return id;
+	public Collection<DataItem> getProvidedData() {
+		return providedData;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setProvidedData(Collection<DataItem> providedData) {
+		this.providedData = providedData;
 	}
-
+	public int getInteractionRealId() {
+		return interactionRealId;
+	}
+	public void setInteractionRealId(int interactionRealId) {
+		this.interactionRealId = interactionRealId;
+	}
 }

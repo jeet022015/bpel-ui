@@ -14,10 +14,9 @@ public class Process {
 	@Id
 	private String processId;
 	private boolean isFinished;
-	@OneToMany(mappedBy="id")
+	@OneToMany(mappedBy="interactionRealId")
 	private Collection<Interaction> interactions = new ArrayList<Interaction>();
-//	@ElementCollection(fetch = FetchType.EAGER)
-	@OneToMany(mappedBy="realId", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="processBindRealId", fetch = FetchType.EAGER)
 	private Collection<ProcessBind> processBind =  new ArrayList<ProcessBind>();
 	
 	public String getProcessId() {

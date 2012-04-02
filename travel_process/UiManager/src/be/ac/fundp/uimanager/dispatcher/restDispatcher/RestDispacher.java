@@ -167,8 +167,10 @@ public class RestDispacher implements Dispatcher {
 
 	private String createHost(String role, String processId,
 			String userInteracId) {
-		return "http://"+ ipAddress+ ":8182/uibpel/" + role + "/" + 
-			processId + "/" + userInteracId;
+		return ipAddress + role + "/" + 
+				processId + "/" + userInteracId; 
+//		return "http://"+ ipAddress+ ":8182/uibpel/" + role + "/" + 
+//			processId + "/" + userInteracId;
 	}
 
 	private ClientResource putInteraction(String role, String processId, 

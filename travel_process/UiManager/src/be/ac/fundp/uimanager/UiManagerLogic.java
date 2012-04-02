@@ -1,10 +1,9 @@
 package be.ac.fundp.uimanager;
 
-import java.util.Iterator;
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -13,7 +12,10 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
 import be.ac.fundp.uimanager.dao.Context;
+import be.ac.fundp.uimanager.dao.DataItem;
 import be.ac.fundp.uimanager.dao.Interaction;
+import be.ac.fundp.uimanager.dao.InteractionType;
+import be.ac.fundp.uimanager.dao.ItemType;
 import be.ac.fundp.uimanager.dao.Process;
 import be.ac.fundp.uimanager.dao.ProcessBind;
 import be.ac.fundp.uimanager.dao.ProcessBind.ProcessBindIdClass;
@@ -43,6 +45,45 @@ public class UiManagerLogic {
 	private String HEAD_PROCESS = "Trip";
 	
 	protected UiManagerLogic(){
+		Role role = new Role();
+		role.setRoleId("manager");
+		
+		User user = new User();
+		user.setUserId("philippe");
+		user.setPassword("philippe");
+		user.setAvailable(true);
+		user.getRole().add(role);
+		
+		Context context = new Context();
+		//http://localhost:8070/UsiXML-WebClient/restlet/test
+		context.setIpAddress("http://localhost:8070/UsiXML-WebClient/restlet/uibpel/");
+		context.setProtocolType(ProtocolType.Rest);
+		user.setContext(context);
+		
+		Role role2 = new Role();
+		role2.setRoleId("administrator");
+		
+		User user2 = new User();
+		user2.setUserId("mohamed");
+		user2.setPassword("mohamed");
+		user2.setAvailable(true);
+		user2.getRole().add(role2);
+		
+		Context context2 = new Context();
+		context2.setIpAddress("http://localhost:8070/UsiXML-WebClient/restlet/uibpel/");
+		context2.setProtocolType(ProtocolType.Rest);
+		user2.setContext(context2);
+		
+		Session session = configureSessionFactory.openSession();
+		session.beginTransaction();
+		session.saveOrUpdate(role);
+		session.saveOrUpdate(context);
+		session.saveOrUpdate(user);
+		session.saveOrUpdate(role2);
+		session.saveOrUpdate(context2);
+		session.saveOrUpdate(user2);
+		session.getTransaction().commit();
+		session.close();
 
 	}
 	
@@ -55,13 +96,18 @@ public class UiManagerLogic {
 	public Dispatcher getDispatcher(String role, String processId) {
 		createRoleIfNecessary(role);
 		createProcessIfNecessary(processId);
-		User user = getUser(role, processId);
+		Session session = configureSessionFactory.openSession();
+		session.beginTransaction();
+		String userId = getUser(role, processId);
+		User user = (User) session.get(User.class, userId);
 		Dispatcher dis = getDispatcher(user.getContext());
+		session.getTransaction().commit();
+		session.close();
 		return dis;
 	}
 
 	@SuppressWarnings("unchecked")
-	private User getUser(String role, String processId) {
+	private String getUser(String role, String processId) {
 		User user = null;
 		Session session = configureSessionFactory.openSession();
 		session.beginTransaction();
@@ -70,26 +116,43 @@ public class UiManagerLogic {
 		Role roleObj = (Role) session.get(Role.class, role);
 		idClass.setRole(roleObj);
 		idClass.setProcess(process);
-		ProcessBind processBind = (ProcessBind) session.get(ProcessBind.class, idClass);
+		//ProcessBind processBind = (ProcessBind) session.get(ProcessBind.class, idClass);
+		ProcessBind processBind = (ProcessBind)session.createCriteria(ProcessBind.class)
+				.add(Restrictions.eq("id", idClass)).uniqueResult();
 		if (processBind == null) {
 			processBind = new ProcessBind();
 			processBind.setId(idClass);
 			List<User> userList = null;
 			do {
+				session.getTransaction().commit();
+				session.beginTransaction();
 				userList = session.createCriteria(User.class)
 						.add(Restrictions.eq("isAvailable", true)).list();
-				if (userList.isEmpty()) {
+
+				if (userList != null){
+					for (User anyUser : userList) {
+						System.out.println("user="+anyUser.getUserId());
+						for (Role roleAnyUser : anyUser.getRole()) {
+							System.out.println("roleAnyUser="+roleAnyUser.getRoleId());
+							System.out.println("ExpectedRole="+role);
+							if (roleAnyUser.getRoleId().equalsIgnoreCase(role)){
+								System.out.println("yeaaaaa");
+								user = anyUser;
+								user.setAvailable(false);
+								session.saveOrUpdate(user);
+								break;
+							}
+						}
+					}
+				}
+				if (user == null) {
 					try {
 						Thread.sleep(20000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-				} else {
-					user = userList.get(0);
-					user.setAvailable(false);
-					session.saveOrUpdate(user);
 				}
-			} while (userList == null || userList.isEmpty());
+			} while (user == null);
 		    
 		    processBind.setUser(user);
 		    process.getProcessBind().add(processBind);
@@ -100,7 +163,7 @@ public class UiManagerLogic {
 		}
 		session.getTransaction().commit();
 		session.close();
-		return user;
+		return user.getUserId();
 	}
 
 	private void createRoleIfNecessary(String role) {
@@ -147,6 +210,7 @@ public class UiManagerLogic {
 	public void subscribe(String login, String password, String role, String ipAddress) {
 		User newUser = new User();
 		Context newContext = new Context();
+		createRoleIfNecessary(role);
 		
 		newContext.setIpAddress(ipAddress);
 		newContext.setProtocolType(ProtocolType.Rest);
@@ -158,10 +222,9 @@ public class UiManagerLogic {
 		
 		Session session = configureSessionFactory.openSession();
 		session.beginTransaction();
+		Role userRole = (Role) session.get(Role.class, role);
+		newUser.getRole().add(userRole);
 		session.saveOrUpdate(newContext);
-		session.getTransaction().commit();
-		
-		session.beginTransaction();
 		session.saveOrUpdate(newUser);
 		session.getTransaction().commit();
 		session.close();
@@ -179,22 +242,17 @@ public class UiManagerLogic {
 		return null;
 	}
 
-	public void releaseInteracitons(String role, String processId) {
+	public void finishProcess(String role, String processId) {
 		getDispatcher(role, processId).releaseAll(processId);
 		Session session = configureSessionFactory.openSession();
 		session.beginTransaction();
-		User user = getUser(role, processId);
-		User userToSave = (User) session.get(User.class, user.getUserId());
 		Process process = (Process) session.get(Process.class, processId);
 		process.setFinished(true);
-		userToSave.setAvailable(true);
-		session.saveOrUpdate(userToSave);
 		session.saveOrUpdate(process);
 		session.getTransaction().commit();
 		session.close();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<ProvidedData> requireInputInteracion(String role,
 			String processId, String userInteracId) {
 		
@@ -208,39 +266,8 @@ public class UiManagerLogic {
 		interaction.setInteractionId(userInteracId);
 		interaction.setFinished(false);
 
-//		ProcessBindIdClass idClass = new ProcessBindIdClass();
-//		idClass.setRole(roleObj);
-//		idClass.setProcess(process);
-//		ProcessBind processBind = (ProcessBind) session.get(ProcessBind.class, idClass);
-//		if (processBind == null) {
-//			processBind = new ProcessBind();
-//			processBind.setId(idClass);
-//			List<User> userList = null;
-//			do {
-//				userList = session.createCriteria(User.class)
-//						.add(Restrictions.eq("isAvailable", true)).list();
-//				if (userList.isEmpty()) {
-//					try {
-//						Thread.sleep(20000);
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-//				} else {
-//					user = userList.get(0);
-//					user.setAvailable(false);
-//					session.saveOrUpdate(user);
-//				}
-//			} while (userList == null || userList.isEmpty());
-//		    
-//		    processBind.setUser(user);
-//		    process.getProcessBind().add(processBind);
-//		    session.saveOrUpdate(processBind);
-//		    session.saveOrUpdate(process);
-//		} else {
-//			user = processBind.getUser();
-//		}
-		
-		User user = getUser(role, processId);
+		String userId = getUser(role, processId);
+		User user = (User) session.get(User.class, userId);
 		
 		Process process = (Process) session.get(Process.class, processId);
 		process.getInteractions().add(interaction);
@@ -251,21 +278,21 @@ public class UiManagerLogic {
 		List<ProvidedData> reponse = getDispatcher(user.getContext()).requireInputInteracion(processId, userInteracId, role);
 		
 		session.beginTransaction();
+		interaction = (Interaction) session.get(Interaction.class, interaction.getInteractionRealId());
 		
-//		for (ProvidedData providedData : reponse) {
-//			DataItem item = new DataItem();
-//			item.setItemId(providedData.getId());
-//			item.setType(InteractionType.Input);
-//			item.setItemType(ItemType.text);
-//			item.setData((Serializable) providedData.getData());
-//			session.saveOrUpdate(item);
-//			interaction.getProvidedData().add(item);
-//		}
+		for (ProvidedData providedData : reponse) {
+			DataItem item = new DataItem();
+			item.setItemId(providedData.getId());
+			item.setType(InteractionType.Input);
+			item.setItemType(ItemType.text);
+			item.setData((Serializable) providedData.getData());
+			interaction.getProvidedData().add(item);
+			session.saveOrUpdate(item);
+		}
 		
 		interaction.setFinished(true);
 		
 		session.saveOrUpdate(interaction);
-		session.saveOrUpdate(process);
 		session.getTransaction().commit();
 		session.close();
 		return reponse;
@@ -278,46 +305,52 @@ public class UiManagerLogic {
 		interaction.setInteractionId(userInteracId);
 		interaction.setFinished(false);
 		
-//		for (ProvidedData providedData : uiDataType2ProvidedData) {
-//			DataItem item = new DataItem();
-//			item.setItemId(providedData.getId());
-//			item.setType(InteractionType.Output);
-//			item.setItemType(ItemType.text);
-//			item.setData((Serializable) providedData.getData());
-//			interaction.getAvailableData().add(item);
-//		}
-		
-		createRoleIfNecessary(role);
-		
-		createProcessIfNecessary(processId);
-		
-		User user = getUser(role, processId);
-		
 		Session session = configureSessionFactory.openSession();
 		session.beginTransaction();
+		
+		for (ProvidedData providedData : uiDataType2ProvidedData) {
+			DataItem item = new DataItem();
+			item.setItemId(providedData.getId());
+			item.setType(InteractionType.Output);
+			item.setItemType(ItemType.text);
+			item.setData((Serializable) providedData.getData());
+			interaction.getAvailableData().add(item);
+			session.saveOrUpdate(item);
+		}
+		
+		createRoleIfNecessary(role);
+		createProcessIfNecessary(processId);
+		
+		String userId = getUser(role, processId);
+		
+		
+		User user = (User) session.get(User.class, userId);
 		Process process = (Process) session.get(Process.class, processId);
 		session.saveOrUpdate(interaction);
 		process.getInteractions().add(interaction);
 		session.saveOrUpdate(process);
 		session.getTransaction().commit();
-		session.close();
 		
 		List<ProvidedData> reponse = getDispatcher(user.getContext()).requireSelectionInteracion(processId, userInteracId, uiDataType2ProvidedData, role);
 		
-//		for (ProvidedData providedData : reponse) {
-//			DataItem item = new DataItem();
-//			item.setItemId(providedData.getId());
-//			item.setType(InteractionType.Input);
-//			item.setItemType(ItemType.text);
-//			item.setData((Serializable) providedData.getData());
-//			interaction.getProvidedData().add(item);
-//		}
+		session.beginTransaction();
+		interaction = (Interaction) session.get(Interaction.class, interaction.getInteractionRealId());
 		
-//		session = configureSessionFactory.openSession();
-//		session.beginTransaction();
-//		session.saveOrUpdate(process);
-//		session.getTransaction().commit();
-//		session.close();
+		for (ProvidedData providedData : reponse) {
+			DataItem item = new DataItem();
+			item.setItemId(providedData.getId());
+			item.setType(InteractionType.Input);
+			item.setItemType(ItemType.text);
+			item.setData((Serializable) providedData.getData());
+			interaction.getProvidedData().add(item);
+			session.saveOrUpdate(item);
+		}
+		
+		interaction.setFinished(true);
+		session.saveOrUpdate(interaction);
+		
+		session.getTransaction().commit();
+		session.close();
 		
 		return reponse;
 	}
@@ -329,23 +362,26 @@ public class UiManagerLogic {
 		interaction.setInteractionId(userInteracId);
 		interaction.setFinished(false);
 		
-//		for (ProvidedData providedData : uiDataType2ProvidedData) {
-//			DataItem item = new DataItem();
-//			item.setItemId(providedData.getId());
-//			item.setType(InteractionType.Output);
-//			item.setItemType(ItemType.text);
-//			item.setData((Serializable) providedData.getData());
-//			interaction.getAvailableData().add(item);
-//		}
+		Session session = configureSessionFactory.openSession();
+		session.beginTransaction();
+		
+		for (ProvidedData providedData : uiDataType2ProvidedData) {
+			DataItem item = new DataItem();
+			item.setItemId(providedData.getId());
+			item.setType(InteractionType.Output);
+			item.setItemType(ItemType.text);
+			item.setData((Serializable) providedData.getData());
+			interaction.getAvailableData().add(item);
+			session.saveOrUpdate(item);
+		}
 		
 		createRoleIfNecessary(role);
 		
 		createProcessIfNecessary(processId);
 		
-		User user = getUser(role, processId);
+		String userId = getUser(role, processId);
 		
-		Session session = configureSessionFactory.openSession();
-		session.beginTransaction();
+		User user = (User) session.get(User.class, userId);
 		Process process = (Process) session.get(Process.class, processId);
 		process.getInteractions().add(interaction);
 		session.saveOrUpdate(interaction);
@@ -355,7 +391,25 @@ public class UiManagerLogic {
 		
 		getDispatcher(user.getContext()).requireOutputInteracion(processId, userInteracId, uiDataType2ProvidedData, role);
 		
-		if (userInteracId.equals("29"))
-			releaseInteracitons(role, processId);
+		if (userInteracId.equals("30") || userInteracId.equals("31")){
+			releaseRole(role, processId);
+		}
+		
+		if (userInteracId.equals("29") || userInteracId.equals("32")){
+			finishProcess(role, processId);
+			releaseRole(role, processId);
+		}
+	}
+
+	private void releaseRole(String role, String processId) {
+		Session session = configureSessionFactory.openSession();
+		session.beginTransaction();
+		String userId = getUser(role, processId);
+		User user = (User) session.get(User.class, userId);
+		user.setAvailable(true);
+		session.saveOrUpdate(user);
+		session.getTransaction().commit();
+		session.close();
+		
 	}
 }

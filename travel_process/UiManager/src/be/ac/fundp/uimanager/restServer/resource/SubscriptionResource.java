@@ -26,9 +26,10 @@ public class SubscriptionResource extends ServerResource {
     	String password = (String) getRequestAttributes().get("password");
     	String role = (String) getRequestAttributes().get("role");
     	String ipAddress = (String) getRequestAttributes().get("ipAddress");
-    	manager.subscribe(login, password, role, ipAddress);
+    	String newIpAddress = ipAddress.replaceAll("%3Chttp%3E", "http://").replaceAll("%3Cslash%3E", "/"); 
+    	manager.subscribe(login, password, role, newIpAddress);
     	System.out.println("login subscribed="+login);
-    	System.out.println("ip="+ipAddress);
+    	System.out.println("ip="+newIpAddress);
         return "subscribed";
     }
 

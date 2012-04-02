@@ -3,16 +3,17 @@ package be.ac.fundp.uimanager.dao;
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity(name = "PROCESS_BIND")
 public class ProcessBind {
-
+	
 	@Embeddable
 	public static class ProcessBindIdClass implements Serializable{
 
@@ -46,10 +47,11 @@ public class ProcessBind {
 
 	}
 
-	@EmbeddedId
+	@Embedded
 	private ProcessBindIdClass id = new ProcessBindIdClass();
+	@Id
 	@GeneratedValue
-	private int realId;
+	private int processBindRealId;
 	@OneToOne
 	private User user;
 
@@ -69,12 +71,11 @@ public class ProcessBind {
 		this.user = user;
 	}
 
-	public int getRealId() {
-		return realId;
+	public int getProcessBindRealId() {
+		return processBindRealId;
 	}
 
-	public void setRealId(int realId) {
-		this.realId = realId;
+	public void setProcessBindRealId(int processBindRealId) {
+		this.processBindRealId = processBindRealId;
 	}
-
 }

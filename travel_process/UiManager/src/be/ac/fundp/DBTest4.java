@@ -43,9 +43,13 @@ public class DBTest4 {
 		interaction.setInteractionId("ssfqdf");
 		interaction.setFinished(false);
 		
+		session.saveOrUpdate(interaction);
+		
 		session.getTransaction().commit();
 		
 		session.beginTransaction();
+		interaction = (Interaction) session.get(Interaction.class, interaction.getInteractionRealId());
+		System.out.println("interaction="+interaction);
 		DataItem item = new DataItem();
 		item.setItemId("qsdfsqdfqsdf");
 		item.setType(InteractionType.Input);
@@ -53,10 +57,27 @@ public class DBTest4 {
 		item.setData((Serializable) "qsdqsd");
 		interaction.getAvailableData().add(item);
 		session.saveOrUpdate(item);
+		
+		DataItem item2 = new DataItem();
+		item2.setItemId("qsdfsqdfqsdf");
+		item2.setType(InteractionType.Input);
+		item2.setItemType(ItemType.text);
+		item2.setData((Serializable) "qsdqsd");
+		interaction.getProvidedData().add(item2);
+		session.saveOrUpdate(item2);
+		
 		session.saveOrUpdate(interaction);
 		
 		session.getTransaction().commit();
+		
+		session.beginTransaction();
+		item = (DataItem) session.get(DataItem.class, item.getRealDataItemId());
+		System.out.println("item="+item);
+		System.out.println("content="+item.getData());
+		session.getTransaction().commit();
 		session.close();
+		
+		System.out.println("finished");
 		
 		//logic.requireInputInteracion("employee", "process11", "1");
 	}
