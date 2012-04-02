@@ -31,14 +31,14 @@ public class RestDispacher implements Dispatcher {
 	public static final int MAX_WAITING_TIME = 86400 *1000;// One day
 	
 	/** The host. */
-	protected String host;
-	protected Map<String, Boolean> activeProcesses =  new HashMap<String, Boolean>();
+	protected String ipAddress;
+	static protected Map<String, Boolean> activeProcesses =  new HashMap<String, Boolean>();
 
 	private Random generator;
 
 	
 	public RestDispacher(String host){
-		this.host = host;
+		this.ipAddress = host;
 	}
 	
 	/* (non-Javadoc)
@@ -58,8 +58,6 @@ public class RestDispacher implements Dispatcher {
 			//TODO deal with Exception
 			e.printStackTrace();
 		}finally{
-			if (cr.getResponseEntity() != null)
-            	cr.getResponseEntity().release();
 			if (cr != null)
 				cr.release();  
 		} 
@@ -84,8 +82,6 @@ public class RestDispacher implements Dispatcher {
 			//TODO deal with Exception
 			e.printStackTrace();
 		}finally{  
-			if (cr.getResponseEntity() != null)
-            	cr.getResponseEntity().release();
 			if (cr != null)
 				cr.release();
 		} 
@@ -107,8 +103,6 @@ public class RestDispacher implements Dispatcher {
 			//TODO deal with Exception
 			e.printStackTrace();
 		}finally{
-            if (cr.getResponseEntity() != null)
-            	cr.getResponseEntity().release();
             if (cr != null)
 				cr.release();
 		}
@@ -127,8 +121,13 @@ public class RestDispacher implements Dispatcher {
 			do {
 				System.out.println("I'm sleeping for "+waitingTime+" milisenconds");
 				Thread.sleep(waitingTime);
-				if (!activeProcesses.get(processId))
+				if (!activeProcesses.get(processId)){
+					System.out.println("process="+processId);
+					System.out.println("process not active");
 					return null;
+				} else {
+					System.out.println("process active");
+				}
 				r = cr.get();
 				jr = new JsonRepresentation(r);
 				returnJson = jr.getJsonObject();
@@ -161,13 +160,14 @@ public class RestDispacher implements Dispatcher {
 			e.printStackTrace();
 		}
 		
-		activeProcesses.put(processId, true);
+		if (!activeProcesses.keySet().contains(processId))
+			activeProcesses.put(processId, true);
 		return cr;
 	}
 
 	private String createHost(String role, String processId,
 			String userInteracId) {
-		return host + role + "/" + 
+		return "http://"+ ipAddress+ ":8182/uibpel/" + role + "/" + 
 			processId + "/" + userInteracId;
 	}
 
@@ -199,6 +199,7 @@ public class RestDispacher implements Dispatcher {
 	@Override
 	public void releaseAll(String processId) {
 		activeProcesses.put(processId, false);
+		System.out.println("process released="+processId);
 	}
 
 }

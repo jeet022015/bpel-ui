@@ -45,7 +45,8 @@ public class UiManagerImpl implements UiManager {
         System.out.println(role.value);
         System.out.println(processId.value);
         try {
-        	List<ProvidedData> reponse = logic.getDispatcher(role.value).requireInputInteracion(processId.value, userInteracId.value, role.value);
+        	//List<ProvidedData> reponse = logic.getDispatcher(role.value).requireInputInteracion(processId.value, userInteracId.value, role.value);
+        	List<ProvidedData> reponse = logic.requireInputInteracion(role.value, processId.value, userInteracId.value);
         	data.value = SoapServerUtil.providedData2UiDataType(reponse);
         } catch (java.lang.Exception ex) {
             ex.printStackTrace();
@@ -63,7 +64,8 @@ public class UiManagerImpl implements UiManager {
         System.out.println(processId.value);
         System.out.println(data);
         try {
-        	List<ProvidedData> reponse = logic.getDispatcher(role.value).requireSelectionInteracion(processId.value, userInteracId.value, SoapServerUtil.uiDataType2ProvidedData(data.value), role.value);
+        	//List<ProvidedData> reponse = logic.getDispatcher(role.value).requireSelectionInteracion(processId.value, userInteracId.value, SoapServerUtil.uiDataType2ProvidedData(data.value), role.value);
+        	List<ProvidedData> reponse = logic.requireSelectionInteracion(processId.value, userInteracId.value, SoapServerUtil.uiDataType2ProvidedData(data.value), role.value);
             data.value = SoapServerUtil.providedData2UiDataType(reponse);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -81,7 +83,8 @@ public class UiManagerImpl implements UiManager {
         System.out.println(processId);
         System.out.println(data);
         try {
-        	logic.getDispatcher(role.value).requireOutputInteracion(processId.value, userInteracId.value, SoapServerUtil.uiDataType2ProvidedData(data), role.value);
+        	//logic.getDispatcher(role.value).requireOutputInteracion(processId.value, userInteracId.value, SoapServerUtil.uiDataType2ProvidedData(data), role.value);
+        	logic.requireOutputInteracion(processId.value, userInteracId.value, SoapServerUtil.uiDataType2ProvidedData(data), role.value);
         } catch (java.lang.Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException(ex);
