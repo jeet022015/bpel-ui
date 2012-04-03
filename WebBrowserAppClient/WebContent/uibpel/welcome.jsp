@@ -230,7 +230,7 @@
 															<%
 															for (Process aProcess: pendingProcesses) {
 															%>
-																<li>Process <%=aProcess.getId()%>: <a href="${pageContext.request.contextPath}/uibpel/processDetail.jsp?processId=<%=aProcess.getId()%>"> Details </a></li>
+																<li>Process <%=aProcess.getDisplayableName()%>: <a href="${pageContext.request.contextPath}/uibpel/processDetail.jsp?processId=<%=aProcess.getId()%>"> Details </a></li>
 																
 															<% } %>
 															</ul>

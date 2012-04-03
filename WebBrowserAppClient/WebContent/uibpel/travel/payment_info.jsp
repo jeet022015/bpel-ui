@@ -229,7 +229,7 @@
 													    <ul id="contactform">
 													        <li>
 													            <label for="name">Banking Account Identification</label>
-													            <span class="fieldbox"><input type="text" name="account" id="backAccountID" value=""/></span>
+													            <span class="fieldbox"><input type="text" name="backAccountID" id="backAccountID" value=""/></span>
 													        </li>
 													        <li>
 													            <label for="email">Security Code</label>
