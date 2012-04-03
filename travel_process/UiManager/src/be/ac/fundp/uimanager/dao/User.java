@@ -16,9 +16,9 @@ public class User {
 	private String userId;
 	private String password;
 	private boolean isAvailable;
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne
 	private Context context;
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<Role> role = new ArrayList<Role>();
 	 
 	public String getUserId() {

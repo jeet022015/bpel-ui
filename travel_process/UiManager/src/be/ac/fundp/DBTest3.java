@@ -12,7 +12,8 @@ import be.ac.fundp.uimanager.dispatcher.Dispatcher;
 public class DBTest3 {
 	public static void main(String[] args) {
 		UiManagerLogic logic = UiManagerLogic.getInstance();
-		Dispatcher d = logic.getDispatcher("employee", "process1");
+		Dispatcher d = null;
+		//Dispatcher d = logic.getDispatcher("employee", "process1");
 		System.out.println("Dispatcher="+d);
 		
 		Session session = logic.configureSessionFactory.openSession();
