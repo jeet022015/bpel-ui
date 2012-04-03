@@ -18,6 +18,7 @@ public class WebApplication extends Application {
 		// new instance of HelloWorldResource.
 		Router router = new Router(getContext());
 		// Defines only one route
+		//http://localhost:8070/UsiXML-WebClient/restlet/uibpel
 		router.attach("/uibpel/{role}/{processId}/{cuiId}", ResourceUsiXML.class);
 		router.attach("/test", TestEventResource.class);
 		return router;

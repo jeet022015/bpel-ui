@@ -55,6 +55,7 @@ public class Process {
 		
 		innerInteractions.add(innerInterac);
 		System.out.println("created ui="+cuiId);
+		System.out.println("for the process="+id);
 		return innerInterac;
 	}
 

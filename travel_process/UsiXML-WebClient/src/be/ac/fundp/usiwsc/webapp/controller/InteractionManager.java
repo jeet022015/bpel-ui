@@ -58,6 +58,7 @@ public class InteractionManager extends HttpServlet {
 		for (String key : para.keySet()) {
 			if (!key.equals("processId") && !key.equals("cuiId") && !key.equals("sendbutton")){
 				System.out.println("key="+key);
+				System.out.println("content="+para.get(key)[0]);
 				cui.addProvidedData(key, "String", para.get(key)[0]);
 			}
 		}

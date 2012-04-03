@@ -230,7 +230,7 @@
 															<%
 																for (String d: l) {
 															%>
-															<input type="checkbox" name="veredict" value="veredict">
+															<input type="checkbox" name="veredict" value="<%=cui.getAvailableItemContent(d)%>">
 																<font size="4" face="Arial">
 																	<%=cui.getAvailableItemContent(d)%>	
 																</font>
