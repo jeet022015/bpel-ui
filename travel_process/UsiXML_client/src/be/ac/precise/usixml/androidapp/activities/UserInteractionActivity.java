@@ -51,7 +51,7 @@ public class UserInteractionActivity extends Activity {
 			public void onClick(View v) {
 				new Thread(new InnerRunnable(UserInteractionActivity.this,
 						myUserInteraction, inputIds)).start();
-				manager.disableNotification();
+				
 				finish();
 			}
 		});
@@ -71,7 +71,6 @@ public class UserInteractionActivity extends Activity {
 									myUserInteraction, processId)).start();
 			        	 myUserInteraction.wasDone();
 			 			 manager.getProcess(processId).deletePendingInt();
-			        	 manager.disableNotification();
 			        	 finish();
 					}
 				});
@@ -116,6 +115,7 @@ public class UserInteractionActivity extends Activity {
 				innerInteraction.addProvidedData(inputId, "string", content);
 			}
 			innerInteraction.wasDone();
+			manager.disableNotification();
 		}
 
 		protected Object getContent(int inputViewId) {
@@ -146,9 +146,9 @@ public class UserInteractionActivity extends Activity {
 		}
 
 		public void run() {
-			
 			EventTrigger.fireEvent(manager.getRole(), processId,
 					innerInteraction.getId());
+			manager.disableNotification();
 		}
 	}
 }

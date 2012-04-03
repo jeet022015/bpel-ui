@@ -86,7 +86,7 @@ public class ActivityManager {
 		
 		n.setLatestEventInfo(notificationAct, contentTitle, contentText, contentIntent);
 		
-		//n.flags |= Notification.FLAG_AUTO_CANCEL;
+		n.flags |= Notification.FLAG_AUTO_CANCEL;
 		
 		nNM.notify(NOTIFICATION_ID, n);
 	}
@@ -113,8 +113,10 @@ public class ActivityManager {
 
 	private boolean hasPedingInteractions() {
 		for (Process innerProcess : myProcesses) {
-			if (innerProcess.hasPendingAct())
+			if (innerProcess.hasPendingAct()){
+				System.out.println("has pending activities");
 				return true;
+			}
 		}
 		return false;
 	}

@@ -33,7 +33,7 @@ public class SignUpActivity extends Activity {
 				(ipAddress >> 8 & 0xff),
 				(ipAddress >> 16 & 0xff),
 				(ipAddress >> 24 & 0xff));
-		System.out.println("ipAddress="+ip);
+		System.out.println("ipAddress ="+ip);
 		final String host = "<http>"+ ip + ":8182"+ "<slash>uibpel<slash>";
 		
 		setContentView(R.layout.sing_up_page);

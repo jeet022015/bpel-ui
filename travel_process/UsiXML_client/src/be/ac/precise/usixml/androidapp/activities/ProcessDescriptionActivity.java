@@ -75,6 +75,7 @@ public class ProcessDescriptionActivity  extends Activity {
 					myIntent.putExtra(AndroidAppConstants.PARAM_INTERACTION, aUserInteraction.getId());
 					myIntent.putExtra(AndroidAppConstants.PARAM_PROCESS, processId);
 					ProcessDescriptionActivity.this.startActivity(myIntent);
+					finish();
 	            }
 	        });
 		

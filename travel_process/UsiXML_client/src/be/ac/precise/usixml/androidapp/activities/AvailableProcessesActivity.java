@@ -72,6 +72,7 @@ public class AvailableProcessesActivity extends Activity {
             			ProcessDescriptionActivity.class);
 				myIntent.putExtra(AndroidAppConstants.PARAM_PROCESS, processId);
 				AvailableProcessesActivity.this.startActivity(myIntent);
+				finish();
             }
         });
 		

@@ -6,7 +6,6 @@ import org.restlet.engine.Engine;
 import org.restlet.ext.httpclient.HttpClientHelper;
 import org.restlet.ext.jackson.JacksonConverter;
 import org.restlet.representation.Representation;
-import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.ClientResource;
 
 public class EventTrigger {
