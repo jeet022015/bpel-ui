@@ -7,18 +7,39 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Process.
+ */
 public class Process {
 	
+	/** The id. */
 	protected String id;
+	
+	/** The inner interactions. */
 	protected List<UserInteraction> innerInteractions = new LinkedList<UserInteraction>();
+	
+	/** The process counter. */
 	static int processCounter = 1;
+	
+	/** The displayable id. */
 	protected String displayableId;
 	
+	/**
+	 * Instantiates a new process.
+	 *
+	 * @param processId the process id
+	 */
 	public Process (String processId){
 		id = processId;
 		displayableId = "Trip "+ processCounter++;
 	}
 	
+	/**
+	 * Gets the pending interactions.
+	 *
+	 * @return the pending interactions
+	 */
 	public List<UserInteraction> getPendingInteractions(){
 		List<UserInteraction> interacDone = new LinkedList<UserInteraction>();
 		for (UserInteraction aUserInteraction : innerInteractions) {
@@ -29,14 +50,32 @@ public class Process {
 		return interacDone;
 	}
 
+	/**
+	 * Checks if is finisehd.
+	 *
+	 * @return true, if is finisehd
+	 */
 	public boolean isFinisehd() {
 		return true;
 	}
 
+	/**
+	 * Gets the displayable name.
+	 *
+	 * @return the displayable name
+	 */
 	public String getDisplayableName() {
 		return displayableId;
 	}
 
+	/**
+	 * Adds the user interaction.
+	 *
+	 * @param cuiId the cui id
+	 * @param data the data
+	 * @return the user interaction
+	 * @throws JSONException the jSON exception
+	 */
 	public synchronized UserInteraction addUserInteraction(String cuiId, JSONArray data) throws JSONException {
 		UserInteraction innerInterac = getUserInteraction(cuiId);
 		if (innerInterac != null)
@@ -59,14 +98,30 @@ public class Process {
 		return innerInterac;
 	}
 
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public String getId() {
 		return id;
 	}
 	
+	/**
+	 * Gets the user interactions.
+	 *
+	 * @return the user interactions
+	 */
 	public List<UserInteraction> getUserInteractions(){
 		return innerInteractions;
 	}
 
+	/**
+	 * Gets the user interaction.
+	 *
+	 * @param uiId the ui id
+	 * @return the user interaction
+	 */
 	public UserInteraction getUserInteraction(String uiId) {
 		for (UserInteraction aUserInteraction : innerInteractions) {
 			if (aUserInteraction.getId().equals(uiId)){
@@ -76,10 +131,18 @@ public class Process {
 		return null;
 	}
 
+	/**
+	 * Delete pending int.
+	 */
 	public void deletePendingInt() {
 		innerInteractions.removeAll(getPendingInteractions());
 	}
 
+	/**
+	 * Adds the user interaction.
+	 *
+	 * @param cuiId the cui id
+	 */
 	public void addUserInteraction(String cuiId) {
 		try {
 			addUserInteraction(cuiId, null);

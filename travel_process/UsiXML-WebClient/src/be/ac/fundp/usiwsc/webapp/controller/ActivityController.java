@@ -10,12 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ActivityController.
+ */
 @WebServlet(value="/activityManager", name="ActivityServlet")
 public class ActivityController  extends HttpServlet{
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 	/** The cui2page. */
 	protected static Map<String, String> cui2page = new HashMap<String, String>();

@@ -12,11 +12,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LoginController.
+ */
 @WebServlet(value="/loginManager", name="LoginServlet")
 public class LoginController extends HttpServlet{
 
+	/** The Constant LOGIN_MANAGER_TAG. */
 	private static final String LOGIN_MANAGER_TAG = "/loginManager";
 
+	/** The Constant logger. */
 	private static final Logger logger = Logger.getLogger("be.ac.fundp");
 	
 	/** The users. */
@@ -34,11 +40,12 @@ public class LoginController extends HttpServlet{
         allowedUsers.put("mohamed", "administrator");
     }
 	
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+    /* (non-Javadoc)
+     * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     		throws ServletException, IOException {
@@ -58,6 +65,9 @@ public class LoginController extends HttpServlet{
 		logger.info("Finalizing LoginController");
     }
 
+    /* (non-Javadoc)
+     * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	doGet(request,response);

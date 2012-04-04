@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import be.ac.fundp.usiwsc.webapp.manager.UiManager;
 import be.ac.fundp.usiwsc.webapp.model.UserInteraction;
 
+// TODO: Auto-generated Javadoc
 /**
  * Servlet implementation class UiManager.
  *

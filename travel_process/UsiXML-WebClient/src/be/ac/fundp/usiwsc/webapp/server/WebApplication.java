@@ -7,10 +7,16 @@ import org.restlet.routing.Router;
 import be.ac.fundp.usiwsc.webapp.server.resource.ResourceUsiXML;
 import be.ac.fundp.usiwsc.webapp.server.resource.TestEventResource;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class WebApplication.
+ */
 public class WebApplication extends Application {
 	
 	/**
 	 * Creates a root Restlet that will receive all incoming calls.
+	 *
+	 * @return the restlet
 	 */
 	@Override
 	public synchronized Restlet createInboundRoot() {
