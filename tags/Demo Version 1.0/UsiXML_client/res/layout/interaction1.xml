@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/linearLayoutActivities1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#CEE3F6" >
+
+        <ImageView
+            android:id="@+id/imageViewActivities1"
+            android:layout_width="110dp"
+            android:layout_height="82dp"
+            android:src="@drawable/usiwsc" />
+
+        <TextView
+            android:id="@+id/textViewActivities1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginTop="5sp"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1.5"
+            android:text="Usable uSer interface for Interactive Web Service Composition"
+            android:textAppearance="?android:attr/textAppearanceMedium"  />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollViewProcesses1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF" >
+
+        <LinearLayout
+            android:id="@+id/linearLayoutProcesses2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Provide the Following Information:"
+                android:textAppearance="?android:attr/textAppearanceLarge" android:textColor="#000000"/>
+
+            <EditText
+                android:id="@+id/departCity"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Depart City"/>
+
+            <EditText
+                android:id="@+id/arriveCity"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Arrive City"
+                android:inputType="textNoSuggestions|textShortMessage"/>
+
+            <EditText
+                android:id="@+id/departDate"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Depart Date"
+                android:inputType="textNoSuggestions|textShortMessage"/>
+
+            <EditText
+                android:id="@+id/returnDate"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Return Date"
+                android:inputType="textNoSuggestions|textShortMessage"/>
+
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:id="@+id/submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="submit"
+                    android:text="Send Data" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

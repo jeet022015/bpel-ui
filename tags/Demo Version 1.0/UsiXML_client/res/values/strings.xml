@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, UsiXML_clientActivity!</string>
+    <string name="app_name">UsiWSC</string>
+    <string name="process_desc">Process Description</string>
+    <string name="avail_processes">Available Processes</string>
+    <string name="interaction">Interaction UI</string>
+    <string name="register"><u>This is <font color="red">simple</font>.</u></string> 
+    <string name="signup">Sign Up</string>
+
+</resources>
