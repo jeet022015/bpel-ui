@@ -25,9 +25,15 @@ import be.ac.fundp.uimanager.dao.ProtocolType;
 import be.ac.fundp.uimanager.dao.Role;
 import be.ac.fundp.uimanager.dao.User;
 import be.ac.fundp.uimanager.dispatcher.Dispatcher;
-import be.ac.fundp.uimanager.dispatcher.restDispatcher.RestDispacher;
-import be.ac.fundp.uimanager.model.ProvidedData;
+import be.ac.fundp.uimanager.dispatcher.restDispatcher.RestDispatcher;
+import be.ac.fundp.uimanager.model.CoordinatedData;
 
+/**
+ * The Class UiManagerLogic which manager the 
+ * user interactions. This class is a singleton in order
+ * to avoid the creation of multiples user interactions
+ * for the same interactions.
+ */
 public class UiManagerLogic {
 
 	static {
@@ -40,14 +46,22 @@ public class UiManagerLogic {
 				.buildSessionFactory(serviceRegistry);
 	}
 
+	/** The singleton instance. */
 	static UiManagerLogic self;
 
+	/** The configure session factory. */
 	public static SessionFactory configureSessionFactory;
 
+	/** The process counter. */
 	private int counter = 1;
 
+	/** The common head for any process. */
 	private String HEAD_PROCESS = "Trip";
 
+	/**
+	 * Instantiates a new UiManagerLogic. It initializes the UiManager
+	 * with the default users.
+	 */
 	protected UiManagerLogic() {
 		Role role = new Role();
 		role.setRoleId("manager");
@@ -90,16 +104,29 @@ public class UiManagerLogic {
 
 	}
 
+	/**
+	 * Gets the single instance of UiManagerLogic.
+	 *
+	 * @return single instance of UiManagerLogic
+	 */
 	public static UiManagerLogic getInstance() {
 		if (self == null)
 			self = new UiManagerLogic();
 		return self;
 	}
 
+	/**
+	 * This method gets the user's id with a specific
+	 * role. If there is no user related to a process, this method
+	 * binds a user to the process.
+	 *
+	 * @param role the role's id.
+	 * @param processId the process's id.
+	 * @return the user's id.
+	 */
 	private String getUser(String role, String processId) {
 		Session session = configureSessionFactory.openSession();
 		try {
-			// <>session.beginTransaction();
 			ProcessBindIdClass idClass = new ProcessBindIdClass();
 			Process process = (Process) session.get(Process.class, processId);
 			Role roleObj = (Role) session.get(Role.class, role);
@@ -120,12 +147,20 @@ public class UiManagerLogic {
 		}
 	}
 
+	/**
+	 * This method binds a user to the process.
+	 * @param role the role's id.
+	 * @param bindClass the the class that ties the process to a role.
+	 * @param processId the process's id.
+	 * @return the user's id tied to the process.
+	 * @throws InterruptedException the interrupted exception
+	 */
 	@SuppressWarnings("unchecked")
 	private String createProcessBind(String role, 
-			ProcessBindIdClass idClass, String processId) throws InterruptedException {
+			ProcessBindIdClass bindClass, String processId) throws InterruptedException {
 		ProcessBind processBind;
 		processBind = new ProcessBind();
-		processBind.setId(idClass);
+		processBind.setId(bindClass);
 		String userId = null;
 		createProcessIfNecessary(processId);
 		OUTERMOST: do {
@@ -176,6 +211,11 @@ public class UiManagerLogic {
 		return userId;
 	}
 
+	/**
+	 * Generate an id to a process.
+	 *
+	 * @return a unique process's id.
+	 */
 	public String generateId() {
 		String uuid = UUID.randomUUID().toString();
 		uuid = HEAD_PROCESS + counter + uuid;
@@ -183,13 +223,21 @@ public class UiManagerLogic {
 		return uuid;
 	}
 
+	/**
+	 * This method register a user in the data base.
+	 *
+	 * @param login the new user's login
+	 * @param password the new user's password
+	 * @param role the user's role.
+	 * @param hostAddress the host of the current user's device.
+	 */
 	public void subscribe(String login, String password, String role,
-			String ipAddress) {
+			String hostAddress) {
 		User newUser = new User();
 		Context newContext = new Context();
 		createRoleIfNecessary(role);
 
-		newContext.setIpAddress(ipAddress);
+		newContext.setIpAddress(hostAddress);
 		newContext.setProtocolType(ProtocolType.Rest);
 
 		newUser.setPassword(password);
@@ -210,6 +258,14 @@ public class UiManagerLogic {
 		}
 	}
 
+	/**
+	 * This method verifies if there is a user in the data base.
+	 *
+	 * @param login the user's login
+	 * @param password the user's password
+	 * @return if the user exists and the password is correct, this 
+	 * method returns the role of the user. Otherwise, it returns null. 
+	 */
 	public String verifyUser(String login, String password) {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -224,8 +280,14 @@ public class UiManagerLogic {
 		return null;
 	}
 
+	/**
+	 * This process finalize a process.
+	 *
+	 * @param role the user'role.
+	 * @param processId the process's id.
+	 */
 	public void finishProcess(String role, String processId) {
-		getDispatcherbyRole(role, processId).releaseAll(processId);
+		getDispatcherByRole(role, processId).releaseAll(processId);
 		Session session = configureSessionFactory.openSession();
 		try {
 			session.beginTransaction();
@@ -238,7 +300,15 @@ public class UiManagerLogic {
 		}
 	}
 
-	public List<ProvidedData> requireInputInteracion(String role,
+	/**
+	 * This method requires an input interaction.
+	 *
+	 * @param role the user'role.
+	 * @param processId the process's id.
+	 * @param userInteracId the user interaction's id.
+	 * @return the data provided by the user.
+	 */
+	public List<CoordinatedData> requireInputInteraction(String role,
 			String processId, String userInteracId) {
 
 		createRoleIfNecessary(role);
@@ -246,8 +316,8 @@ public class UiManagerLogic {
 
 		String userId = getUser(role, processId);
 		int interactionRealId = createInteraction(processId, userId, userInteracId);
-		List<ProvidedData> reponse = getDispatcher(userId)
-				.requireInputInteracion(processId, userInteracId, role);
+		List<CoordinatedData> reponse = getDispatcher(userId)
+				.requireInputInteraction(processId, userInteracId, role);
 
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -257,7 +327,7 @@ public class UiManagerLogic {
 					interactionRealId);
 	
 			Collection<DataItem> persistedData =
-					persistData(interaction, reponse, InteractionType.Input);
+					persistData(reponse, InteractionType.Input);
 
 			interaction.getProvidedData().addAll(persistedData);
 			interaction.setFinished(true);
@@ -272,8 +342,17 @@ public class UiManagerLogic {
 		}
 	}
 
-	public List<ProvidedData> requireSelectionInteracion(String processId,
-			String userInteracId, List<ProvidedData> uiDataType2ProvidedData,
+	/**
+	 * This method requires a select interaction.
+	 *
+	 * @param processId the process's id.
+	 * @param userInteracId the user interaction's id.
+	 * @param selectableData the data which the user can select.
+	 * @param role the user's role.
+	 * @return the data selected by the user.
+	 */
+	public List<CoordinatedData> requireSelectionInteracion(String processId,
+			String userInteracId, List<CoordinatedData> selectableData,
 			String role) {
 		createRoleIfNecessary(role);
 		createProcessIfNecessary(processId);
@@ -287,20 +366,20 @@ public class UiManagerLogic {
 			Interaction interaction = (Interaction) session.get(Interaction.class,
 					interactionRealId);
 			Collection<DataItem> persistedDataIn =
-					persistData(interaction, uiDataType2ProvidedData, InteractionType.Output);
+					persistData(selectableData, InteractionType.Output);
 			interaction.getAvailableData().addAll(persistedDataIn);
 			session.getTransaction().commit();
 
-			List<ProvidedData> reponse = getDispatcher(userId)
-					.requireSelectionInteracion(processId, userInteracId,
-							uiDataType2ProvidedData, role);
+			List<CoordinatedData> reponse = getDispatcher(userId)
+					.requireSelectionInteraction(processId, userInteracId,
+							selectableData, role);
 	
 			session.beginTransaction();
 			interaction = (Interaction) session.get(Interaction.class,
 					interactionRealId);
 	
-			Collection<DataItem> persistedData =
-					persistData(interaction, reponse, InteractionType.Input);
+			Collection<DataItem> persistedData = persistData(reponse,
+					InteractionType.Input);
 			interaction.getProvidedData().addAll(persistedData);
 			interaction.setFinished(true);
 			session.saveOrUpdate(interaction);
@@ -315,8 +394,16 @@ public class UiManagerLogic {
 		
 	}
 
+	/**
+	 * This method requires an output interaction.
+	 *
+	 * @param processId the process's id.
+	 * @param userInteracId the user interaction's id.
+	 * @param outputData the data to be presented to the user.
+	 * @param role the user's role.
+	 */
 	public void requireOutputInteracion(String processId, String userInteracId,
-			List<ProvidedData> uiDataType2ProvidedData, String role) {
+			List<CoordinatedData> outputData, String role) {
 
 		createRoleIfNecessary(role);
 		createProcessIfNecessary(processId);
@@ -330,7 +417,7 @@ public class UiManagerLogic {
 			Interaction interaction = (Interaction) session.get(Interaction.class,
 					interactionRealId);
 			Collection<DataItem> persistedDataIn =
-					persistData(interaction, uiDataType2ProvidedData, InteractionType.Output);
+					persistData(outputData, InteractionType.Output);
 			interaction.getAvailableData().addAll(persistedDataIn);
 			session.getTransaction().commit();
 		} finally {
@@ -338,8 +425,8 @@ public class UiManagerLogic {
 		}
 		
 
-		getDispatcher(userId).requireOutputInteracion(processId,
-				userInteracId, uiDataType2ProvidedData, role);
+		getDispatcher(userId).requireOutputInteraction(processId,
+				userInteracId, outputData, role);
 
 		if (userInteracId.equals("29") || userInteracId.equals("32")) {
 			finishProcess(role, processId);
@@ -347,6 +434,13 @@ public class UiManagerLogic {
 		}
 	}
 
+	/**
+	 * This method releases the user binded to a specific
+	 * process and role.
+	 *
+	 * @param role the user'role.
+	 * @param processId the process's id.
+	 */
 	private void releaseRole(String role, String processId) {
 		String userId = getUser(role, processId);
 		Session session = configureSessionFactory.openSession();
@@ -363,18 +457,25 @@ public class UiManagerLogic {
 
 	}
 	
-	private Collection<DataItem> persistData(Interaction interaction,
-			List<ProvidedData> reponse, InteractionType interactionType) {
+	/**
+	 * This method persists some data items in the data base.
+	 *
+	 * @param data the data to be persisted.
+	 * @param interactionType the interaction type.
+	 * @return the collection of the persisted DataItems.
+	 */
+	private Collection<DataItem> persistData(List<CoordinatedData> data,
+			InteractionType interactionType) {
 		Collection<DataItem> dataItems = new LinkedList<DataItem>();
 		Session session = configureSessionFactory.openSession();
 		try {
 			session.beginTransaction();
-			for (ProvidedData providedData : reponse) {
+			for (CoordinatedData providedData : data) {
 				DataItem item = new DataItem();
 				item.setItemId(providedData.getId());
 				item.setType(interactionType);
 				item.setItemType(ItemType.text);
-				item.setData((Serializable) providedData.getData());
+				item.setData((Serializable) providedData.getContent());
 				dataItems.add(item);
 				session.saveOrUpdate(item);
 			}
@@ -385,6 +486,14 @@ public class UiManagerLogic {
 		}
 	}
 
+	/**
+	 * Creates the interaction.
+	 *
+	 * @param processId the process's id.
+	 * @param userId the user's id.
+	 * @param userInteracId the user interaction's id.
+	 * @return the id of the created interaction.
+	 */
 	private int createInteraction(String processId, String userId, String userInteracId) {
 		Interaction interaction = new Interaction();
 		interaction.setInteractionId(userInteracId);
@@ -403,6 +512,11 @@ public class UiManagerLogic {
 		}
 	}
 	
+	/**
+	 * Creates the role if it does not exists in the Data Base.
+	 *
+	 * @param role a user'role.
+	 */
 	private void createRoleIfNecessary(String role) {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -419,6 +533,11 @@ public class UiManagerLogic {
 		}
 	}
 
+	/**
+	 * Creates the process if it does not exists in the Data Base.
+	 *
+	 * @param processId the process's id.
+	 */
 	private void createProcessIfNecessary(String processId) {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -436,19 +555,33 @@ public class UiManagerLogic {
 		}
 	}
 
+	/**
+	 * Gets the dispatcher.
+	 *
+	 * @param userId the user's id
+	 * @return If the userId exists, it returns the corresponding
+	 * Dispatcher. Otherwise, it returns null.
+	 */
 	private Dispatcher getDispatcher(String userId) {
 		Session session = configureSessionFactory.openSession();
 		try {
 			User user = (User) session.get(User.class, userId);
 			if (user.getContext().getProtocolType().equals(ProtocolType.Rest))
-				return new RestDispacher(user.getContext().getIpAddress());
+				return new RestDispatcher(user.getContext().getIpAddress());
 			return null;
 		} finally {
 			session.close();
 		}
 	}
 
-	private Dispatcher getDispatcherbyRole(String role, String processId) {
+	/**
+	 * Gets the dispatcher by role.
+	 *
+	 * @param role the role
+	 * @param processId the process's id.
+	 * @return the dispatcher by role
+	 */
+	private Dispatcher getDispatcherByRole(String role, String processId) {
 		createRoleIfNecessary(role);
 		createProcessIfNecessary(processId);
 

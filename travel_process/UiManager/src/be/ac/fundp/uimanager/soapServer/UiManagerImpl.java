@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import javax.xml.ws.Holder;
 
 import be.ac.fundp.uimanager.UiManagerLogic;
-import be.ac.fundp.uimanager.model.ProvidedData;
+import be.ac.fundp.uimanager.model.CoordinatedData;
 import be.ac.fundp.uimanager.soapServer.util.SoapServerUtil;
 
 /**
@@ -46,7 +46,7 @@ public class UiManagerImpl implements UiManager {
         System.out.println(processId.value);
         try {
         	//List<ProvidedData> reponse = logic.getDispatcher(role.value).requireInputInteracion(processId.value, userInteracId.value, role.value);
-        	List<ProvidedData> reponse = logic.requireInputInteracion(role.value, processId.value, userInteracId.value);
+        	List<CoordinatedData> reponse = logic.requireInputInteraction(role.value, processId.value, userInteracId.value);
         	data.value = SoapServerUtil.providedData2UiDataType(reponse);
         } catch (java.lang.Exception ex) {
             ex.printStackTrace();
@@ -65,7 +65,7 @@ public class UiManagerImpl implements UiManager {
         System.out.println(data);
         try {
         	//List<ProvidedData> reponse = logic.getDispatcher(role.value).requireSelectionInteracion(processId.value, userInteracId.value, SoapServerUtil.uiDataType2ProvidedData(data.value), role.value);
-        	List<ProvidedData> reponse = logic.requireSelectionInteracion(processId.value, userInteracId.value, SoapServerUtil.uiDataType2ProvidedData(data.value), role.value);
+        	List<CoordinatedData> reponse = logic.requireSelectionInteracion(processId.value, userInteracId.value, SoapServerUtil.uiDataType2ProvidedData(data.value), role.value);
             data.value = SoapServerUtil.providedData2UiDataType(reponse);
         } catch (Exception ex) {
             ex.printStackTrace();

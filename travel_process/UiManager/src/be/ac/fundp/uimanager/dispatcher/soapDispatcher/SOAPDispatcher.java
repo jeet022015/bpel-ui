@@ -14,7 +14,7 @@ import be.ac.fundp.uimanager.dispatcher.Dispatcher;
 import be.ac.fundp.uimanager.dispatcher.soapDispatcher.impl.DataItemType;
 import be.ac.fundp.uimanager.dispatcher.soapDispatcher.impl.UIClient;
 import be.ac.fundp.uimanager.dispatcher.soapDispatcher.impl.UIClient_Service;
-import be.ac.fundp.uimanager.model.ProvidedData;
+import be.ac.fundp.uimanager.model.CoordinatedData;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -57,11 +57,11 @@ public class SOAPDispatcher implements Dispatcher{
 	 * @see be.ac.fundp.uimanager.client.Dispatcher#requireInputInteracion(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<ProvidedData> requireInputInteracion(String processId,
+	public List<CoordinatedData> requireInputInteraction(String processId,
 			String userInteracId, String role) {
 		List<DataItemType> emptyValue = Collections.emptyList();
 		List<DataItemType> g = uiClient.requireSyncInteraction(userInteracId, emptyValue , role, processId);
-		List<ProvidedData> listReturn = SoapDispatcherUtil.dataItemType2ProvidedData(g);
+		List<CoordinatedData> listReturn = SoapDispatcherUtil.dataItemType2ProvidedData(g);
 		return listReturn;
 	}
 
@@ -69,8 +69,8 @@ public class SOAPDispatcher implements Dispatcher{
 	 * @see be.ac.fundp.uimanager.client.Dispatcher#requireOutputInteracion(java.lang.String, java.lang.String, java.util.List, java.lang.String)
 	 */
 	@Override
-	public void requireOutputInteracion(String processid, String userInteracId,
-			List<ProvidedData> data, String role) {
+	public void requireOutputInteraction(String processid, String userInteracId,
+			List<CoordinatedData> data, String role) {
 		uiClient.requireAssyncInteraction(userInteracId, SoapDispatcherUtil.providedData2DataItemType(data), role, processid);
 	}
 
@@ -78,10 +78,10 @@ public class SOAPDispatcher implements Dispatcher{
 	 * @see be.ac.fundp.uimanager.client.Dispatcher#requireSelectionInteracion(java.lang.String, java.lang.String, java.util.List, java.lang.String)
 	 */
 	@Override
-	public List<ProvidedData> requireSelectionInteracion(String processId,
-			String userInteracId, List<ProvidedData> data, String role) {
+	public List<CoordinatedData> requireSelectionInteraction(String processId,
+			String userInteracId, List<CoordinatedData> data, String role) {
 		List<DataItemType> g = uiClient.requireSyncInteraction(userInteracId, SoapDispatcherUtil.providedData2DataItemType(data), role, processId);
-		List<ProvidedData> listReturn = SoapDispatcherUtil.dataItemType2ProvidedData(g);
+		List<CoordinatedData> listReturn = SoapDispatcherUtil.dataItemType2ProvidedData(g);
 		return listReturn;
 	}
 

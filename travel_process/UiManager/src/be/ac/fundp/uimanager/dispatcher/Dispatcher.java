@@ -2,11 +2,11 @@ package be.ac.fundp.uimanager.dispatcher;
 
 import java.util.List;
 
-import be.ac.fundp.uimanager.model.ProvidedData;
+import be.ac.fundp.uimanager.model.CoordinatedData;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Interface Dispatcher.
+ * The Interface Dispatcher represents any Dispatcher that can be a RestFull
+ * or SoapService.
  *
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  * @date Dec 9, 2011
@@ -14,38 +14,44 @@ import be.ac.fundp.uimanager.model.ProvidedData;
 public interface Dispatcher {
 
 	/**
-	 * Require input interacion.
+	 * Require input interaction.
 	 *
-	 * @param processId the process id
-	 * @param userInteracId the user interac id
-	 * @param role the role
-	 * @return the list
+	 * @param processId the process's id.
+	 * @param userInteracId the user interaction's id.
+	 * @param role the user'role.
+	 * @return the data provided by the user.
 	 */
-	public List<ProvidedData> requireInputInteracion(String processId,
+	public List<CoordinatedData> requireInputInteraction(String processId,
 			String userInteracId, String role);
 
 	/**
-	 * Require output interacion.
+	 * Require output interaction.
 	 *
-	 * @param processid the processid
-	 * @param userInteracId the user interac id
-	 * @param data the data
-	 * @param role the role
+	 * @param processId the process's id.
+	 * @param userInteracId the user interaction's id.
+	 * @param data the data to be presented to the user.
+	 * @param role the user'role.
 	 */
-	public void requireOutputInteracion(String processid,
-			String userInteracId, List<ProvidedData> data, String role);
+	public void requireOutputInteraction(String processId,
+			String userInteracId, List<CoordinatedData> data, String role);
 
 	/**
-	 * Require selection interacion.
+	 * Require selection interaction.
 	 *
-	 * @param processId the process id
-	 * @param userInteracId the user interac id
-	 * @param data the data
-	 * @param role the role
-	 * @return the list
+	 * @param processId the process's id.
+	 * @param userInteracId the user interaction's id.
+	 * @param data the data to be presented to the user.
+	 * @param role the user'role.
+	 * @return the data provided by the user.
 	 */
-	public List<ProvidedData> requireSelectionInteracion(String processId,
-			String userInteracId, List<ProvidedData> data, String role);
+	public List<CoordinatedData> requireSelectionInteraction(String processId,
+			String userInteracId, List<CoordinatedData> data, String role);
 
+	/**
+	 * This method releases the execution of all interactions which are pending
+	 * and waiting for a user interactions.
+	 *
+	 * @param processId the process's id.
+	 */
 	public void releaseAll(String processId);
 }

@@ -16,41 +16,53 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
 import be.ac.fundp.uimanager.dispatcher.Dispatcher;
-import be.ac.fundp.uimanager.model.ProvidedData;
+import be.ac.fundp.uimanager.model.CoordinatedData;
 
 /**
- * The Class RestDispacher.
+ * This class is responsible to require user interaction from devices which
+ * allow communication via RestFull services.
  *
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  * @date Dec 9, 2011
  */
-public class RestDispacher implements Dispatcher {
+public class RestDispatcher implements Dispatcher {
 
+	/** The Constant which defines the default client. */
 	public static final String DEFAULT_HOST = "http://10.0.1.2:8182/uibpel/";
 	
+	/** The Constant which define the higher time that the dispatcher can wait. */
 	public static final int MAX_WAITING_TIME = 86400 *1000;// One day
 	
-	/** The host. */
-	protected String ipAddress;
+	/** The address of the restFull service. */
+	protected String hostAddress;
+	
+	/** The processes which are running. This Map is used to cancel the dispatcher to wait
+	 * for interactions of a process which was canceled. */
 	static protected Map<String, Boolean> activeProcesses =  new HashMap<String, Boolean>();
 
+	/** The generator of random number. */
 	private Random generator;
 
 	
-	public RestDispacher(String host){
-		this.ipAddress = host;
+	/**
+	 * Instantiates a new RestDispatcher.
+	 *
+	 * @param host the host
+	 */
+	public RestDispatcher(String host){
+		this.hostAddress = host;
 	}
 	
 	/* (non-Javadoc)
 	 * @see be.ac.fundp.uimanager.client.Dispatcher#requireInputInteracion(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<ProvidedData> requireInputInteracion(String processId,
+	public List<CoordinatedData> requireInputInteraction(String processId,
 			String userInteracId, String role) {
-		List<ProvidedData> resp = null;
+		List<CoordinatedData> resp = null;
 		ClientResource cr = null;
 		try {
-			cr = putInteraction(role, processId, userInteracId, Collections.<ProvidedData>emptyList());
+			cr = putInteraction(role, processId, userInteracId, Collections.<CoordinatedData>emptyList());
 
 			JSONObject crudeData = getProvidedData(cr, processId);
 			resp = RestDispatcherUtil.JSON2CoordinatedData(crudeData);
@@ -69,9 +81,9 @@ public class RestDispacher implements Dispatcher {
 	 * @see be.ac.fundp.uimanager.client.Dispatcher#requireSelectionInteracion(java.lang.String, java.lang.String, java.util.List, java.lang.String)
 	 */
 	@Override
-	public List<ProvidedData> requireSelectionInteracion(String processId,
-			String userInteracId, List<ProvidedData> data2, String role) {
-		List<ProvidedData> resp = null;
+	public List<CoordinatedData> requireSelectionInteraction(String processId,
+			String userInteracId, List<CoordinatedData> data2, String role) {
+		List<CoordinatedData> resp = null;
 		ClientResource cr = null;
 		try {
 			cr = putInteraction(role, processId, userInteracId, data2);
@@ -93,8 +105,8 @@ public class RestDispacher implements Dispatcher {
 	 * @see be.ac.fundp.uimanager.client.Dispatcher#requireOutputInteracion(java.lang.String, java.lang.String, java.util.List, java.lang.String)
 	 */
 	@Override
-	public void requireOutputInteracion(String processId, String userInteracId,
-			List<ProvidedData> data2, String role) {
+	public void requireOutputInteraction(String processId, String userInteracId,
+			List<CoordinatedData> data2, String role) {
 		ClientResource cr = null;
 		try {
 			cr = putInteraction(role, processId, userInteracId, data2);
@@ -109,6 +121,17 @@ public class RestDispacher implements Dispatcher {
 		System.gc();
 	}
 
+	/**
+	 * This method requires a interaction to the client
+	 * and it receives the data provided by the user.
+	 *
+	 * @param cr the ClientResource of the client host.
+	 * @param processId the process's id.
+	 * @return the data provided by the user.
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws JSONException The JSONObject was malformed exception.
+	 * @throws InterruptedException The execution crashes when it tries to put the execution to sleep.
+	 */
 	private JSONObject getProvidedData(ClientResource cr, String processId) throws IOException, JSONException, InterruptedException {
 		Representation r = null;
 		JsonRepresentation jr = null;
@@ -133,7 +156,7 @@ public class RestDispacher implements Dispatcher {
 				returnJson = jr.getJsonObject();
 				if (returnJson.has(RestDispatcherUtil.DATA_TAG_JSON))
 					return returnJson;
-				//Algorithm to avoid conflicts
+
 				waitingTime += generator.nextInt(waitingTime);
 			} while (waitingTime <= MAX_WAITING_TIME);
 			
@@ -144,9 +167,17 @@ public class RestDispacher implements Dispatcher {
 		return returnJson;
 	}
 
+	/**
+	 * This method creates a Rest ClientResource corresponding the user and process.
+	 *
+	 * @param role the user'role.
+	 * @param processId the process's id.
+	 * @param userInteracId the user interaction's id.
+	 * @return the Rest ClientResource corresponding the user and process.
+	 */
 	private ClientResource createClientResource(String role,
 			String processId, String userInteracId) {
-		String host = createHost(role, processId, userInteracId);
+		String host = processHost(role, processId, userInteracId);
 		System.out.println("host="+host);
 		ClientResource cr = new ClientResource(host);
 		cr.setRetryAttempts(288);
@@ -165,18 +196,37 @@ public class RestDispacher implements Dispatcher {
 		return cr;
 	}
 
-	private String createHost(String role, String processId,
+	/**
+	 * This method creates the host to a user corresponding
+	 * to a specific process.
+	 *
+	 * @param role the user'role.
+	 * @param processId the process's id.
+	 * @param userInteracId the user interaction's id.
+	 * @return the host to a specific process.
+	 */
+	private String processHost(String role, String processId,
 			String userInteracId) {
-		return ipAddress + role + "/" + 
-				processId + "/" + userInteracId; 
-//		return "http://"+ ipAddress+ ":8182/uibpel/" + role + "/" + 
-//			processId + "/" + userInteracId;
+		return hostAddress + role + "/" + 
+				processId + "/" + userInteracId;
 	}
 
+	/**
+	 * This method does the put in the Rest service to require a
+	 * user interaction.
+	 *
+	 * @param role the user'role.
+	 * @param processId the process's id.
+	 * @param userInteracId the user interaction's id.
+	 * @param availableData the data to be presented to the user.
+	 * @return the Rest ClientResource corresponding the user and process.
+	 * @throws JSONException The JSONObject was malformed exception.
+	 * @throws InterruptedException The execution crashes when it tries to put the execution to sleep.
+	 */
 	private ClientResource putInteraction(String role, String processId, 
-			String userInteracId, List<ProvidedData> data2) throws JSONException, InterruptedException {
+			String userInteracId, List<CoordinatedData> availableData) throws JSONException, InterruptedException {
 		JSONObject obj = new JSONObject();
-		JSONArray data = RestDispatcherUtil.coordinatedData2JSON(data2);
+		JSONArray data = RestDispatcherUtil.coordinatedData2JSON(availableData);
 		obj.put(RestDispatcherUtil.DATA_TAG_JSON, data);
 		ClientResource cr = createClientResource(role, processId, userInteracId);
 		JsonRepresentation jr = new JsonRepresentation(obj);
@@ -184,20 +234,23 @@ public class RestDispacher implements Dispatcher {
 			System.out.println("server status ="+cr.getStatus());
 			if (!cr.getStatus().equals(Status.SUCCESS_OK)){
 				cr.release();
-				putInteraction(role, processId, userInteracId, data2);
+				putInteraction(role, processId, userInteracId, availableData);
 			}
 			cr.put(jr);
 			//TODO deal with loop
 		} catch (Exception e) {
 			e.printStackTrace();
 			cr.release();
-			putInteraction(role, processId, userInteracId, data2);
+			putInteraction(role, processId, userInteracId, availableData);
 		} finally {
 			jr.release();
 		}
 		return cr;
 	}
 
+	/* (non-Javadoc)
+	 * @see be.ac.fundp.uimanager.dispatcher.Dispatcher#releaseAll(java.lang.String)
+	 */
 	@Override
 	public void releaseAll(String processId) {
 		activeProcesses.put(processId, false);
