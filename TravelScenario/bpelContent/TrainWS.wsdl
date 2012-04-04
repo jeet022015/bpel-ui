@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="TrainWS" targetNamespace="http://www.scenario.org/TrainWS/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.scenario.org/TrainWS/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.scenario.org/TrainWS/">
+      <xsd:element name="availableTrains">
+        <xsd:complexType>
+          <xsd:sequence>
+          	<xsd:element name="date" type="xsd:string"/>
+          	<xsd:element name="arriveCity" type="xsd:string"/>
+          	<xsd:element name="departCity" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="availableTrainsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" name="trainDesc" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="buyTicket">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="accountID" type="xsd:string"/>
+      			<xsd:element name="trainDesc" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="buyTicketResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="ticketReference" type="xsd:string"/>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="availableTrainsResponse">
+    <wsdl:part name="parameters" element="tns:availableTrainsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="buyTicketResponse">
+    <wsdl:part name="parameters" element="tns:buyTicketResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="availableTrainsRequest">
+    <wsdl:part name="parameters" element="tns:availableTrains">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="buyTicketRequest">
+    <wsdl:part name="parameters" element="tns:buyTicket">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="TrainWS">
+    <wsdl:operation name="availableTrains">
+      <wsdl:input message="tns:availableTrainsRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:availableTrainsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buyTicket">
+      <wsdl:input message="tns:buyTicketRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:buyTicketResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TrainWSSOAP" type="tns:TrainWS">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="availableTrains">
+      <soap:operation soapAction="http://www.scenario.org/TrainWS/availableTrains"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buyTicket">
+      <soap:operation soapAction="http://www.scenario.org/TrainWS/buyTicket"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TrainWS">
+    <wsdl:port name="TrainWSSOAP" binding="tns:TrainWSSOAP">
+      <soap:address location="http://localhost:8090/TrainCompany-WS/services/TrainWSSOAP"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

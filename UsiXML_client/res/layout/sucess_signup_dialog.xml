@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ android:layout_width="wrap_content" android:layout_height="wrap_content">
+ <TextView 
+     android:text="Welcome. Your login was successful." 
+     android:id="@+id/TextView01"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content" 
+     android:layout_centerHorizontal="true"/>
+ <Button
+     android:id="@+id/sucessSignupButton"
+     android:layout_width="70sp"
+     android:layout_height="wrap_content"
+     android:layout_alignParentTop="true"
+     android:layout_marginTop="30dp"
+     android:text="Ok" android:layout_centerHorizontal="true"/>
+</RelativeLayout>

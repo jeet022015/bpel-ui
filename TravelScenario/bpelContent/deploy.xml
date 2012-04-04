@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:AirlineWS="http://www.scenario.org/AirlineWS/" xmlns:HotelWS="http://www.scenario.org/HotelWS/" xmlns:RentingCarWS="http://www.scenario.org/RentingCarWS/" xmlns:TrainWS="http://www.scenario.org/TrainWS/" xmlns:UiManager="http://fundp.ac.be/UiManager/" xmlns:UserEventListener="http://precise.fundp.ac.be/UserEventListener/" xmlns:process.travel.org="http://process.travel.org">
+  <process name="process.travel.org:TravelProcess">
+    <active>true</active>
+    <retired>false</retired>
+    <process-events generate="all"/>
+    <provide partnerLink="client">
+      <service name="process.travel.org:TravelProcess" port="TravelProcessPort"/>
+    </provide>
+    <provide partnerLink="UserEventPartnerLink">
+      <service name="UserEventListener:UserEventListener" port="UserEventListenerSOAP"/>
+    </provide>
+    <invoke partnerLink="AirlinePL">
+      <service name="AirlineWS:AirlineWS" port="AirlineWSSOAP"/>
+    </invoke>
+    <invoke partnerLink="TrainPL">
+      <service name="TrainWS:TrainWS" port="TrainWSSOAP"/>
+    </invoke>
+    <invoke partnerLink="CarRentingPL">
+      <service name="RentingCarWS:RentingCarWS" port="RentingCarWSSOAP"/>
+    </invoke>
+    <invoke partnerLink="HotelingWS">
+      <service name="HotelWS:HotelWS" port="HotelWSSOAP"/>
+    </invoke>
+    <invoke partnerLink="UiManagerPartnerLink">
+      <service name="UiManager:UiManager" port="UiManagerSOAP"/>
+    </invoke>
+  </process>
+</deploy>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/uibpel</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        
+        <property name="hbm2ddl.auto">create</property>
+        <property name="current_session_context_class">thread</property>
+    	<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+	    <property name="show_sql">true</property>
+        
+        <mapping class="be.ac.fundp.uimanager.dao.Context"/>
+        <mapping class="be.ac.fundp.uimanager.dao.DataItem"/>
+        <mapping class="be.ac.fundp.uimanager.dao.Interaction"/>
+        <mapping class="be.ac.fundp.uimanager.dao.InteractionType"/>
+        <mapping class="be.ac.fundp.uimanager.dao.ItemType"/>
+        <mapping class="be.ac.fundp.uimanager.dao.Process"/>
+        <mapping class="be.ac.fundp.uimanager.dao.ProtocolType"/>
+        <mapping class="be.ac.fundp.uimanager.dao.Role"/>
+        <mapping class="be.ac.fundp.uimanager.dao.User"/>
+        <mapping class="be.ac.fundp.uimanager.dao.ProcessBind"/>
+    </session-factory>
+</hibernate-configuration>
