@@ -16,9 +16,9 @@ import be.ac.fundp.uimanager.dispatcher.soapDispatcher.impl.UIClient;
 import be.ac.fundp.uimanager.dispatcher.soapDispatcher.impl.UIClient_Service;
 import be.ac.fundp.uimanager.model.CoordinatedData;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SOAPDispatcher.
+ * This class is responsible to require user interaction from devices which
+ * allow communication via SOAP services.
  *
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  * @date Dec 9, 2011
@@ -27,11 +27,11 @@ public class SOAPDispatcher implements Dispatcher{
 	
 	public static final String DEFAULT_HOST = "http://localhost:8070/WebBrowserAppClient/services/UI-ClientSOAP?wsdl";
 	
-	/** The ui client. */
+	/** The UI SOAP client. */
 	protected UIClient uiClient;
 	
 	/**
-	 * Instantiates a new sOAP dispatcher.
+	 * Instantiates a new SOAP Dispatcher.
 	 */
 	public SOAPDispatcher(String host){
 

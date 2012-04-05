@@ -7,9 +7,9 @@ import be.ac.fundp.uimanager.UiManagerLogic;
 import be.ac.fundp.uimanager.userevent.client.UserEventListner;
 import be.ac.fundp.uimanager.userevent.client.UserEventListnerPortType;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class UserEventResource.
+ * The Class UserEventResource represents a Rest Resource to receive user
+ * events and retransmit it to the process execution. 
  *
  * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
  * @date Dec 9, 2011
@@ -19,12 +19,12 @@ public class UserEventResource extends ServerResource {
 	protected UiManagerLogic manager = UiManagerLogic.getInstance();
 	
     /**
-     * Represent.
+     * This method retransmit a user event to the process execution.
      *
-     * @return the string
+     * @return the summary of the event fired.
      */
     @Get
-    public String represent() {
+    public String fireEvent() {
     	String role = (String) getRequestAttributes().get("role");
     	String processId = (String) getRequestAttributes().get("processId");
     	String cuiID = (String) getRequestAttributes().get("cuiId");
@@ -40,7 +40,6 @@ public class UserEventResource extends ServerResource {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-        //manager.releaseInteracitons(role, processId);
         return "event fired";
     }
 

@@ -1,6 +1,5 @@
 package be.ac.fundp.uimanager.dispatcher.restDispatcher;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.restlet.data.Status;
 import org.restlet.ext.json.JsonRepresentation;
-import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
 import be.ac.fundp.uimanager.dispatcher.Dispatcher;
@@ -39,6 +37,8 @@ public class RestDispatcher implements Dispatcher {
 	/** The processes which are running. This Map is used to cancel the dispatcher to wait
 	 * for interactions of a process which was canceled. */
 	static protected Map<String, Boolean> activeProcesses =  new HashMap<String, Boolean>();
+	
+	RestDispatcherDataHolder dataholder = RestDispatcherDataHolder.getInstance();
 
 	/** The generator of random number. */
 	private Random generator;
@@ -64,7 +64,8 @@ public class RestDispatcher implements Dispatcher {
 		try {
 			cr = putInteraction(role, processId, userInteracId, Collections.<CoordinatedData>emptyList());
 
-			JSONObject crudeData = getProvidedData(cr, processId);
+			JSONObject crudeData = dataholder.getData(role, processId, userInteracId);
+			//JSONObject crudeData = getProvidedData(cr, processId);
 			resp = RestDispatcherUtil.JSON2CoordinatedData(crudeData);
 		} catch (Exception e) {
 			//TODO deal with Exception
@@ -88,7 +89,8 @@ public class RestDispatcher implements Dispatcher {
 		try {
 			cr = putInteraction(role, processId, userInteracId, data2);
 			
-			JSONObject crudeData = getProvidedData(cr, processId);
+			JSONObject crudeData = dataholder.getData(role, processId, userInteracId);
+			//JSONObject crudeData = getProvidedData(cr, processId);
 			resp = RestDispatcherUtil.JSON2CoordinatedData(crudeData);
 		} catch (Exception e) {
 			//TODO deal with Exception
@@ -110,7 +112,8 @@ public class RestDispatcher implements Dispatcher {
 		ClientResource cr = null;
 		try {
 			cr = putInteraction(role, processId, userInteracId, data2);
-			getProvidedData(cr, processId);
+			//getProvidedData(cr, processId);
+			dataholder.getData(role, processId, userInteracId);
 		} catch (Exception e) {
 			//TODO deal with Exception
 			e.printStackTrace();
@@ -119,52 +122,6 @@ public class RestDispatcher implements Dispatcher {
 				cr.release();
 		}
 		System.gc();
-	}
-
-	/**
-	 * This method requires a interaction to the client
-	 * and it receives the data provided by the user.
-	 *
-	 * @param cr the ClientResource of the client host.
-	 * @param processId the process's id.
-	 * @return the data provided by the user.
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws JSONException The JSONObject was malformed exception.
-	 * @throws InterruptedException The execution crashes when it tries to put the execution to sleep.
-	 */
-	private JSONObject getProvidedData(ClientResource cr, String processId) throws IOException, JSONException, InterruptedException {
-		Representation r = null;
-		JsonRepresentation jr = null;
-		JSONObject returnJson = null;
-		try {
-			if (generator == null)
-				generator = new Random();
-			
-			int waitingTime = generator.nextInt(1000)+20000;			
-			do {
-				System.out.println("I'm sleeping for "+waitingTime+" milisenconds");
-				Thread.sleep(waitingTime);
-				if (!activeProcesses.get(processId)){
-					System.out.println("process="+processId);
-					System.out.println("process not active");
-					return null;
-				} else {
-					System.out.println("process active");
-				}
-				r = cr.get();
-				jr = new JsonRepresentation(r);
-				returnJson = jr.getJsonObject();
-				if (returnJson.has(RestDispatcherUtil.DATA_TAG_JSON))
-					return returnJson;
-
-				waitingTime += generator.nextInt(waitingTime);
-			} while (waitingTime <= MAX_WAITING_TIME);
-			
-		} finally {
-			if (r != null) r.release();
-			if (jr != null) jr.release();
-		}
-		return returnJson;
 	}
 
 	/**

@@ -360,22 +360,28 @@ public class UiManagerLogic {
 		String userId = getUser(role, processId);
 		int interactionRealId = createInteraction(processId, userId, userInteracId);
 
+		Collection<DataItem> persistedDataIn =
+				persistData(selectableData, InteractionType.Output);
+		
 		Session session = configureSessionFactory.openSession();
 		try {
 			session.beginTransaction();
 			Interaction interaction = (Interaction) session.get(Interaction.class,
 					interactionRealId);
-			Collection<DataItem> persistedDataIn =
-					persistData(selectableData, InteractionType.Output);
 			interaction.getAvailableData().addAll(persistedDataIn);
 			session.getTransaction().commit();
+		} finally {
+			session.close();
+		}	
 
-			List<CoordinatedData> reponse = getDispatcher(userId)
-					.requireSelectionInteraction(processId, userInteracId,
-							selectableData, role);
+		List<CoordinatedData> reponse = getDispatcher(userId)
+				.requireSelectionInteraction(processId, userInteracId,
+				selectableData, role);
 	
+		session = configureSessionFactory.openSession();
+		try {
 			session.beginTransaction();
-			interaction = (Interaction) session.get(Interaction.class,
+			Interaction interaction = (Interaction) session.get(Interaction.class,
 					interactionRealId);
 	
 			Collection<DataItem> persistedData = persistData(reponse,
