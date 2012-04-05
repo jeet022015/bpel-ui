@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for anonymous complex type.
  * 
