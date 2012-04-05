@@ -21,15 +21,11 @@ public class AvailableProcessesActivity extends Activity {
 	
 	protected ActivityManager manager = ActivityManager.getInstance();
 	
-	protected String role;
-	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.processes);
-        
-        role = getIntent().getStringExtra(AndroidAppConstants.PARAM_ROLE);
     }
     
     /** Called when the activity is first created. */
@@ -37,7 +33,7 @@ public class AvailableProcessesActivity extends Activity {
     public void onResume() {
         super.onResume();
         
-        List<String> myProcess = manager.getProcessIds(role);
+        List<String> myProcess = manager.getProcessIds(manager.getRole());
         
         LinearLayout processLayout = (LinearLayout) findViewById(R.id.mainLayoutProcesses);
         

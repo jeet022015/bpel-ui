@@ -27,6 +27,8 @@ public class ActivityManager {
 	
 	protected Intent notificationIntent;
 	
+	protected CharSequence role = "employee";
+	
 	protected ActivityManager(){
 		
 		n = new Notification();
@@ -38,7 +40,7 @@ public class ActivityManager {
 		return self;
 	}
 	
-	public List<String> getProcessIds(String role){
+	public List<String> getProcessIds(CharSequence role){
 		//TODO change it to deal with many roles
 		List<String> processIds = new LinkedList<String>();
 		for (Process aProcesss : myProcesses) {
@@ -121,8 +123,16 @@ public class ActivityManager {
 		return false;
 	}
 
-	public String getRole() {
-		return "employee";
+	public CharSequence getRole() {
+		return role;
+	}
+
+	public void setRole(String result) {
+		role = result;
+	}
+	
+	public void setRole(CharSequence result) {
+		role = result;
 	}
 	
 }

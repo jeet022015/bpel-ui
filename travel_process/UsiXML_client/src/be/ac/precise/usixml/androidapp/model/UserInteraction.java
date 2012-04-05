@@ -70,7 +70,6 @@ public class UserInteraction {
 	}
 	
 	public Object getProvidedItemContent(String itemId) {
-
 		return providedData.get(itemId).content;
 	}
 
@@ -86,5 +85,9 @@ public class UserInteraction {
 
 	public Set<String> getProvidedItemIds() {
 		return providedData.keySet();
+	}
+
+	public Object getProvidedItemType(String dataId) {
+		return providedData.get(dataId).type;
 	}
 }

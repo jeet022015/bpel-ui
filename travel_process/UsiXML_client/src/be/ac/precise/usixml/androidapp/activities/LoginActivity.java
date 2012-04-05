@@ -14,7 +14,6 @@ import android.widget.TextView;
 import be.ac.precise.usixml.androidapp.ActivityManager;
 import be.ac.precise.usixml.androidapp.R;
 import be.ac.precise.usixml.androidapp.service.RestService;
-import be.ac.precise.usixml.androidapp.util.AndroidAppConstants;
 import be.ac.precise.usixml.androidapp.util.EventTrigger;
 
 public class LoginActivity extends Activity {
@@ -22,8 +21,6 @@ public class LoginActivity extends Activity {
 	protected ActivityManager actManager = ActivityManager.getInstance();
 
 	protected static boolean isloged = false;
-	
-	private CharSequence role = "";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -34,7 +31,6 @@ public class LoginActivity extends Activity {
 		if (isloged) {
 			Intent myIntent = new Intent(LoginActivity.this,
 					AvailableProcessesActivity.class);
-			myIntent.putExtra(AndroidAppConstants.PARAM_ROLE, getRole());
 			startActivity(myIntent);
 			finish();
 			return;
@@ -99,7 +95,7 @@ public class LoginActivity extends Activity {
 	        return;
 		} else {
 			LoginActivity.isloged = true;
-    		LoginActivity.this.setRole(result);
+			actManager.setRole(result);
 			dialog.setContentView(R.layout.sucess_dialog);
 	        Button button = (Button) dialog.findViewById(R.id.sucessButton);
 	        button.setOnClickListener(new OnClickListener() {
@@ -111,13 +107,5 @@ public class LoginActivity extends Activity {
 	        });
 	        return;
 		}
-	}
-	
-	public  CharSequence getRole() {
-		return role;
-	}
-
-	public void setRole(CharSequence role) {
-		this.role = role;
 	}
 }

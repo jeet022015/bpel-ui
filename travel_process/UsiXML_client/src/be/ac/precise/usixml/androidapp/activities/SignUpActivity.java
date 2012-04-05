@@ -52,6 +52,7 @@ public class SignUpActivity extends Activity {
 				CharSequence role = r.getText();
 				new Thread(new SubstribeUsixml(login, password, role, host)).start();
 	        	initiatePopupWindow();
+	        	actManager.setRole(role);
 	        	LoginActivity.isloged = true;
 			}
 		});

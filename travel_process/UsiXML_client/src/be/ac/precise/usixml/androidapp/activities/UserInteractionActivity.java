@@ -25,6 +25,7 @@ public class UserInteractionActivity extends Activity {
 				AndroidAppConstants.PARAM_INTERACTION);
 		final String processId = getIntent().getStringExtra(
 				AndroidAppConstants.PARAM_PROCESS);
+		final CharSequence role = manager.getRole();
 
 		final UserInteraction myUserInteraction = manager.getProcess(processId)
 				.getUserInteraction(uiId);
@@ -49,7 +50,7 @@ public class UserInteractionActivity extends Activity {
 		btnBack.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new Thread(new InnerRunnable(UserInteractionActivity.this,
+				new Thread(new InnerRunnable(UserInteractionActivity.this, role, processId, uiId,
 						myUserInteraction, inputIds)).start();
 				
 				finish();
@@ -97,13 +98,20 @@ public class UserInteractionActivity extends Activity {
 
 	protected final class InnerRunnable implements Runnable {
 
-		Activity a;
 		String[] inputIds;
 		UserInteraction innerInteraction;
+		private CharSequence role;
+		private CharSequence processId;
+		private CharSequence cuiId;
+		private Activity a;
 
-		public InnerRunnable(Activity a, UserInteraction innerInteraction,
+		public InnerRunnable(Activity a, CharSequence role, CharSequence processId,
+				CharSequence cuiId, UserInteraction innerInteraction,
 				String[] inputIds) {
 			this.a = a;
+			this.role = role;
+			this.processId = processId;
+			this.cuiId = cuiId;
 			this.inputIds = inputIds;
 			this.innerInteraction = innerInteraction;
 		}
@@ -115,6 +123,7 @@ public class UserInteractionActivity extends Activity {
 				innerInteraction.addProvidedData(inputId, "string", content);
 			}
 			innerInteraction.wasDone();
+			EventTrigger.sendData(role, processId, cuiId, innerInteraction);
 			manager.disableNotification();
 		}
 
