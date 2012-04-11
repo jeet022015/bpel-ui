@@ -3,7 +3,7 @@ package be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.data_intera
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.eclipse.bpel.model.CorrelationSet;
+import org.eclipse.bpel.model.Correlation;
 import org.eclipse.bpel.model.PartnerLink;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.wst.wsdl.Operation;
@@ -18,7 +18,7 @@ public abstract class AbstractInteractionOperation implements InteractionOperati
 	Variable inputVariable;
 	Variable outputVariable;
 	Variable genVariable;
-	Collection<CorrelationSet> correlationSets = new LinkedList<CorrelationSet>();
+	Collection<Correlation> correlationSets = new LinkedList<Correlation>();
 	
 	@Override
 	public Operation getOperation() {
@@ -51,7 +51,7 @@ public abstract class AbstractInteractionOperation implements InteractionOperati
 	}
 
 	@Override
-	public Collection<CorrelationSet> getCorrelationSet() {
+	public Collection<Correlation> getCorrelationSet() {
 		return correlationSets;
 	}
 

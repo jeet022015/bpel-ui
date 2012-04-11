@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.eclipse.bpel.model.Correlation;
 import org.eclipse.bpel.model.CorrelationSet;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.messageproperties.MessagepropertiesFactory;
@@ -42,6 +43,8 @@ public class DataInteractionManager {
 
 	private Property propertyProcessId;
 	private Property propertyInteractionId;
+	
+	private CorrelationSet processIdCorrelationSet;
 
 	private Variable genVar;
 	
@@ -53,11 +56,15 @@ public class DataInteractionManager {
 	 * @param propertyName the property name
 	 * @param property 
 	 */
-	public DataInteractionManager(Definition wsdl_ui_bpel, Definition processWSDl, Property property, Variable genVar){
+	public DataInteractionManager(Definition wsdl_ui_bpel, Definition processWSDl, CorrelationSet processIdCorrelationSet, Variable genVar){
 		this.genVar = genVar;
 		setOperations(wsdl_ui_bpel);
 
-		propertyProcessId = property;
+		this.processIdCorrelationSet = processIdCorrelationSet;
+		
+		System.out.println("processIdCorrelationSet="+processIdCorrelationSet);
+		
+		propertyProcessId = processIdCorrelationSet.getProperties().listIterator().next();
 		propertyInteractionId = createProperty(processWSDl, "intid", "interactionId");
 
 		createParallelCorrelSets(processWSDl);
@@ -143,33 +150,36 @@ public class DataInteractionManager {
 	public Collection<CorrelationSet> getInputCorrelationSets() {
 		Collection<CorrelationSet> cc = new HashSet<CorrelationSet>();
 		for (InteractionOperation aInteraction : dataInteracionMapper.values()) {
-			cc.addAll(aInteraction.getCorrelationSet());
+			Collection<Correlation> cs = aInteraction.getCorrelationSet();
+			for (Correlation correlation : cs) {
+				cc.add(correlation.getSet());
+			}
 		}
 		return cc;
 	}
 	
-	public Collection<CorrelationSet> getCorrelationSets(String id) {
+	public Collection<Correlation> getCorrelationSets(String id) {
 		return dataInteracionMapper.get(id).getCorrelationSet();
 	}
 
 
 	public void createDataSelection(String activityId) {
 		InteractionOperation op = new SelectionOperation(selectionOperation, genIdOperationOperation, genVar, 
-				propertyProcessId, propertyInteractionId);
+				processIdCorrelationSet, propertyInteractionId);
 		dataInteracionMapper.put(activityId, op);
 	}
 
 
 	public void createDataInput(String activityId) {
 		InteractionOperation op = new InputOperation(inputOperation, genIdOperationOperation, genVar,
-				propertyProcessId, propertyInteractionId);
+				processIdCorrelationSet, propertyInteractionId);
 		dataInteracionMapper.put(activityId, op);
 	}
 
 
 	public void createDataOutput(String activityId) {
 		InteractionOperation op = new OutputOperation(outputOperation, genIdOperationOperation, genVar,
-				propertyProcessId, propertyInteractionId);
+				processIdCorrelationSet, propertyInteractionId);
 		dataInteracionMapper.put(activityId, op);
 	}
 

@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.namespace.QName;
-
 import org.eclipse.bpel.model.BPELFactory;
 import org.eclipse.bpel.model.CorrelationSet;
 import org.eclipse.bpel.model.Variable;
@@ -13,7 +11,6 @@ import org.eclipse.bpel.model.messageproperties.MessagepropertiesFactory;
 import org.eclipse.bpel.model.messageproperties.Property;
 import org.eclipse.bpel.model.messageproperties.PropertyAlias;
 import org.eclipse.bpel.model.messageproperties.Query;
-import org.eclipse.bpel.ui.util.XSDUtils;
 import org.eclipse.wst.wsdl.BindingOperation;
 import org.eclipse.wst.wsdl.Definition;
 import org.eclipse.wst.wsdl.Message;
@@ -31,12 +28,6 @@ import be.edu.fundp.precise.uibpel.model.OnUserEvent;
  */
 public class EventInteractionManager {
 
-	/** The my pa. */
-	private PropertyAlias myPA;
-	
-	/** The property name. */
-	private Property propertyName;
-	
 	/** The my cs. */
 	private CorrelationSet myCS;
 	
@@ -64,42 +55,37 @@ public class EventInteractionManager {
 	 * @param wsdl_user_event_listinner the wsdl_user_event_listinner
 	 * @param processWSDl the process ws dl
 	 */
-	public EventInteractionManager(Definition wsdl_user_event_listinner, Definition processWSDl) {
+	public EventInteractionManager(Definition wsdl_user_event_listinner, Definition processWSDl, CorrelationSet processIdCorrelationSet) {
 		this.processWSDl = processWSDl;
 		this.wsdl_user_event_listinner= wsdl_user_event_listinner;
-		createCorrelationSet();
+		eventOperation = getFireEventOperation();
+		myCS = processIdCorrelationSet;
+		Property processIdProperty = myCS.getProperties().listIterator().next();
+		//myCS = createCorrelationSet(processIdProperty);
+		createPropertyAlias(wsdl_user_event_listinner, processIdProperty);
 	}
 	
-	/**
-	 * Creates the correlation set.
-	 */
-	@SuppressWarnings("unchecked")
-	private void createCorrelationSet() {
-		myCS = BPELFactory.eINSTANCE.createCorrelationSet();
-		myCS.setName("UserEvent");
-		
+	private Operation getFireEventOperation() {
 		Service s1 = (Service) wsdl_user_event_listinner.getEServices().get(0);
 		Port p1 = (Port) s1.getEPorts().get(0);
 		for (Object op : p1.getBinding().getBindingOperations()) {
 			BindingOperation opera = (BindingOperation) op;
 			if (opera.getName().equals("fireEvent")){
-				eventOperation = opera.getEOperation();
+				return opera.getEOperation();
 			}
 		}
-		
-		myPA = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
-		myPA.setMessageType(eventOperation.getInput().getMessage());
+		return null;
+	}
 
-		myPA.setPart("parameters");
-		propertyName = MessagepropertiesFactory.eINSTANCE.createProperty();
-		propertyName.setType(XSDUtils.getPrimitive("string"));
-		QName qname = new QName("test", "propertyName");
-		propertyName.setQName(qname);
-		propertyName.setName("propertyName");
-		myPA.setPropertyName(propertyName);
-		propertyName.setEnclosingDefinition(processWSDl);
+	@SuppressWarnings("unchecked")
+	private void createPropertyAlias(Definition wsdl_user_event_listinner2,
+			Property processIdProperty) {
+		PropertyAlias userEventPropertyAlias = MessagepropertiesFactory.eINSTANCE.createPropertyAlias();
+		userEventPropertyAlias.setMessageType(eventOperation.getInput().getMessage());
+
+		userEventPropertyAlias.setPart("parameters");
+		userEventPropertyAlias.setPropertyName(processIdProperty);
 		
-		//The query
 		String query = "";
 		String prefix = processWSDl.getPrefix("test");
 		if (prefix!=null)
@@ -108,13 +94,23 @@ public class EventInteractionManager {
 			query = query + "/" + "processId";
 		Query q = MessagepropertiesFactory.eINSTANCE.createQuery();
 		q.setValue(query);
-		myPA.setQuery(q);
+		userEventPropertyAlias.setQuery(q);
 		
-		myCS.getProperties().add(propertyName);
-		
-		processWSDl.getEExtensibilityElements().add(propertyName);
-		processWSDl.getEExtensibilityElements().add(myPA);
+		processWSDl.getEExtensibilityElements().add(userEventPropertyAlias);
 	}
+
+	/**
+	 * Creates the correlation set.
+	 * @param processIdProperty 
+	 * @return 
+	 */
+//	private CorrelationSet createCorrelationSet(Property processIdProperty) {
+//		CorrelationSet userEventCorrelationSet = BPELFactory.eINSTANCE.createCorrelationSet();
+//		userEventCorrelationSet.setName("UserEvent");
+//		
+//		userEventCorrelationSet.getProperties().add(processIdProperty);
+//		return userEventCorrelationSet;
+//	}
 
 	/**
 	 * Creates the event var.
@@ -172,8 +168,8 @@ public class EventInteractionManager {
 	 *
 	 * @return the property
 	 */
-	public Property getProperty() {
-		return propertyName;
-	}
+//	public Property getProperty() {
+//		return propertyName;
+//	}
 
 }

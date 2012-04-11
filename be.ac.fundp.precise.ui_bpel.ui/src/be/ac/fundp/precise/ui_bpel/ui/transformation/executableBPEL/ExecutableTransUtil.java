@@ -8,13 +8,12 @@ import java.util.regex.Pattern;
 
 import javax.xml.namespace.QName;
 
-import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.Process;
+import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.adapters.INamespaceMap;
 import org.eclipse.bpel.model.util.BPELConstants;
 import org.eclipse.bpel.model.util.BPELUtils;
 import org.eclipse.bpel.model.util.XSD2XMLGenerator;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Part;

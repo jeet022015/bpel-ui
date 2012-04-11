@@ -38,7 +38,6 @@ import org.eclipse.bpel.ui.properties.CorrelationSection;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.wst.wsdl.Operation;
 import org.eclipse.wst.wsdl.Part;
@@ -204,8 +203,7 @@ public class WriterUiBpel extends BPELWriter {
 			serializePrefixes(correlationSets, correlationSetsElement);
 			extensibleElement2XML(correlationSets, correlationSetsElement);
 		}
-		correlationSetsElement.appendChild(correlationSet2XML(bpel.getUserEventCorrelationSet()));
-		for (CorrelationSet innerCS : bpel.getInputCorrelationSets()) {
+		for (CorrelationSet innerCS : bpel.getCorrelationSets()) {
 			correlationSetsElement.appendChild(correlationSet2XML(innerCS));
 		}
 		return correlationSetsElement;
@@ -329,7 +327,9 @@ public class WriterUiBpel extends BPELWriter {
 		Correlations cc = BPELFactory.eINSTANCE.createCorrelations();
 		Correlation processCorrelation = BPELFactory.eINSTANCE.createCorrelation();
 		processCorrelation.setInitiate(CorrelationSection.YES);
-		processCorrelation.setSet(bpel.getUserEventCorrelationSet());
+		CorrelationSet eventCorrelationSet = bpel.getEventInteractionManager().getCorrelationSet();
+		//processCorrelation.setSet(bpel.getUserEventCorrelationSet());
+		processCorrelation.setSet(eventCorrelationSet);
 		processCorrelation.setPattern(CorrelationPattern.get(CorrelationPattern.RESPONSE));
 		cc.getChildren().add(processCorrelation);
 		i.setCorrelations(cc);
@@ -450,7 +450,9 @@ public class WriterUiBpel extends BPELWriter {
 			Correlations cc = BPELFactory.eINSTANCE.createCorrelations();
 			Correlation processCorrelation = BPELFactory.eINSTANCE.createCorrelation();
 			processCorrelation.setInitiate(CorrelationSection.NO);
-			processCorrelation.setSet(bpel.getUserEventCorrelationSet());
+			CorrelationSet eventCorrelationSet = bpel.getEventInteractionManager().getCorrelationSet();
+			//processCorrelation.setSet(bpel.getUserEventCorrelationSet());
+			processCorrelation.setSet(eventCorrelationSet);
 			cc.getChildren().add(processCorrelation);
 			userInteractionEvent.setCorrelations(cc);
 			
@@ -501,9 +503,9 @@ public class WriterUiBpel extends BPELWriter {
 			for (int i = 0; i < dataItems.length; i++) {
 				DataItem dataItem = dataItems[i];
 				Copy dataItemContentCopy = createCopyDataItemContentBefore(
-						dataItem, i, op, "data", "data");
+						dataItem, i+1, op, "data", "data");
 				Copy cid = createCopyDataItemIdBefore(
-						dataItem, i, op, "data", "id");
+						dataItem, i+1, op, "data", "id");
 				
 				dataItemCopies.add(dataItemContentCopy);
 				dataItemCopies.add(cid);
@@ -523,12 +525,12 @@ public class WriterUiBpel extends BPELWriter {
 		i.setOperation(op.getOperation());
 		i.setPartnerLink(bpel.getPartnerLinkBPEL());
 		Correlations ci = BPELFactory.eINSTANCE.createCorrelations();
-		for (CorrelationSet cs : op.getCorrelationSet()) {
-			Correlation cr = BPELFactory.eINSTANCE.createCorrelation();
-			cr.setSet(cs);
-			cr.setInitiate(CorrelationSection.YES);
-			cr.setPattern(CorrelationPattern.get(CorrelationPattern.REQUESTRESPONSE));
-			ci.getChildren().add(cr);
+		for (Correlation cs : op.getCorrelationSet()) {
+//			Correlation cr = BPELFactory.eINSTANCE.createCorrelation();
+//			cr.setSet(cs);
+//			cr.setInitiate(CorrelationSection.YES);
+//			cr.setPattern(CorrelationPattern.get(CorrelationPattern.REQUESTRESPONSE));
+			ci.getChildren().add(cs);
 		}
 		i.setCorrelations(ci);
 		
@@ -772,8 +774,8 @@ public class WriterUiBpel extends BPELWriter {
 		if (activity.getOutputItem() != null)
 			for (int i = 0; i < dataItems.length; i++) {
 				DataItem dataItem = dataItems[i];
-				Copy dataItemContentCopy = createCopyDataItemContentBefore(dataItem, i, op, "data", "data");
-				Copy cid = createCopyDataItemIdBefore(dataItem, i, op, "data", "id");
+				Copy dataItemContentCopy = createCopyDataItemContentBefore(dataItem, i+1, op, "data", "data");
+				Copy cid = createCopyDataItemIdBefore(dataItem, i+1, op, "data", "id");
 
 				dataItemCopies.add(dataItemContentCopy);
 				dataItemCopies.add(cid);
@@ -793,12 +795,12 @@ public class WriterUiBpel extends BPELWriter {
 		i.setOperation(op.getOperation());
 		i.setPartnerLink(bpel.getPartnerLinkBPEL());
 		Correlations ci = BPELFactory.eINSTANCE.createCorrelations();
-		for (CorrelationSet cs : op.getCorrelationSet()) {
-			Correlation cr = BPELFactory.eINSTANCE.createCorrelation();
-			cr.setSet(cs);
-			cr.setInitiate(CorrelationSection.YES);
-			cr.setPattern(CorrelationPattern.get(CorrelationPattern.REQUESTRESPONSE));
-			ci.getChildren().add(cr);
+		for (Correlation cs : op.getCorrelationSet()) {
+//			Correlation cr = BPELFactory.eINSTANCE.createCorrelation();
+//			cr.setSet(cs);
+//			cr.setInitiate(CorrelationSection.YES);
+//			cr.setPattern(CorrelationPattern.get(CorrelationPattern.REQUESTRESPONSE));
+			ci.getChildren().add(cs);
 		}
 		i.setCorrelations(ci);
 		
@@ -889,12 +891,12 @@ public class WriterUiBpel extends BPELWriter {
 		i.setOperation(op.getOperation());
 		i.setPartnerLink(bpel.getPartnerLinkBPEL());
 		Correlations ci = BPELFactory.eINSTANCE.createCorrelations();
-		for (CorrelationSet cs : op.getCorrelationSet()) {
-			Correlation cr = BPELFactory.eINSTANCE.createCorrelation();
-			cr.setSet(cs);
-			cr.setInitiate(CorrelationSection.YES);
-			cr.setPattern(CorrelationPattern.get(CorrelationPattern.REQUESTRESPONSE));
-			ci.getChildren().add(cr);
+		for (Correlation cs : op.getCorrelationSet()) {
+//			Correlation cr = BPELFactory.eINSTANCE.createCorrelation();
+//			cr.setSet(cs);
+//			cr.setInitiate(CorrelationSection.YES);
+//			cr.setPattern(CorrelationPattern.get(CorrelationPattern.REQUESTRESPONSE));
+			ci.getChildren().add(cs);
 		}
 		i.setCorrelations(ci);
 		

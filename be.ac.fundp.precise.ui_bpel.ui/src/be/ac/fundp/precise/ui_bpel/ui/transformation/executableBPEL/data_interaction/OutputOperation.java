@@ -1,28 +1,30 @@
 package be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.data_interaction;
 
 import org.eclipse.bpel.model.BPELFactory;
+import org.eclipse.bpel.model.Correlation;
+import org.eclipse.bpel.model.CorrelationPattern;
 import org.eclipse.bpel.model.CorrelationSet;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.messageproperties.Property;
+import org.eclipse.bpel.ui.properties.CorrelationSection;
 import org.eclipse.wst.wsdl.Message;
 import org.eclipse.wst.wsdl.Operation;
 
 public class OutputOperation extends AbstractInteractionOperation{
 	
 	private static final String CORRELATION_SET_OUTPUT_OPERATION_INTERACTION = "OutputOperationInteraction-";
-	private static final String CORRELATION_SET_OUTPUT_OPERATION_PROCESS = "OutputOperationProcess-";
 	private static final String VARIABLE_DATA_OUTPUT_RESPONSE = "dataOutputResponse";
 	private static final String VARIABLE_DATA_OUTPUT_REQUEST = "dataOutputRequest";
 	static protected int operationCounter = 1;
 
 	public OutputOperation(Operation inputOperation, Operation genOperation, Variable genVar,
-			Property propertyProcessId, Property propertyInteractionId){
+			CorrelationSet processIdCorrelationSet, Property propertyInteractionId){
 		try {
 			operation = inputOperation;
 			this.genOperation = genOperation;
 			genVariable = genVar;
 			createDataOutputVar();
-			createCorrelationSets(propertyProcessId, propertyInteractionId);
+			createCorrelationSets(processIdCorrelationSet, propertyInteractionId);
 		} finally{
 			operationCounter++;
 		}
@@ -40,15 +42,23 @@ public class OutputOperation extends AbstractInteractionOperation{
 		
 	}
 	
-	protected void createCorrelationSets(Property propertyProcessId, Property propertyInteractionId) {
-		CorrelationSet processCS = BPELFactory.eINSTANCE.createCorrelationSet();
-		processCS.setName(CORRELATION_SET_OUTPUT_OPERATION_PROCESS+operationCounter);
-		processCS.getProperties().add(propertyProcessId);
-		correlationSets.add(processCS);
+	protected void createCorrelationSets(CorrelationSet processIdCorrelationSet, Property propertyInteractionId) {
+		//CorrelationSet processCS = BPELFactory.eINSTANCE.createCorrelationSet();
+		//processCS.setName(CORRELATION_SET_OUTPUT_OPERATION_PROCESS+operationCounter);
+		//processCS.getProperties().add(propertyProcessId);
+		Correlation cr = BPELFactory.eINSTANCE.createCorrelation();
+		cr.setSet(processIdCorrelationSet);
+		cr.setInitiate(CorrelationSection.NO);
+		cr.setPattern(CorrelationPattern.get(CorrelationPattern.REQUESTRESPONSE));
+		correlationSets.add(cr);
 		
 		CorrelationSet interactionCS = BPELFactory.eINSTANCE.createCorrelationSet();
 		interactionCS.setName(CORRELATION_SET_OUTPUT_OPERATION_INTERACTION+operationCounter);
 		interactionCS.getProperties().add(propertyInteractionId);
-		correlationSets.add(interactionCS);
+		Correlation cr2 = BPELFactory.eINSTANCE.createCorrelation();
+		cr2.setSet(interactionCS);
+		cr2.setInitiate(CorrelationSection.YES);
+		cr2.setPattern(CorrelationPattern.get(CorrelationPattern.REQUESTRESPONSE));
+		correlationSets.add(cr2);
 	}
 }

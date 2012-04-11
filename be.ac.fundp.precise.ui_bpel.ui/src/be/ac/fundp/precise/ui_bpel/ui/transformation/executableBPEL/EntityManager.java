@@ -45,7 +45,6 @@ import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.representati
 import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.util.ExecutableBpelFileManager;
 import be.ac.fundp.precise.ui_bpel.ui.util.WSDLImportHelperUI;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
-import be.edu.fundp.precise.uibpel.model.DataInteraction;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
 import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
@@ -144,9 +143,10 @@ public class EntityManager {
 		userEventImport = new ImportRepresentation(wsdl_user_event_listinner,processWSDl, p.eResource());
 		
 		genetatorManagerOp = new GeneratorOperationManager(wsdl_ui_bpel, processWSDl);
-		eventManagerOp = new EventInteractionManager(wsdl_user_event_listinner, processWSDl);
+		eventManagerOp = new EventInteractionManager(wsdl_user_event_listinner, processWSDl, 
+				genetatorManagerOp.getCorrelationSet());
 		uiManagerOp = new DataInteractionManager(wsdl_ui_bpel, processWSDl,
-				genetatorManagerOp.getProperty(), genetatorManagerOp.getOutputVar());
+				genetatorManagerOp.getCorrelationSet(), genetatorManagerOp.getOutputVar());
 		
 		//save the first time to add the namespaces of the new definitions
 		saveProcessWSDL();
@@ -404,17 +404,12 @@ public class EntityManager {
 	 *
 	 * @return the user event correlation set
 	 */
-	public CorrelationSet getUserEventCorrelationSet() {
-		return eventManagerOp.getCorrelationSet();
-	}
-	
-	/**
-	 * Gets the user event correlation set.
-	 *
-	 * @return the user event correlation set
-	 */
-	public Collection<CorrelationSet> getInputCorrelationSets() {
-		return uiManagerOp.getInputCorrelationSets();
+	public Collection<CorrelationSet> getCorrelationSets() {
+		Collection<CorrelationSet> returnSet = new HashSet<CorrelationSet>();
+		returnSet.addAll(uiManagerOp.getInputCorrelationSets());
+		returnSet.add(eventManagerOp.getCorrelationSet());
+		returnSet.add(genetatorManagerOp.getCorrelationSet());
+		return returnSet;
 	}
 
 	/**

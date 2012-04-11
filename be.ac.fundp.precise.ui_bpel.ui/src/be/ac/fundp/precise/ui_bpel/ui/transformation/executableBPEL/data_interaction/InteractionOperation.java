@@ -2,7 +2,7 @@ package be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.data_intera
 
 import java.util.Collection;
 
-import org.eclipse.bpel.model.CorrelationSet;
+import org.eclipse.bpel.model.Correlation;
 import org.eclipse.bpel.model.PartnerLink;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.wst.wsdl.Operation;
@@ -22,7 +22,7 @@ public interface InteractionOperation {
 	
 	public PartnerLink getPartnerLink();
 	
-	public Collection<CorrelationSet> getCorrelationSet();
+	public Collection<Correlation> getCorrelationSet();
 	
 	public Part getInputOperationPart();
 	

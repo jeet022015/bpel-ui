@@ -47,6 +47,7 @@ public class PartnerLinkRepresentation {
 	 * @param processWsdlDefinition the process wsdl definition
 	 * @param isMyRole the is my role
 	 */
+	@SuppressWarnings("unchecked")
 	public PartnerLinkRepresentation(String partnerLinkName, String partnerLinkTypeName, String roleName, 
 			Definition myWsdlDefinition, String serviceName2, Definition processWsdlDefinition, boolean isMyRole){
 		partnerLink = createPartnerLinkInProcess2(partnerLinkName);

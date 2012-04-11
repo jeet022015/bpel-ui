@@ -31,7 +31,7 @@ public class GeneratorOperationManager {
 		propertyProcessId = createProperty(processWSDl, "psid", "processId");
 		createPropertyAlias(genIdOperation.getOutput().getMessage(), processWSDl, "processId", propertyProcessId);
 		createGenIdVars();
-		createCorrelationSets();
+		correlationSet = createCorrelationSets();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -88,10 +88,11 @@ public class GeneratorOperationManager {
 				.getMessage());
 	}
 	
-	private void createCorrelationSets() {
+	private CorrelationSet createCorrelationSets() {
 		CorrelationSet correlationSet = BPELFactory.eINSTANCE.createCorrelationSet();
 		correlationSet.setName("genIdCorrelationSet");
 		correlationSet.getProperties().add(propertyProcessId);
+		return correlationSet;
 	}
 
 	public Property getProperty() {
