@@ -15,6 +15,8 @@ import org.w3c.dom.Node;
 
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
+import be.edu.fundp.precise.uibpel.model.PickUI;
+import be.edu.fundp.precise.uibpel.model.ScopeUI;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
 
 /*
@@ -49,6 +51,12 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 			resolveDataItems((UserInteraction)activity, saElement, process);
 			return activity;
 		}
+		
+		if (activity instanceof PickUI || activity instanceof ScopeUI) {
+			//Pass2
+			return activity;
+		}
+		
 		/*
 		 * DataInputUI
 		 */
