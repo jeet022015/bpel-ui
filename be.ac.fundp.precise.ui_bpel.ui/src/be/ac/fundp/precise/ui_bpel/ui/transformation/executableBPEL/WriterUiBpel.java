@@ -28,13 +28,13 @@ import org.eclipse.bpel.model.Receive;
 import org.eclipse.bpel.model.Sequence;
 import org.eclipse.bpel.model.To;
 import org.eclipse.bpel.model.Variable;
-import org.eclipse.bpel.model.Variables;
 import org.eclipse.bpel.model.adapters.INamespaceMap;
 import org.eclipse.bpel.model.resource.BPELResource;
 import org.eclipse.bpel.model.resource.BPELWriter;
 import org.eclipse.bpel.model.util.BPELConstants;
 import org.eclipse.bpel.model.util.BPELUtils;
 import org.eclipse.bpel.ui.properties.CorrelationSection;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
@@ -85,11 +85,11 @@ public class WriterUiBpel extends BPELWriter {
 	 * @throws CoreException 
 	 * @throws IOException 
 	 */
-	public WriterUiBpel(Process process, IFile iFile) throws CoreException, IOException {
+	public WriterUiBpel(Process process, IFile iFile, IContainer container) throws CoreException, IOException {
 		super();
 		this.process = process;
 		bpel = new EntityManager();
-		bpel.configureProcess(iFile, process);
+		bpel.configureProcess(iFile, process, container);
 	}
 	
 	/* (non-Javadoc)
@@ -268,9 +268,15 @@ public class WriterUiBpel extends BPELWriter {
 			processElement.appendChild(partnerLinks2XML(process
 					.getPartnerLinks()));
 
+		//TODO Fix empty variables
 		if (process.getVariables() != null
-				&& !process.getVariables().getChildren().isEmpty())
-			processElement.appendChild(variables2XML(process.getVariables()));
+				&& !process.getVariables().getChildren().isEmpty()){
+			Element original = super.variables2XML(process.getVariables());
+			for (Variable next : bpel.getUiVariables()) {
+				original.appendChild(variable2XML(next));
+			}
+			processElement.appendChild(original);
+		}
 
 		if (process.getCorrelationSets() == null){
 			process.setCorrelationSets(BPELFactory.eINSTANCE.createCorrelationSets());
@@ -334,17 +340,6 @@ public class WriterUiBpel extends BPELWriter {
 		cc.getChildren().add(processCorrelation);
 		i.setCorrelations(cc);
 		return i;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.bpel.model.resource.BPELWriter#variables2XML(org.eclipse.bpel.model.Variables)
-	 */
-	protected Element variables2XML(Variables variables) {
-		Element original = super.variables2XML(variables);
-		for (Variable next : bpel.getUiVariables()) {
-			original.appendChild(variable2XML(next));
-		}
-		return original;
 	}
 
 	/* (non-Javadoc)
@@ -475,10 +470,6 @@ public class WriterUiBpel extends BPELWriter {
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
 		
 		InteractionOperation op = bpel.getDataInteractionManager().getOperation(activity.getId());
-		
-		//TODO when should I do it?
-		//String prefix = BPELUtils.getNamespacePrefix(inputVar, 
-		//inputVar.getMessageType().getQName().getNamespaceURI())+":";
 
 		Assign assignbBefore = BPELFactory.eINSTANCE.createAssign();
 		assignbBefore.setName("DataOutputConfiguration");

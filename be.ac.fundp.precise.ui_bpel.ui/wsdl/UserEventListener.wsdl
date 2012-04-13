@@ -44,7 +44,7 @@
   </wsdl:binding>
   <wsdl:service name="UserEventListener">
     <wsdl:port binding="tns:UserEventListenerSOAP" name="UserEventListenerSOAP">
-      <soap:address location="http://www.example.org/"/>
+      <soap:address location="http://localhost:8080/ode/processes/UserEventListner"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

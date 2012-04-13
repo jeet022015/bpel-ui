@@ -29,6 +29,7 @@ import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.While;
 import org.eclipse.bpel.model.resource.BPELResourceSetImpl;
 import org.eclipse.bpel.model.util.BPELUtils;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
@@ -122,20 +123,20 @@ public class EntityManager {
 	 *
 	 * @param iFile the process file (bpel file)
 	 * @param process the process representation (EMF representation)
-	 * @param folder 
+	 * @param container 
 	 * @throws CoreException this exception can be throued if the new WSDLs cannot be copied from
 	 * the core of plug-in.
 	 * @throws IOException Signals that an I/O exception has occurred during the serialization of
 	 * the new process.
 	 */
-	public void configureProcess(IFile iFile,  Process process) throws CoreException, IOException {
+	public void configureProcess(IFile iFile,  Process process, IContainer container) throws CoreException, IOException {
 
 		if (p != null && p.equals(process))
 			return;
 		else
 			p = process;
 
-		managerFiles(iFile, process);
+		managerFiles(iFile, process, container);
 		
 		addToolingNamespaces();
 		
@@ -168,15 +169,16 @@ public class EntityManager {
 	 *
 	 * @param iFile the process file (bpel file)
 	 * @param process the process representation (EMF representation)
+	 * @param container 
 	 * @param folder 
 	 * @throws CoreException this exception can be throued if the new WSDLs cannot be copied from
 	 * the core of plug-in.
 	 * @throws IOException Signals that an I/O exception has occurred during the serialization of
 	 * the new process.
 	 */
-	private void managerFiles(IFile iFile, Process process) throws CoreException, IOException {
+	private void managerFiles(IFile iFile, Process process, IContainer container) throws CoreException, IOException {
 		
-		ExecutableBpelFileManager wsdlManager = new ExecutableBpelFileManager(iFile);
+		ExecutableBpelFileManager wsdlManager = new ExecutableBpelFileManager(iFile, container);
 		
 		String processWsldPath = "";
 		for (Import processImp : process.getImports()) {

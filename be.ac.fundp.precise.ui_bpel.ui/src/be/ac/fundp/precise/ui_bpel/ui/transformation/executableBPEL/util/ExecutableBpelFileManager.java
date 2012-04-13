@@ -5,18 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
@@ -50,36 +45,29 @@ public class ExecutableBpelFileManager {
 	
 	/**
 	 * Instantiates a new wsdl file manager.
+	 * @param container 
 	 *
 	 * @param folder the folder
 	 * @throws CoreException the core exception
 	 */
-	public ExecutableBpelFileManager (IFile f) throws CoreException{
-		IProgressMonitor progressMonitor = new NullProgressMonitor();
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+	public ExecutableBpelFileManager (IFile f, IContainer container) throws CoreException{
+//		IProgressMonitor progressMonitor = new NullProgressMonitor();
+//
+//		IProject project = container.getProject();
+//		IPath contentPath = container.getProjectRelativePath().append("bpelContent");
+//		IFolder folder = project.getFolder(contentPath);
+//		if (!folder.exists()){
+//			folder.create(true, true, progressMonitor);
+//		} else {
+//			for (IResource content : folder.members()) {
+//				content.delete(IResource.FOLDER, progressMonitor);
+//			}
+//			folder.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
+//		}
 		
-		IProject project = f.getProject();
-		IProject newProject = root.getProject(project.getName()+"-executable"+projectCounter++);
-		if (!newProject.exists())
-			newProject.create(progressMonitor);
-		newProject.open(progressMonitor);
-		
-		IFolder folder = newProject.getFolder("bpelContent");
-		if (!folder.exists()){
-			folder.create(true, true, progressMonitor);
-		} else {
-			for (IResource content : folder.members()) {
-				content.delete(IResource.FOLDER, progressMonitor);
-			}
-			folder.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
-		}
-		
-		IProjectDescription description = project.getDescription();
-		
-		newProject.setDescription(description, progressMonitor);
 		//baseFolder = (IFolder) f.getParent();
 		//this.processFolder = folder;
-		baseFolder = folder;
+		baseFolder = (IFolder)container;
 		this.processFolder = (IFolder) f.getParent();
 	}
 	
@@ -133,7 +121,7 @@ public class ExecutableBpelFileManager {
 		InputStream inputStream = FileLocator.openStream(
 			    Activator.getDefault().getBundle(), new Path(pathWSDL), false);
 		file.create(inputStream, true, null);
-		
+		file.refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 
 	/**
@@ -155,6 +143,7 @@ public class ExecutableBpelFileManager {
 		IFile newWsdlFile = baseFolder.getFile(location);
 		if (!newWsdlFile.exists())
 			newWsdlFile.create(originalWsdlFile.getContents(), true, null);
+		newWsdlFile.refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 
 	/**
@@ -163,10 +152,12 @@ public class ExecutableBpelFileManager {
 	 *
 	 * @param location the location
 	 * @return the wsdl path
+	 * @throws CoreException 
 	 */
-	public String getWsdlPath(String location) {
+	public String getWsdlPath(String location) throws CoreException {
 		newFileName = location;
 		IFile processFile = baseFolder.getFile(location);
+		processFile.refreshLocal(IResource.DEPTH_INFINITE, null);
 		return processFile.getFullPath().toString();
 	}
 
