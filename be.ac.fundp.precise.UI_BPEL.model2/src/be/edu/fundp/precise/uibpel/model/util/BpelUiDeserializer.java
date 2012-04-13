@@ -1,8 +1,6 @@
 package be.edu.fundp.precise.uibpel.model.util;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.wsdl.extensions.ExtensionRegistry;
 import javax.xml.namespace.QName;
@@ -15,6 +13,10 @@ import org.eclipse.emf.common.util.URI;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import be.edu.fundp.precise.uibpel.model.DataInputUI;
+import be.edu.fundp.precise.uibpel.model.DataOutputUI;
+import be.edu.fundp.precise.uibpel.model.UserInteraction;
+
 /*
  * Bug 120110 - this class has been updated to include a Variable
  * reference for the SampleSimpleActivity and a Variable definition
@@ -22,7 +24,7 @@ import org.w3c.dom.Node;
  */
 public class BpelUiDeserializer implements BPELActivityDeserializer {
 		
-	Set <Integer> codes = new HashSet<Integer>();
+//	Set <Integer> codes = new HashSet<Integer>();
 	BpelUIReader inBpelUIReader = new BpelUIReader();
 	
 	@Override
@@ -40,11 +42,13 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 			inBpelUIReader.setInnerProcess(process);
 			realProcess = process;
 		}
-	
-		if (codes.contains(node.hashCode())) {
-			return null;
+		
+		if (activity instanceof UserInteraction) {
+			//Pass2
+			Element saElement = (Element)node;
+			resolveDataItems((UserInteraction)activity, saElement, process);
+			return activity;
 		}
-		codes.add(node.hashCode());
 		/*
 		 * DataInputUI
 		 */
@@ -97,4 +101,12 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 		return null;
 	}
 
+	private void resolveDataItems(UserInteraction activity, Element saElement, Process process) {
+		if (activity instanceof DataOutputUI){
+			inBpelUIReader.readOutputDataItems((DataOutputUI)activity, saElement);
+		}
+		if (activity instanceof DataInputUI){
+			inBpelUIReader.readInputDataItems((DataInputUI)activity, saElement);
+		}
+	}
 }

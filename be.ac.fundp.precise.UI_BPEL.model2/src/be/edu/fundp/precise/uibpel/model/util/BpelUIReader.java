@@ -29,6 +29,7 @@ import org.eclipse.bpel.model.proxy.MessageProxy;
 import org.eclipse.bpel.model.proxy.PartnerLinkProxy;
 import org.eclipse.bpel.model.proxy.XSDElementDeclarationProxy;
 import org.eclipse.bpel.model.resource.BPELReader;
+import org.eclipse.bpel.model.resource.BPELVariableResolver;
 import org.eclipse.bpel.model.util.BPELUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -55,195 +56,216 @@ import be.edu.fundp.precise.uibpel.model.ScopeUI;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
 import be.edu.fundp.precise.uibpel.model.UserRole;
 
-public class BpelUIReader extends BPELReader{
-	
+public class BpelUIReader extends BPELReader {
+
 	BPELReader myInnerReader;
-	
+
+	BPELVariableResolver vResolver = new BPELVariableResolver();
+
 	Process myInnerProcess;
-	
+
 	protected ScopeUI xml2ScopeUI(Element scopeElement) {
-		ScopeUI scope = ModelFactory.eINSTANCE
-				.createScopeUI();
+		ScopeUI scope = ModelFactory.eINSTANCE.createScopeUI();
 		// attach the DOM node to our new activity
 		scope.setElement(scopeElement);
-		//if (scopeElement == null) {
-		//	return scope;
-		//}
+		// if (scopeElement == null) {
+		// return scope;
+		// }
 
 		Attr name = scopeElement.getAttributeNode("name");
-		
+
 		if (name != null && name.getSpecified()) {
 			scope.setName(name.getValue());
 		}
-				
+
 		Attr isolated = scopeElement.getAttributeNode("isolated");
-		
+
 		if (isolated != null && isolated.getSpecified())
-			scope.setIsolated( Boolean.valueOf( isolated.getValue().equals("yes")));
-		
+			scope.setIsolated(Boolean
+					.valueOf(isolated.getValue().equals("yes")));
+
 		// Handle attribute exitOnStandardFault
-		Attr exitOnStandardFault = scopeElement.getAttributeNode("exitOnStandardFault");
+		Attr exitOnStandardFault = scopeElement
+				.getAttributeNode("exitOnStandardFault");
 		if (exitOnStandardFault != null && exitOnStandardFault.getSpecified())
-			scope.setExitOnStandardFault( Boolean.valueOf( exitOnStandardFault.getValue().equals("yes")));
-				
+			scope.setExitOnStandardFault(Boolean.valueOf(exitOnStandardFault
+					.getValue().equals("yes")));
+
 		// Handle Variables element
-		Element variablesElement = getBPELChildElementByLocalName(scopeElement, "variables");
+		Element variablesElement = getBPELChildElementByLocalName(scopeElement,
+				"variables");
 		if (variablesElement != null) {
 			Variables variables = xml2Variables(variablesElement);
 			scope.setVariables(variables);
 		}
-				
+
 		// Handle CorrelationSet element
-		Element correlationSetsElement = getBPELChildElementByLocalName(scopeElement, "correlationSets");
+		Element correlationSetsElement = getBPELChildElementByLocalName(
+				scopeElement, "correlationSets");
 		if (correlationSetsElement != null) {
 			CorrelationSets correlationSets = xml2CorrelationSets(correlationSetsElement);
 			scope.setCorrelationSets(correlationSets);
 		}
-		
+
 		// Handle PartnerLinks element
-		Element partnerLinksElement = getBPELChildElementByLocalName(scopeElement, "partnerLinks");
+		Element partnerLinksElement = getBPELChildElementByLocalName(
+				scopeElement, "partnerLinks");
 		if (partnerLinksElement != null) {
 			PartnerLinks partnerLinks = xml2PartnerLinks(partnerLinksElement);
 			scope.setPartnerLinks(partnerLinks);
 		}
-		
+
 		// MessageExchanges element
-		Element messageExchangesElement = getBPELChildElementByLocalName(scopeElement, "messageExchanges");
+		Element messageExchangesElement = getBPELChildElementByLocalName(
+				scopeElement, "messageExchanges");
 		if (messageExchangesElement != null) {
 			MessageExchanges messageExchanges = xml2MessageExchanges(messageExchangesElement);
 			scope.setMessageExchanges(messageExchanges);
 		}
-				
+
 		// Handle FaultHandler element
-        Element faultHandlerElement = getBPELChildElementByLocalName(scopeElement, "faultHandlers");
-        if (faultHandlerElement != null) {               		
-			FaultHandler faultHandler =	xml2FaultHandler(faultHandlerElement); 
+		Element faultHandlerElement = getBPELChildElementByLocalName(
+				scopeElement, "faultHandlers");
+		if (faultHandlerElement != null) {
+			FaultHandler faultHandler = xml2FaultHandler(faultHandlerElement);
 			scope.setFaultHandlers(faultHandler);
-        }
+		}
 
 		// Handle CompensationHandler element
 		setCompensationHandler(scopeElement, scope);
-		
+
 		// Handler TerminationHandler element
-		Element terminationHandlerElement = getBPELChildElementByLocalName(scopeElement, "terminationHandler");
+		Element terminationHandlerElement = getBPELChildElementByLocalName(
+				scopeElement, "terminationHandler");
 		if (terminationHandlerElement != null) {
 			TerminationHandler terminationHandler = xml2TerminationHandler(terminationHandlerElement);
 			scope.setTerminationHandler(terminationHandler);
 		}
-		
+
 		// Handler EventHandler element
-		//IT IS MINE
+		// IT IS MINE
 		setEventHandlerUI(scopeElement, scope);
-		
+
 		setStandardAttributes(scopeElement, scope);
 
-		// Handle activities 
-        NodeList scopeElements = scopeElement.getChildNodes();
-        
-        Element activityElement = null;
+		// Handle activities
+		NodeList scopeElements = scopeElement.getChildNodes();
+
+		Element activityElement = null;
 
 		if (scopeElements != null && scopeElements.getLength() > 0) {
-          
-           for (int i = 0; i < scopeElements.getLength(); i++) {
+
+			for (int i = 0; i < scopeElements.getLength(); i++) {
 				if (scopeElements.item(i).getNodeType() != Node.ELEMENT_NODE) {
-           	   	  	continue;
-				}
-           	   	             	
-               	activityElement = (Element)scopeElements.item(i); 
-               
-				if (activityElement.getLocalName().equals("faultHandlers") || 
-					activityElement.getLocalName().equals("compensationHandler"))
-				{
 					continue;
 				}
-               
-               Activity activity = myInnerReader.xml2Activity(activityElement);
-               if (activity != null) { 
-               		scope.setActivity(activity);
-               		break;
-               }
-           }
-        }
-        		
-        return scope;
+
+				activityElement = (Element) scopeElements.item(i);
+
+				if (activityElement.getLocalName().equals("faultHandlers")
+						|| activityElement.getLocalName().equals(
+								"compensationHandler")) {
+					continue;
+				}
+
+				Activity activity = myInnerReader.xml2Activity(activityElement);
+				if (activity != null) {
+					scope.setActivity(activity);
+					break;
+				}
+			}
+		}
+
+		return scope;
 	}
 
-	protected void setEventHandlerUI(Element element, BPELExtensibleElement extensibleElement) {
-		List<Element> eventHandlerElements = getBPELUiChildElementsByLocalName(element, "eventUiHandler");
-        
-		if (eventHandlerElements.size() > 0) {
-			EventHandler eventHandler =	xml2EventUIHandler(eventHandlerElements.get(0)); 
+	protected void setEventHandlerUI(Element element,
+			BPELExtensibleElement extensibleElement) {
+		List<Element> eventHandlerElements = getBPELUiChildElementsByLocalName(
+				element, "eventUiHandler");
 
-			if (extensibleElement instanceof Process) ((Process)extensibleElement).setEventHandlers(eventHandler);
-			else if (extensibleElement instanceof Scope) ((Scope)extensibleElement).setEventHandlers(eventHandler);
+		if (eventHandlerElements.size() > 0) {
+			EventHandler eventHandler = xml2EventUIHandler(eventHandlerElements
+					.get(0));
+
+			if (extensibleElement instanceof Process)
+				((Process) extensibleElement).setEventHandlers(eventHandler);
+			else if (extensibleElement instanceof Scope)
+				((Scope) extensibleElement).setEventHandlers(eventHandler);
 		}
 	}
 
 	/**
-     * Returns a list of child nodes of <code>parentElement</code> that are
-     * {@link Element}s with a BPEL namespace that have the given <code>localName</code>.
-     * Returns an empty list if no matching elements are found.
-     * 
-	 * @param parentElement  the element to find the children of
-	 * @param localName  the localName to match against
+	 * Returns a list of child nodes of <code>parentElement</code> that are
+	 * {@link Element}s with a BPEL namespace that have the given
+	 * <code>localName</code>. Returns an empty list if no matching elements are
+	 * found.
+	 * 
+	 * @param parentElement
+	 *            the element to find the children of
+	 * @param localName
+	 *            the localName to match against
 	 * @return a node list of the matching children of parentElement
-     */
-	protected List<Element> getBPELUiChildElementsByLocalName(Element parentElement, String localName) {
+	 */
+	protected List<Element> getBPELUiChildElementsByLocalName(
+			Element parentElement, String localName) {
 		List<Element> list = new ArrayList<Element>();
 		NodeList children = parentElement.getChildNodes();
 		for (int i = 0; i < children.getLength(); i++) {
 			Node node = children.item(i);
-			if (localName.equals(node.getLocalName()) && BpelUiUtils.isBpelUiElement(node)) {
-                list.add((Element) node);
+			if (localName.equals(node.getLocalName())
+					&& BpelUiUtils.isBpelUiElement(node)) {
+				list.add((Element) node);
 			}
 		}
 		return list;
 	}
 
 	protected EventHandler xml2EventUIHandler(Element eventHandlerElement) {
-		EventHandlerUI eventHandler = ModelFactory.eINSTANCE.createEventHandlerUI();
+		EventHandlerUI eventHandler = ModelFactory.eINSTANCE
+				.createEventHandlerUI();
 		eventHandler.setElement(eventHandlerElement);
-		
-		// Save all the references to external namespaces		
-		saveNamespacePrefix(eventHandler, eventHandlerElement);			
-	
-		NodeList eventHandlerElements = eventHandlerElement.getChildNodes();        
+
+		// Save all the references to external namespaces
+		saveNamespacePrefix(eventHandler, eventHandlerElement);
+
+		NodeList eventHandlerElements = eventHandlerElement.getChildNodes();
 		Element eventHandlerInstanceElement = null;
-		if (eventHandlerElements != null && eventHandlerElements.getLength() > 0) {
-          
+		if (eventHandlerElements != null
+				&& eventHandlerElements.getLength() > 0) {
+
 			for (int i = 0; i < eventHandlerElements.getLength(); i++) {
 				if (eventHandlerElements.item(i).getNodeType() != Node.ELEMENT_NODE)
-					continue;           	   	             
-			   	eventHandlerInstanceElement = (Element)eventHandlerElements.item(i);
-               
-				if (eventHandlerInstanceElement.getLocalName().equals("onAlarm")) {
-					OnAlarm onAlarm = xml2OnAlarm(eventHandlerInstanceElement);     				
+					continue;
+				eventHandlerInstanceElement = (Element) eventHandlerElements
+						.item(i);
+
+				if (eventHandlerInstanceElement.getLocalName()
+						.equals("onAlarm")) {
+					OnAlarm onAlarm = xml2OnAlarm(eventHandlerInstanceElement);
 					eventHandler.getAlarm().add(onAlarm);
-				}   
-				else if (eventHandlerInstanceElement.getLocalName().equals("onEvent")) {
-					OnEvent onEvent = xml2OnEvent(eventHandlerInstanceElement);	     				
+				} else if (eventHandlerInstanceElement.getLocalName().equals(
+						"onEvent")) {
+					OnEvent onEvent = xml2OnEvent(eventHandlerInstanceElement);
 					eventHandler.getEvents().add(onEvent);
-				}
-				else if (eventHandlerInstanceElement.getLocalName().equals("onUserEvent")) {
-					OnUserEvent onUserEvent = xml2OnUserEvent(eventHandlerInstanceElement);     				
+				} else if (eventHandlerInstanceElement.getLocalName().equals(
+						"onUserEvent")) {
+					OnUserEvent onUserEvent = xml2OnUserEvent(eventHandlerInstanceElement);
 					eventHandler.getUserInteraction().add(onUserEvent);
 				}
 			}
-		}       
-		
-		//xml2ExtensibleElement(eventHandler, eventHandlerElement); 
+		}
 		return eventHandler;
 	}
 
 	protected OnUserEvent xml2OnUserEvent(Element pickInstanceElement) {
 		// create a new DataOutputUI model object if not already created
-		OnUserEvent sa = ModelFactory.eINSTANCE
-			.createOnUserEvent();
+		OnUserEvent sa = ModelFactory.eINSTANCE.createOnUserEvent();
 		sa.setElement(pickInstanceElement);
-		
+
 		setID(pickInstanceElement, sa);
 		setUserRole(pickInstanceElement, sa);
-		
+
 		// handle the child activity
 		NodeList childElements = pickInstanceElement.getChildNodes();
 		Element activityElement = null;
@@ -262,92 +284,69 @@ public class BpelUIReader extends BPELReader{
 		return sa;
 	}
 
-	protected DataInputUI xml2DataInputUI(Activity activity, Element saElement, Process process) {
-		// create a new DataInputUI model object if not already created
-		DataInputUI sa;
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
-		if (activity instanceof DataInputUI) {
-			sa = (DataInputUI)activity;
-		}
-		else {
-			sa = ModelFactory.eINSTANCE
-				.createDataInputUI();
-			// attach the DOM node to our new activity
-			sa.setElement(saElement);
-		}
-		//readDataItems(activity, saElement, process, sa);
-		readInputDataItems(sa, saElement, process);
-		
-		// handle the ID
+	protected DataInputUI xml2DataInputUI(Activity activity, Element saElement,
+			Process process) {
+		DataInputUI sa = ModelFactory.eINSTANCE.createDataInputUI();
+		sa.setElement(saElement);
+
 		setID(saElement, sa);
-		//TODO It Works?
 		setUserRole(saElement, sa);
 		return sa;
 	}
 
-	private void readInputDataItems(DataInputUI activity, Element saElement,
-			Process process) {
+	public void readInputDataItems(DataInputUI activity, Element saElement) {
 		NodeList dataItemElements = saElement.getChildNodes();
-        
-        Element dataItemElement = null;
+
+		Element dataItemElement = null;
 
 		if (dataItemElements != null && dataItemElements.getLength() > 0) {
-          
-           for (int i = 0; i < dataItemElements.getLength(); i++) {
-				if (dataItemElements.item(i).getNodeType() != Node.ELEMENT_NODE)
-           	   	  continue;
-           	   	             	
-               dataItemElement = (Element)dataItemElements.item(i);
-               
-				if (dataItemElement.getLocalName().equals(BpelUiConstants.ND_INPUT_ITEM)) {
-					DataItem dataItem = xml2DataItem(activity, process,dataItemElement);
- 					activity.getInputItem().add(dataItem);
-				}
-           }
-        }
-	}
 
-	private DataItem xml2DataItem(Activity activity, Process process, Element dataItemElement) {
-		DataItem aDataItem = ModelFactory.eINSTANCE
-				.createDataItem();
-		aDataItem.setElement(dataItemElement);
-		// handle the SampleExtensionAttribute
-		String inputVarName = dataItemElement.getAttribute(
-				ModelPackage.eINSTANCE.
-				getDataItem_Variable().getName());
-		if (inputVarName!=null && !"".equals(inputVarName.trim())) {
-			//TODO FIX IT
-			//Variable[] vars = ModelHelper.getVisibleVariables(activity.getContainer());
-			//Set<Variable> myVars = getMyVars(activity);
-			//TODO deal with Scope Variables
-			for (Variable variable : process.getVariables().getChildren()) {
-				if (inputVarName.equals(variable.getName())) {
-					aDataItem.setVariable(variable);
-					break;
+			for (int i = 0; i < dataItemElements.getLength(); i++) {
+				if (dataItemElements.item(i).getNodeType() != Node.ELEMENT_NODE)
+					continue;
+
+				dataItemElement = (Element) dataItemElements.item(i);
+
+				if (dataItemElement.getLocalName().equals(
+						BpelUiConstants.ND_INPUT_ITEM)) {
+					DataItem dataItem = xml2DataItem(activity, dataItemElement);
+					activity.getInputItem().add(dataItem);
 				}
 			}
 		}
-		
-		// handle the SampleExtensionAttribute
-		String dataType = ModelPackage.eINSTANCE
-				.getDataItem_Type().getName();
+	}
+
+	private DataItem xml2DataItem(Activity activity, Element dataItemElement) {
+		DataItem aDataItem = ModelFactory.eINSTANCE.createDataItem();
+		aDataItem.setElement(dataItemElement);
+		String inputVarName = dataItemElement
+				.getAttribute(ModelPackage.eINSTANCE.getDataItem_Variable()
+						.getName());
+		if (inputVarName != null && !"".equals(inputVarName.trim())) {
+			Variable v = getVariable(activity, inputVarName);
+			aDataItem.setVariable(v);
+		}
+
+		String dataType = ModelPackage.eINSTANCE.getDataItem_Type().getName();
 		if (dataItemElement.getAttribute(dataType) != null) {
-			aDataItem.setType(DataType.get(dataItemElement.getAttribute(dataType)));
+			aDataItem.setType(DataType.get(dataItemElement
+					.getAttribute(dataType)));
 		}
 		return aDataItem;
 	}
 
 	private void setUserRole(Element saElement, UserInteraction sa) {
-		NodeList userRoles = saElement.getChildNodes();        
+		NodeList userRoles = saElement.getChildNodes();
 		Element userRoleElement = null;
 		if (userRoles != null && userRoles.getLength() > 0) {
-          
+
 			for (int i = 0; i < userRoles.getLength(); i++) {
 				if (userRoles.item(i).getNodeType() != Node.ELEMENT_NODE)
-					continue;           	   	             
-			   	userRoleElement = (Element)userRoles.item(i);
-				if (userRoleElement.getLocalName().equals(BpelUiConstants.ND_USER_ROLE)) {
-					
+					continue;
+				userRoleElement = (Element) userRoles.item(i);
+				if (userRoleElement.getLocalName().equals(
+						BpelUiConstants.ND_USER_ROLE)) {
+
 					// handle the SampleExtensionAttribute
 					String attName = ModelPackage.eINSTANCE
 							.getUserRole_RoleId().getName();
@@ -362,86 +361,50 @@ public class BpelUIReader extends BPELReader{
 	}
 
 	private void setID(Element saElement, UserInteraction sa) {
-		String attName = ModelPackage.eINSTANCE
-				.getUserInteraction_Id().getName();
+		String attName = ModelPackage.eINSTANCE.getUserInteraction_Id()
+				.getName();
 		if (saElement.getAttribute(attName) != null) {
 			sa.setId(saElement.getAttribute(attName));
 			BpelUiUtils.setId(saElement.getAttribute(attName));
 		}
 	}
 
-	protected DataOutputUI xml2DataOutputUI(Activity activity, Element saElement,
-			Process process) {
-		DataOutputUI sa;
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
-		if (activity instanceof DataOutputUI) {
-			sa = (DataOutputUI)activity;
-		}
-		else {
-			sa = ModelFactory.eINSTANCE
-				.createDataOutputUI();
-			// attach the DOM node to our new activity
-			sa.setElement(saElement);
-		}
-		
-		readOutputDataItems(sa, saElement, process);
-		
-		// handle the ID
+	protected DataOutputUI xml2DataOutputUI(Activity activity,
+			Element saElement, Process process) {
+		DataOutputUI sa = ModelFactory.eINSTANCE.createDataOutputUI();
+		sa.setElement(saElement);
 		setID(saElement, sa);
-		
-		//TODO It Works?
 		setUserRole(saElement, sa);
 		return sa;
 	}
 
-	private void readOutputDataItems(DataOutputUI sa, Element saElement, Process process) {
+	public void readOutputDataItems(DataOutputUI sa, Element saElement) {
 		NodeList dataItemElements = saElement.getChildNodes();
-        Element dataItemElement = null;
+		Element dataItemElement = null;
 		if (dataItemElements != null && dataItemElements.getLength() > 0) {
-          
-           for (int i = 0; i < dataItemElements.getLength(); i++) {
+
+			for (int i = 0; i < dataItemElements.getLength(); i++) {
 				if (dataItemElements.item(i).getNodeType() != Node.ELEMENT_NODE)
-           	   	  continue;
-           	   	             	
-               dataItemElement = (Element)dataItemElements.item(i);
-               
-               	//TODO Refactory here
-				if (dataItemElement.getLocalName().equals(BpelUiConstants.ND_OUTPUT_ITEM)) {
-					DataItem dataItem = xml2DataItem(sa, process,dataItemElement);
- 					sa.getOutputItem().add(dataItem);
+					continue;
+
+				dataItemElement = (Element) dataItemElements.item(i);
+				if (dataItemElement.getLocalName().equals(
+						BpelUiConstants.ND_OUTPUT_ITEM)) {
+					DataItem dataItem = xml2DataItem(sa, dataItemElement);
+					sa.getOutputItem().add(dataItem);
 				}
-           }
-        }
+			}
+		}
 	}
 
-	protected DataSelectionUI xml2DataSelectionUI(Activity activity, Element saElement,
-			Process process) {
-		DataSelectionUI sa;
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
-		if (activity instanceof DataSelectionUI) {
-			sa = (DataSelectionUI)activity;
-		}
-		else {
-			sa = ModelFactory.eINSTANCE
-				.createDataSelectionUI();
-
-			// attach the DOM node to our new activity
-			sa.setElement(saElement);
-		}
-		
+	protected DataSelectionUI xml2DataSelectionUI(Activity activity,
+			Element saElement, Process process) {
+		DataSelectionUI sa = ModelFactory.eINSTANCE.createDataSelectionUI();
+		sa.setElement(saElement);
 		setMaxCard(saElement, sa);
-		
 		setMinCardin(saElement, sa);
-		
-		readOutputDataItems(sa, saElement, process);
-		readInputDataItems(sa, saElement, process);
-		
-		// handle the ID
 		setID(saElement, sa);
-		
-		//TODO It Works?
 		setUserRole(saElement, sa);
-		
 		return sa;
 	}
 
@@ -450,7 +413,8 @@ public class BpelUIReader extends BPELReader{
 		String attName = ModelPackage.eINSTANCE
 				.getDataSelectionUI_MinCardinality().getName();
 		if (saElement.getAttribute(attName) != null) {
-			sa.setMinCardinality(Integer.parseInt(saElement.getAttribute(attName)));
+			sa.setMinCardinality(Integer.parseInt(saElement
+					.getAttribute(attName)));
 		}
 	}
 
@@ -459,118 +423,132 @@ public class BpelUIReader extends BPELReader{
 		String attName = ModelPackage.eINSTANCE
 				.getDataSelectionUI_MaxCardinality().getName();
 		if (saElement.getAttribute(attName) != null) {
-			sa.setMaxCardinality(Integer.parseInt(saElement.getAttribute(attName)));
+			sa.setMaxCardinality(Integer.parseInt(saElement
+					.getAttribute(attName)));
 		}
 	}
-	
+
 	public Activity xml2PickUI(Activity activity, Element pickElement,
 			Process process) {
 		PickUI pick;
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=334424
-		if(activity != null && activity instanceof PickUI){
-			pick = (PickUI)activity;
-		}else {
-			pick = ModelFactory.eINSTANCE
-				.createPickUI();
+		if (activity != null && activity instanceof PickUI) {
+			pick = (PickUI) activity;
+		} else {
+			pick = ModelFactory.eINSTANCE.createPickUI();
 			// attach the DOM node to our new activity
 			pick.setElement(pickElement);
 		}
 
 		// Set name
 		Attr name = pickElement.getAttributeNode("name");
-		
+
 		if (name != null && name.getSpecified())
 			pick.setName(name.getValue());
-		
+
 		// Set createInstance
 		Attr createInstance = pickElement.getAttributeNode("createInstance");
-		
-		if (createInstance != null && createInstance.getSpecified()) 
-       		pick.setCreateInstance(Boolean.valueOf(createInstance.getValue().equals("yes") ? "True":"False"));  	
-	
-        NodeList pickElements = pickElement.getChildNodes();
-        
-        Element pickInstanceElement = null;
+
+		if (createInstance != null && createInstance.getSpecified())
+			pick.setCreateInstance(Boolean.valueOf(createInstance.getValue()
+					.equals("yes") ? "True" : "False"));
+
+		NodeList pickElements = pickElement.getChildNodes();
+
+		Element pickInstanceElement = null;
 
 		if (pickElements != null && pickElements.getLength() > 0) {
-          
-           for (int i = 0; i < pickElements.getLength(); i++) {
+
+			for (int i = 0; i < pickElements.getLength(); i++) {
 				if (pickElements.item(i).getNodeType() != Node.ELEMENT_NODE)
-           	   	  continue;
-           	   	             	
-               pickInstanceElement = (Element)pickElements.item(i);
-               
+					continue;
+
+				pickInstanceElement = (Element) pickElements.item(i);
+
 				if (pickInstanceElement.getLocalName().equals("onAlarm")) {
-     				OnAlarm onAlarm = xml2OnAlarm( pickInstanceElement );
-     				pick.getAlarm().add(onAlarm);
-     			}     	
-				else if (pickInstanceElement.getLocalName().equals("onMessage")) {
-     				OnMessage onMessage = xml2OnMessage(pickInstanceElement);	
-    	 			pick.getMessages().add(onMessage);
-     			}
-				else if (pickInstanceElement.getLocalName().equals(BpelUiConstants.ND_ON_USER_EVENT)) {
- 					OnUserEvent onUserEvent = xml2OnUserEvent(pickInstanceElement);
- 					pick.getUserInteraction().add(onUserEvent);
+					OnAlarm onAlarm = xml2OnAlarm(pickInstanceElement);
+					pick.getAlarm().add(onAlarm);
+				} else if (pickInstanceElement.getLocalName().equals(
+						"onMessage")) {
+					OnMessage onMessage = xml2OnMessage(pickInstanceElement);
+					pick.getMessages().add(onMessage);
+				} else if (pickInstanceElement.getLocalName().equals(
+						BpelUiConstants.ND_ON_USER_EVENT)) {
+					OnUserEvent onUserEvent = xml2OnUserEvent(pickInstanceElement);
+					pick.getUserInteraction().add(onUserEvent);
 				}
-           }
-        }
-        
-        setStandardAttributes(pickElement, pick);
+			}
+		}
+
+		setStandardAttributes(pickElement, pick);
 
 		return pick;
 	}
-	
+
 	/**
-	 * Sets a PartnerLink element for a given EObject. The given activity element
-	 * must contain an attribute named "partnerLink".
+	 * Sets a PartnerLink element for a given EObject. The given activity
+	 * element must contain an attribute named "partnerLink".
 	 * 
-	 * @param activityElement  the DOM element of the activity
-	 * @param eObject  the EObject in which to set the partner link
+	 * @param activityElement
+	 *            the DOM element of the activity
+	 * @param eObject
+	 *            the EObject in which to set the partner link
 	 */
 	@Override
-	protected void setPartnerLink(Element activityElement, final EObject eObject, final EReference reference) {
+	protected void setPartnerLink(Element activityElement,
+			final EObject eObject, final EReference reference) {
 		if (!activityElement.hasAttribute("partnerLink")) {
 			return;
 		}
 
-		final String partnerLinkName = activityElement.getAttribute("partnerLink");
-		// We must do this as a post load runnable because the partner link might not
+		final String partnerLinkName = activityElement
+				.getAttribute("partnerLink");
+		// We must do this as a post load runnable because the partner link
+		// might not
 		// exist yet.
-		PartnerLink targetPartnerLink = BPELUtils.getPartnerLink(eObject, partnerLinkName);
+		PartnerLink targetPartnerLink = BPELUtils.getPartnerLink(eObject,
+				partnerLinkName);
 		if (targetPartnerLink == null) {
-			targetPartnerLink = new PartnerLinkProxy(getResource().getURI(), partnerLinkName);
+			targetPartnerLink = new PartnerLinkProxy(getResource().getURI(),
+					partnerLinkName);
 		}
 		eObject.eSet(reference, targetPartnerLink);
 	}
-	
+
 	/**
-	 * Sets name, portType, operation, partner, variable, messageType and correlation for a given PartnerActivity object.
+	 * Sets name, portType, operation, partner, variable, messageType and
+	 * correlation for a given PartnerActivity object.
 	 */
 	@Override
-	protected void setOperationParmsOnEvent(final Element activityElement, final OnEvent onEvent) {
+	protected void setOperationParmsOnEvent(final Element activityElement,
+			final OnEvent onEvent) {
 		// Set partnerLink
-		setPartnerLink(activityElement, onEvent, BPELPackage.eINSTANCE.getOnEvent_PartnerLink());
+		setPartnerLink(activityElement, onEvent,
+				BPELPackage.eINSTANCE.getOnEvent_PartnerLink());
 
-        // Set portType
-        PortType portType = null;
-        if (activityElement.hasAttribute("portType")) {
-            portType = BPELUtils.getPortType(getResource().getURI(), activityElement, "portType");
-            onEvent.setPortType(portType);
-        }
+		// Set portType
+		PortType portType = null;
+		if (activityElement.hasAttribute("portType")) {
+			portType = BPELUtils.getPortType(getResource().getURI(),
+					activityElement, "portType");
+			onEvent.setPortType(portType);
+		}
 
-        // Set operation
-        if (activityElement.hasAttribute("operation")) {
-            if (portType != null) {
-                onEvent.setOperation(BPELUtils.getOperation(getResource().getURI(), portType, activityElement, "operation"));
-            } else {
-                ((OnEventImpl) onEvent).setOperationName(activityElement.getAttribute("operation"));
-            }
-        }
+		// Set operation
+		if (activityElement.hasAttribute("operation")) {
+			if (portType != null) {
+				onEvent.setOperation(BPELUtils.getOperation(getResource()
+						.getURI(), portType, activityElement, "operation"));
+			} else {
+				((OnEventImpl) onEvent).setOperationName(activityElement
+						.getAttribute("operation"));
+			}
+		}
 
 		// Set variable
 		if (activityElement.hasAttribute("variable")) {
-			Variable variable = BPELFactory.eINSTANCE.createVariable();		
-	
+			Variable variable = BPELFactory.eINSTANCE.createVariable();
+
 			// Set name
 			String name = activityElement.getAttribute("variable");
 			variable.setName(name);
@@ -578,11 +556,13 @@ public class BpelUIReader extends BPELReader{
 			// Don't set the message type of the variable, this will happen
 			// in the next step.
 		}
-		
+
 		// Set message type
 		if (activityElement.hasAttribute("messageType")) {
-			QName qName = BPELUtils.createAttributeValue(activityElement, "messageType");
-			Message messageType = new MessageProxy(getResource().getURI(), qName);
+			QName qName = BPELUtils.createAttributeValue(activityElement,
+					"messageType");
+			Message messageType = new MessageProxy(getResource().getURI(),
+					qName);
 			onEvent.setMessageType(messageType);
 		}
 
@@ -600,7 +580,8 @@ public class BpelUIReader extends BPELReader{
 		}
 
 		// Set correlations
-		Element correlationsElement = getBPELChildElementByLocalName(activityElement, "correlations");
+		Element correlationsElement = getBPELChildElementByLocalName(
+				activityElement, "correlations");
 		if (correlationsElement != null) {
 			Correlations correlations = xml2Correlations(correlationsElement);
 			onEvent.setCorrelations(correlations);
@@ -610,14 +591,14 @@ public class BpelUIReader extends BPELReader{
 	public void setInnerReader(BPELReader bpelReader) {
 		myInnerReader = bpelReader;
 	}
-	
-	public Resource getResource () {
+
+	public Resource getResource() {
 		return myInnerReader.getResource();
 	}
 
 	public void myPass2() {
 		pass2();
-		
+
 	}
 
 	public BPELReader getInnerReader() {
