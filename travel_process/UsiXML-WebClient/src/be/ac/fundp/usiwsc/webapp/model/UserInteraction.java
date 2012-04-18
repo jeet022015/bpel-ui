@@ -162,4 +162,8 @@ public class UserInteraction {
 	public Set<String> getProvidedItemIds() {
 		return providedData.keySet();
 	}
+
+	public String getProvidedItemType(String dataId) {
+		return providedData.get(dataId).type;
+	}
 }

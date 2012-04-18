@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import be.ac.fundp.usiwsc.webapp.client.RestClient;
 import be.ac.fundp.usiwsc.webapp.manager.UiManager;
 import be.ac.fundp.usiwsc.webapp.model.UserInteraction;
 
@@ -50,11 +51,11 @@ public class InteractionManager extends HttpServlet {
 		Map<String, String[]> para = request.getParameterMap();
 		String role = (String) request.getSession().getAttribute("role");
 		System.out.println("para:"+para.keySet());
-		String process = para.get("processId")[0];
+		String processId = para.get("processId")[0];
 		String cuiId = para.get("cuiId")[0];
-		System.out.println("process:"+process);
+		System.out.println("process:"+processId);
 		System.out.println("para:"+cuiId);
-		UserInteraction cui = uiManager.getProcess(role, process).getUserInteraction(cuiId);
+		UserInteraction cui = uiManager.getProcess(role, processId).getUserInteraction(cuiId);
 		System.out.println("cui:"+cui);
 		for (String key : para.keySet()) {
 			if (!key.equals("processId") && !key.equals("cuiId") && !key.equals("sendbutton")){
@@ -64,6 +65,8 @@ public class InteractionManager extends HttpServlet {
 			}
 		}
 		cui.wasDone();
+		
+		RestClient.sendData(role, processId, cuiId, cui);
 		
 		//uiManager.userInteracionPerformed(cuiId, role, process);
 		String forward = "/uibpel/welcome.jsp";
