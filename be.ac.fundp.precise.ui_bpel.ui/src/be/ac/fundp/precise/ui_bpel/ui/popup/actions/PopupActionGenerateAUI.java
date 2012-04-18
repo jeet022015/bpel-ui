@@ -36,7 +36,7 @@ public class PopupActionGenerateAUI extends PopupActionWithProcessRepresentation
 
 		createAuiModel(process);
 
-		MessageDialog.openInformation(getShell(), "BPEL Extensions UI Sample Plug-in",
+		MessageDialog.openInformation(getShell(), "BPEL Extensions UI Plug-in",
 				"Generated AUI for the Process: " + process.getName());
 	}
 

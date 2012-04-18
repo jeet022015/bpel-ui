@@ -72,10 +72,10 @@ public class PopupActionGenerateBPEL extends PopupActionWithProcessRepresentatio
 			newWriter = new WriterUiBpel(process, f, folder);
 			newWriter.write((BPELResource) getBpelResource(), Collections.<String,String>emptyMap());
 			
-			MessageDialog.openInformation(getShell(), "BPEL Extensions UI Sample Plug-in",
+			MessageDialog.openInformation(getShell(), "BPEL Extensions UI Plug-in",
 					"Generated Executable BPEL for the Process: " + process.getName());
 		} catch (IOException e) {
-			MessageDialog.openInformation(getShell(), "BPEL Extensions UI Sample Plug-in",
+			MessageDialog.openInformation(getShell(), "BPEL Extensions UI Plug-in",
 					"The generation was interrupted by a " + e.getMessage() + ". Try restart the Eclipse application.");
 			e.printStackTrace();
 		} catch (CoreException e) {

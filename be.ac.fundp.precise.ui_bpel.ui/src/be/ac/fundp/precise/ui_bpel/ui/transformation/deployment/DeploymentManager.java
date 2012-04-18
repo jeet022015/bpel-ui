@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
@@ -45,12 +44,32 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+/**
+ * The Class DeploymentManager does the management of files in order to
+ * deploy a process in a ode Apache server.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ * @date Dez 9, 2011
+ */
 public class DeploymentManager {
 
+	/** The deploy xml. */
 	private IFile deployXML;
+	
+	/** The temporary folder. */
 	private IFolder auxFolder;
+	
+	/** The deploy file. */
 	private IFile deployFile;
 
+	/**
+	 * Instantiates a new deployment manager.
+	 *
+	 * @param homeFolder the folder of the UI-BPEL process
+	 * @param shell the Eclipse Shell
+	 * @throws ConfigurationException the process was not well configured.
+	 * @throws CoreException the process' XML is bad formated.
+	 */
 	public DeploymentManager (IFolder homeFolder, Shell shell) throws ConfigurationException, CoreException {
 		
 		IProject project = homeFolder.getProject();		
@@ -69,10 +88,8 @@ public class DeploymentManager {
 		auxFolder = project.getFolder(folderPath);
 		IProgressMonitor progressMonitor = new NullProgressMonitor();
 		if (!auxFolder.exists()){
-			System.out.println("not exists!");
 			auxFolder.create(true, true, progressMonitor);
 		} else {
-			System.out.println("exists!");
 			for (IResource content : auxFolder.members()) {
 				content.delete(IResource.FOLDER, progressMonitor);
 			}
@@ -80,6 +97,17 @@ public class DeploymentManager {
 		}
 	}
 
+	/**
+	 * The method setup add the correct elements to the final deploy file in order
+	 * to allow the communication between the process and the UI Manager.
+	 *
+	 * @return the folder where the deployable process must be created
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the deploy' XML is bad formated.
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TransformerException An XML transformation exception has occurred.
+	 * @throws CoreException the process' XML is bad formated.
+	 */
 	public IFolder setup() throws ParserConfigurationException, 
 				SAXException, IOException, TransformerException, CoreException {
 		File file = deployXML.getRawLocation().makeAbsolute().toFile(); 
@@ -142,6 +170,11 @@ public class DeploymentManager {
 		return auxFolder;
 	}
 
+	/**
+	 * This method creates the zip file to be deployed.
+	 *
+	 * @throws CoreException the core exception
+	 */
 	public void createZipFile() throws CoreException {	    
 		IFile r = null;
 	    byte[] buf = new byte[1024];
@@ -190,7 +223,14 @@ public class DeploymentManager {
 	    	deployFile = r;
 	}
 
-	public void deploy() throws IOException {
+	/**
+	 * this method deploy the process in an Apache Ode server.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws ConfigurationException an error occurred during the deployment process.
+	 */
+	@SuppressWarnings("unused")
+	public void deploy() throws IOException, ConfigurationException {
 		File file = new File(deployFile.getLocation().toOSString());
 		String packageName = "COnfigue";
 		FileInputStream fin = new FileInputStream(file);
@@ -228,24 +268,24 @@ public class DeploymentManager {
 				ServiceClient sc = new ServiceClient();
 				sc.setOptions(opts);
 
-				try {
-					// invoke service
-					OMElement responseMsg = sc.sendReceive(payload);
-					String body = responseMsg.toString();
-					if (body.indexOf("name") > 0) {
-						System.out.println("Package deployed successfully!");
-					} else {
-						System.out.println("Package deployement failed!");
-					}
-				} catch (AxisFault axisFault) {
-					System.out.println(axisFault.getMessage());
+				OMElement responseMsg = sc.sendReceive(payload);
+				String body = responseMsg.toString();
+				if (body.indexOf("name") > 0) {
+					System.out.println("Package deployed successfully!");
+				} else {
+					ConfigurationException error = new ConfigurationException();
+					error.setConfMessage("Package deployement failed!");
+					throw error;
 				}
 			} else {
-				System.out.println("No package Name specified!");
+				ConfigurationException error = new ConfigurationException();
+				error.setConfMessage("No package Name specified!");
+				throw error;
 			}
 		} else {
-			System.out
-					.println("TODO: Implement Base64 encoded string support!");
+			ConfigurationException error = new ConfigurationException();
+			error.setConfMessage("Base64 encoded string not supported!");
+			throw error;
 		}
 	}
 }

@@ -11,6 +11,7 @@ import org.eclipse.bpel.model.resource.BPELResource;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.xml.sax.SAXException;
 
 import be.ac.fundp.precise.ui_bpel.ui.transformation.deployment.ConfigurationException;
@@ -44,18 +45,32 @@ public class PopupActionDeploymentProcess extends PopupActionWithProcessRepresen
 			newWriter.write((BPELResource) getBpelResource(), Collections.<String,String>emptyMap());
 			deployer.createZipFile();
 			deployer.deploy();
+			MessageDialog.openInformation(getShell(), "BPEL Extensions UI Plug-in",
+					"The process " + process.getName()+" was well deployed.");
 		} catch (ConfigurationException e) {
-			e.printStackTrace();
+			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
+					e.getMessage());
+			//e.printStackTrace();
 		} catch (CoreException e) {
-			e.printStackTrace();
+			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
+					e.getMessage());
+			//e.printStackTrace();
 		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
+			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
+					e.getMessage());
+			//e.printStackTrace();
 		} catch (SAXException e) {
-			e.printStackTrace();
+			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
+					e.getMessage());
+			//e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
+					e.getMessage());
+			//e.printStackTrace();
 		} catch (TransformerException e) {
-			e.printStackTrace();
+			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
+					e.getMessage());
+			//e.printStackTrace();
 		}
 		
 	}
