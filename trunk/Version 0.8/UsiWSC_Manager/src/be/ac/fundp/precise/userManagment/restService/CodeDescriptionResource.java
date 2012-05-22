@@ -11,22 +11,22 @@ import org.restlet.resource.ServerResource;
 import be.ac.fundp.precise.processDeployment.auiDeployment.AuiDeploymentManager;
 
 /**
- * The Class UserEventResource.
- *
- * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
- * @date Dec 9, 2011
+ * The Class CodeDescriptionResource is the Rest Resource responsible to 
+ * delivery the description of the code corresponding to the specific process, for the specific
+ * role in the process.
  */
 public class CodeDescriptionResource extends ServerResource {
 
+	/** The AuiDeploymentManager singleton. */
 	protected AuiDeploymentManager manager = AuiDeploymentManager.getInstance();
-	
+
     /**
-     * Represent.
+     * Gets the code description.
      *
-     * @return the string
+     * @return  the Rest Representation that contains code description
      */
     @Get
-    public Representation getCode() {
+    public Representation getCodeDescription() {
     	String role = (String) getRequestAttributes().get("role");
     	String process = (String) getRequestAttributes().get("process");
     	Map<String, String> pathJson = manager.getConf(process, role);

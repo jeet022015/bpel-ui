@@ -26,7 +26,12 @@ import be.ac.fundp.precise.dataManagment.hibernate.dao.ProtocolType;
 import be.ac.fundp.precise.dataManagment.hibernate.dao.Role;
 import be.ac.fundp.precise.dataManagment.hibernate.dao.User;
 
-public class DataManagerHibernate implements DataManager{
+/**
+ * The Class DataManagerHibernate.
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ * @date May 22, 2012
+ */
+public class DataManagerHibernate implements DataManager {
 
 	static {
 		Configuration configuration = new Configuration();
@@ -40,49 +45,68 @@ public class DataManagerHibernate implements DataManager{
 
 	/** The configure session factory. */
 	public static SessionFactory configureSessionFactory;
-	
-	@Override
-	public synchronized void createRoleIfNecessary(String role) {
+
+	/**
+	 * Creates the role.
+	 * 
+	 * @param roleId
+	 *            the role id
+	 */
+	public synchronized void createRole(String roleId) {
 		Session session = configureSessionFactory.openSession();
 		try {
 			session.beginTransaction();
-			Role roleObj = (Role) session.get(Role.class, role);
-			if (roleObj == null) {
-				roleObj = new Role();
-				roleObj.setRoleId(role);
-				session.saveOrUpdate(roleObj);
+			Role newRole = (Role) session.get(Role.class, roleId);
+			if (newRole == null) {
+				newRole = new Role();
+				newRole.setRoleId(roleId);
+				session.saveOrUpdate(newRole);
 			}
-			session.getTransaction().commit();
 		} finally {
+			session.getTransaction().commit();
 			session.close();
 		}
 	}
 
-	@Override
-	public synchronized void createProcessIfNecessary(String processId) {
+	/**
+	 * Creates the new process.
+	 * 
+	 * @param processId
+	 *            the process' id
+	 */
+	public synchronized void createProcess(String processId) {
 		Session session = configureSessionFactory.openSession();
 		try {
+			session.beginTransaction();
 			Process process = (Process) session.get(Process.class, processId);
 			if (process == null) {
 				process = new Process();
 				process.setProcessId(processId);
 				process.setFinished(false);
-				session.beginTransaction();
 				session.saveOrUpdate(process);
-				session.getTransaction().commit();
 			}
 		} finally {
+			session.getTransaction().commit();
 			session.close();
 		}
 	}
 
-	@Override
-	public String getUser(String role, String processId) {
+	/**
+	 * This method retrieves from the DB the user's id from the DB.
+	 * 
+	 * @param roleId
+	 *            the role Id
+	 * @param processId
+	 *            the process Id
+	 * @return the user Id
+	 */
+	private String boundUserFromDB(String roleId, String processId) {
 		Session session = configureSessionFactory.openSession();
 		try {
+			session.beginTransaction();
 			ProcessBindIdClass idClass = new ProcessBindIdClass();
-			Process process = (Process) session.get(Process.class, processId);
-			Role roleObj = (Role) session.get(Role.class, role);
+			Process process = getProcess(processId, session);
+			Role roleObj = getRole(roleId, session);
 			idClass.setRole(roleObj);
 			idClass.setProcess(process);
 			ProcessBind processBind = (ProcessBind) session
@@ -90,63 +114,114 @@ public class DataManagerHibernate implements DataManager{
 					.add(Restrictions.eq("id", idClass)).uniqueResult();
 			if (processBind != null)
 				return processBind.getUser().getUserId();
-			else 
-				return createProcessBind(role, idClass, processId);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			return null;
 		} finally {
+			session.getTransaction().commit();
 			session.close();
 		}
+		return null;
 	}
 
-	private String createProcessBind(String role, ProcessBindIdClass bindClass,
-			String processId) throws InterruptedException {
-		ProcessBind processBind = new ProcessBind();
-		processBind.setId(bindClass);
+	/**
+	 * Gets the role.
+	 * 
+	 * @param roleId
+	 *            the role id
+	 * @param session
+	 *            the session
+	 * @return the role
+	 */
+	private Role getRole(String roleId, Session session) {
+		Role roleObj = (Role) session.get(Role.class, roleId);
+		if (roleObj == null) {
+			createRole(roleId);
+			roleObj = (Role) session.get(Role.class, roleId);
+		}
+		return roleObj;
+	}
+
+	/**
+	 * Gets the process.
+	 * 
+	 * @param processId
+	 *            the process id
+	 * @param session
+	 *            the session
+	 * @return the process
+	 */
+	private Process getProcess(String processId, Session session) {
+		Process process = (Process) session.get(Process.class, processId);
+		if (process == null) {
+			createProcess(processId);
+			process = (Process) session.get(Process.class, processId);
+		}
+		return process;
+	}
+
+	/**
+	 * This method binds a user with the specific role to a specific process.
+	 * 
+	 * @param role
+	 *            the role
+	 * @param processId
+	 *            the process id
+	 * @return the user Id
+	 * @throws InterruptedException
+	 *             the interrupted exception
+	 */
+	private String createProcessBind(String role, String processId)
+			throws InterruptedException {
+
 		String userId = null;
-		createProcessIfNecessary(processId);
 		do {
-			userId = getUserId(role);
+			userId = getAvailableUser(role);
 			if (userId == null) {
 				Thread.sleep(20000);
 			}
 		} while (userId == null);
 
 		Session session = configureSessionFactory.openSession();
+		session.beginTransaction();
+		ProcessBind processBind = new ProcessBind();
+		ProcessBindIdClass bindClass = new ProcessBindIdClass();
+		Process process = getProcess(processId, session);
+		Role userRole = getRole(role, session);
+		bindClass.setRole(userRole);
+		bindClass.setProcess(process);
+		processBind.setId(bindClass);
 		try {
-			session.beginTransaction();
 			User user = (User) session.get(User.class, userId);
 			processBind.setUser(user);
-			Process process = (Process) session.get(Process.class, processId);
 			process.getProcessBind().add(processBind);
 			session.saveOrUpdate(processBind);
 			session.saveOrUpdate(process);
-			session.getTransaction().commit();
 		} finally {
-			session.close();	
+			session.getTransaction().commit();
+			session.close();
 		}
 		return userId;
 	}
 
-	private String getUserId(String role) {
+	/**
+	 * Gets an available user.
+	 * 
+	 * @param roleId
+	 *            the role id
+	 * @return the available user id
+	 */
+	private String getAvailableUser(String roleId) {
 		Session session = configureSessionFactory.openSession();
 		try {
 			@SuppressWarnings("unchecked")
 			List<User> userList = session.createCriteria(User.class)
 					.add(Restrictions.eq("isAvailable", true)).list();
-			if (userList != null) {
-				for (User anyUser : userList) {
-					Role roleObj = (Role) session.get(Role.class, role);
-					if (anyUser.getRole().contains(roleObj)) {
-						String userId = anyUser.getUserId();
-						session.beginTransaction();
-						User user = (User) session.get(User.class, userId);
-						user.setAvailable(false);
-						session.saveOrUpdate(user);
-						session.getTransaction().commit();
-						return userId;
-					}
+			if (userList == null)
+				return null;
+
+			for (User aUser : userList) {
+				Role roleObj = getRole(roleId, session);
+				if (aUser.getRole().contains(roleObj)) {
+					setUnavailableUser(aUser.getUserId());
+					return aUser.getUserId();
 				}
 			}
 		} finally {
@@ -155,6 +230,32 @@ public class DataManagerHibernate implements DataManager{
 		return null;
 	}
 
+	/**
+	 * Sets the availability user property to false.
+	 * 
+	 * @param userId
+	 *            the new unavailable user
+	 */
+	private void setUnavailableUser(String userId) {
+		Session session = configureSessionFactory.openSession();
+		try {
+			session.beginTransaction();
+			User user = (User) session.get(User.class, userId);
+			user.setAvailable(false);
+			session.saveOrUpdate(user);
+			session.getTransaction().commit();
+		} finally {
+			session.close();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.ac.fundp.precise.dataManagment.DataManager#createInteraction(java.
+	 * lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public int createInteraction(String processId, String userId,
 			String userInteracId) {
@@ -164,57 +265,80 @@ public class DataManagerHibernate implements DataManager{
 		Session session = configureSessionFactory.openSession();
 		try {
 			session.beginTransaction();
-			Process process = (Process) session.get(Process.class, processId);
+			Process process = getProcess(processId, session);
 			process.getInteractions().add(interaction);
 			session.saveOrUpdate(interaction);
 			session.saveOrUpdate(process);
-			session.getTransaction().commit();
 			return interaction.getInteractionRealId();
 		} finally {
+			session.getTransaction().commit();
 			session.close();
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.ac.fundp.precise.dataManagment.DataManager#providedInteractionData
+	 * (int, java.util.List,
+	 * be.ac.fundp.precise.dataManagment.hibernate.dao.InteractionType)
+	 */
 	@Override
 	public void providedInteractionData(int interactionRealId,
-			List<CoordinatedData> response, InteractionType type) {
+			List<CoordinatedData> providedData, InteractionType type) {
 		Collection<DataItem> dataItems = new LinkedList<DataItem>();
 		Session session = configureSessionFactory.openSession();
 		try {
 			session.beginTransaction();
-			for (CoordinatedData providedData : response) {
+			for (CoordinatedData anItem : providedData) {
 				DataItem item = new DataItem();
-				item.setItemId(providedData.getId());
+				item.setItemId(anItem.getId());
 				item.setType(type);
 				item.setItemType(ItemType.text);
-				item.setData((Serializable) providedData.getContent());
+				item.setData((Serializable) anItem.getContent());
 				dataItems.add(item);
 				session.saveOrUpdate(item);
 			}
-			Interaction interaction = (Interaction) session.get(Interaction.class,
-					interactionRealId);
+			Interaction interaction = (Interaction) session.get(
+					Interaction.class, interactionRealId);
 			interaction.getAvailableData().addAll(dataItems);
-			session.getTransaction().commit();
+			session.saveOrUpdate(interaction);
 		} finally {
+			session.getTransaction().commit();
 			session.close();
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.ac.fundp.precise.dataManagment.DataManager#releaseRole(java.lang.String
+	 * , java.lang.String)
+	 */
 	@Override
 	public void releaseRole(String role, String processId) {
-		String userId = getUser(role, processId);
+		String userId = getBoundUser(role, processId);
 		Session session = configureSessionFactory.openSession();
 		try {
 			session.beginTransaction();
 			User user = (User) session.get(User.class, userId);
 			user.setAvailable(true);
 			session.saveOrUpdate(user);
-			session.getTransaction().commit();
 		} finally {
+			session.getTransaction().commit();
 			session.close();
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.ac.fundp.precise.dataManagment.DataManager#getUserProtocolType(java
+	 * .lang.String)
+	 */
 	@Override
 	public ProtocolType getUserProtocolType(String userId) {
 		Session session = configureSessionFactory.openSession();
@@ -226,6 +350,13 @@ public class DataManagerHibernate implements DataManager{
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.ac.fundp.precise.dataManagment.DataManager#getIpAddress(java.lang.
+	 * String)
+	 */
 	@Override
 	public String getIpAddress(String userId) {
 		Session session = configureSessionFactory.openSession();
@@ -237,6 +368,13 @@ public class DataManagerHibernate implements DataManager{
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.ac.fundp.precise.dataManagment.DataManager#finishProcess(java.lang
+	 * .String)
+	 */
 	@Override
 	public void finishProcess(String processId) {
 		Session session = configureSessionFactory.openSession();
@@ -245,12 +383,19 @@ public class DataManagerHibernate implements DataManager{
 			Process process = (Process) session.get(Process.class, processId);
 			process.setFinished(true);
 			session.saveOrUpdate(process);
-			session.getTransaction().commit();
 		} finally {
+			session.getTransaction().commit();
 			session.close();
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.ac.fundp.precise.dataManagment.DataManager#verifyUser(java.lang.String
+	 * , java.lang.String)
+	 */
 	@Override
 	public String verifyUser(String login, String password) {
 		Session session = configureSessionFactory.openSession();
@@ -266,12 +411,19 @@ public class DataManagerHibernate implements DataManager{
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.ac.fundp.precise.dataManagment.DataManager#subscribe(java.lang.String,
+	 * java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public void subscribe(String login, String password, String role,
 			String newIpAddress) {
 		User newUser = new User();
 		Context newContext = new Context();
-		createRoleIfNecessary(role);
+		createRole(role);
 
 		newContext.setIpAddress(newIpAddress);
 		newContext.setProtocolType(ProtocolType.Rest);
@@ -284,14 +436,38 @@ public class DataManagerHibernate implements DataManager{
 		Session session = configureSessionFactory.openSession();
 		try {
 			session.beginTransaction();
-			Role userRole = (Role) session.get(Role.class, role);
-			newUser.getRole().add(userRole);
+			Role roleObj = getRole(role, session);
+			newUser.getRole().add(roleObj);
 			session.saveOrUpdate(newContext);
 			session.saveOrUpdate(newUser);
-			session.getTransaction().commit();
 		} finally {
+			session.getTransaction().commit();
 			session.close();
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * be.ac.fundp.precise.dataManagment.DataManager#getBoundUser(java.lang.
+	 * String, java.lang.String)
+	 */
+	@Override
+	public String getBoundUser(String roleId, String processId) {
+		Session session = configureSessionFactory.openSession();
+		try {
+
+			String boundUser = boundUserFromDB(roleId, processId);
+			if (boundUser != null)
+				return boundUser;
+			else
+				return createProcessBind(roleId, processId);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 }
