@@ -4,6 +4,12 @@ import java.util.List;
 
 import be.ac.fundp.precise.dataManagment.CoordinatedData;
 
+/**
+ * The Dispatcher to communicate with the client.
+ * 
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ * @date May 22, 2012
+ */
 public interface Dispatcher {
 
 	/**

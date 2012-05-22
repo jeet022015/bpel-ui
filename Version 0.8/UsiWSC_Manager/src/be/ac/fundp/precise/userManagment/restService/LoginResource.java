@@ -7,19 +7,18 @@ import be.ac.fundp.precise.dataManagment.DataManager;
 import be.ac.fundp.precise.dataManagment.DataManagerFactory;
 
 /**
- * The Class UserEventResource.
- *
- * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
- * @date Dec 9, 2011
+ * The Class LoginResource is the Rest Resource responsible to 
+ * verify if this user exists.
  */
 public class LoginResource extends ServerResource {
 
+	/** The AuiDeploymentManager singleton. */
 	protected DataManager manager = DataManagerFactory.hibernateDataManager();
-	
+
     /**
-     * Represent.
+     * Verify user.
      *
-     * @return the string
+     * @return the user role
      */
     @Get
     public String verifyUser() {

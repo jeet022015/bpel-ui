@@ -1,23 +1,26 @@
 package be.ac.fundp.precise.dataManagment;
 
 /**
- * The Class CoordinatedData represents a data in the
- * application (provided or presented).
+ * The Class CoordinatedData represents a data in the application (provided or
+ * presented).
+ * 
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ * @date May 22, 2012
  */
 public class CoordinatedData {
 
 	/** The data's id. */
 	protected String id;
-	
+
 	/** The data's type. */
 	protected String type;
-	
+
 	/** The data's content. */
 	protected Object content;
-	
+
 	/**
 	 * Gets the data's type.
-	 *
+	 * 
 	 * @return the data's type
 	 */
 	public String getType() {
@@ -26,7 +29,7 @@ public class CoordinatedData {
 
 	/**
 	 * Gets the data's content.
-	 *
+	 * 
 	 * @return the data's content.
 	 */
 	public Object getContent() {
@@ -35,7 +38,7 @@ public class CoordinatedData {
 
 	/**
 	 * Gets the data's id.
-	 *
+	 * 
 	 * @return the data's id
 	 */
 	public String getId() {
@@ -44,18 +47,20 @@ public class CoordinatedData {
 
 	/**
 	 * Sets the data's type.
-	 *
-	 * @param type the new data's type
+	 * 
+	 * @param type
+	 *            the new data's type
 	 */
 	public void setType(String type) {
 		this.type = type;
-		
+
 	}
 
 	/**
 	 * Sets the data's id.
-	 *
-	 * @param id the new data's id
+	 * 
+	 * @param id
+	 *            the new data's id
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -63,8 +68,9 @@ public class CoordinatedData {
 
 	/**
 	 * Sets the data's data.
-	 *
-	 * @param content the new data's data
+	 * 
+	 * @param content
+	 *            the new data's data
 	 */
 	public void setContent(Object content) {
 		this.content = content;

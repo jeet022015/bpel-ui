@@ -10,19 +10,19 @@ import org.restlet.resource.ServerResource;
 import be.ac.fundp.precise.processDeployment.auiDeployment.AuiDeploymentManager;
 
 /**
- * The Class UserEventResource.
- *
- * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
- * @date Dec 9, 2011
+ * The Class CodeDeliveryResource is the Rest Resource responsible to 
+ * delivery the code corresponding to the specific process, for the specific
+ * role in the process.
  */
 public class CodeDeliveryResource extends ServerResource {
 
+	/** The AuiDeploymentManager singleton. */
 	protected AuiDeploymentManager manager = AuiDeploymentManager.getInstance();
 	
     /**
-     * Represent.
+     * Gets the code.
      *
-     * @return the string
+     * @return the Rest Representation that contains the specific code.
      */
     @Get
     public Representation getCode() {
@@ -40,6 +40,13 @@ public class CodeDeliveryResource extends ServerResource {
         return fr;
     }
 
+	/**
+	 * Gets the path to the zip file that contains the code to delivery.
+	 *
+	 * @param process the process id
+	 * @param role the role id
+	 * @return the path to the zip file
+	 */
 	private String getPath(String process, String role) {
 		return manager.getCode(process, role);
 	}
