@@ -1,0 +1,93 @@
+<%@page import="be.ac.fundp.precise.dataManagment.model.UserInteraction"%>
+<%@page import="be.ac.fundp.precise.dataManagment.model.Process"%>
+<%@page import="be.ac.fundp.precise.dataManagment.ModelManager"%>
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.HashSet"%>
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%
+	ModelManager r = ModelManager.getInstance();
+	String role = (String) request.getSession().getAttribute("role");
+	String processId = (String) request.getParameter("processId");
+	String cuiId = (String) request.getParameter("cuiId");
+	Set<String> l = null;
+	UserInteraction cui =  null;
+if (role != null && processId != null && cuiId != null) { 
+	cui = r.getProcess(role,processId).getUserInteraction(cuiId);
+	l = cui.getAvailableItemIds();
+} else {
+	l = new HashSet<String>();
+}
+%>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<title>UsiWSC - Web Client</title>
+	<meta charset="utf-8" />
+	
+	<link rel="stylesheet" href="main.css" />
+	<!--[if lt IE 9]>
+ 	 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  	<![endif]-->
+</head>
+
+<body id="index" class="home">
+	<header id="banner" class="body">
+    	<h1 class="logo"><img src="/UsiWSC_WebClient/uibpel/image/UsiWSCLogo.png" title="UsiWSC Logo" alt="UsiWSC Logo" align="left" /><span class="wsc">Usable User Interface for</span> Interactive Web Service Composition</h1>
+		<nav><ul>
+			<li class="active"><a href="#">home</a></li>
+			<li><a href="#">login</a></li>
+			<li><a href="#">subscription</a></li>
+			<li><a href="#">contact</a></li>
+		</ul></nav>
+	</header><!-- /#banner -->
+	
+	<aside id="featured" class="body"><article>
+		<hgroup>
+			<h2>The Web Client Demonstration</h2>
+			<h3><a href="#">UI-BPEL</a></h3>
+		</hgroup>
+		<p> This tool is the concept prove for our proposition. The extension
+		   proposes a new type of interaction events that allow processing of the user interaction.
+		   The user interaction specification helps to generate a user interface for the Web
+		   service composition which is made by transforming the described user interactions
+		   to user interface components.</p>
+	</article></aside><!-- /#featured -->
+	
+	<section id="content" class="body">
+		<article class="hentry">	
+			<header>
+				<h1 class="entry-title">Subscription Information</h1>
+			</header>
+	<form action="${pageContext.request.contextPath}/interactionManager" method="get">
+		<input type="hidden" name="processId" value="<%=processId%>">
+		<input type="hidden" name="cuiId" value="<%=cuiId%>">
+		<p>Select the following data:</p>
+#foreach ($element in $inputElements)
+			<%
+				for (String d: l) {
+			%>
+			<input type="checkbox" name="$element" value="<%=cui.getAvailableItemContent(d)%>">
+				<font size="4" face="Arial">
+					<%=cui.getAvailableItemContent(d)%>	
+				</font>
+			<BR>
+			<%
+				}
+			%>
+#end
+		<input type="submit" value="Send" id="sendbutton" name="sendbutton"/>
+		</form>
+</article><!-- /#posts-list -->
+	</section> <!--/#content -->
+	<footer id="contentinfo" class="body">
+		<img src="logo.png" title="UsiWSC Logo" alt="UsiWSC Logo" align="left" />
+		<img src="logo3.png" title="UsiWSC Logo" alt="UsiWSC Logo" align="right" />
+		<p>&copy; 2012 UsiXML</p>
+	</footer><!-- /#contentinfo -->
+
+</body>
+</html>
