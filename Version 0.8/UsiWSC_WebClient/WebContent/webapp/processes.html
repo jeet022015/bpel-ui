@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="css/main.css">
+<script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+<script>
+	function getProcesses () {
+		$.getJSON("/UsiWSC_WebClient/availableProcesses", function(data) {
+	    	//var table = $('<table>').appendTo($('#data'));
+	    	var table = document.getElementById('processes');
+	    	table.innerHTML = '';
+	    	$.each(data, function(i, product) {
+	        	var row = $('<li>').appendTo(table);
+		        $('<a>').text(product.id).attr("href", "http://www.google.com/").attr("class", "process").appendTo(row);
+	    	});
+		});
+	};
+
+	var interval = 1000 * 60 * 0.1; // where X is your every X minutes
+
+	setInterval(getProcesses, interval);
+</script>
+
+
+<head>
+	<title>UsiWSC - Web Client</title>
+	<meta charset="utf-8" />
+</head>
+
+<body id="index" class="home" onLoad="getProcesses();">
+	<header id="banner" class="body">
+    	<h1 class="logo"><img src="/UsiWSC_WebClient/uibpel/image/UsiWSCLogo.png" title="UsiWSC Logo" alt="UsiWSC Logo" align="left" /><span class="wsc">Usable User Interface for</span> Interactive Web Service Composition</h1>
+		<nav><ul>
+			<li class="active"><a href="#">home</a></li>
+			<li><a href="#">login</a></li>
+			<li><a href="#">subscription</a></li>
+			<li><a href="#">contact</a></li>
+		</ul></nav>
+	</header><!-- /#banner -->
+	
+	<aside id="featured" class="body"><article>
+		<hgroup>
+			<h2>The Web Client Demonstration</h2>
+			<h3><a href="#">UI-BPEL</a></h3>
+		</hgroup>
+		<p> This tool is the concept prove for our proposition. The extension
+		   proposes a new type of interaction events that allow processing of the user interaction.
+		   The user interaction specification helps to generate a user interface for the Web
+		   service composition which is made by transforming the described user interactions
+		   to user interface components.</p>
+	</article></aside><!-- /#featured -->
+	
+	<section id="content" class="body">
+		<article class="hentry">	
+			<header>
+				<h1 class="entry-title">Processes</h1>
+			</header>
+			<ul id="processes">
+				
+			</ul>
+		</article><!-- /#posts-list -->
+	</section> <!--/#content -->
+	<footer id="contentinfo" class="body">
+		<img src="images/logo.png" title="UsiWSC Logo" alt="UsiWSC Logo" align="left" />
+		<img src="images/logo3.png" title="UsiWSC Logo" alt="UsiWSC Logo" align="right" />
+		<p>&copy; 2012 UsiXML</p>
+	</footer><!-- /#contentinfo -->
+</body>
+</html>
