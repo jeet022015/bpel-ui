@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="css/main.css">
+<!--[if lt IE 9]>
+ 	 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
 <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
 <script>
 	function getProcesses () {
 		$.getJSON("/UsiWSC_WebClient/availableProcesses", function(data) {
-	    	//var table = $('<table>').appendTo($('#data'));
 	    	var table = document.getElementById('processes');
 	    	table.innerHTML = '';
 	    	var link = "./processDescription.html?processId=";
@@ -16,7 +18,7 @@
 		});
 	};
 
-	var interval = 1000 * 60 * 0.1; // where X is your every X minutes
+	var interval = 1000 * 60 * 0.1;
 
 	setInterval(getProcesses, interval);
 </script>

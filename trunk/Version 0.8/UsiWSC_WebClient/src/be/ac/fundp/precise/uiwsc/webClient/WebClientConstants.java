@@ -1,4 +1,4 @@
-package be.ac.fundp.precise;
+package be.ac.fundp.precise.uiwsc.webClient;
 
 public class WebClientConstants {
 	

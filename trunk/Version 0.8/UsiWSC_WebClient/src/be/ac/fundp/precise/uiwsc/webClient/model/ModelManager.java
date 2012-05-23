@@ -1,17 +1,16 @@
-package be.ac.fundp.precise.dataManagment;
+package be.ac.fundp.precise.uiwsc.webClient.model;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import be.ac.fundp.precise.dataManagment.model.Process;
+import be.ac.fundp.precise.uiwsc.webClient.controller.entity.Process;
 
 public class ModelManager {
 
 	protected static ModelManager self;
-	
-	/** The my processes. */
+
 	protected Map<String, List<Process>> myProcesses = new HashMap<String, List<Process>>();;
 
 	protected ModelManager(){
@@ -22,13 +21,7 @@ public class ModelManager {
 			self = new ModelManager();
 		return self;
 	}
-	
-	/**
-	 * Gets the pending processes.
-	 *
-	 * @param role the role
-	 * @return the pending processes
-	 */
+
 	public List<Process> getPendingProcesses(String role){
 		List<Process> listProcess = new LinkedList<Process>();
 		for (Process process : getProcessses(role)) {
@@ -38,25 +31,12 @@ public class ModelManager {
 		return listProcess;
 	}
 
-	/**
-	 * Gets the processses.
-	 *
-	 * @param role the role
-	 * @return the processses
-	 */
 	private synchronized List<Process> getProcessses(String role) {
 		if (myProcesses.get(role) == null)
 			myProcesses.put(role, new LinkedList<Process>());
 		return myProcesses.get(role);
 	}
-	
-	/**
-	 * Gets the process.
-	 *
-	 * @param role the role
-	 * @param processId the process id
-	 * @return the process
-	 */
+
 	public synchronized Process getProcess(String role, String processId) {
 		for (Process existingProcess : getProcessses(role)) {
 			if (existingProcess.getId().equals(processId))

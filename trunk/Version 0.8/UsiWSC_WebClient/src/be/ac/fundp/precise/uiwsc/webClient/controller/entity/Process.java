@@ -1,4 +1,4 @@
-package be.ac.fundp.precise.dataManagment.model;
+package be.ac.fundp.precise.uiwsc.webClient.controller.entity;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Process.
  */

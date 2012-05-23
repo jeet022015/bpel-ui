@@ -1,4 +1,4 @@
-package be.ac.fundp.precise.userActionManagment.codeManagment;
+package be.ac.fundp.precise.uiwsc.webClient.model.codeManager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -21,7 +21,7 @@ import org.restlet.representation.ReadableRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
-import be.ac.fundp.precise.WebClientConstants;
+import be.ac.fundp.precise.uiwsc.webClient.WebClientConstants;
 
 public class CodeManager {
 
@@ -118,11 +118,6 @@ public class CodeManager {
 			File newFile = new File(filePath);
 			newFile.mkdirs();
 			newFile.mkdir();
-			System.out.println("entry:"+entry.getName());
-			//if (entry.isDirectory()) {
-			//	System.out.println("folder");
-			//	continue;
-			//}
 			if (newFile.exists())
 				newFile.delete();
 			FileOutputStream baos = new FileOutputStream(newFile);
@@ -133,7 +128,6 @@ public class CodeManager {
 			dest.flush();
 			dest.close();
 			is.close();
-			System.out.println("filePath="+filePath);
 			codeMapping.put(entry.getName(), filePath.substring(filePath.indexOf("/WebContent")));
 		}
 		auiFile.deleteOnExit();

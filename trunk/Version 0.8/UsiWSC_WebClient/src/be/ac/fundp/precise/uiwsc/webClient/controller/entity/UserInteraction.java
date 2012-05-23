@@ -1,12 +1,11 @@
-package be.ac.fundp.precise.dataManagment.model;
+package be.ac.fundp.precise.uiwsc.webClient.controller.entity;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import be.ac.fundp.precise.restInteraction.restClient.RestClientApplication;
+import be.ac.fundp.precise.uiwsc.webClient.model.interactionListenner.RestClientApplication;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UserInteraction.
  */
