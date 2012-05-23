@@ -1,4 +1,4 @@
-package be.ac.fundp.precise.restInteraction.restClient;
+package be.ac.fundp.precise.uiwsc.webClient.model.interactionListenner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -6,15 +6,13 @@ import org.json.JSONObject;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.resource.ClientResource;
 
-import be.ac.fundp.precise.WebClientConstants;
-import be.ac.fundp.precise.dataManagment.model.UserInteraction;
+import be.ac.fundp.precise.uiwsc.webClient.WebClientConstants;
+import be.ac.fundp.precise.uiwsc.webClient.controller.entity.UserInteraction;
 
 public class RestClientApplication {
 
 	public static void sendData(String role, String processId, String cuiId,
 			UserInteraction interaction, String process) {
-		//ClientResource itemsResource = new ClientResource("http://10.0.1.3:8090/UiManager/restlet/send_data" +
-		//"/process/{processId}/{role}/{cuiId}/send_data"
 		ClientResource itemsResource = new ClientResource(WebClientConstants.restHost +
 				"/process" +
 				"/" + processId +
@@ -38,11 +36,9 @@ public class RestClientApplication {
 		}
 		JsonRepresentation jr = new JsonRepresentation(obj);
 		itemsResource.put(jr);
-		System.out.println("put data!");
 	}
 
 	public static void triggerEvent(String role, String processId, String eventId){
-		//ClientResource itemsResource = new ClientResource("http://10.0.1.3:8090/UiManager/restlet/event" +
 		ClientResource itemsResource = new ClientResource(WebClientConstants.restHost+"/event" +
 				"/" + role +
 				"/" + processId +

@@ -1,4 +1,4 @@
-package be.ac.fundp.precise.userActionManagment.action;
+package be.ac.fundp.precise.uiwsc.webClient.controller.userActions;
 
 import java.io.IOException;
 
@@ -9,41 +9,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import be.ac.fundp.precise.userActionManagment.UserActionManager;
-import be.ac.fundp.precise.userActionManagment.codeManagment.CodeManager;
+import be.ac.fundp.precise.uiwsc.webClient.model.codeManager.CodeManager;
 
-/**
- * The Class LoginController.
- */
+
 @WebServlet(value = "/loginAction", name = "LoginServlet")
 public class LoginAction extends HttpServlet {
+
+	private static final String PAGE_PROCESS_AVAILABLE = "/uiwsc/processAvailable.html";
+
+	private static final String PAGE_DEFAULT = "/uiwsc";
 
 	protected UserActionManager userManager = UserActionManager.getInstance();
 
 	protected CodeManager codeManager = CodeManager.getInstance();
 
-	/** The Constant LOGIN_MANAGER_TAG. */
 	private static final String LOGIN_MANAGER_TAG = "/loginAction";
 
-	/**
-	 * Instantiates a new login manager.
-	 * 
-	 * @see HttpServlet#HttpServlet()
-	 */
 	public LoginAction() {
 		super();
 	}
 
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest
-	 * , javax.servlet.http.HttpServletResponse)
-	 */
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -53,47 +40,30 @@ public class LoginAction extends HttpServlet {
 		String process = request.getParameter("process");
 		String action = request.getParameter("action");
 		String role = request.getParameter("role");
-		String forward = "/uiwsc";
-		//String forward = "/uibpel/index.jsp";
+		
+		String forward = PAGE_DEFAULT;
+		
 		String webContentPath = getServletContext().getRealPath("/WebContent");
-		
-		
 		String fullURL = request.getRequestURL().toString();
-		String scheme = request.getScheme();
-		String serverName = request.getServerName();
-		int portNumber = request.getServerPort();
-		//String servletPath = request.getServletPath();
-		//System.out.println("servletPath="+servletPath);
-		//servletPath = servletPath.substring(0, servletPath.indexOf(LOGIN_MANAGER_TAG));
 		String servletPath = fullURL.substring(0, fullURL.indexOf(LOGIN_MANAGER_TAG));
-		
-		
 		boolean processOk = false;
+		
 		if (action.equalsIgnoreCase("subscribe")) {
-			processOk = userManager.subscribe(login, password, process, role, scheme, serverName, portNumber, servletPath);
+			processOk = userManager.subscribe(login, password, process, role, servletPath);
 		} else {
-			processOk = userManager.login(login, password, process, role);
+			processOk = userManager.login(login, password, process, role, servletPath);
 		}
 		if (processOk) {
 			session.setAttribute("role", role);
 			session.setAttribute("process", process);
 			codeManager.getCode(process, role, webContentPath);
-			//forward = "/uibpel/processes.jsp";
-			forward = "/uiwsc/processAvailable.html";
+			forward = PAGE_PROCESS_AVAILABLE;
 		}
-		System.out.println("fullURL="+fullURL);
 		String myURL = fullURL.substring(0, fullURL.indexOf(LOGIN_MANAGER_TAG))
 				+ forward;
 		response.sendRedirect(myURL);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest
-	 * , javax.servlet.http.HttpServletResponse)
-	 */
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
