@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions targetNamespace="http://precise.funpd.ac.be/AuiDeployer" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://precise.funpd.ac.be/AuiDeployer" xmlns:intf="http://precise.funpd.ac.be/AuiDeployer" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<schema elementFormDefault="qualified" targetNamespace="http://precise.funpd.ac.be/AuiDeployer" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://precise.funpd.ac.be/AuiDeployer" xmlns:intf="http://precise.funpd.ac.be/AuiDeployer" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <element name="deployAui">
+    <complexType>
+     <sequence>
+     	<element name="file" type="xsd:base64Binary"/>
+     	<element maxOccurs="unbounded" name="description" type="impl:AUI_Descripton">
+     	</element>
+     	<element name="processName" type="string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="deployAuiResponse">
+    <complexType>
+     <sequence>
+      <element name="deploymentVersion" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  
+   <complexType name="AUI_Descripton">
+   	<sequence>
+   		<element name="role" type="string" />
+   		<element name="aui_entry" type="string" />
+   		<element name="uiMapping" type="impl:uiMappingType" maxOccurs="unbounded"></element>
+   	</sequence>
+   </complexType>
+  
+   <complexType name="uiMappingType">
+   	<sequence>
+   		<element name="activityId" type="string"></element>
+   		<element name="iuId" type="string"></element>
+   	</sequence>
+   </complexType>
+   <element name="deployProcess">
+   	<complexType>
+   		<sequence>
+   			<element name="auiZip" type="base64Binary"></element>
+   			<element name="processZip" type="base64Binary"></element>
+   			<element name="processId" type="string"></element>
+   			<element name="uiDescription" type="impl:AUI_Descripton" maxOccurs="unbounded"></element>
+   		</sequence>
+   	</complexType>
+   </element>
+   <element name="deployProcessResponse">
+   	<complexType>
+   		<sequence>
+   			<element name="deploymentVersion" type="string"></element>
+   		</sequence>
+   	</complexType>
+   </element>
+</schema>
+  </wsdl:types>
+  <wsdl:message name="deployAuiRequest">
+    <wsdl:part element="impl:deployAui" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deployAuiResponse">
+    <wsdl:part element="impl:deployAuiResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deployProcessRequest">
+  	<wsdl:part name="parameters" element="impl:deployProcess"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deployProcessResponse">
+  	<wsdl:part name="parameters" element="impl:deployProcessResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ProcessDeployer">
+    <wsdl:operation name="deployAui">
+      <wsdl:input message="impl:deployAuiRequest" name="uploadRequest">
+    </wsdl:input>
+      <wsdl:output message="impl:deployAuiResponse" name="uploadResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deployProcess">
+    	<wsdl:input message="impl:deployProcessRequest"></wsdl:input>
+    	<wsdl:output message="impl:deployProcessResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ProcessDeployerSoapBinding"
+  	type="impl:ProcessDeployer">
+  	<wsdlsoap:binding style="document"
+  		transport="http://schemas.xmlsoap.org/soap/http" />
+  	<wsdl:operation name="deployAui">
+  		<wsdlsoap:operation
+  			soapAction="http://precise.funpd.ac.be/AuiDeployer/deployAui" />
+  		<wsdl:input name="uploadRequest">
+  			<wsdlsoap:body use="literal" />
+  		</wsdl:input>
+  		<wsdl:output name="uploadResponse">
+  			<wsdlsoap:body use="literal" />
+  		</wsdl:output>
+  	</wsdl:operation>
+  	<wsdl:operation name="deployProcess">
+  		<wsdlsoap:operation
+  			soapAction="http://precise.funpd.ac.be/AuiDeployer/deployProcess" />
+  		<wsdl:input>
+  			<wsdlsoap:body use="literal" />
+  		</wsdl:input>
+  		<wsdl:output>
+  			<wsdlsoap:body use="literal" />
+  		</wsdl:output>
+  	</wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProcessDeployerService">
+    <wsdl:port binding="impl:ProcessDeployerSoapBinding" name="ProcessDeployer">
+      <wsdlsoap:address location="http://localhost:8050/UsiWSC_Manager/services/ProcessDeployer"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
