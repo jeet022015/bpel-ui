@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="./main.css">
+<!--[if lt IE 9]>
+ 	 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script type="text/javascript" src="http://localhost:8050/UsiWSC_WebClient/uiwsc/js/jquery-1.7.2.js"></script>
+<script type="text/javascript">
+function test() {
+	var inputs = ["processId", "cuiId"];
+	for (var i = 0; i < inputs.length; i++)
+	{
+	    var element = document.getElementById(inputs[i]);
+	    var value =get(inputs[i]);
+	    element.value = value;
+	}
+	
+	var ids = [
+   	"A",
+   	"B",
+   	"C",
+	];
+
+	for (var i = 0; i < ids.length; i++)
+	{
+		test2(ids[i]);
+	}
+}
+
+function test2(input) {
+	
+	var ids = [
+   	"E",  
+   	"F",  
+   	"G",  
+			  ];
+	
+	var select = document.getElementById(input);
+
+	for(index in ids) {
+		var o = new Option(ids[index], ids[index]);
+		/// jquerify the DOM object 'o' so we can use the html method
+		$(o).html(ids[index]);
+		$("#"+input).append(o);
+		//select.options[select.options.length] = new Option(ids[index], index);
+	}
+}
+
+
+function get(name){
+	   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+	      return decodeURIComponent(name[1]);
+}
+</script>
+<head>
+	<title>UsiWSC - Web Client</title>
+	<meta charset="utf-8" />
+</head>
+
+<body id="index" class="home" onload="test();">
+	<header id="banner" class="body">
+    	<h1 class="logo"><img src="images/UsiWSCLogo.png" title="UsiWSC Logo" alt="UsiWSC Logo" align="left" /><span class="wsc">Usable User Interface for</span> Interactive Web Service Composition</h1>
+		<nav><ul>
+			<li class="active"><a href="#">home</a></li>
+			<li><a href="#">login</a></li>
+			<li><a href="#">subscription</a></li>
+			<li><a href="#">contact</a></li>
+		</ul></nav>
+	</header><!-- /#banner -->
+	
+	<aside id="featured" class="body"><article>
+		<hgroup>
+			<h2>The Web Client Demonstration</h2>
+			<h3><a href="#">UI-BPEL</a></h3>
+		</hgroup>
+		<p> This tool is the concept prove for our proposition. The extension
+		   proposes a new type of interaction events that allow processing of the user interaction.
+		   The user interaction specification helps to generate a user interface for the Web
+		   service composition which is made by transforming the described user interactions
+		   to user interface components.</p>
+	</article></aside><!-- /#featured -->
+	<section id="content" class="body">
+		
+		<ol id="posts-list" class="hfeed">
+			<li><article class="hentry">
+				<footer class="post-info">
+					<h1 class="entry-title">Interaction A</h1>
+				</footer><!-- /.post-info -->
+				
+				<div class="entry-content">
+					<div id="process">
+				      	<form action="$actionRequest" method="get">
+							<input type="hidden" id="processId" name="processId" value="">
+							<input type="hidden" id="cuiId" name="cuiId" value="">
+							<ul id="contactform">
+								<li>
+						    		<select name="A" class="styled-select" id="A">
+										
+									</select>
+						    	</li>
+						    	<li>
+						    		<select name="B" class="styled-select" id="B">
+										
+									</select>
+						    	</li>
+						    	<li>
+						    		<select name="C" class="styled-select" id="C">
+										
+									</select>
+						    	</li>
+								<li>
+									<input type="submit" value="Send" id="sendbutton" name="sendbutton"/>
+								</li>
+							</ul>
+						</form>
+					</div>
+				</div><!-- /.entry-content -->
+			</article></li>
+		</ol><!-- /#posts-list -->
+	</section><!-- /#content -->
+	
+	<footer id="contentinfo" class="body">
+		<img src="images/logo.png" title="UsiWSC Logo" alt="UsiWSC Logo" align="left" />
+		<img src="images/logo3.png" title="UsiWSC Logo" alt="UsiWSC Logo" align="right" />
+		<p>&copy; 2012 UsiXML</p>
+	</footer><!-- /#contentinfo -->
+</body>
+</html>
