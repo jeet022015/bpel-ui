@@ -56,14 +56,29 @@ import be.edu.fundp.precise.uibpel.model.ScopeUI;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
 import be.edu.fundp.precise.uibpel.model.UserRole;
 
+/**
+ * The Class BpelUIReader.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ * @date Dez 9, 2011
+ */
 public class BpelUIReader extends BPELReader {
 
+	/** The my inner reader. */
 	BPELReader myInnerReader;
 
+	/** The v resolver. */
 	BPELVariableResolver vResolver = new BPELVariableResolver();
 
+	/** The my inner process. */
 	Process myInnerProcess;
 
+	/**
+	 * Xml2 scope ui.
+	 *
+	 * @param scopeElement the scope element
+	 * @return the scope ui
+	 */
 	protected ScopeUI xml2ScopeUI(Element scopeElement) {
 		ScopeUI scope = ModelFactory.eINSTANCE.createScopeUI();
 		// attach the DOM node to our new activity
@@ -179,6 +194,12 @@ public class BpelUIReader extends BPELReader {
 		return scope;
 	}
 
+	/**
+	 * Sets the event handler ui.
+	 *
+	 * @param element the element
+	 * @param extensibleElement the extensible element
+	 */
 	protected void setEventHandlerUI(Element element,
 			BPELExtensibleElement extensibleElement) {
 		List<Element> eventHandlerElements = getBPELUiChildElementsByLocalName(
@@ -196,16 +217,14 @@ public class BpelUIReader extends BPELReader {
 	}
 
 	/**
-	 * Returns a list of child nodes of <code>parentElement</code> that are
+	 * Returns a list of child nodes of <code>parentElement</code> that are.
+	 *
+	 * @param parentElement the element to find the children of
+	 * @param localName the localName to match against
+	 * @return a node list of the matching children of parentElement
 	 * {@link Element}s with a BPEL namespace that have the given
 	 * <code>localName</code>. Returns an empty list if no matching elements are
 	 * found.
-	 * 
-	 * @param parentElement
-	 *            the element to find the children of
-	 * @param localName
-	 *            the localName to match against
-	 * @return a node list of the matching children of parentElement
 	 */
 	protected List<Element> getBPELUiChildElementsByLocalName(
 			Element parentElement, String localName) {
@@ -221,6 +240,12 @@ public class BpelUIReader extends BPELReader {
 		return list;
 	}
 
+	/**
+	 * Xml2 event ui handler.
+	 *
+	 * @param eventHandlerElement the event handler element
+	 * @return the event handler
+	 */
 	protected EventHandler xml2EventUIHandler(Element eventHandlerElement) {
 		EventHandlerUI eventHandler = ModelFactory.eINSTANCE
 				.createEventHandlerUI();
@@ -258,6 +283,12 @@ public class BpelUIReader extends BPELReader {
 		return eventHandler;
 	}
 
+	/**
+	 * Xml2 on user event.
+	 *
+	 * @param pickInstanceElement the pick instance element
+	 * @return the on user event
+	 */
 	protected OnUserEvent xml2OnUserEvent(Element pickInstanceElement) {
 		// create a new DataOutputUI model object if not already created
 		OnUserEvent sa = ModelFactory.eINSTANCE.createOnUserEvent();
@@ -284,6 +315,14 @@ public class BpelUIReader extends BPELReader {
 		return sa;
 	}
 
+	/**
+	 * Xml2 data input ui.
+	 *
+	 * @param activity the activity
+	 * @param saElement the sa element
+	 * @param process the process
+	 * @return the data input ui
+	 */
 	protected DataInputUI xml2DataInputUI(Activity activity, Element saElement,
 			Process process) {
 		DataInputUI sa = ModelFactory.eINSTANCE.createDataInputUI();
@@ -291,9 +330,16 @@ public class BpelUIReader extends BPELReader {
 
 		setID(saElement, sa);
 		setUserRole(saElement, sa);
+		setCreateInstance(saElement, sa);
 		return sa;
 	}
 
+	/**
+	 * Read input data items.
+	 *
+	 * @param activity the activity
+	 * @param saElement the sa element
+	 */
 	public void readInputDataItems(DataInputUI activity, Element saElement) {
 		NodeList dataItemElements = saElement.getChildNodes();
 
@@ -316,6 +362,13 @@ public class BpelUIReader extends BPELReader {
 		}
 	}
 
+	/**
+	 * Xml2 data item.
+	 *
+	 * @param activity the activity
+	 * @param dataItemElement the data item element
+	 * @return the data item
+	 */
 	private DataItem xml2DataItem(Activity activity, Element dataItemElement) {
 		DataItem aDataItem = ModelFactory.eINSTANCE.createDataItem();
 		aDataItem.setElement(dataItemElement);
@@ -335,6 +388,12 @@ public class BpelUIReader extends BPELReader {
 		return aDataItem;
 	}
 
+	/**
+	 * Sets the user role.
+	 *
+	 * @param saElement the sa element
+	 * @param sa the sa
+	 */
 	private void setUserRole(Element saElement, UserInteraction sa) {
 		NodeList userRoles = saElement.getChildNodes();
 		Element userRoleElement = null;
@@ -360,6 +419,12 @@ public class BpelUIReader extends BPELReader {
 		}
 	}
 
+	/**
+	 * Sets the id.
+	 *
+	 * @param saElement the sa element
+	 * @param sa the sa
+	 */
 	private void setID(Element saElement, UserInteraction sa) {
 		String attName = ModelPackage.eINSTANCE.getUserInteraction_Id()
 				.getName();
@@ -369,15 +434,30 @@ public class BpelUIReader extends BPELReader {
 		}
 	}
 
+	/**
+	 * Xml2 data output ui.
+	 *
+	 * @param activity the activity
+	 * @param saElement the sa element
+	 * @param process the process
+	 * @return the data output ui
+	 */
 	protected DataOutputUI xml2DataOutputUI(Activity activity,
 			Element saElement, Process process) {
 		DataOutputUI sa = ModelFactory.eINSTANCE.createDataOutputUI();
 		sa.setElement(saElement);
 		setID(saElement, sa);
 		setUserRole(saElement, sa);
+		setCreateInstance(saElement, sa);
 		return sa;
 	}
 
+	/**
+	 * Read output data items.
+	 *
+	 * @param sa the sa
+	 * @param saElement the sa element
+	 */
 	public void readOutputDataItems(DataOutputUI sa, Element saElement) {
 		NodeList dataItemElements = saElement.getChildNodes();
 		Element dataItemElement = null;
@@ -397,6 +477,14 @@ public class BpelUIReader extends BPELReader {
 		}
 	}
 
+	/**
+	 * Xml2 data selection ui.
+	 *
+	 * @param activity the activity
+	 * @param saElement the sa element
+	 * @param process the process
+	 * @return the data selection ui
+	 */
 	protected DataSelectionUI xml2DataSelectionUI(Activity activity,
 			Element saElement, Process process) {
 		DataSelectionUI sa = ModelFactory.eINSTANCE.createDataSelectionUI();
@@ -405,9 +493,16 @@ public class BpelUIReader extends BPELReader {
 		setMinCardin(saElement, sa);
 		setID(saElement, sa);
 		setUserRole(saElement, sa);
+		setCreateInstance(saElement, sa);
 		return sa;
 	}
 
+	/**
+	 * Sets the min cardin.
+	 *
+	 * @param saElement the sa element
+	 * @param sa the sa
+	 */
 	private void setMinCardin(Element saElement, DataSelectionUI sa) {
 		// handle the MaxCardinality
 		String attName = ModelPackage.eINSTANCE
@@ -418,6 +513,12 @@ public class BpelUIReader extends BPELReader {
 		}
 	}
 
+	/**
+	 * Sets the max card.
+	 *
+	 * @param saElement the sa element
+	 * @param sa the sa
+	 */
 	private void setMaxCard(Element saElement, DataSelectionUI sa) {
 		// handle the MaxCardinality
 		String attName = ModelPackage.eINSTANCE
@@ -428,6 +529,30 @@ public class BpelUIReader extends BPELReader {
 		}
 	}
 
+
+	/**
+	 * Sets the create instance.
+	 *
+	 * @param activity the activity
+	 * @param saElement the sa element
+	 */
+	public void setCreateInstance(Element saElement, UserInteraction activity) {
+		String inputVarName = saElement
+				.getAttribute(ModelPackage.eINSTANCE.getUserInteraction_CreateInstance()
+						.getName());
+		if (inputVarName != null && !"".equals(inputVarName.trim())) {
+			activity.setCreateInstance(Boolean.parseBoolean(inputVarName));
+		}
+	}
+
+	/**
+	 * Xml2 pick ui.
+	 *
+	 * @param activity the activity
+	 * @param pickElement the pick element
+	 * @param process the process
+	 * @return the activity
+	 */
 	public Activity xml2PickUI(Activity activity, Element pickElement,
 			Process process) {
 		PickUI pick;
@@ -488,11 +613,10 @@ public class BpelUIReader extends BPELReader {
 	/**
 	 * Sets a PartnerLink element for a given EObject. The given activity
 	 * element must contain an attribute named "partnerLink".
-	 * 
-	 * @param activityElement
-	 *            the DOM element of the activity
-	 * @param eObject
-	 *            the EObject in which to set the partner link
+	 *
+	 * @param activityElement the DOM element of the activity
+	 * @param eObject the EObject in which to set the partner link
+	 * @param reference the reference
 	 */
 	@Override
 	protected void setPartnerLink(Element activityElement,
@@ -518,6 +642,9 @@ public class BpelUIReader extends BPELReader {
 	/**
 	 * Sets name, portType, operation, partner, variable, messageType and
 	 * correlation for a given PartnerActivity object.
+	 *
+	 * @param activityElement the activity element
+	 * @param onEvent the on event
 	 */
 	@Override
 	protected void setOperationParmsOnEvent(final Element activityElement,
@@ -588,28 +715,55 @@ public class BpelUIReader extends BPELReader {
 		}
 	}
 
+	/**
+	 * Sets the inner reader.
+	 *
+	 * @param bpelReader the new inner reader
+	 */
 	public void setInnerReader(BPELReader bpelReader) {
 		myInnerReader = bpelReader;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.model.resource.BPELReader#getResource()
+	 */
 	public Resource getResource() {
 		return myInnerReader.getResource();
 	}
 
+	/**
+	 * My pass2.
+	 */
 	public void myPass2() {
 		pass2();
 
 	}
 
+	/**
+	 * Gets the inner reader.
+	 *
+	 * @return the inner reader
+	 */
 	public BPELReader getInnerReader() {
 		return myInnerReader;
 	}
 
+	/**
+	 * Sets the inner process.
+	 *
+	 * @param process the new inner process
+	 */
 	public void setInnerProcess(Process process) {
 		myInnerProcess = process;
 	}
 
+	/**
+	 * Gets the inner process.
+	 *
+	 * @return the inner process
+	 */
 	public Process getInnerProcess() {
 		return myInnerProcess;
 	}
+
 }

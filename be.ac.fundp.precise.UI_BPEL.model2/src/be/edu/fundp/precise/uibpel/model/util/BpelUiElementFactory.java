@@ -71,16 +71,29 @@ import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.UserRole;
 import be.edu.fundp.precise.uibpel.model.impl.OnUserEventImpl;
 
-
+/**
+ * A factory for creating BpelUiElement objects.
+ */
 public class BpelUiElementFactory{
+	
+	/** The document2 writers. */
 	private WeakHashMap<Document, WeakReference<BpelUIWriter>> document2Writers = new WeakHashMap<Document, WeakReference<BpelUIWriter>>();
 
+	/** The factory. */
 	private static BpelUiElementFactory factory;
 
+	/**
+	 * Instantiates a new bpel ui element factory.
+	 */
 	private BpelUiElementFactory() {
 		super();
 	}
 
+	/**
+	 * Gets the single instance of BpelUiElementFactory.
+	 *
+	 * @return single instance of BpelUiElementFactory
+	 */
 	public static BpelUiElementFactory getInstance() {
 		if (factory == null) {
 			factory = new BpelUiElementFactory();
@@ -88,6 +101,13 @@ public class BpelUiElementFactory{
 		return factory;
 	}
 
+	/**
+	 * Creates a new BpelUiElement object.
+	 *
+	 * @param element the element
+	 * @param parent the parent
+	 * @return the element
+	 */
 	public Element createElement(WSDLElement element, Object parent) {
 		BpelUIWriter writer = getWriter(parent);
 		if (element instanceof Activity) {
@@ -264,6 +284,13 @@ public class BpelUiElementFactory{
 		throw new IllegalArgumentException("Cannot create element for type: " + element.getClass().getName());
 	}
 
+	/**
+	 * Creates a new BpelUiElement object.
+	 *
+	 * @param from the from
+	 * @param text the text
+	 * @return the node
+	 */
 	public Node createLiteral(From from, String text) {
 		BpelUIWriter writer = getWriter(from);
 		Node node = null;
@@ -291,16 +318,37 @@ public class BpelUiElementFactory{
 		return literal;
 	}
 
+	/**
+	 * Creates a new BpelUiElement object.
+	 *
+	 * @param correlationSet the correlation set
+	 * @return the string
+	 */
 	public String createPropertiesString(CorrelationSet correlationSet) {
 		return getWriter(correlationSet).properties2XML(correlationSet);
 	}
 
+	/**
+	 * Creates a new BpelUiElement object.
+	 *
+	 * @param element the element
+	 * @param parent the parent
+	 * @param name the name
+	 * @return the element
+	 */
 	public Element createExpressionElement(Expression element, Object parent,
 			String name) {
 		BpelUIWriter writer = getWriter(parent);
 		return writer.expression2XML(element, name);
 	}
 
+	/**
+	 * Creates a new BpelUiElement object.
+	 *
+	 * @param element the element
+	 * @param name the name
+	 * @return the string
+	 */
 	public String createName(WSDLElement element, QName name) {
 		String namespace = name.getNamespaceURI();
 		String prefix = BPELUtils.getNamespacePrefix(element, namespace);
@@ -318,6 +366,12 @@ public class BpelUiElementFactory{
 	}	
 
 
+	/**
+	 * Gets the writer.
+	 *
+	 * @param parent the parent
+	 * @return the writer
+	 */
 	private BpelUIWriter getWriter(Object parent) {
 		Document ownerDocument = getOwnerDocument(parent);
 		BpelUIWriter writer = document2Writers.get(ownerDocument) != null ? document2Writers.get(ownerDocument).get() : null;
@@ -340,6 +394,12 @@ public class BpelUiElementFactory{
 		return writer;
 	}
 	
+	/**
+	 * Gets the owner document.
+	 *
+	 * @param parent the parent
+	 * @return the owner document
+	 */
 	private static Document getOwnerDocument(Object parent) {
 		Document ownerDocument = null;
 		// if (!BPELUtils.isTransparentObject(parent)) {
@@ -353,10 +413,22 @@ public class BpelUiElementFactory{
 		return ownerDocument;
 	}
 	
+	/**
+	 * Write fault handler.
+	 *
+	 * @param faultHandler the fault handler
+	 * @param parent the parent
+	 */
 	void writeFaultHandler(FaultHandler faultHandler, WSDLElement parent) {
 		getWriter(parent).faultHandler2XML(parent.getElement(), faultHandler);
 	}
 
+	/**
+	 * Creates a new BpelUiElement object.
+	 *
+	 * @param serviceRef the service ref
+	 * @return the node
+	 */
 	public Node createValue(ServiceRef serviceRef) {
 		return getWriter(serviceRef).serviceRefValue2XML(serviceRef);
 	}

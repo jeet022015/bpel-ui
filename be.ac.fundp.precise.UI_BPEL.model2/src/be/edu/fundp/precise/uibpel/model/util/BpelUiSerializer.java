@@ -31,8 +31,17 @@ import be.edu.fundp.precise.uibpel.model.UserRole;
  * reference for the SampleSimpleActivity and a Variable definition
  * for the SampleStructuredActivity.
  */
+/**
+ * The Class BpelUiSerializer.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ * @date Dez 9, 2011
+ */
 public class BpelUiSerializer implements BPELActivitySerializer {
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.model.extensions.BPELActivitySerializer#marshall(javax.xml.namespace.QName, org.eclipse.bpel.model.Activity, org.w3c.dom.Node, org.eclipse.bpel.model.Process, org.eclipse.bpel.model.resource.BPELWriter)
+	 */
 	@Override
 	public void marshall(QName elementType, Activity activity,
 			Node parentNode, Process process,
@@ -139,6 +148,10 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 				else 
 					saElement.setAttribute(attMaxCardi, Integer.toString(BpelUiUtils.getNewId()));
 				
+				String attCreateInstance = ModelPackage.eINSTANCE
+						.getUserInteraction_Id().getName();
+				saElement.setAttribute(attCreateInstance, String.valueOf(sa.isCreateInstance()));
+				
 				EList<UserRole> roles = sa.getUserRoles();
 				for (UserRole role : roles) {
 					saElement.appendChild(userRole2XML(role,
@@ -153,6 +166,16 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 		parentNode.appendChild(saElement);
 	}
 
+	/**
+	 * User role2 xml.
+	 *
+	 * @param role the role
+	 * @param document the document
+	 * @param namespaceURI the namespace uri
+	 * @param process the process
+	 * @param ndUserRole the nd user role
+	 * @return the node
+	 */
 	private Node userRole2XML(UserRole role, Document document,
 			String namespaceURI, Process process, String ndUserRole) {
 		Element saElement = document.createElementNS(namespaceURI, ndUserRole);
@@ -165,6 +188,16 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 		return saElement;
 	}
 
+	/**
+	 * Event ui handler2 xml.
+	 *
+	 * @param eventHandler the event handler
+	 * @param document the document
+	 * @param elementType the element type
+	 * @param process the process
+	 * @param bpelWriter the bpel writer
+	 * @return the node
+	 */
 	public Node eventUIHandler2XML(EventHandlerUI eventHandler,
 			Document document, String elementType, Process process,
 			BPELWriter bpelWriter) {
@@ -198,6 +231,16 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 		return eventHandlerElement;
 	}
 
+	/**
+	 * On user event2 xml.
+	 *
+	 * @param onUserEvent the on user event
+	 * @param document the document
+	 * @param elementType the element type
+	 * @param process the process
+	 * @param bpelWriter the bpel writer
+	 * @return the node
+	 */
 	public Node onUserEvent2XML(OnUserEvent onUserEvent, Document document,
 			String elementType, Process process, BPELWriter bpelWriter) {
 		// create a new DOM element for our Activity
@@ -218,6 +261,16 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 		return saElement;
 	}
 
+	/**
+	 * Data item2 xml.
+	 *
+	 * @param dataItem the data item
+	 * @param document the document
+	 * @param namespaceURI the namespace uri
+	 * @param process the process
+	 * @param name the name
+	 * @return the node
+	 */
 	public Node dataItem2XML(DataItem dataItem, Document document,
 			String namespaceURI, Process process, String name) {
 		Element saElement = document.createElementNS(namespaceURI, name);
@@ -234,6 +287,16 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 		return saElement;
 	}
 
+	/**
+	 * User role2 xml.
+	 *
+	 * @param element the element
+	 * @param staticDoc the static doc
+	 * @param namespace the namespace
+	 * @param process the process
+	 * @param bpelUIWriter the bpel ui writer
+	 * @return the element
+	 */
 	public Element userRole2XML(UserRole element, Document staticDoc,
 			String namespace, Process process, BpelUIWriter bpelUIWriter) {
 		Element saElement = staticDoc.createElementNS(namespace, BpelUiConstants.ND_USER_ROLE);

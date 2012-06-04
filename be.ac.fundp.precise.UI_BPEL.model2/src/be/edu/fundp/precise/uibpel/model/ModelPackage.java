@@ -126,13 +126,22 @@ public interface ModelPackage extends EPackage {
 	int USER_INTERACTION__USER_ROLES = BPELPackage.BPEL_EXTENSIBLE_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Create Instance</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int USER_INTERACTION__CREATE_INSTANCE = BPELPackage.BPEL_EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>User Interaction</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int USER_INTERACTION_FEATURE_COUNT = BPELPackage.BPEL_EXTENSIBLE_ELEMENT_FEATURE_COUNT + 2;
+	int USER_INTERACTION_FEATURE_COUNT = BPELPackage.BPEL_EXTENSIBLE_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link be.edu.fundp.precise.uibpel.model.impl.DataInteractionImpl <em>Data Interaction</em>}' class.
@@ -197,6 +206,15 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int DATA_INTERACTION__USER_ROLES = USER_INTERACTION__USER_ROLES;
+
+	/**
+	 * The feature id for the '<em><b>Create Instance</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_INTERACTION__CREATE_INSTANCE = USER_INTERACTION__CREATE_INSTANCE;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -381,6 +399,15 @@ public interface ModelPackage extends EPackage {
 	int DATA_INPUT_UI__USER_ROLES = DATA_INTERACTION__USER_ROLES;
 
 	/**
+	 * The feature id for the '<em><b>Create Instance</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_INPUT_UI__CREATE_INSTANCE = DATA_INTERACTION__CREATE_INSTANCE;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -499,6 +526,15 @@ public interface ModelPackage extends EPackage {
 	int DATA_OUTPUT_UI__USER_ROLES = DATA_INTERACTION__USER_ROLES;
 
 	/**
+	 * The feature id for the '<em><b>Create Instance</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_OUTPUT_UI__CREATE_INSTANCE = DATA_INTERACTION__CREATE_INSTANCE;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -615,6 +651,15 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int DATA_SELECTION_UI__USER_ROLES = DATA_INPUT_UI__USER_ROLES;
+
+	/**
+	 * The feature id for the '<em><b>Create Instance</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_SELECTION_UI__CREATE_INSTANCE = DATA_INPUT_UI__CREATE_INSTANCE;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -760,6 +805,15 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int ON_USER_EVENT__USER_ROLES = USER_INTERACTION__USER_ROLES;
+
+	/**
+	 * The feature id for the '<em><b>Create Instance</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ON_USER_EVENT__CREATE_INSTANCE = USER_INTERACTION__CREATE_INSTANCE;
 
 	/**
 	 * The feature id for the '<em><b>Activity</b></em>' containment reference.
@@ -1286,6 +1340,17 @@ public interface ModelPackage extends EPackage {
 	EReference getUserInteraction_UserRoles();
 
 	/**
+	 * Returns the meta object for the attribute '{@link be.edu.fundp.precise.uibpel.model.UserInteraction#isCreateInstance <em>Create Instance</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Create Instance</em>'.
+	 * @see be.edu.fundp.precise.uibpel.model.UserInteraction#isCreateInstance()
+	 * @see #getUserInteraction()
+	 * @generated
+	 */
+	EAttribute getUserInteraction_CreateInstance();
+
+	/**
 	 * Returns the meta object for class '{@link be.edu.fundp.precise.uibpel.model.DataInteraction <em>Data Interaction</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1552,6 +1617,14 @@ public interface ModelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference USER_INTERACTION__USER_ROLES = eINSTANCE.getUserInteraction_UserRoles();
+
+		/**
+		 * The meta object literal for the '<em><b>Create Instance</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute USER_INTERACTION__CREATE_INSTANCE = eINSTANCE.getUserInteraction_CreateInstance();
 
 		/**
 		 * The meta object literal for the '{@link be.edu.fundp.precise.uibpel.model.impl.DataInteractionImpl <em>Data Interaction</em>}' class.

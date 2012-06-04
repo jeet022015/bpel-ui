@@ -8,13 +8,21 @@ import org.w3c.dom.Node;
 
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 
+/**
+ * The Class BpelUiUtils.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ * @date Dez 9, 2011
+ */
 public class BpelUiUtils {
 	
+	/** The id. */
 	private static int id = 0;
 
 	/**
-	 * Adds the extensionsample namespace to the given process
-	 * @param process
+	 * Adds the extensionsample namespace to the given process.
+	 *
+	 * @param process the process
 	 * @return the preferred namespace prefix
 	 */
 	public static String addNamespace(Process process) {
@@ -25,10 +33,20 @@ public class BpelUiUtils {
 		return nsPrefix;
 	}
 	
+	/**
+	 * Gets the new id.
+	 *
+	 * @return the new id
+	 */
 	public static int getNewId(){
 		return id++;
 	}
 	
+	/**
+	 * Sets the id.
+	 *
+	 * @param newStrId the new id
+	 */
 	public static void setId(String newStrId){
 		try {
 			int newId = Integer.parseInt(newStrId);
@@ -39,11 +57,23 @@ public class BpelUiUtils {
 		}
 	}
 
+	/**
+	 * Checks if is bpel ui element.
+	 *
+	 * @param node the node
+	 * @return true, if is bpel ui element
+	 */
 	public static boolean isBpelUiElement(Node node) {
 		return node != null && node.getNodeType() == Node.ELEMENT_NODE
 				&& (BPELConstants.isBPELNamespace(node.getNamespaceURI()) || BpelUiConstants.isBPELNamespace(node.getNamespaceURI()));
 	}
 
+	/**
+	 * Checks if is higher id.
+	 *
+	 * @param newStrId the new str id
+	 * @return true, if is higher id
+	 */
 	public static boolean isHigherId(String newStrId) {
 		try {
 			int newId = Integer.parseInt(newStrId);

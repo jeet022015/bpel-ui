@@ -39,6 +39,12 @@
 				id="be.ac.fundp.precise.ui_bpel.ui.properties.UserRolePropertySection">
 				<input type="be.edu.fundp.precise.uibpel.model.UserInteraction" />
 			</propertySection>
+			<propertySection
+				class="be.ac.fundp.precise.ui_bpel.ui.properties.CreateInstanceSection"
+				tab="org.eclipse.bpel.ui.tabs.details"
+				id="be.ac.fundp.precise.ui_bpel.ui.properties.CreateInstanceSection">
+				<input type="be.edu.fundp.precise.uibpel.model.UserInteraction" />
+			</propertySection>
          </propertySections>
    </extension>
 	

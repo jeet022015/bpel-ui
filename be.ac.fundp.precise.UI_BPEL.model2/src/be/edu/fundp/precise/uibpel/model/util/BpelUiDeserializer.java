@@ -24,11 +24,21 @@ import be.edu.fundp.precise.uibpel.model.UserInteraction;
  * reference for the SampleSimpleActivity and a Variable definition
  * for the SampleStructuredActivity.
  */
+/**
+ * The Class BpelUiDeserializer.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ * @date Dez 9, 2011
+ */
 public class BpelUiDeserializer implements BPELActivityDeserializer {
 		
 //	Set <Integer> codes = new HashSet<Integer>();
-	BpelUIReader inBpelUIReader = new BpelUIReader();
+	/** The in bpel ui reader. */
+BpelUIReader inBpelUIReader = new BpelUIReader();
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.bpel.model.extensions.BPELActivityDeserializer#unmarshall(javax.xml.namespace.QName, org.w3c.dom.Node, org.eclipse.bpel.model.Activity, org.eclipse.bpel.model.Process, java.util.Map, javax.wsdl.extensions.ExtensionRegistry, org.eclipse.emf.common.util.URI, org.eclipse.bpel.model.resource.BPELReader)
+	 */
 	@Override
 	public Activity unmarshall(QName elementType, Node node, Activity activity, Process process,
 			Map nsMap, ExtensionRegistry extReg, URI uri, BPELReader bpelReader) {
@@ -92,6 +102,7 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 		 */
 		if (BpelUiConstants.ND_PICK_UI.equals(elementType.getLocalPart())) {
 			Element saElement = (Element)node;
+			inBpelUIReader.myPass2();
 			return inBpelUIReader.xml2PickUI(activity,saElement, realProcess);
 		}
 		
@@ -109,6 +120,13 @@ public class BpelUiDeserializer implements BPELActivityDeserializer {
 		return null;
 	}
 
+	/**
+	 * Resolve data items.
+	 *
+	 * @param activity the activity
+	 * @param saElement the sa element
+	 * @param process the process
+	 */
 	private void resolveDataItems(UserInteraction activity, Element saElement, Process process) {
 		if (activity instanceof DataOutputUI){
 			inBpelUIReader.readOutputDataItems((DataOutputUI)activity, saElement);

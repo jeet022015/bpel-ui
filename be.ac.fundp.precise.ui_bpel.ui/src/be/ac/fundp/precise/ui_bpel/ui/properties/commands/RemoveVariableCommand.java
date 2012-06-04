@@ -12,7 +12,6 @@ import org.eclipse.bpel.ui.util.ModelHelper;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.wst.wsdl.WSDLElement;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class RemoveVariableCommand.
  *
@@ -22,6 +21,8 @@ public class RemoveVariableCommand extends RemoveFromListCommand {
 
 	/** The context. */
 	Object context;
+	
+	/** The var delete. */
 	Variable varDelete;
 	
 	/**
@@ -47,6 +48,12 @@ public class RemoveVariableCommand extends RemoveFromListCommand {
 		return new ArrayList<Variable>();
 	}
 
+	/**
+	 * Gets the correct variables.
+	 *
+	 * @param context the context
+	 * @return the correct variables
+	 */
 	private Variables getCorrectVariables(EObject context) {
 		if (context instanceof Process) 
 			return ((Process)context).getVariables();

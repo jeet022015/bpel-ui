@@ -3,15 +3,17 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="model"
     nsURI="http://fundp.ac.be/precise/" nsPrefix="ui_bpel">
-  <eClassifiers xsi:type="ecore:EClass" name="UserInteraction" abstract="true" eSuperTypes="../../org.eclipse.bpel.model/bin/model/bpel.ecore#//BPELExtensibleElement">
+  <eClassifiers xsi:type="ecore:EClass" name="UserInteraction" abstract="true" eSuperTypes="../../org.eclipse.bpel.model/src/model/bpel.ecore#//BPELExtensibleElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="userRoles" upperBound="-1"
         eType="#//UserRole" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="createInstance" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="DataInteraction" abstract="true" eSuperTypes="#//UserInteraction ../../org.eclipse.bpel.model/bin/model/bpel.ecore#//ExtensionActivity"/>
-  <eClassifiers xsi:type="ecore:EClass" name="DataItem" eSuperTypes="../../org.eclipse.bpel.model/bin/model/bpel.ecore#//BPELExtensibleElement">
+  <eClassifiers xsi:type="ecore:EClass" name="DataInteraction" abstract="true" eSuperTypes="#//UserInteraction ../../org.eclipse.bpel.model/src/model/bpel.ecore#//ExtensionActivity"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DataItem" eSuperTypes="../../org.eclipse.bpel.model/src/model/bpel.ecore#//BPELExtensibleElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="#//DataType"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" eType="ecore:EClass ../../org.eclipse.bpel.model/bin/model/bpel.ecore#//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" eType="ecore:EClass ../../org.eclipse.bpel.model/src/model/bpel.ecore#//Variable"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="DataType">
     <eLiterals name="StringType" value="1"/>
@@ -32,19 +34,19 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxCardinality" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OnUserEvent" eSuperTypes="#//UserInteraction">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="activity" eType="ecore:EClass ../../org.eclipse.bpel.model/bin/model/bpel.ecore#//Activity"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="activity" eType="ecore:EClass ../../org.eclipse.bpel.model/src/model/bpel.ecore#//Activity"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PickUI" eSuperTypes="../../org.eclipse.bpel.model/bin/model/bpel.ecore#//Pick ../../org.eclipse.bpel.model/bin/model/bpel.ecore#//ExtensionActivity">
+  <eClassifiers xsi:type="ecore:EClass" name="PickUI" eSuperTypes="../../org.eclipse.bpel.model/src/model/bpel.ecore#//Pick ../../org.eclipse.bpel.model/src/model/bpel.ecore#//ExtensionActivity">
     <eStructuralFeatures xsi:type="ecore:EReference" name="userInteraction" upperBound="-1"
         eType="#//OnUserEvent" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ScopeUI" eSuperTypes="../../org.eclipse.bpel.model/bin/model/bpel.ecore#//Scope ../../org.eclipse.bpel.model/bin/model/bpel.ecore#//ExtensionActivity"/>
-  <eClassifiers xsi:type="ecore:EClass" name="EventHandlerUI" eSuperTypes="../../org.eclipse.bpel.model/bin/model/bpel.ecore#//EventHandler">
+  <eClassifiers xsi:type="ecore:EClass" name="ScopeUI" eSuperTypes="../../org.eclipse.bpel.model/src/model/bpel.ecore#//Scope ../../org.eclipse.bpel.model/src/model/bpel.ecore#//ExtensionActivity"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EventHandlerUI" eSuperTypes="../../org.eclipse.bpel.model/src/model/bpel.ecore#//EventHandler">
     <eStructuralFeatures xsi:type="ecore:EReference" name="userInteraction" upperBound="-1"
         eType="#//OnUserEvent" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="UserRole" eSuperTypes="../../org.eclipse.bpel.model/bin/model/bpel.ecore#//BPELExtensibleElement">
+  <eClassifiers xsi:type="ecore:EClass" name="UserRole" eSuperTypes="../../org.eclipse.bpel.model/src/model/bpel.ecore#//BPELExtensibleElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="roleId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

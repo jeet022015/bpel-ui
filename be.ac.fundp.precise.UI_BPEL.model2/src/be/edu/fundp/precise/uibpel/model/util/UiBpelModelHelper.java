@@ -21,13 +21,24 @@ import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.PickUI;
 import be.edu.fundp.precise.uibpel.model.ScopeUI;
 
+/**
+ * The Class UiBpelModelHelper.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ * @date Dez 9, 2011
+ */
 public class UiBpelModelHelper {
 
+	/**
+	 * Find me.
+	 *
+	 * @param me the me
+	 * @param activity the activity
+	 * @return the activity
+	 */
 	static public Activity findMe(ExtensionActivity me, Activity activity) {
 		Activity aux = null;
-		System.out.println("AAAAAAAAAAA="+activity);
 		if (activity instanceof ExtensionActivity) {
-			System.out.println("test="+activity.getName());
 			return verifyMe(me, (ExtensionActivity)activity);
 		}
 		
@@ -147,6 +158,13 @@ public class UiBpelModelHelper {
 		return null;
 	}
 
+	/**
+	 * Verify me.
+	 *
+	 * @param me the me
+	 * @param activity the activity
+	 * @return the activity
+	 */
 	static private Activity verifyMe(ExtensionActivity me, ExtensionActivity activity) {
 		System.out.println("test="+activity.getName());
 		System.out.println("me="+me.getName());

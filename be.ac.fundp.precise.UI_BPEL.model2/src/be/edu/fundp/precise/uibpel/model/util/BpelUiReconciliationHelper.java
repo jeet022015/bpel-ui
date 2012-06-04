@@ -42,20 +42,43 @@ import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
 import be.edu.fundp.precise.uibpel.model.OnUserEvent;
 import be.edu.fundp.precise.uibpel.model.UserRole;
 
+/**
+ * The Class BpelUiReconciliationHelper.
+ *
+ * @author Waldemar Pires Ferreira Neto (waldemar.neto@fundp.ac.be)
+ * @date Dez 9, 2011
+ */
 public class BpelUiReconciliationHelper extends ReconciliationHelper{
 	
+	/** The self. */
 	protected static BpelUiReconciliationHelper self;
 	
+	/**
+	 * Instantiates a new bpel ui reconciliation helper.
+	 */
 	protected BpelUiReconciliationHelper(){
 		super();
 	}
 	
+	/**
+	 * Gets the single instance of BpelUiReconciliationHelper.
+	 *
+	 * @return single instance of BpelUiReconciliationHelper
+	 */
 	public static BpelUiReconciliationHelper getInstance(){
 		if(self == null)
 			self = new BpelUiReconciliationHelper();
 		return self;
 	}
 	
+	/**
+	 * Adopt child.
+	 *
+	 * @param parent the parent
+	 * @param children the children
+	 * @param newChild the new child
+	 * @param nodeName the node name
+	 */
 	public static void adoptChild(WSDLElement parent, List<? extends WSDLElement> children, WSDLElement newChild, String nodeName) {
 		boolean oldUpdatingDom = myIsUpdatingDom(parent);
 		try {
@@ -102,6 +125,15 @@ public class BpelUiReconciliationHelper extends ReconciliationHelper{
 		}
 	}
 
+	/**
+	 * Patch dom ui.
+	 *
+	 * @param child the child
+	 * @param parent the parent
+	 * @param parentElement the parent element
+	 * @param before the before
+	 * @param beforeElement the before element
+	 */
 	public void patchDomUI(EObject child, EObject parent, Node parentElement, EObject before, Node beforeElement) {
          if (child instanceof EventHandlerUI) {
 	    	// fix https://bugs.eclipse.org/bugs/show_bug.cgi?id=330308
@@ -123,6 +155,12 @@ public class BpelUiReconciliationHelper extends ReconciliationHelper{
 	}
 	
 	
+	/**
+	 * My set updating dom.
+	 *
+	 * @param element the element
+	 * @param updatingDOM the updating dom
+	 */
 	private static void mySetUpdatingDom(WSDLElement element, boolean updatingDOM) {
 		if (element instanceof BPELExtensibleElementImpl) {
 			((BPELExtensibleElementImpl) element).setUpdatingDOM(updatingDOM);			
@@ -131,6 +169,12 @@ public class BpelUiReconciliationHelper extends ReconciliationHelper{
 		}
 	}
 
+	/**
+	 * My is updating dom.
+	 *
+	 * @param parent the parent
+	 * @return true, if successful
+	 */
 	private static boolean myIsUpdatingDom(WSDLElement parent) {
 		if (parent instanceof BPELExtensibleElementImpl) {
 			return ((BPELExtensibleElementImpl) parent).isUpdatingDOM();			
@@ -140,6 +184,12 @@ public class BpelUiReconciliationHelper extends ReconciliationHelper{
 		return false;
 	}
 	
+	/**
+	 * Orphan child.
+	 *
+	 * @param parent the parent
+	 * @param child the child
+	 */
 	public static void orphanChild(WSDLElement parent, WSDLElement child) {
 		boolean oldUpdatingDom = isUpdatingDom(parent);
 		try {
@@ -204,6 +254,13 @@ public class BpelUiReconciliationHelper extends ReconciliationHelper{
 		}
 	}
 	
+	/**
+	 * Replace child.
+	 *
+	 * @param parent the parent
+	 * @param oldElement the old element
+	 * @param newElement the new element
+	 */
 	public static void replaceChild(WSDLElement parent, WSDLElement oldElement,
 			WSDLElement newElement) {
 		boolean oldUpdatingDom = isUpdatingDom(parent);
@@ -262,6 +319,12 @@ public class BpelUiReconciliationHelper extends ReconciliationHelper{
 		}
 	}
 	
+	/**
+	 * Checks if is updating dom.
+	 *
+	 * @param element the element
+	 * @return true, if is updating dom
+	 */
 	static boolean isUpdatingDom(WSDLElement element) {
 		if (element instanceof BPELExtensibleElementImpl) {
 			return ((BPELExtensibleElementImpl) element).isUpdatingDOM();			
@@ -271,6 +334,12 @@ public class BpelUiReconciliationHelper extends ReconciliationHelper{
 		return false;
 	}
 	
+	/**
+	 * Sets the updating dom.
+	 *
+	 * @param element the element
+	 * @param updatingDOM the updating dom
+	 */
 	static void setUpdatingDom(WSDLElement element, boolean updatingDOM) {
 		if (element instanceof BPELExtensibleElementImpl) {
 			((BPELExtensibleElementImpl) element).setUpdatingDOM(updatingDOM);			
