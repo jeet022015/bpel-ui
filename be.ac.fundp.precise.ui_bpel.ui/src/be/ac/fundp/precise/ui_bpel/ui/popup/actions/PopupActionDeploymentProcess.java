@@ -50,27 +50,21 @@ public class PopupActionDeploymentProcess extends PopupActionWithProcessRepresen
 		} catch (ConfigurationException e) {
 			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
 					e.getMessage());
-			//e.printStackTrace();
 		} catch (CoreException e) {
 			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
 					e.getMessage());
-			//e.printStackTrace();
 		} catch (ParserConfigurationException e) {
 			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
 					e.getMessage());
-			//e.printStackTrace();
 		} catch (SAXException e) {
 			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
 					e.getMessage());
-			//e.printStackTrace();
 		} catch (IOException e) {
 			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
 					e.getMessage());
-			//e.printStackTrace();
 		} catch (TransformerException e) {
 			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
 					e.getMessage());
-			//e.printStackTrace();
 		}
 		
 	}

@@ -92,6 +92,10 @@ public class XML_Engine {
 			AbstractComponentIU anotherComp = (AbstractComponentIU)aComponent;
 			AbstractCompoundIU comp = of.createAbstractCompoundIU();
 			comp.setId(anotherComp.getId());
+			AbstractLocalization loc = of.createAbstractLocalization();
+			loc.setLabel(anotherComp.getLabel());
+			loc.setLang("En");
+			comp.getName().add(loc);
 			for (InteractionUnitIF inner : anotherComp.getInnerInteractionUnits()) {
 				AbstractInteractionUnit aUnit = parseComponentUI(inner);
 				comp.getAbstractInteractionUnit().add(aUnit);

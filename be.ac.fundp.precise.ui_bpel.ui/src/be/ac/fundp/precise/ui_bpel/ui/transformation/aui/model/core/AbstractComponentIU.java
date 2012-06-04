@@ -23,6 +23,27 @@ public class AbstractComponentIU extends InteractionUnit{
 	/** The id of the composition. */
 	protected String id;
 	
+	/** The label of the composition. */
+	protected String label;
+	
+	/**
+	 * This method Gets the Component's label.
+	 *
+	 * @return the label of the composition
+	 */
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * This method sets the Component's label.
+	 *
+	 * @param string the new label
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
 	/** The parent model. */
 	protected AbstractUIModel model;
 	

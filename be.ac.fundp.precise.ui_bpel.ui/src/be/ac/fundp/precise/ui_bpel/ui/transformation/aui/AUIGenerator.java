@@ -1,6 +1,7 @@
 package be.ac.fundp.precise.ui_bpel.ui.transformation.aui;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -69,49 +70,19 @@ public class AUIGenerator {
 	
 	protected Process process;
 	
-	/**
-	 * Instantiates a new aUI generator.
-	 *
-	 * @param out the out
-	 * @throws ParserConfigurationException the parser configuration exception
-	 */
-	public AUIGenerator (OutputStream out) throws ParserConfigurationException{
-		medConf = new MediatorConfigurator (out);
-	}
-	
 	public AUIGenerator (IFolder processFolder, Process process) throws IOException, ParserConfigurationException, TransformerException, CoreException{
 		this.process = process;
 		this.processFolder = processFolder;
-		//TODO It should be done together with the saveModels
-		OutputStream out2 = coordinatorConf(processFolder);
-		medConf = new MediatorConfigurator (out2);
-		
+		medConf = new MediatorConfigurator ();
 		processAUI();
 	}
-
-	private OutputStream coordinatorConf(IFolder processFolder)
-			throws IOException, CoreException {
-		IFolder coordFolder = processFolder.getFolder("coord-artifacts");
-		NullProgressMonitor progressMonitor = new NullProgressMonitor();
-		if (coordFolder.exists()){
-			//coordFolder.delete(true, progressMonitor);
-			for (IResource content : coordFolder.members()) {
-				content.delete(IResource.FOLDER, progressMonitor);
-			}
-			coordFolder.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
-		} else {
-			coordFolder.create(true, true, progressMonitor);
-		}
-		IFile mediatorFile = coordFolder.getFile("UI-AUIC_Mapping.xml");
-		IPath fullProcessPath = mediatorFile.getFullPath();
-		URI uri2 = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
-		
-		OutputStream out2 = new BufferedOutputStream(converter.createOutputStream(uri2));
-		return out2;
+	
+	public MediatorConfigurator getConf(){
+		return medConf;
 	}
-
-	public void saveModels() throws IOException, CoreException {
-		//TODO create the folder and test if the folder exists.
+	
+	public Map<String, File> saveModels() throws IOException, CoreException {
+		Map<String, File> parsingMap = new HashMap<String, File>();
 		IFolder auiFolder = processFolder.getFolder("aui-artifacts");
 		NullProgressMonitor progressMonitor = new NullProgressMonitor();
 		if (auiFolder.exists()){
@@ -133,7 +104,9 @@ public class AUIGenerator {
 			AbstractUIModel roleModel = roleModels.get(role);
 			XML_Engine engine = new XML_Engine();
 			engine.serialize(roleModel, out3);
+			parsingMap.put(role, new File (roleAuiFile.getLocation().toOSString()));
 		}
+		return parsingMap;
 	}
 	
 	/**
@@ -156,7 +129,7 @@ public class AUIGenerator {
 		
 		activity2AUI(process.getActivity());
 		
-		medConf.finalize();
+		//medConf.finalize();
 	}
 
 	/**
@@ -165,13 +138,14 @@ public class AUIGenerator {
 	 * @param role the role
 	 * @return the abstract compound iu
 	 */
-	private SelectionUI createSelectionUI(String role, String name) {
+	private SelectionUI createSelectionUI(String role, String id, String label)  {
 		
 		AbstractUIModel model = roleModels.get(role);
 		SelectionUI comp = model.createInnerSelectionUI();
 		
 		comp.setHelp("Help");
-		comp.setId(name);
+		comp.setId(id);
+		comp.setLabel(label);
 		return comp;
 	}
 	
@@ -182,12 +156,13 @@ public class AUIGenerator {
 	 * @param name 
 	 * @return the abstract compound iu
 	 */
-	private AbstractComponentIU createAbstractComponent(String role, String name) {
+	private AbstractComponentIU createAbstractComponent(String role, String id, String label) {
 		
 		AbstractUIModel model = roleModels.get(role);
 		AbstractComponentIU comp = model.createInnerAbstractCompoundIU();
 		comp.setHelp("Help");
-		comp.setId(name);
+		comp.setId(id);
+		comp.setLabel(label);
 		return comp;
 	}
 	
@@ -238,7 +213,7 @@ public class AUIGenerator {
 			role = activity.getUserRoles().get(0).getRoleId();
 		}
 		
-		SelectionUI comp = createSelectionUI(role, activity.getName());
+		SelectionUI comp = createSelectionUI(role,  activity.getId(), activity.getName());
 		
 		for (DataItem item : activity.getInputItem()) {
 			DataIU dataComp = comp.createInnerDataInputUI();
@@ -256,7 +231,7 @@ public class AUIGenerator {
 		
 		comp.createInnerAbstractTriggerIU();
 		
-		medConf.createDataSelectionConf(comp, activity);
+		medConf.createDataSelectionConf(role, activity.getId(), comp.getId());
 	}
 
 	/**
@@ -270,7 +245,7 @@ public class AUIGenerator {
 			role = activity.getUserRoles().get(0).getRoleId();
 		}
 		
-		AbstractComponentIU comp = createAbstractComponent(role, activity.getName());
+		AbstractComponentIU comp = createAbstractComponent(role, activity.getId(), activity.getName());
 		
 		for (DataItem item : activity.getOutputItem()) {
 			DataIU dataComp = comp.createInnerDataInputUI();
@@ -281,7 +256,7 @@ public class AUIGenerator {
 		
 		comp.createInnerAbstractTriggerIU();
 		
-		medConf.createDataOutputConf(comp, activity);
+		medConf.createDataOutputConf(role, activity.getId(), comp.getId());
 	}
 	
 	/**
@@ -294,7 +269,7 @@ public class AUIGenerator {
 		if (activity.getUserRoles() != null && activity.getUserRoles().size() > 0){
 			role = activity.getUserRoles().get(0).getRoleId();
 		}
-		AbstractComponentIU comp = createAbstractComponent(role, activity.getName());
+		AbstractComponentIU comp = createAbstractComponent(role, activity.getId(), activity.getName());
 		
 		for (DataItem item : activity.getInputItem()) {
 			DataIU dataComp = comp.createInnerDataInputUI();
@@ -304,7 +279,7 @@ public class AUIGenerator {
 		}
 		comp.createInnerAbstractTriggerIU();
 		
-		medConf.createDataInputConf(comp, activity);
+		medConf.createDataInputConf(role, activity.getId(), comp.getId());
 	}
 
 	/**

@@ -78,13 +78,19 @@
                enablesFor="1"
                id="be.ac.fundp.precise.ui_bpel.ui.popup.actions.PopupActionGenerateBPEL">
          </action>
-         
          <action
-               label="Deploy UI-BPEL"
+               label="Deploy UI-BPEL Process"
                class="be.ac.fundp.precise.ui_bpel.ui.popup.actions.PopupActionDeploymentProcess"
                menubarPath="be.ac.fundp.precise.ui_bpel.ui.menu1/group1"
                enablesFor="1"
                id="be.ac.fundp.precise.ui_bpel.ui.popup.actions.PopupActionDeploymentProcess">
+         </action>
+         <action
+               label="Deploy AUI"
+               class="be.ac.fundp.precise.ui_bpel.ui.popup.actions.PopupActionAuiDeployment"
+               menubarPath="be.ac.fundp.precise.ui_bpel.ui.menu1/group1"
+               enablesFor="1"
+               id="be.ac.fundp.precise.ui_bpel.ui.popup.actions.PopupActionAuiDeployment">
          </action>
       </objectContribution>
    </extension>

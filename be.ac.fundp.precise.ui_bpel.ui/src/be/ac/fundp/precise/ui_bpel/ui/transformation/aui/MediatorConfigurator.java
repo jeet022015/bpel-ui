@@ -1,6 +1,9 @@
 package be.ac.fundp.precise.ui_bpel.ui.transformation.aui;
 
-import java.io.OutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,12 +18,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.model.core.AbstractComponentIU;
-import be.edu.fundp.precise.uibpel.model.DataInputUI;
-import be.edu.fundp.precise.uibpel.model.DataItem;
-import be.edu.fundp.precise.uibpel.model.DataOutputUI;
-import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class MediatorConfigurator.
@@ -29,15 +26,8 @@ import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
  */
 public class MediatorConfigurator {
 	
-	//private JSONArray json;
-	/** The root element. */
-	private Element rootElement;
-	
-	/** The doc. */
-	private Document doc;
-	
-	/** The out. */
-	private OutputStream out;
+	//protected Map<String, String> cui2ui = new HashMap<String, String>();
+	protected Map<String, Map<String, String>> roleMapping = new HashMap<String, Map<String, String>>();
 	
 	/**
 	 * Instantiates a new mediator configurator.
@@ -45,16 +35,8 @@ public class MediatorConfigurator {
 	 * @param outstream the outstream
 	 * @throws ParserConfigurationException the parser configuration exception
 	 */
-	public MediatorConfigurator (OutputStream outstream) throws ParserConfigurationException{
-		DocumentBuilderFactory docFactory = DocumentBuilderFactory
-				.newInstance();
-		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-		// root elements
-		doc = docBuilder.newDocument();
-		rootElement = doc.createElement("mediation");
-		doc.appendChild(rootElement);
-		out = outstream;
+	public MediatorConfigurator () throws ParserConfigurationException{
+		
 	}
 	
 	/**
@@ -63,51 +45,13 @@ public class MediatorConfigurator {
 	 * @param comp the comp
 	 * @param inputActivity the input activity
 	 */
-	public void createDataInputConf(AbstractComponentIU comp, DataInputUI inputActivity){
-		Element staff = doc.createElement("DataInput");
-		rootElement.appendChild(staff);
-		
-		Attr attr = doc.createAttribute("UIid");
-		attr.setValue(inputActivity.getId());
-		staff.setAttributeNode(attr);
-		
-		attr = doc.createAttribute("ComponentID");
-		attr.setValue(comp.getId());
-		staff.setAttributeNode(attr);
-		
-		attr = doc.createAttribute("role");
-		//TODO deal with role
-		attr.setValue("----");
-		staff.setAttributeNode(attr);
-		
-		Element data = doc.createElement("data");
-		staff.appendChild(data);
-		for (DataItem dataItem : inputActivity.getInputItem()) {
-			Element elemDataItem = doc.createElement("dataItem");
-			data.appendChild(elemDataItem);
-			
-			attr = doc.createAttribute("id");
-			attr.setValue(dataItem.getVariable().getName());
-			elemDataItem.setAttributeNode(attr);
-			
-			attr = doc.createAttribute("type");
-			attr.setValue(dataItem.getType().getName());
-			elemDataItem.setAttributeNode(attr);
+	public void createDataInputConf(String roleId, String activityId, String uiId){
+		Map<String, String> mapping = roleMapping.get(roleId);
+		if (mapping == null || mapping.isEmpty()){
+			mapping = new HashMap<String, String>();
+			roleMapping.put(roleId, mapping);
 		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#finalize()
-	 */
-	public void finalize() throws TransformerException {
-		// write the content into xml file
-		TransformerFactory transformerFactory = TransformerFactory
-				.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(out);
-
-		transformer.transform(source, result);
+		mapping.put(activityId, uiId);
 	}
 
 	/**
@@ -116,38 +60,13 @@ public class MediatorConfigurator {
 	 * @param comp the comp
 	 * @param activity the activity
 	 */
-	public void createDataOutputConf(AbstractComponentIU comp,
-			DataOutputUI activity) {
-		Element staff = doc.createElement("DataOutput");
-		rootElement.appendChild(staff);
-		
-		Attr attr = doc.createAttribute("UIid");
-		attr.setValue(activity.getId());
-		staff.setAttributeNode(attr);
-		
-		attr = doc.createAttribute("ComponentID");
-		attr.setValue(comp.getId());
-		staff.setAttributeNode(attr);
-		
-		attr = doc.createAttribute("role");
-		//TODO deal with role
-		attr.setValue("----");
-		staff.setAttributeNode(attr);
-		
-		Element data = doc.createElement("data");
-		staff.appendChild(data);
-		for (DataItem dataItem : activity.getOutputItem()) {
-			Element elemDataItem = doc.createElement("dataItem");
-			data.appendChild(elemDataItem);
-			
-			attr = doc.createAttribute("id");
-			attr.setValue(dataItem.getVariable().getName());
-			elemDataItem.setAttributeNode(attr);
-			
-			attr = doc.createAttribute("type");
-			attr.setValue(dataItem.getType().getName());
-			elemDataItem.setAttributeNode(attr);
+	public void createDataOutputConf(String roleId, String activityId, String uiId){
+		Map<String, String> mapping = roleMapping.get(roleId);
+		if (mapping == null || mapping.isEmpty()){
+			mapping = new HashMap<String, String>();
+			roleMapping.put(roleId, mapping);
 		}
+		mapping.put(activityId, uiId);
 	}
 
 	/**
@@ -156,45 +75,41 @@ public class MediatorConfigurator {
 	 * @param comp the comp
 	 * @param activity the activity
 	 */
-	public void createDataSelectionConf(AbstractComponentIU comp,
-			DataSelectionUI activity) {
-		Element staff = doc.createElement("DataSelection");
-		rootElement.appendChild(staff);
-		
-		Attr attr = doc.createAttribute("UIid");
-		attr.setValue(activity.getId());
-		staff.setAttributeNode(attr);
-		
-		attr = doc.createAttribute("ComponentID");
-		attr.setValue(comp.getId());
-		staff.setAttributeNode(attr);
-		
-		attr = doc.createAttribute("role");
-		//TODO deal with role
-		attr.setValue("----");
-		staff.setAttributeNode(attr);
-		
-		Element data = doc.createElement("data");
-		staff.appendChild(data);
-		for (DataItem dataItem : activity.getInputItem()) {
-			Element elemDataItem = doc.createElement("dataItem");
-			data.appendChild(elemDataItem);
-			
-			attr = doc.createAttribute("id");
-			attr.setValue(dataItem.getVariable().getName());
-			elemDataItem.setAttributeNode(attr);
-			
-			attr = doc.createAttribute("type");
-			attr.setValue(dataItem.getType().getName());
-			elemDataItem.setAttributeNode(attr);
+	public void createDataSelectionConf(String roleId, String activityId, String uiId){
+		Map<String, String> mapping = roleMapping.get(roleId);
+		if (mapping == null || mapping.isEmpty()){
+			mapping = new HashMap<String, String>();
+			roleMapping.put(roleId, mapping);
 		}
+		mapping.put(activityId, uiId);
+	}
+	
+	public Map<String, String> getMappingUI(String roleId){
+		return roleMapping.get(roleId);
+	}
+	
+	public String saveXML(String path) throws ParserConfigurationException, FileNotFoundException, TransformerException{
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory
+				.newInstance();
+		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+		// root elements
+		Document doc = docBuilder.newDocument();
+		Element rootElement = doc.createElement("mediation");
+		doc.appendChild(rootElement);
 		
-		attr = doc.createAttribute("minCardi");
-		attr.setValue(Integer.toString(activity.getMinCardinality()));
+		Attr attr = doc.createAttribute("minCardi");
+		attr.setValue("test");
+		Element staff = doc.createElement("DataSelection");
 		staff.setAttributeNode(attr);
-		
-		attr = doc.createAttribute("maxCardi");
-		attr.setValue(Integer.toString(activity.getMaxCardinality()));
-		staff.setAttributeNode(attr);
+		// write the content into xml file
+		TransformerFactory transformerFactory = TransformerFactory
+				.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		DOMSource source = new DOMSource(doc);
+		StreamResult result = new StreamResult(new FileOutputStream(""));
+
+		transformer.transform(source, result);
+		return "";
 	}
 }
