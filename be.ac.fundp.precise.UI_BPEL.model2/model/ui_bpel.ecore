@@ -7,8 +7,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="userRoles" upperBound="-1"
         eType="#//UserRole" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="createInstance" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataInteraction" abstract="true" eSuperTypes="#//UserInteraction ../../org.eclipse.bpel.model/src/model/bpel.ecore#//ExtensionActivity"/>
   <eClassifiers xsi:type="ecore:EClass" name="DataItem" eSuperTypes="../../org.eclipse.bpel.model/src/model/bpel.ecore#//BPELExtensibleElement">
@@ -24,6 +22,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="DataInputUI" eSuperTypes="#//DataInteraction">
     <eStructuralFeatures xsi:type="ecore:EReference" name="inputItem" upperBound="-1"
         eType="#//DataItem" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="createInstance" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataOutputUI" eSuperTypes="#//DataInteraction">
     <eStructuralFeatures xsi:type="ecore:EReference" name="outputItem" upperBound="-1"

@@ -103,6 +103,11 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 						BpelUiConstants.ND_DATA_INPUT_UI);
 				saElement.setPrefix(BpelUiUtils.addNamespace(process));
 			}
+			
+			String attCreateInstance = ModelPackage.eINSTANCE
+					.getDataInputUI_CreateInstance().getName();
+			saElement.setAttribute(attCreateInstance, String.valueOf(sa.isCreateInstance()));
+			
 			EList<DataItem> roles = sa.getInputItem();
 			for (DataItem dataItem : roles) {
 				saElement.appendChild(dataItem2XML(dataItem,
@@ -147,10 +152,6 @@ public class BpelUiSerializer implements BPELActivitySerializer {
 				}
 				else 
 					saElement.setAttribute(attMaxCardi, Integer.toString(BpelUiUtils.getNewId()));
-				
-				String attCreateInstance = ModelPackage.eINSTANCE
-						.getUserInteraction_Id().getName();
-				saElement.setAttribute(attCreateInstance, String.valueOf(sa.isCreateInstance()));
 				
 				EList<UserRole> roles = sa.getUserRoles();
 				for (UserRole role : roles) {

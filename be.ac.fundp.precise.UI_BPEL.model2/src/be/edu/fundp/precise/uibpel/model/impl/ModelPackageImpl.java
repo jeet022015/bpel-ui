@@ -286,15 +286,6 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getUserInteraction_CreateInstance() {
-		return (EAttribute)userInteractionEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getDataInteraction() {
 		return dataInteractionEClass;
 	}
@@ -342,6 +333,15 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 */
 	public EReference getDataInputUI_InputItem() {
 		return (EReference)dataInputUIEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getDataInputUI_CreateInstance() {
+		return (EAttribute)dataInputUIEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -510,7 +510,6 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		userInteractionEClass = createEClass(USER_INTERACTION);
 		createEAttribute(userInteractionEClass, USER_INTERACTION__ID);
 		createEReference(userInteractionEClass, USER_INTERACTION__USER_ROLES);
-		createEAttribute(userInteractionEClass, USER_INTERACTION__CREATE_INSTANCE);
 
 		dataInteractionEClass = createEClass(DATA_INTERACTION);
 
@@ -520,6 +519,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
 		dataInputUIEClass = createEClass(DATA_INPUT_UI);
 		createEReference(dataInputUIEClass, DATA_INPUT_UI__INPUT_ITEM);
+		createEAttribute(dataInputUIEClass, DATA_INPUT_UI__CREATE_INSTANCE);
 
 		dataOutputUIEClass = createEClass(DATA_OUTPUT_UI);
 		createEReference(dataOutputUIEClass, DATA_OUTPUT_UI__OUTPUT_ITEM);
@@ -597,7 +597,6 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		initEClass(userInteractionEClass, UserInteraction.class, "UserInteraction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getUserInteraction_Id(), ecorePackage.getEString(), "id", null, 0, 1, UserInteraction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUserInteraction_UserRoles(), this.getUserRole(), null, "userRoles", null, 0, -1, UserInteraction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getUserInteraction_CreateInstance(), ecorePackage.getEBoolean(), "createInstance", "false", 1, 1, UserInteraction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(dataInteractionEClass, DataInteraction.class, "DataInteraction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -607,6 +606,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
 		initEClass(dataInputUIEClass, DataInputUI.class, "DataInputUI", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDataInputUI_InputItem(), this.getDataItem(), null, "inputItem", null, 0, -1, DataInputUI.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDataInputUI_CreateInstance(), ecorePackage.getEBoolean(), "createInstance", "false", 1, 1, DataInputUI.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(dataOutputUIEClass, DataOutputUI.class, "DataOutputUI", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDataOutputUI_OutputItem(), this.getDataItem(), null, "outputItem", null, 0, -1, DataOutputUI.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

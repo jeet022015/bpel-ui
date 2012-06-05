@@ -19,7 +19,6 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link be.edu.fundp.precise.uibpel.model.UserInteraction#getId <em>Id</em>}</li>
  *   <li>{@link be.edu.fundp.precise.uibpel.model.UserInteraction#getUserRoles <em>User Roles</em>}</li>
- *   <li>{@link be.edu.fundp.precise.uibpel.model.UserInteraction#isCreateInstance <em>Create Instance</em>}</li>
  * </ul>
  * </p>
  *
@@ -69,32 +68,5 @@ public interface UserInteraction extends BPELExtensibleElement {
 	 * @generated
 	 */
 	EList<UserRole> getUserRoles();
-
-	/**
-	 * Returns the value of the '<em><b>Create Instance</b></em>' attribute.
-	 * The default value is <code>"false"</code>.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Create Instance</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Create Instance</em>' attribute.
-	 * @see #setCreateInstance(boolean)
-	 * @see be.edu.fundp.precise.uibpel.model.ModelPackage#getUserInteraction_CreateInstance()
-	 * @model default="false" required="true"
-	 * @generated
-	 */
-	boolean isCreateInstance();
-
-	/**
-	 * Sets the value of the '{@link be.edu.fundp.precise.uibpel.model.UserInteraction#isCreateInstance <em>Create Instance</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Create Instance</em>' attribute.
-	 * @see #isCreateInstance()
-	 * @generated
-	 */
-	void setCreateInstance(boolean value);
 
 } // UserInteraction

@@ -16,7 +16,6 @@
     <genClasses image="false" ecoreClass="ui_bpel.ecore#//UserInteraction">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ui_bpel.ecore#//UserInteraction/id"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ui_bpel.ecore#//UserInteraction/userRoles"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ui_bpel.ecore#//UserInteraction/createInstance"/>
     </genClasses>
     <genClasses image="false" ecoreClass="ui_bpel.ecore#//DataInteraction"/>
     <genClasses ecoreClass="ui_bpel.ecore#//DataItem">
@@ -25,6 +24,7 @@
     </genClasses>
     <genClasses ecoreClass="ui_bpel.ecore#//DataInputUI">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ui_bpel.ecore#//DataInputUI/inputItem"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ui_bpel.ecore#//DataInputUI/createInstance"/>
     </genClasses>
     <genClasses ecoreClass="ui_bpel.ecore#//DataOutputUI">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ui_bpel.ecore#//DataOutputUI/outputItem"/>

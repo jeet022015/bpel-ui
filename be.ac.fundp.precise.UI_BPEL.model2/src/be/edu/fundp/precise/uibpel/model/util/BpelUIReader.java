@@ -448,7 +448,6 @@ public class BpelUIReader extends BPELReader {
 		sa.setElement(saElement);
 		setID(saElement, sa);
 		setUserRole(saElement, sa);
-		setCreateInstance(saElement, sa);
 		return sa;
 	}
 
@@ -493,7 +492,6 @@ public class BpelUIReader extends BPELReader {
 		setMinCardin(saElement, sa);
 		setID(saElement, sa);
 		setUserRole(saElement, sa);
-		setCreateInstance(saElement, sa);
 		return sa;
 	}
 
@@ -536,9 +534,9 @@ public class BpelUIReader extends BPELReader {
 	 * @param activity the activity
 	 * @param saElement the sa element
 	 */
-	public void setCreateInstance(Element saElement, UserInteraction activity) {
+	public void setCreateInstance(Element saElement, DataInputUI activity) {
 		String inputVarName = saElement
-				.getAttribute(ModelPackage.eINSTANCE.getUserInteraction_CreateInstance()
+				.getAttribute(ModelPackage.eINSTANCE.getDataInputUI_CreateInstance()
 						.getName());
 		if (inputVarName != null && !"".equals(inputVarName.trim())) {
 			activity.setCreateInstance(Boolean.parseBoolean(inputVarName));

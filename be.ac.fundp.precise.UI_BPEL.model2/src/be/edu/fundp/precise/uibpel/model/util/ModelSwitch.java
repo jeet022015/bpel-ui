@@ -6,6 +6,7 @@
  */
 package be.edu.fundp.precise.uibpel.model.util;
 
+import be.edu.fundp.precise.uibpel.model.*;
 import javax.wsdl.extensions.AttributeExtensible;
 import javax.wsdl.extensions.ElementExtensible;
 
@@ -44,8 +45,6 @@ import be.edu.fundp.precise.uibpel.model.UserRole;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- *
- * @param <T> the generic type
  * @see be.edu.fundp.precise.uibpel.model.ModelPackage
  * @generated
  */
@@ -70,10 +69,8 @@ public class ModelSwitch<T> extends Switch<T> {
 	 * Checks whether this is a switch for the given package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 *
-	 * @param ePackage the e package
-	 * @return whether this is a switch for the given package.
 	 * @parameter ePackage the package in question.
+	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
 	@Override
@@ -85,9 +82,6 @@ public class ModelSwitch<T> extends Switch<T> {
 	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 *
-	 * @param classifierID the classifier id
-	 * @param theEObject the the e object
 	 * @return the first non-null result returned by a <code>caseXXX</code> call.
 	 * @generated
 	 */

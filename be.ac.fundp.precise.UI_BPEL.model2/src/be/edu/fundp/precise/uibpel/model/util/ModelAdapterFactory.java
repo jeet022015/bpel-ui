@@ -6,6 +6,7 @@
  */
 package be.edu.fundp.precise.uibpel.model.util;
 
+import be.edu.fundp.precise.uibpel.model.*;
 import javax.wsdl.extensions.AttributeExtensible;
 import javax.wsdl.extensions.ElementExtensible;
 
@@ -69,8 +70,6 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- begin-user-doc -->
 	 * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
 	 * <!-- end-user-doc -->
-	 *
-	 * @param object the object
 	 * @return whether this factory is applicable for the type of the object.
 	 * @generated
 	 */

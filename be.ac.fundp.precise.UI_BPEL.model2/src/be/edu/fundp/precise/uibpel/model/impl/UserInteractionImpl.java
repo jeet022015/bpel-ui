@@ -14,12 +14,11 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
@@ -36,7 +35,6 @@ import be.edu.fundp.precise.uibpel.model.util.BpelUiReconciliationHelper;
  * <ul>
  *   <li>{@link be.edu.fundp.precise.uibpel.model.impl.UserInteractionImpl#getId <em>Id</em>}</li>
  *   <li>{@link be.edu.fundp.precise.uibpel.model.impl.UserInteractionImpl#getUserRoles <em>User Roles</em>}</li>
- *   <li>{@link be.edu.fundp.precise.uibpel.model.impl.UserInteractionImpl#isCreateInstance <em>Create Instance</em>}</li>
  * </ul>
  * </p>
  *
@@ -72,26 +70,6 @@ public abstract class UserInteractionImpl extends BPELExtensibleElementImpl impl
 	 * @ordered
 	 */
 	protected EList<UserRole> userRoles;
-
-	/**
-	 * The default value of the '{@link #isCreateInstance() <em>Create Instance</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isCreateInstance()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean CREATE_INSTANCE_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isCreateInstance() <em>Create Instance</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isCreateInstance()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean createInstance = CREATE_INSTANCE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -155,31 +133,6 @@ public abstract class UserInteractionImpl extends BPELExtensibleElementImpl impl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isCreateInstance() {
-		return createInstance;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setCreateInstance(boolean newCreateInstance) {
-		boolean oldCreateInstance = createInstance;
-		createInstance = newCreateInstance;
-		if (!isReconciling) {
-			ReconciliationHelper.replaceAttribute(this, ModelPackage.eINSTANCE
-					.getUserInteraction_CreateInstance().getName(),String.valueOf(newCreateInstance));
-		}
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.USER_INTERACTION__CREATE_INSTANCE, oldCreateInstance, createInstance));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -201,8 +154,6 @@ public abstract class UserInteractionImpl extends BPELExtensibleElementImpl impl
 				return getId();
 			case ModelPackage.USER_INTERACTION__USER_ROLES:
 				return getUserRoles();
-			case ModelPackage.USER_INTERACTION__CREATE_INSTANCE:
-				return isCreateInstance();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -223,9 +174,6 @@ public abstract class UserInteractionImpl extends BPELExtensibleElementImpl impl
 				getUserRoles().clear();
 				getUserRoles().addAll((Collection<? extends UserRole>)newValue);
 				return;
-			case ModelPackage.USER_INTERACTION__CREATE_INSTANCE:
-				setCreateInstance((Boolean)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -244,9 +192,6 @@ public abstract class UserInteractionImpl extends BPELExtensibleElementImpl impl
 			case ModelPackage.USER_INTERACTION__USER_ROLES:
 				getUserRoles().clear();
 				return;
-			case ModelPackage.USER_INTERACTION__CREATE_INSTANCE:
-				setCreateInstance(CREATE_INSTANCE_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -263,8 +208,6 @@ public abstract class UserInteractionImpl extends BPELExtensibleElementImpl impl
 				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 			case ModelPackage.USER_INTERACTION__USER_ROLES:
 				return userRoles != null && !userRoles.isEmpty();
-			case ModelPackage.USER_INTERACTION__CREATE_INSTANCE:
-				return createInstance != CREATE_INSTANCE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -281,8 +224,6 @@ public abstract class UserInteractionImpl extends BPELExtensibleElementImpl impl
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (id: ");
 		result.append(id);
-		result.append(", createInstance: ");
-		result.append(createInstance);
 		result.append(')');
 		return result.toString();
 	}

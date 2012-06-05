@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
+import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.ModelPackage;
-import be.edu.fundp.precise.uibpel.model.UserInteraction;
 
 /**
  * Details section for the "createInstance" property of Receive and Pick activities.
@@ -39,7 +39,7 @@ public class CreateInstanceSection extends BPELPropertySection  {
 	/** The create instance button. */
 	Button fCreateInstanceButton;	
 	
-	/** The crete instance controller. */
+	/** The create instance controller. */
 	EditController fCreteInstanceController ;
 
 
@@ -62,10 +62,8 @@ public class CreateInstanceSection extends BPELPropertySection  {
 
 		super.basicSetInput(newInput);
 		
-		if (newInput instanceof UserInteraction) {
-			UserInteraction ui = (UserInteraction)newInput;
-			System.out.println("User Interacion="+ui.isCreateInstance());
-			fCreteInstanceController.setFeature(ModelPackage.eINSTANCE.getUserInteraction_CreateInstance());
+		if (newInput instanceof DataInputUI) {
+			fCreteInstanceController.setFeature(ModelPackage.eINSTANCE.getDataInputUI_CreateInstance());
 			fCreteInstanceController.setInput(newInput);
 		} else {
 			fCreteInstanceController.setFeature( null );		
