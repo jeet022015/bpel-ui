@@ -6,7 +6,6 @@
  */
 package be.edu.fundp.precise.uibpel.model.impl;
 
-import be.edu.fundp.precise.uibpel.model.*;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;

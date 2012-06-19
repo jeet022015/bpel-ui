@@ -6,7 +6,6 @@
  */
 package be.edu.fundp.precise.uibpel.model.util;
 
-import be.edu.fundp.precise.uibpel.model.*;
 import javax.wsdl.extensions.AttributeExtensible;
 import javax.wsdl.extensions.ElementExtensible;
 
