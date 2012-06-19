@@ -96,8 +96,8 @@ abstract public class PopupActionWithProcessRepresentation  implements IObjectAc
 		URI uri = URI.createPlatformResourceURI(fullProcessPath.toString(), false);
 		bpelResource = getResourceSet().getResource(uri, true);
 
-		EcorePackage instance = EcorePackage.eINSTANCE;
-		instance.eAdapters();
+		//EcorePackage instance = EcorePackage.eINSTANCE;
+		//instance.eAdapters();
 
 		try {
 			bpelResource.load(Collections.EMPTY_MAP);

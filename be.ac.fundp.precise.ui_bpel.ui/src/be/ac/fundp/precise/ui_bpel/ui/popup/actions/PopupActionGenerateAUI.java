@@ -13,7 +13,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IActionDelegate;
 
-import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.AUIGenerator;
+import be.ac.fundp.precise.ui_bpel.transformation.aui.AUIGenerator;
 
 /**
  * This class implements the popup action to generate the AUI from the UI-BPEL

@@ -15,10 +15,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IActionDelegate;
-import org.eclipse.wst.wsdl.internal.impl.wsdl4j.WSDLReaderImpl;
 
-import be.ac.fundp.precise.ui_bpel.ui.transformation.aui.AUIGenerator;
-import be.ac.fundp.precise.ui_bpel.ui.transformation.deployment.AuiDeploymentManager;
+import be.ac.fundp.precise.ui_bpel.transformation.aui.AUIGenerator;
+import be.ac.fundp.precise.ui_bpel.webclient.deployment.AuiDeploymentManager;
 
 /**
  * This class implements the popup action to generate the AUI from the UI-BPEL
@@ -59,7 +58,7 @@ public class PopupActionAuiDeployment extends PopupActionWithProcessRepresentati
 			AUIGenerator auiGen = new AUIGenerator(folder, process);
 			Map<String, File> path = auiGen.saveModels();
 			
-			AuiDeploymentManager aui = new AuiDeploymentManager(project.getName(), path, auiGen.getConf());
+			AuiDeploymentManager aui = new AuiDeploymentManager(project.getName(), path, auiGen.getConf().getRolesMap());
 			aui.deploy();
 		} catch (IOException e) {
 			e.printStackTrace();

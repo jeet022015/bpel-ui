@@ -1,22 +1,20 @@
 package be.ac.fundp.precise.ui_bpel.ui.popup.actions;
 
 import java.io.IOException;
-import java.util.Collections;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import org.eclipse.bpel.model.Process;
-import org.eclipse.bpel.model.resource.BPELResource;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.xml.sax.SAXException;
 
-import be.ac.fundp.precise.ui_bpel.ui.transformation.deployment.ConfigurationException;
-import be.ac.fundp.precise.ui_bpel.ui.transformation.deployment.DeploymentManager;
-import be.ac.fundp.precise.ui_bpel.ui.transformation.executableBPEL.WriterUiBpel;
+import be.ac.fundp.precise.ui_bpel.transformations.bpel.BPEL_Transformator;
+import be.ac.fundp.precise.ui_bpel.webclient.deployment.ConfigurationException;
+import be.ac.fundp.precise.ui_bpel.webclient.deployment.DeploymentManager;
 
 /**
  * This class implements the popup action to generate the AUI from the UI-BPEL
@@ -30,20 +28,30 @@ public class PopupActionDeploymentProcess extends PopupActionWithProcessRepresen
 
 	@Override
 	public void run(IAction action) {
-		//Check files
-		//Transform the UI-BPEL in BPEL
-		//Put everything in a auxiliary folder
-		//Deploy test
 		homeFolder = (IFolder)getBpelFile().getParent();
 		Process process = loadBPEL();
+		IProgressMonitor progressMonitor = new NullProgressMonitor();
 		
 		DeploymentManager deployer;
 		try {
-			deployer = new DeploymentManager(homeFolder, getShell());
-			IFolder deploymentFolder = deployer.setup();
-			WriterUiBpel newWriter = new WriterUiBpel(process, getBpelFile(), deploymentFolder);
-			newWriter.write((BPELResource) getBpelResource(), Collections.<String,String>emptyMap());
-			deployer.createZipFile();
+			IFolder folder = homeFolder.getFolder("deployer");
+			if (!folder.exists()){
+				folder.create(true, true, progressMonitor);
+			}
+//			else {
+//				for (IResource content : folder.members()) {
+//					content.delete(IResource.FOLDER, progressMonitor);
+//				}
+//			}
+			folder.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
+			IFile f = getBpelFile();
+			BPEL_Transformator bpelTrans = new BPEL_Transformator(f.getRawLocation().toOSString());
+			bpelTrans.transform(folder.getRawLocation().toFile());
+			deployer = new DeploymentManager(folder.getRawLocation().toFile());
+			//IFolder deploymentFolder = deployer.setup();
+//			WriterUiBpel newWriter = new WriterUiBpel(process, getBpelFile(), deploymentFolder);
+//			newWriter.write((BPELResource) getBpelResource(), Collections.<String,String>emptyMap());
+			deployer.createZipFile(folder.getRawLocation().toFile());
 			deployer.deploy();
 			MessageDialog.openInformation(getShell(), "BPEL Extensions UI Plug-in",
 					"The process " + process.getName()+" was well deployed.");
@@ -53,16 +61,7 @@ public class PopupActionDeploymentProcess extends PopupActionWithProcessRepresen
 		} catch (CoreException e) {
 			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
 					e.getMessage());
-		} catch (ParserConfigurationException e) {
-			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
-					e.getMessage());
-		} catch (SAXException e) {
-			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
-					e.getMessage());
 		} catch (IOException e) {
-			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
-					e.getMessage());
-		} catch (TransformerException e) {
 			MessageDialog.openInformation(getShell(), "ERROR: BPEL Extensions UI Plug-in",
 					e.getMessage());
 		}
