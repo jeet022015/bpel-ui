@@ -65,7 +65,7 @@ public class DataInputUIParser extends AbstractParser {
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
 
 		Assign assignBefore = BPELFactory.eINSTANCE.createAssign();
-		assignBefore.setName("DataInputConfiguration");
+		assignBefore.setName("DataInputConfiguration"+operationCounter);
 
 		Operation genOp = uiManagerPartner.getOperation("generateProcessId");
 		Part genOpPart = (Part) genOp.getOutput().getMessage()
@@ -91,7 +91,7 @@ public class DataInputUIParser extends AbstractParser {
 
 		// ================== INVOKE =====================
 		Invoke i = BPELFactory.eINSTANCE.createInvoke();
-		i.setName("InvokeDataSelection");
+		i.setName("InvokeDataInput"+operationCounter);
 		i.setInputVariable(inputVar);
 		i.setOutputVariable(outputVar);
 		i.setOperation(inputOp);
@@ -116,7 +116,7 @@ public class DataInputUIParser extends AbstractParser {
 
 		if (dataItemCopiesAfter.size() > 0) {
 			Assign after = BPELFactory.eINSTANCE.createAssign();
-			after.setName("ResponseToDataItems");
+			after.setName("ResponseToDataInputItems"+operationCounter);
 			after.getCopy().addAll(dataItemCopiesAfter);
 			s.getActivities().add(after);
 		}

@@ -59,10 +59,17 @@ public class ProcessWsdlManager {
 		DataOperationInWsdl dataOp = new DataOperationInWsdl(processWSDl);
 
 		for (String paternKey : relatedPatern.keySet()) {
-			uri = URI.createFileURI(relatedPatern.get(paternKey)
-					.getCanonicalPath());
+			File relatedFile = relatedPatern.get(paternKey)
+					.getCanonicalFile();
+			//uri = URI.createFileURI(relatedPatern.get(paternKey)
+			//		.getCanonicalPath());
+			uri = URI.createFileURI(relatedFile.getCanonicalPath());
 			Definition relatedWSDl = UI_BPELUtil.attemptLoadWSDL(uri, process
 					.eResource().getResourceSet());
+			
+			System.out.println("paternKey="+paternKey);
+			relatedWSDl.setLocation(relatedFile.getName());
+			System.out.println("Location="+relatedWSDl.getLocation());
 			WSDLImportHelperUI.addImportAndNamespace(processWSDl, relatedWSDl);
 			saveProcessWSDL(processWSDl);
 			dataOp.addPartnerLinkType(paternKey, relatedWSDl);

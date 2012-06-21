@@ -127,7 +127,7 @@ public class BPEL_Transformator {
 
 			OutputStream outputStream = new FileOutputStream(outputFolder
 					+ File.separator + process.getName() + ".bpel");
-			UI_BPELWriter writer = new UI_BPELWriter(newProcessWsdl,
+			UI_BPELWriter writer = new UI_BPELWriter(process.getName(), newProcessWsdl,
 					(BPELResource) bpelResource);
 			writer.addPartner("UiManager", newUiManagerWsdl, false);
 			writer.addPartner("ProcessOperation", newProcessOperationWsdl,
