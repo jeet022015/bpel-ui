@@ -86,7 +86,7 @@ public class WSDLImportHelperUI extends WSDLImportHelper {
 		// return source.getRelativeURI(targetURI);
 		// TODO: this is probably bogus.
 		if (targetURI.isFile()) {
-			return targetURI.toString();
+			return targetURI.lastSegment();
 		}
 		String result = targetURI.deresolve(sourceURI, true, true, true)
 				.toFileString();

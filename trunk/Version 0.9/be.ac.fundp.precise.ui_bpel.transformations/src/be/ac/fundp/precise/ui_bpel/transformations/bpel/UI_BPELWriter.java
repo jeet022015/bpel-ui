@@ -14,6 +14,8 @@ import org.eclipse.bpel.model.CorrelationSets;
 import org.eclipse.bpel.model.ExtensionActivity;
 import org.eclipse.bpel.model.OnEvent;
 import org.eclipse.bpel.model.Process;
+import org.eclipse.bpel.model.Receive;
+import org.eclipse.bpel.model.Sequence;
 import org.eclipse.bpel.model.Variable;
 import org.eclipse.bpel.model.resource.BPELResource;
 import org.eclipse.bpel.model.resource.BPELWriter;
@@ -29,6 +31,7 @@ import be.ac.fundp.precise.ui_bpel.transformations.bpel.parsers.CommonConcepts;
 import be.ac.fundp.precise.ui_bpel.transformations.bpel.parsers.DataInputUIParser;
 import be.ac.fundp.precise.ui_bpel.transformations.bpel.parsers.DataOutputUIParser;
 import be.ac.fundp.precise.ui_bpel.transformations.bpel.parsers.DataSelectionUIParser;
+import be.ac.fundp.precise.ui_bpel.transformations.bpel.parsers.InitialReceiverParser;
 import be.ac.fundp.precise.ui_bpel.transformations.bpel.parsers.ScopeUIParser;
 import be.ac.fundp.precise.ui_bpel.transformations.bpel.parsers.StarterDataInputUIParser;
 import be.edu.fundp.precise.uibpel.model.DataInputUI;
@@ -43,10 +46,12 @@ public class UI_BPELWriter extends BPELWriter {
 	protected List<Element> elementVariables = new LinkedList<Element>();
 	protected List<CorrelationSet> correlationSetsElements = new LinkedList<CorrelationSet>();
 	protected CommonConcepts concepts = CommonConcepts.getInstance();
+	private String processName;
 
-	public UI_BPELWriter(File newProcessWsdl, BPELResource resource)
+	public UI_BPELWriter(String processName, File newProcessWsdl, BPELResource resource)
 			throws IOException {
 		super();
+		this.processName = processName;
 		URI uri = URI.createFileURI(newProcessWsdl.getCanonicalPath());
 		Definition processWSDl = UI_BPELUtil.attemptLoadWSDL(uri,
 				resource.getResourceSet());
@@ -60,13 +65,53 @@ public class UI_BPELWriter extends BPELWriter {
 	}
 
 	@Override
+	protected Element receive2XML(Receive activity) {
+		Element activityElement = super.receive2XML(activity);
+		if (!activity.isSetCreateInstance()){
+			return activityElement;
+		}
+		PartnerEntity uiManagerPartner = partnerManager.getPartner("UiManager");
+		InitialReceiverParser parser = new InitialReceiverParser(processName,
+				uiManagerPartner);
+		
+		Sequence s = BPELFactory.eINSTANCE.createSequence();
+		s.setName("initializationSequence");
+		
+		Element el =  super.sequence2XML(s);
+		Element el1 =  super.assign2XML(parser.getAssign());
+		Element el2 =  super.invoke2XML(parser.getInvoke());
+		
+		el.appendChild(activityElement);
+		el.appendChild(el1);
+		el.appendChild(el2);
+		
+		
+		return el;
+	}
+
+	@Override
 	protected Element process2XML(Process process) {
+		addImports(process);
+		addCorrelationSets(process);
 		Element processElement = super.process2XML(process);
-		addImports(processElement);
+		//addImports(processElement);
 		addUiBpelPartnerLinks(processElement);
 		addNewVariables(processElement);
 		addNewCorrelations(processElement);
 		return processElement;
+	}
+
+	private void addCorrelationSets(Process process) {
+		CorrelationSets cs = BPELFactory.eINSTANCE.createCorrelationSets();
+		PartnerEntity uiManagerPartner = partnerManager.getPartner("UiManager");
+		cs.getChildren().add(concepts.getProcessIdCorrelationSet(uiManagerPartner.getProperty("processId")));
+		process.setCorrelationSets(cs);
+	}
+
+	private void addImports(Process process) {
+		for (PartnerEntity aPartner : partnerManager.getPartners()) {
+			process.getImports().add(aPartner.getImport());
+		}
 	}
 
 	private void addNewCorrelations(Element processElement) {
@@ -76,15 +121,15 @@ public class UI_BPELWriter extends BPELWriter {
 			System.out.println("is null");
 			CorrelationSets cs = BPELFactory.eINSTANCE.createCorrelationSets();
 			cs.getChildren().addAll(correlationSetsElements);
-			cs.getChildren().add(concepts.getProcessIdCorrelationSet(null));
+			//cs.getChildren().add(concepts.getProcessIdCorrelationSet(null));
 			processElement.appendChild(correlationSets2XML(cs));
 		} else {
 			for (CorrelationSet aCorrelSetElement : correlationSetsElements) {
 				correlationSetsElem
 						.appendChild(correlationSet2XML(aCorrelSetElement));
 			}
-			correlationSetsElem.appendChild(correlationSet2XML(concepts
-					.getProcessIdCorrelationSet(null)));
+			//correlationSetsElem.appendChild(correlationSet2XML(concepts
+			//		.getProcessIdCorrelationSet(null)));
 		}
 	}
 
@@ -119,10 +164,10 @@ public class UI_BPELWriter extends BPELWriter {
 		for (Variable anOnEventVar : parser.getOnUserEventVars()) {
 			elementVariables.add(variable2XML(anOnEventVar));
 		}
-		for (CorrelationSet anOnEventCorrelationSet : parser
-				.getOnEventCorrelationSets()) {
-			correlationSetsElements.add(anOnEventCorrelationSet);
-		}
+//		for (CorrelationSet anOnEventCorrelationSet : parser
+//				.getOnEventCorrelationSets()) {
+//			correlationSetsElements.add(anOnEventCorrelationSet);
+//		}
 		return scopeElement;
 	}
 
@@ -225,12 +270,6 @@ public class UI_BPELWriter extends BPELWriter {
 				return (Element) aNode;
 		}
 		return null;
-	}
-
-	private void addImports(Element processElement) {
-		for (PartnerEntity aPartner : partnerManager.getPartners()) {
-			processElement.appendChild(import2XML(aPartner.getImport()));
-		}
 	}
 
 	public void addPartner(String partnerName, File newUiManagerWsdl,

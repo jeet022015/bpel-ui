@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.eclipse.bpel.model.BPELFactory;
 import org.eclipse.bpel.model.Correlation;
-import org.eclipse.bpel.model.CorrelationPattern;
 import org.eclipse.bpel.model.CorrelationSet;
 import org.eclipse.bpel.model.Correlations;
 import org.eclipse.bpel.model.OnEvent;
@@ -22,11 +21,10 @@ import be.edu.fundp.precise.uibpel.model.ScopeUI;
 
 public class ScopeUIParser {
 
-	private static final String CORRELATION_ON_USER_EVENT_OPERATION = "correlationSet";
 	private List<Variable> onUserEventVars = new LinkedList<Variable>();
 	private List<OnEvent> onEventVars = new LinkedList<OnEvent>();
-	private List<CorrelationSet> onEventCorrelationSets = new LinkedList<CorrelationSet>();
 	private PartnerEntity partnerEntity;
+	private CommonConcepts cc = CommonConcepts.getInstance();
 	private static int operationCounter = 1;
 
 	public ScopeUIParser(ScopeUI activity, PartnerEntity partnerEntity) {
@@ -46,30 +44,14 @@ public class ScopeUIParser {
 			Correlation processCorrelation = BPELFactory.eINSTANCE
 					.createCorrelation();
 			processCorrelation.setInitiate(CorrelationSection.NO);
-			CorrelationSet eventCorrelationSet = createCorrelationSet();
-			processCorrelation.setSet(eventCorrelationSet);
+			processCorrelation.setSet(getProcessIdCorrelationSet());
 			cc.getChildren().add(processCorrelation);
 			userInteractionEvent.setCorrelations(cc);
 
-			onEventCorrelationSets.add(eventCorrelationSet);
 			onUserEventVars.add(v);
 			onEventVars.add(userInteractionEvent);
 			operationCounter++;
 		}
-	}
-
-	private CorrelationSet createCorrelationSet() {
-		CorrelationSet interactionCS = BPELFactory.eINSTANCE
-				.createCorrelationSet();
-		interactionCS.setName(CORRELATION_ON_USER_EVENT_OPERATION
-				+ operationCounter);
-		interactionCS.getProperties().add(getProperty("processId"));
-		Correlation cr2 = BPELFactory.eINSTANCE.createCorrelation();
-		cr2.setSet(interactionCS);
-		cr2.setInitiate(CorrelationSection.YES);
-		cr2.setPattern(CorrelationPattern
-				.get(CorrelationPattern.REQUESTRESPONSE));
-		return interactionCS;
 	}
 
 	public Property getProperty(String propertyId) {
@@ -91,8 +73,8 @@ public class ScopeUIParser {
 		return onEventVars;
 	}
 
-	public List<CorrelationSet> getOnEventCorrelationSets() {
-		return onEventCorrelationSets;
+	private CorrelationSet getProcessIdCorrelationSet() {
+		return cc.getProcessIdCorrelationSet(partnerEntity
+				.getProperty("processId"));
 	}
-
 }

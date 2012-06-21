@@ -2,6 +2,7 @@ package be.ac.fundp.precise.ui_bpel.transformations.bpel.bpelEntities;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,9 +23,12 @@ public class PartnerManager {
 	public void addPartner(String partnerName,
 			boolean isMyRole, Definition partnerDefinition) throws IOException {
 		if (!baseWsdl.getImports().keySet()
-				.contains(partnerDefinition.getTargetNamespace()))
+				.contains(partnerDefinition.getTargetNamespace())) {
 			WSDLImportHelperUI.addImportAndNamespace(baseWsdl,
 					partnerDefinition);
+			baseWsdl.eResource().save(Collections.emptyMap());
+			System.out.println("added");
+		}
 		PartnerEntity entity = new PartnerEntity(partnerName,
 				isMyRole, partnerDefinition, baseWsdl);
 		partnerMap.put(partnerName, entity);

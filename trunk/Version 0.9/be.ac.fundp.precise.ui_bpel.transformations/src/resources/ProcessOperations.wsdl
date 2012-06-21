@@ -75,7 +75,7 @@
   </wsdl:binding>
   <wsdl:service name="ProcessOperations">
     <wsdl:port binding="tns:ProcessOperationsSOAP" name="ProcessOperationsSOAP">
-      <soap:address location="http://localhost:8080/ode/processes/UserEventListener"/>
+      <soap:address location="http://localhost:8080/ode/processes/ProcessOperations"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

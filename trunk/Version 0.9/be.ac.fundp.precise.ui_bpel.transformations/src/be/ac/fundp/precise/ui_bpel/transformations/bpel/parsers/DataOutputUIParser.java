@@ -59,7 +59,7 @@ public class DataOutputUIParser extends AbstractParser{
 		Sequence s = BPELFactory.eINSTANCE.createSequence();
 
 		Assign assignBefore = BPELFactory.eINSTANCE.createAssign();
-		assignBefore.setName("DataOutputConfiguration");
+		assignBefore.setName("DataOutputConfiguration"+operationCounter);
 
 		DataItem[] dataItems = activity.getOutputItem()
 				.toArray(new DataItem[0]);
@@ -102,7 +102,7 @@ public class DataOutputUIParser extends AbstractParser{
 
 		// ================== INVOKE =====================
 		Invoke i = BPELFactory.eINSTANCE.createInvoke();
-		i.setName("InvokeDataOutput");
+		i.setName("InvokeDataOutput"+operationCounter);
 		i.setInputVariable(inputVar);
 		i.setOutputVariable(outputVar);
 		i.setOperation(outputOp);
