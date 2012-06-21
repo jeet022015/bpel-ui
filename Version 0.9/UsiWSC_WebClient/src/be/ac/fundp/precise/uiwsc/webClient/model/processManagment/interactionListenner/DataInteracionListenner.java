@@ -55,6 +55,9 @@ public class DataInteracionListenner {
 		jr.release();
 		t.release();
 		System.out.println("Data Sent");
+		System.out.println("processId="+processId);
+		System.out.println("userId="+userId);
+		System.out.println("cuiId="+cuiId);
 	}
 
 }

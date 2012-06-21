@@ -6,6 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.restlet.representation.Representation;
+import org.restlet.resource.ClientResource;
+
+import be.ac.fundp.precise.uiwsc.webClient.model.ConnectionConstants;
 import be.ac.fundp.precise.uiwsc.webClient.model.processManagment.entities.DataItem;
 import be.ac.fundp.precise.uiwsc.webClient.model.processManagment.entities.Process;
 import be.ac.fundp.precise.uiwsc.webClient.model.processManagment.entities.UserInteraction;
@@ -161,5 +165,20 @@ public class ProcessManager {
 				pendingProcess.add(process);
 		}
 		return pendingProcess;
+	}
+
+	public void startProcess(String login, String process) {
+		Representation r = null;
+		try {
+			ClientResource itemsResource = new ClientResource(ConnectionConstants.USI_WSC_MANAGER_HOST +
+					"/"+ process +
+					"/"+ login +
+					"/start");
+			r = itemsResource.get();
+			System.out.println("r="+r);
+		} finally {
+			if (r != null)
+				r.release();
+		}
 	}
 }
