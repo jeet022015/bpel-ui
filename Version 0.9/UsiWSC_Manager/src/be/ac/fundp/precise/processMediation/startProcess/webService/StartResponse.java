@@ -1,5 +1,5 @@
 
-package be.ac.fundp.precise.processMediation.userEvent.webService;
+package be.ac.fundp.precise.processMediation.startProcess.webService;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="role" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="out" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,36 +29,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "role"
+    "out"
 })
-@XmlRootElement(name = "pendingActions")
-public class PendingActions {
+@XmlRootElement(name = "startResponse")
+public class StartResponse {
 
     @XmlElement(required = true)
-    protected String role;
+    protected String out;
 
     /**
-     * Gets the value of the role property.
+     * Gets the value of the out property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getRole() {
-        return role;
+    public String getOut() {
+        return out;
     }
 
     /**
-     * Sets the value of the role property.
+     * Sets the value of the out property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setRole(String value) {
-        this.role = value;
+    public void setOut(String value) {
+        this.out = value;
     }
 
 }

@@ -1,5 +1,5 @@
 
-package be.ac.fundp.precise.processMediation.userEvent.webService;
+package be.ac.fundp.precise.processMediation.userEvent.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +39,8 @@ import javax.xml.bind.annotation.XmlType;
     "userInteracId",
     "role"
 })
-@XmlRootElement(name = "selectionOperationResponse")
-public class SelectionOperationResponse {
+@XmlRootElement(name = "inputOperationResponse")
+public class InputOperationResponse {
 
     protected List<UiDataType> data;
     @XmlElement(required = true)

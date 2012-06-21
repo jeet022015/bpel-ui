@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import be.ac.fundp.precise.dataManagment.CoordinatedData;
-import be.ac.fundp.precise.processMediation.userEvent.webService.UiDataType;
+import be.ac.fundp.precise.processMediation.userEvent.service.UiDataType;
 
 /**
  * The Class SoapServerUtil convert the data provided

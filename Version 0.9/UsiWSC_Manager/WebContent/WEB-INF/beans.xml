@@ -7,7 +7,7 @@
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 	<jaxws:endpoint xmlns:tns="http://fundp.ac.be/UiManager/"
 		id="uimanager"
-		implementor="be.ac.fundp.precise.processMediation.userEvent.webService.UiManagerImpl"
+		implementor="be.ac.fundp.precise.processMediation.userEvent.service.UiManagerImpl"
 		wsdlLocation="wsdl/UiManager.wsdl" endpointName="tns:UiManagerSOAP"
 		serviceName="tns:UiManager" address="/UiManagerSOAP">
 		<jaxws:features>

@@ -1,6 +1,8 @@
 
-package be.ac.fundp.precise.processMediation.userEvent.webService;
+package be.ac.fundp.precise.processMediation.userEvent.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -21,6 +23,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="userInteracId" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="role" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="processId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="data" type="{http://fundp.ac.be/UiManager/}UiDataType" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -33,10 +36,11 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "userInteracId",
     "role",
-    "processId"
+    "processId",
+    "data"
 })
-@XmlRootElement(name = "inputOperation")
-public class InputOperation {
+@XmlRootElement(name = "selectionOperation")
+public class SelectionOperation {
 
     @XmlElement(required = true)
     protected String userInteracId;
@@ -44,6 +48,7 @@ public class InputOperation {
     protected String role;
     @XmlElement(required = true)
     protected String processId;
+    protected List<UiDataType> data;
 
     /**
      * Gets the value of the userInteracId property.
@@ -115,6 +120,35 @@ public class InputOperation {
      */
     public void setProcessId(String value) {
         this.processId = value;
+    }
+
+    /**
+     * Gets the value of the data property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the data property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getData().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link UiDataType }
+     * 
+     * 
+     */
+    public List<UiDataType> getData() {
+        if (data == null) {
+            data = new ArrayList<UiDataType>();
+        }
+        return this.data;
     }
 
 }

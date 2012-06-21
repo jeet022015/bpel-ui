@@ -1,25 +1,24 @@
 
-package be.ac.fundp.precise.processMediation.userEvent.webService;
+package be.ac.fundp.precise.processMediation.userEvent.service;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>Java class for PendingInteraction complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType>
+ * &lt;complexType name="PendingInteraction">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="role" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="host" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="processId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="cuiId" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,64 +28,63 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "role",
-    "host"
+@XmlType(name = "PendingInteraction", propOrder = {
+    "processId",
+    "cuiId"
 })
-@XmlRootElement(name = "registryRole")
-public class RegistryRole {
+public class PendingInteraction {
 
     @XmlElement(required = true)
-    protected String role;
+    protected String processId;
     @XmlElement(required = true)
-    protected String host;
+    protected String cuiId;
 
     /**
-     * Gets the value of the role property.
+     * Gets the value of the processId property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getRole() {
-        return role;
+    public String getProcessId() {
+        return processId;
     }
 
     /**
-     * Sets the value of the role property.
+     * Sets the value of the processId property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setRole(String value) {
-        this.role = value;
+    public void setProcessId(String value) {
+        this.processId = value;
     }
 
     /**
-     * Gets the value of the host property.
+     * Gets the value of the cuiId property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getHost() {
-        return host;
+    public String getCuiId() {
+        return cuiId;
     }
 
     /**
-     * Sets the value of the host property.
+     * Sets the value of the cuiId property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setHost(String value) {
-        this.host = value;
+    public void setCuiId(String value) {
+        this.cuiId = value;
     }
 
 }
