@@ -34,5 +34,4 @@ Bundle-ClassPath: lib/jaxb-impl.jar,
  lib/neethi-3.0.1.jar,
  lib/XmlSchema-1.4.7.jar,
  .
-Export-Package: be.ac.fundp.precise.ui_bpel.transformation.aui,
- be.ac.fundp.precise.ui_bpel.transformation.executable_bpel
+Export-Package: be.ac.fundp.precise.ui_bpel.transformation.aui
