@@ -5,7 +5,6 @@ import java.util.List;
 import be.ac.fundp.precise.dataManagment.hibernate.dao.InteractionType;
 import be.ac.fundp.precise.dataManagment.hibernate.dao.ProtocolType;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface DataManager represents an abstraction to the data management
  * for the UsiWSC Manager. The current version is configured to do the
@@ -133,5 +132,12 @@ public interface DataManager {
 	 *            the role name
 	 */
 	void addRole(String processName, String roleName);
+
+	List<String> getAvailableProcesses();
+
+	List<String> getStartingRoles(String process);
+
+	String bindUserToProcess(String userId, String process, String processId)
+			throws InterruptedException;
 
 }

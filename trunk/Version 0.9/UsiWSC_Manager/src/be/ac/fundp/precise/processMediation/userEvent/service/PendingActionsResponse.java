@@ -1,5 +1,5 @@
 
-package be.ac.fundp.precise.processMediation.userEvent.webService;
+package be.ac.fundp.precise.processMediation.userEvent.service;
 
 import java.util.ArrayList;
 import java.util.List;

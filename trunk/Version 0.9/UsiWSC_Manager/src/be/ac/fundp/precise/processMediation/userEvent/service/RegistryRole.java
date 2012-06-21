@@ -1,5 +1,5 @@
 
-package be.ac.fundp.precise.processMediation.userEvent.webService;
+package be.ac.fundp.precise.processMediation.userEvent.service;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -18,9 +18,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="userInteracId" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="role" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="processId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="host" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -31,43 +30,16 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "userInteracId",
     "role",
-    "processId"
+    "host"
 })
-@XmlRootElement(name = "outputOperationResponse")
-public class OutputOperationResponse {
+@XmlRootElement(name = "registryRole")
+public class RegistryRole {
 
-    @XmlElement(required = true)
-    protected String userInteracId;
     @XmlElement(required = true)
     protected String role;
     @XmlElement(required = true)
-    protected String processId;
-
-    /**
-     * Gets the value of the userInteracId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getUserInteracId() {
-        return userInteracId;
-    }
-
-    /**
-     * Sets the value of the userInteracId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setUserInteracId(String value) {
-        this.userInteracId = value;
-    }
+    protected String host;
 
     /**
      * Gets the value of the role property.
@@ -94,27 +66,27 @@ public class OutputOperationResponse {
     }
 
     /**
-     * Gets the value of the processId property.
+     * Gets the value of the host property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getProcessId() {
-        return processId;
+    public String getHost() {
+        return host;
     }
 
     /**
-     * Sets the value of the processId property.
+     * Sets the value of the host property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setProcessId(String value) {
-        this.processId = value;
+    public void setHost(String value) {
+        this.host = value;
     }
 
 }

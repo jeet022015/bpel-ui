@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+                  xmlns:tns="http://precise.fundp.ac.be/ProcessOperations/"
+                  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  targetNamespace="http://precise.fundp.ac.be/ProcessOperations/">
+   <wsdl:types>
+      <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+                  targetNamespace="http://precise.fundp.ac.be/ProcessOperations/">
+         <xsd:element name="fireEvent">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="eventId" type="xsd:string"/>
+                  <xsd:element name="processId" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="fireEventResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="out" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="start">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="processId" type="xsd:string"/>
+                  <xsd:element name="processType" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="startResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="out" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="fireEventRequest">
+      <wsdl:part name="parameters" element="tns:fireEvent"/>
+   </wsdl:message>
+   <wsdl:message name="startRequest">
+      <wsdl:part name="parameters" element="tns:start"/>
+   </wsdl:message>
+   <wsdl:portType name="ProcessOperationsPortType">
+      <wsdl:operation name="fireEvent">
+         <wsdl:input message="tns:fireEventRequest"
+                     wsaw:Action="http://precise.fundp.ac.be/ProcessOperations/fireEvent"/>
+      </wsdl:operation>
+      <wsdl:operation name="start">
+         <wsdl:input message="tns:startRequest"
+                     wsaw:Action="http://precise.fundp.ac.be/ProcessOperations/start"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="ProcessOperationsSOAP11Binding" type="tns:ProcessOperationsPortType">
+      <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+      <wsdl:operation name="fireEvent">
+         <soap:operation soapAction="http://precise.fundp.ac.be/ProcessOperations/fireEvent"
+                         style="document"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+      </wsdl:operation>
+      <wsdl:operation name="start">
+         <soap:operation soapAction="http://precise.fundp.ac.be/ProcessOperations/start"
+                         style="document"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="ProcessOperations">
+      <wsdl:port name="ProcessOperationsSOAP11port_http"
+                 binding="tns:ProcessOperationsSOAP11Binding">
+         <soap:address location="http://localhost:8080/ode/processes/ProcessOperations"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

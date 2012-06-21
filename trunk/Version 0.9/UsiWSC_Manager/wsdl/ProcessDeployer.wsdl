@@ -4,10 +4,12 @@
    <element name="deployAui">
     <complexType>
      <sequence>
-     	<element name="file" type="xsd:base64Binary"/>
-     	<element maxOccurs="unbounded" name="description" type="impl:AUI_Descripton">
+     	<element name="file" type="xsd:base64Binary" />
+     	<element maxOccurs="unbounded" name="description"
+     		type="impl:AUI_Descripton">
      	</element>
-     	<element name="processName" type="string"/>
+     	<element name="processName" type="string" />
+     	<element name="startable" type="boolean"></element>
      </sequence>
     </complexType>
    </element>

@@ -1,6 +1,7 @@
 package be.ac.fundp.precise.dataManagment.hibernate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -205,6 +206,85 @@ public class DataManagerHibernate implements DataManager {
 		}
 		return userId;
 	}
+	
+	/**
+	 * This method binds a user with the specific role to a specific process.
+	 * 
+	 * @param role
+	 *            the role
+	 * @param processId
+	 *            the process id
+	 * @return the user Id
+	 * @throws InterruptedException
+	 *             the interrupted exception
+	 */
+	@Override
+	public String bindUserToProcess(String userId, String process, String processId)
+			throws InterruptedException {
+		Session session = configureSessionFactory.openSession();
+		session.beginTransaction();
+		ProcessBind processBind = new ProcessBind();
+		ProcessBindIdClass bindClass = new ProcessBindIdClass();
+		Process processObj = getProcess(process, session);
+		ProcessInstance processInstance = getProcessInstance(processId, session);
+		String roleId = getUserRole(userId, process);
+		Role userRole = (Role) session.get(Role.class, roleId);
+		bindClass.setRole(userRole);
+		bindClass.setProcess(processInstance);
+		processBind.setId(bindClass);
+		try {
+			User user = (User) session.get(User.class, userId);
+			processBind.setUser(user);
+			processInstance.getProcessBind().add(processBind);
+			session.saveOrUpdate(processBind);
+			session.saveOrUpdate(process);
+		} finally {
+			session.getTransaction().commit();
+			session.close();
+		}
+		return userId;
+	}
+
+	private String getUserRole(String userId, String processId) {
+		Session session = configureSessionFactory.openSession();
+		try {
+			session.beginTransaction();
+			User user = (User) session.get(
+					User.class, userId);
+			return user.getRole().iterator().next().getRoleId();
+		} finally {
+			session.getTransaction().commit();
+			session.close();
+		}
+	}
+
+	private Process getProcess(String process, Session session) {
+		Process processObj = (Process) session.get(
+				Process.class, process);
+		if (process == null) {
+			createProcess(process);
+			processObj = (Process) session.get(ProcessInstance.class,
+					process);
+		}
+		return processObj;
+	}
+
+	private void createProcess(String processId) {
+		Session session = configureSessionFactory.openSession();
+		try {
+			session.beginTransaction();
+			Process process = (Process) session.get(
+					Process.class, processId);
+			if (process == null) {
+				process = new Process();
+				process.setProcessIdentification(processId);
+				session.saveOrUpdate(process);
+			}
+		} finally {
+			session.getTransaction().commit();
+			session.close();
+		}
+	}
 
 	/**
 	 * Gets an available user.
@@ -230,7 +310,6 @@ public class DataManagerHibernate implements DataManager {
 					aUser.setAvailable(false);
 					session.beginTransaction();
 					session.saveOrUpdate(aUser);
-					//System.out.println("the user:"+aUser.getUserId());
 					//setUnavailableUser(aUser.getUserId());
 					session.getTransaction().commit();
 					return aUser.getUserId();
@@ -513,5 +592,32 @@ public class DataManagerHibernate implements DataManager {
 			session.getTransaction().commit();
 			session.close();
 		}
+	}
+
+	@Override
+	public List<String> getAvailableProcesses() {
+		Session session = configureSessionFactory.openSession();
+		List<String> returnList = new ArrayList<String>();
+		try {
+			@SuppressWarnings("unchecked")
+			List<Process> userList = session.createCriteria(Process.class).list();
+			if (userList == null)
+				return returnList;
+
+			for (Process aProcess : userList) {
+				returnList.add(aProcess.getProcessIdentification());
+			}
+		} finally {
+			if (session.isOpen())
+				session.close();
+		}
+		return returnList;
+	}
+
+	@Override
+	public List<String> getStartingRoles(String process) {
+		List<String> returnList = new ArrayList<String>();
+		returnList.add("employee");
+		return returnList;
 	}
 }

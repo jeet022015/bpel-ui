@@ -6,6 +6,7 @@ import org.restlet.routing.Router;
 
 import be.ac.fundp.precise.clientAppMediation.dispatcher.restDispatcher.RestDispatcherResource;
 import be.ac.fundp.precise.clientAppMediation.userEvent.rest.UserEventListenerResource;
+import be.ac.fundp.precise.processMediation.startProcess.StartingProcessResource;
 import be.ac.fundp.precise.userManagment.restService.CodeDeliveryResource;
 import be.ac.fundp.precise.userManagment.restService.CodeDescriptionResource;
 import be.ac.fundp.precise.userManagment.restService.LoginResource;
@@ -26,6 +27,9 @@ public class UiManagerRestApplication extends Application {
 		// Create a router Restlet that routes each call 
 		Router router = new Router(getContext());
 		// Defines only one route
+		router.attach("/processes", SubscriptionResource.class);
+		router.attach("/{process}/startable", SubscriptionResource.class);
+		router.attach("/{process}/{login}/start", StartingProcessResource.class);
 		router.attach("/{process}/{role}/subscribe/{login}/{password}/{address}", SubscriptionResource.class);
 		router.attach("/{process}/{role}/login/{login}/{password}/{address}", LoginResource.class);
 
