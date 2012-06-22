@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Transformation
-Bundle-SymbolicName: be.ac.fundp.precise.ui_bpel.transformation
+Bundle-SymbolicName: be.ac.fundp.precise.ui_bpel.transformation.aui
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: be.ac.fundp.precise.ui_bpel.transformation.Activator
 Require-Bundle: org.eclipse.ui,
