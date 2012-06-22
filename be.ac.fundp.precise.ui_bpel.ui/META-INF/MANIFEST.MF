@@ -15,9 +15,9 @@ Require-Bundle: org.eclipse.ui,
  be.ac.fundp.precise.UI_BPEL.model;bundle-version="1.0.0",
  javax.xml.bind;bundle-version="2.0.0",
  javax.wsdl;bundle-version="1.6.0",
- be.ac.fundp.precise.ui_bpel.transformation;bundle-version="1.0.0",
+ be.ac.fundp.precise.ui_bpel.transformation.aui;bundle-version="1.0.0",
  be.ac.fundp.precise.ui_bpel.webClient;bundle-version="1.0.0",
- be.ac.fundp.precise.ui_bpel.transformations;bundle-version="1.0.0"
+ be.ac.fundp.precise.ui_bpel.transformation.bpel;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.bpel.common.extension.model,
