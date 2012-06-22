@@ -84,6 +84,7 @@ public class DataManagerHibernate implements DataManager {
 			ProcessInstance process = (ProcessInstance) session.get(
 					ProcessInstance.class, processId);
 			if (process == null) {
+				System.out.println("it is still null.");
 				process = new ProcessInstance();
 				process.setProcessId(processId);
 				process.setFinished(false);
@@ -108,16 +109,20 @@ public class DataManagerHibernate implements DataManager {
 		Session session = configureSessionFactory.openSession();
 		try {
 			session.beginTransaction();
+			System.out.println("processId="+processId);
 			ProcessBindIdClass idClass = new ProcessBindIdClass();
 			ProcessInstance process = getProcessInstance(processId, session);
 			Role roleObj = getRole(roleId, session);
 			idClass.setRole(roleObj);
 			idClass.setProcess(process);
-			ProcessBind processBind = (ProcessBind) session
+//			ProcessBind processBind = (ProcessBind) session
+//					.createCriteria(ProcessBind.class)
+//					.add(Restrictions.eq("id", idClass)).uniqueResult();
+			List processBind = session
 					.createCriteria(ProcessBind.class)
-					.add(Restrictions.eq("id", idClass)).uniqueResult();
-			if (processBind != null)
-				return processBind.getUser().getUserId();
+					.add(Restrictions.eq("id", idClass)).list();
+			if (!processBind.isEmpty())
+				return ((ProcessBind) processBind.get(0)).getUser().getUserId();
 		} finally {
 			session.getTransaction().commit();
 			session.close();
@@ -156,9 +161,11 @@ public class DataManagerHibernate implements DataManager {
 		ProcessInstance process = (ProcessInstance) session.get(
 				ProcessInstance.class, processId);
 		if (process == null) {
+			System.out.println("it is null");
 			createProcessInstance(processId);
 			process = (ProcessInstance) session.get(ProcessInstance.class,
 					processId);
+			System.out.println("process="+process);
 		}
 		return process;
 	}
@@ -212,22 +219,34 @@ public class DataManagerHibernate implements DataManager {
 	 * 
 	 * @param role
 	 *            the role
-	 * @param processId
+	 * @param processInstanceId
 	 *            the process id
 	 * @return the user Id
 	 * @throws InterruptedException
 	 *             the interrupted exception
 	 */
 	@Override
-	public String bindUserToProcess(String userId, String process, String processId)
+	public String bindUserToProcess(String userId, String processId, String processInstanceId)
 			throws InterruptedException {
+		
+		System.out.println("userId="+userId);
+		System.out.println("processId="+processId);
+		System.out.println("processInstanceId="+processInstanceId);
+		
+		createProcessInstance(processInstanceId);
+		createProcessType(processId);
+		
+		
 		Session session = configureSessionFactory.openSession();
 		session.beginTransaction();
 		ProcessBind processBind = new ProcessBind();
 		ProcessBindIdClass bindClass = new ProcessBindIdClass();
-		Process processObj = getProcess(process, session);
-		ProcessInstance processInstance = getProcessInstance(processId, session);
-		String roleId = getUserRole(userId, process);
+		//Process processObj = getProcess(processId, session);
+		//ProcessInstance processInstance = getProcessInstance(processInstanceId, session);
+		ProcessInstance processInstance = (ProcessInstance) session.get(
+				ProcessInstance.class, processInstanceId);
+		System.out.println("processInstance="+processInstance);
+		String roleId = getUserRole(userId, processId);
 		Role userRole = (Role) session.get(Role.class, roleId);
 		bindClass.setRole(userRole);
 		bindClass.setProcess(processInstance);
@@ -235,9 +254,13 @@ public class DataManagerHibernate implements DataManager {
 		try {
 			User user = (User) session.get(User.class, userId);
 			processBind.setUser(user);
+			System.out.println("processInstance="+processInstance);
+			System.out.println("processInstance="+processInstance.getProcessId());
+			System.out.println("processInstance="+processInstance.getProcessBind());
 			processInstance.getProcessBind().add(processBind);
+			session.saveOrUpdate(processInstance);
 			session.saveOrUpdate(processBind);
-			session.saveOrUpdate(process);
+			//session.saveOrUpdate(processObj);
 		} finally {
 			session.getTransaction().commit();
 			session.close();
@@ -258,13 +281,15 @@ public class DataManagerHibernate implements DataManager {
 		}
 	}
 
-	private Process getProcess(String process, Session session) {
+	private Process getProcess(String processid, Session session) {
 		Process processObj = (Process) session.get(
-				Process.class, process);
-		if (process == null) {
-			createProcess(process);
+				Process.class, processid);
+		System.out.println("processObj1="+processObj);
+		if (processObj == null) {
+			createProcess(processid);
 			processObj = (Process) session.get(ProcessInstance.class,
-					process);
+					processid);
+			System.out.println("processObj2="+processObj);
 		}
 		return processObj;
 	}
