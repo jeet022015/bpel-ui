@@ -44,6 +44,7 @@ public class UI_BPELWriter extends BPELWriter {
 	private PartnerManager partnerManager;
 	private BPELResource resource;
 	protected List<Element> elementVariables = new LinkedList<Element>();
+	protected List<String> createdReceives = new LinkedList<String>();
 	protected List<CorrelationSet> correlationSetsElements = new LinkedList<CorrelationSet>();
 	protected CommonConcepts concepts = CommonConcepts.getInstance();
 	private String processName;
@@ -70,6 +71,9 @@ public class UI_BPELWriter extends BPELWriter {
 		if (!activity.isSetCreateInstance()){
 			return activityElement;
 		}
+		if (createdReceives.contains(activity.getName())){
+			return activityElement;
+		}
 		PartnerEntity uiManagerPartner = partnerManager.getPartner("UiManager");
 		InitialReceiverParser parser = new InitialReceiverParser(processName,
 				uiManagerPartner);
@@ -94,7 +98,6 @@ public class UI_BPELWriter extends BPELWriter {
 		addImports(process);
 		addCorrelationSets(process);
 		Element processElement = super.process2XML(process);
-		//addImports(processElement);
 		addUiBpelPartnerLinks(processElement);
 		addNewVariables(processElement);
 		addNewCorrelations(processElement);
@@ -121,15 +124,12 @@ public class UI_BPELWriter extends BPELWriter {
 			System.out.println("is null");
 			CorrelationSets cs = BPELFactory.eINSTANCE.createCorrelationSets();
 			cs.getChildren().addAll(correlationSetsElements);
-			//cs.getChildren().add(concepts.getProcessIdCorrelationSet(null));
 			processElement.appendChild(correlationSets2XML(cs));
 		} else {
 			for (CorrelationSet aCorrelSetElement : correlationSetsElements) {
 				correlationSetsElem
 						.appendChild(correlationSet2XML(aCorrelSetElement));
 			}
-			//correlationSetsElem.appendChild(correlationSet2XML(concepts
-			//		.getProcessIdCorrelationSet(null)));
 		}
 	}
 
@@ -164,10 +164,6 @@ public class UI_BPELWriter extends BPELWriter {
 		for (Variable anOnEventVar : parser.getOnUserEventVars()) {
 			elementVariables.add(variable2XML(anOnEventVar));
 		}
-//		for (CorrelationSet anOnEventCorrelationSet : parser
-//				.getOnEventCorrelationSets()) {
-//			correlationSetsElements.add(anOnEventCorrelationSet);
-//		}
 		return scopeElement;
 	}
 
@@ -202,6 +198,7 @@ public class UI_BPELWriter extends BPELWriter {
 		CorrelationSet correlations = parser.getCorrelationSet();
 		correlationSetsElements.add(correlations);
 		Activity newAct = parser.getActivity();
+		createdReceives.add(parser.getReceiveName());
 		return activity2XML(newAct);
 	}
 
