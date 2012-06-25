@@ -1,4 +1,4 @@
-package be.ac.fundp.precise.ui_bpel.ui.properties.aux;
+package be.ac.fundp.precise.ui_bpel.ui.properties.auxiliary;
 
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
