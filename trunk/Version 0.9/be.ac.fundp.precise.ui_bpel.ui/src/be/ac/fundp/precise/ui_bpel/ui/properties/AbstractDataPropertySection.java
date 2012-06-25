@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.widgets.Section;
 
-import be.ac.fundp.precise.ui_bpel.ui.properties.aux.DataItemCategorySection;
+import be.ac.fundp.precise.ui_bpel.ui.properties.auxiliary.DataItemCategorySection;
 import be.ac.fundp.precise.ui_bpel.ui.properties.dialogs.DataItemDialog;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataType;
