@@ -1,4 +1,4 @@
-package be.ac.fundp.precise.dataManagment.hibernate.dao;
+package be.ac.fundp.precise.dataManagment.hibernate.daos;
 
 // TODO: Auto-generated Javadoc
 /**

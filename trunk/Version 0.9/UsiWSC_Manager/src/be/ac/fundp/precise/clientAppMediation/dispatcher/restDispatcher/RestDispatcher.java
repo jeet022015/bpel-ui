@@ -61,12 +61,12 @@ public class RestDispatcher implements Dispatcher {
 	 * .String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<CoordinatedData> requireInputInteraction(String process,
+	public List<CoordinatedData> requireInputInteraction(String process, String role,
 			String processId, String userInteracId, String userLogin) {
 		List<CoordinatedData> resp = null;
 		ClientResource cr = null;
 		try {
-			cr = putInteraction(userLogin, process, processId, userInteracId,
+			cr = putInteraction(userLogin, process, role, processId, userInteracId,
 					Collections.<CoordinatedData> emptyList());
 			JSONObject crudeData = dataholder.getData(userLogin, processId,
 					userInteracId);
@@ -91,13 +91,13 @@ public class RestDispatcher implements Dispatcher {
 	 * .lang.String, java.lang.String, java.util.List, java.lang.String)
 	 */
 	@Override
-	public List<CoordinatedData> requireSelectionInteraction(String process,
+	public List<CoordinatedData> requireSelectionInteraction(String process, String role,
 			String processId, String userInteracId,
 			List<CoordinatedData> selectableData, String userLogin) {
 		List<CoordinatedData> resp = null;
 		ClientResource cr = null;
 		try {
-			cr = putInteraction(userLogin, process, processId, userInteracId,
+			cr = putInteraction(userLogin, process, role, processId, userInteracId,
 					selectableData);
 			JSONObject crudeData = dataholder.getData(userLogin, processId,
 					userInteracId);
@@ -122,12 +122,12 @@ public class RestDispatcher implements Dispatcher {
 	 * lang.String, java.lang.String, java.util.List, java.lang.String)
 	 */
 	@Override
-	public void requireOutputInteraction(String process, String processId,
+	public void requireOutputInteraction(String process, String role, String processId,
 			String userInteracId, List<CoordinatedData> outputData,
 			String userLogin) {
 		ClientResource cr = null;
 		try {
-			cr = putInteraction(userLogin, process, processId, userInteracId,
+			cr = putInteraction(userLogin, process, role, processId, userInteracId,
 					outputData);
 			dataholder.getData(userLogin, processId, userInteracId);
 		} catch (Exception e) {
@@ -154,9 +154,9 @@ public class RestDispatcher implements Dispatcher {
 	 *            the user interaction's id.
 	 * @return the Rest ClientResource corresponding the user and process.
 	 */
-	private ClientResource createClientResource(String process,
+	private ClientResource createClientResource(String process, String role,
 			String processId, String userLogin, String userInteracId) {
-		String host = processHost(process, processId, userLogin, userInteracId);
+		String host = processHost(process, role, processId, userLogin, userInteracId);
 		ClientResource cr = new ClientResource(host);
 		cr.setRetryAttempts(288);
 
@@ -187,9 +187,9 @@ public class RestDispatcher implements Dispatcher {
 	 *            the user interaction's id.
 	 * @return the host to a specific process.
 	 */
-	private String processHost(String process, String processId,
+	private String processHost(String process, String role, String processId,
 			String userLogin, String userInteracId) {
-		return hostAddress + "/" + process + "/" + processId + "/" + userLogin
+		return hostAddress + "/" + process + "/" + role + "/" + processId + "/" + userLogin
 				+ "/" + userInteracId;
 	}
 
@@ -214,20 +214,20 @@ public class RestDispatcher implements Dispatcher {
 	 *             The execution crashes when it tries to put the execution to
 	 *             sleep.
 	 */
-	private ClientResource putInteraction(String userLogin, String process,
+	private ClientResource putInteraction(String userLogin, String process, String role,
 			String processId, String userInteracId,
 			List<CoordinatedData> availableData) throws JSONException,
 			InterruptedException {
 		JSONObject obj = new JSONObject();
 		JSONArray data = RestDispatcherUtil.coordinatedData2JSON(availableData);
 		obj.put(RestDispatcherUtil.DATA_TAG_JSON, data);
-		ClientResource cr = createClientResource(process, processId, userLogin,
+		ClientResource cr = createClientResource(process, role, processId, userLogin,
 				userInteracId);
 		JsonRepresentation jr = new JsonRepresentation(obj);
 		try {
 			if (!cr.getStatus().equals(Status.SUCCESS_OK)) {
 				cr.release();
-				putInteraction(userLogin, process, processId, userInteracId,
+				putInteraction(userLogin, process, role, processId, userInteracId,
 						availableData);
 			}
 			cr.put(jr);
@@ -235,7 +235,7 @@ public class RestDispatcher implements Dispatcher {
 			e.printStackTrace();
 			cr.release();
 			Thread.sleep(10000);
-			putInteraction(userLogin, process, processId, userInteracId,
+			putInteraction(userLogin, process, role, processId, userInteracId,
 					availableData);
 		} finally {
 			jr.release();

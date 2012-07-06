@@ -176,7 +176,7 @@ public class CodeGeneratorUsiWSC implements CodeGenerator {
 					activityCode = parse(compound,
 							getTemplateFolderPath(userContext),
 							userContext.getDataInteractionTemplate());
-				System.out.println("activityCode="+activityCode);
+				//System.out.println("activityCode="+activityCode);
 				codes.put(compound.getId() + userContext.getTermination(), activityCode);
 			}
 			return codes;

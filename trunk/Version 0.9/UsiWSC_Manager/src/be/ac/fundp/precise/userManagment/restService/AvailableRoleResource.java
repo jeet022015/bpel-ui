@@ -14,15 +14,16 @@ import org.restlet.resource.ServerResource;
 import be.ac.fundp.precise.dataManagment.DataManagerFactory;
 import be.ac.fundp.precise.dataManagment.hibernate.NewDataManagerHibernate;
 
-public class AvailableProcessResource extends ServerResource {
+public class AvailableRoleResource extends ServerResource {
 
 	protected NewDataManagerHibernate uiManager = DataManagerFactory.hibernateDataManager();
 
     @Get
-    public Representation getCode() {
+    public Representation getRole() {
+    	String processId = (String) getRequestAttributes().get("process");
     	List<String> testList;
 		try {
-			testList = uiManager.getAvailableProcesses();
+			testList = uiManager.getAvailableRole(processId);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			testList = Collections.emptyList();
@@ -30,7 +31,7 @@ public class AvailableProcessResource extends ServerResource {
     	JSONArray array = new JSONArray(testList);
     	JSONObject o = new JSONObject();
     	try {
-			o.put("processes", array);
+			o.put("roles", array);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

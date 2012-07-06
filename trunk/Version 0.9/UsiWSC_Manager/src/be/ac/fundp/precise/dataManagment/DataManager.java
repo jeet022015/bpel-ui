@@ -1,9 +1,7 @@
 package be.ac.fundp.precise.dataManagment;
 
 import java.util.List;
-
-import be.ac.fundp.precise.dataManagment.hibernate.dao.InteractionType;
-import be.ac.fundp.precise.dataManagment.hibernate.dao.ProtocolType;
+import java.util.Map;
 
 /**
  * The Interface DataManager represents an abstraction to the data management
@@ -24,8 +22,9 @@ public interface DataManager {
 	 * @param roleId the role id
 	 * @param processId the process id
 	 * @return the bound user
+	 * @throws Exception 
 	 */
-	String getBoundUser(String roleId, String processId);
+	String getBoundUser(String roleId, String processId) throws Exception;
 
 	/**
 	 * Creates the interaction.
@@ -40,18 +39,6 @@ public interface DataManager {
 	 */
 	int createInteraction(String processId, String userId, String userInteracId);
 
-	/**
-	 * Provided interaction data.
-	 * 
-	 * @param interactionRealId
-	 *            the interaction real id
-	 * @param response
-	 *            the response
-	 * @param type
-	 *            the type
-	 */
-	void providedInteractionData(int interactionRealId,
-			List<CoordinatedData> response, InteractionType type);
 
 	/**
 	 * Release role.
@@ -63,14 +50,6 @@ public interface DataManager {
 	 */
 	void releaseRole(String role, String processId);
 
-	/**
-	 * Gets the user protocol type.
-	 * 
-	 * @param userId
-	 *            the user id
-	 * @return the user protocol type
-	 */
-	ProtocolType getUserProtocolType(String userId);
 
 	/**
 	 * Gets the ip address.
@@ -98,7 +77,7 @@ public interface DataManager {
 	 *            the password
 	 * @return the string
 	 */
-	String verifyUser(String login, String password);
+	boolean verifyUser(String login, String password);
 
 	/**
 	 * Subscribe.
@@ -116,14 +95,6 @@ public interface DataManager {
 			String host);
 
 	/**
-	 * Creates the process.
-	 * 
-	 * @param processType
-	 *            the process type
-	 */
-	void createProcessType(String processType);
-
-	/**
 	 * Adds the role.
 	 * 
 	 * @param processName
@@ -139,5 +110,11 @@ public interface DataManager {
 
 	String bindUserToProcess(String userId, String process, String processId)
 			throws InterruptedException;
+
+	void createProcess(String processId, List<String> roles,
+			List<String> startingRoles,
+			Map<String, List<String>> interactionMapping) throws Exception;
+
+	void createProcessType(String processType);
 
 }
