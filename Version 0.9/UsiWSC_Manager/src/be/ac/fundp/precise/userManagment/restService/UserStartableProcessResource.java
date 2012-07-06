@@ -1,7 +1,7 @@
 package be.ac.fundp.precise.userManagment.restService;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,15 +14,16 @@ import org.restlet.resource.ServerResource;
 import be.ac.fundp.precise.dataManagment.DataManagerFactory;
 import be.ac.fundp.precise.dataManagment.hibernate.NewDataManagerHibernate;
 
-public class AvailableProcessResource extends ServerResource {
+public class UserStartableProcessResource extends ServerResource {
 
 	protected NewDataManagerHibernate uiManager = DataManagerFactory.hibernateDataManager();
 
     @Get
     public Representation getCode() {
-    	List<String> testList;
+    	Collection<String> testList;
+    	String user = (String) getRequestAttributes().get("login");
 		try {
-			testList = uiManager.getAvailableProcesses();
+			testList = uiManager.getStartableProcess(user);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			testList = Collections.emptyList();

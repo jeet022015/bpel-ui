@@ -20,7 +20,7 @@ public interface Dispatcher {
 	 * @param userLogin the user's id.
 	 * @return the data provided by the user.
 	 */
-	public List<CoordinatedData> requireInputInteraction(String process, String processId,
+	public List<CoordinatedData> requireInputInteraction(String process, String role, String processId,
 			String userInteracId, String userLogin);
 
 	/**
@@ -31,7 +31,7 @@ public interface Dispatcher {
 	 * @param data the data to be presented to the user.
 	 * @param userLogin the user's id.
 	 */
-	public void requireOutputInteraction(String process, String processId,
+	public void requireOutputInteraction(String process, String role, String processId,
 			String userInteracId, List<CoordinatedData> data, String userLogin);
 
 	/**
@@ -43,7 +43,7 @@ public interface Dispatcher {
 	 * @param userId the user's id.
 	 * @return the data provided by the user.
 	 */
-	public List<CoordinatedData> requireSelectionInteraction(String process, String processId,
+	public List<CoordinatedData> requireSelectionInteraction(String process, String role, String processId,
 			String userInteracId, List<CoordinatedData> data, String userId);
 
 	/**

@@ -1,4 +1,4 @@
-package be.ac.fundp.precise.dataManagment.hibernate.dao;
+package be.ac.fundp.precise.dataManagment.hibernate.daos;
 
 import java.io.Serializable;
 
@@ -7,6 +7,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  * The Class DataItem represents the user DataItem
@@ -26,8 +27,8 @@ public class DataItem {
 	private Serializable data;
 	
 	/** The type. */
-	@Enumerated(EnumType.STRING)
-	private InteractionType type;
+	@OneToOne
+	private Interaction parent;
 	
 	/** The item type. */
 	@Enumerated(EnumType.STRING)
@@ -74,8 +75,8 @@ public class DataItem {
 	 *
 	 * @return the type
 	 */
-	public InteractionType getType() {
-		return type;
+	public Interaction getParent() {
+		return parent;
 	}
 	
 	/**
@@ -83,8 +84,8 @@ public class DataItem {
 	 *
 	 * @param type the new type
 	 */
-	public void setType(InteractionType type) {
-		this.type = type;
+	public void setParent(Interaction parent) {
+		this.parent = parent;
 	}
 	
 	/**

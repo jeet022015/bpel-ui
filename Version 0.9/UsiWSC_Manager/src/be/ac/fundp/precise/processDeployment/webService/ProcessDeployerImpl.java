@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import be.ac.fundp.precise.dataManagment.DataManagerFactory;
+import be.ac.fundp.precise.dataManagment.hibernate.NewDataManagerHibernate;
 import be.ac.fundp.precise.processDeployment.auiDeployment.AuiManager;
 import be.ac.fundp.precise.processDeployment.auiDeployment.UserRole;
 
@@ -31,6 +33,8 @@ public class ProcessDeployerImpl implements ProcessDeployer {
 	private static final Logger LOG = Logger
 			.getLogger(ProcessDeployerImpl.class.getName());
 	
+	protected NewDataManagerHibernate dataManager = DataManagerFactory.hibernateDataManager();
+	
 	protected AuiManager auiDeployer2 = AuiManager
 			.getInstance();
 
@@ -49,14 +53,27 @@ public class ProcessDeployerImpl implements ProcessDeployer {
 		System.out.println(file);
 		System.out.println(description);
 		System.out.println(processName);
+		
 		try {
 			List<UserRole> userRoles = new ArrayList<UserRole>();
+			List<String> userRoleStrings = new ArrayList<String>();
+			Map<String, List<String>> interactionMapping = new HashMap<String, List<String>>();
 			for (AUIDescripton auiDescripton : description) {
 				UserRole aRole = new UserRole(auiDescripton.role,
 						auiDescripton.auiEntry,
 						extractUiMapping(auiDescripton.uiMapping));
+				userRoleStrings.add(auiDescripton.role);
 				userRoles.add(aRole);
+				
+				for (UiMappingType mapping : auiDescripton.uiMapping) {
+					List<String> cui= new ArrayList<String>();
+					cui.add(mapping.iuId);
+					interactionMapping.put(mapping.activityId, cui);
+				}
 			}
+
+			dataManager.createProcess(processName, userRoleStrings,userRoleStrings, interactionMapping);
+			
 			auiDeployer2.newAui(processName, file, userRoles);
 			java.lang.String _return = "_return1654334406";
 			return _return;

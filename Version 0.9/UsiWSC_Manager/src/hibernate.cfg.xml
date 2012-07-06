@@ -13,7 +13,19 @@
         <property name="current_session_context_class">thread</property>
     	<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
 	    <property name="show_sql">true</property>
-        
+	    
+	    <mapping class="be.ac.fundp.precise.dataManagment.hibernate.daos.BindingProcess"/>
+	    <mapping class="be.ac.fundp.precise.dataManagment.hibernate.daos.Context"/>
+	    <mapping class="be.ac.fundp.precise.dataManagment.hibernate.daos.DataItem"/>
+	    <mapping class="be.ac.fundp.precise.dataManagment.hibernate.daos.Interaction"/>
+	    <mapping class="be.ac.fundp.precise.dataManagment.hibernate.daos.ItemType"/>
+	    <mapping class="be.ac.fundp.precise.dataManagment.hibernate.daos.Process"/>
+	    <mapping class="be.ac.fundp.precise.dataManagment.hibernate.daos.ProcessInstance"/>
+	    <mapping class="be.ac.fundp.precise.dataManagment.hibernate.daos.ProtocolType"/>
+	    <mapping class="be.ac.fundp.precise.dataManagment.hibernate.daos.RegistredProcess"/>
+	    <mapping class="be.ac.fundp.precise.dataManagment.hibernate.daos.Role"/>
+	    <mapping class="be.ac.fundp.precise.dataManagment.hibernate.daos.User"/>
+<!--         
         <mapping class="be.ac.fundp.precise.dataManagment.hibernate.dao.Context"/>
         <mapping class="be.ac.fundp.precise.dataManagment.hibernate.dao.DataItem"/>
         <mapping class="be.ac.fundp.precise.dataManagment.hibernate.dao.Interaction"/>
@@ -25,5 +37,6 @@
         <mapping class="be.ac.fundp.precise.dataManagment.hibernate.dao.Role"/>
         <mapping class="be.ac.fundp.precise.dataManagment.hibernate.dao.User"/>
         <mapping class="be.ac.fundp.precise.dataManagment.hibernate.dao.ProcessBind"/>
+         -->
     </session-factory>
 </hibernate-configuration>
