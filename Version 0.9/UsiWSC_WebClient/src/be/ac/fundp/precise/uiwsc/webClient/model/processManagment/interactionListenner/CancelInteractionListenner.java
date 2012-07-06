@@ -40,6 +40,8 @@ public class CancelInteractionListenner {
 		} finally {
 			if (r != null)
 				r.release();
+			if (itemsResource != null)
+				itemsResource.release();
 		}
 	}
 

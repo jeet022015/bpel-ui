@@ -52,7 +52,11 @@ public class AvailableDataInteractionServlet extends HttpServlet {
 		for (UserInteraction userInteraction : products) {
 			JSONObject interaction = new JSONObject();
 			try {
-				interaction.put(ExposedDataConstants.ID, userInteraction.getId());
+				System.out.println("parent Id="+userInteraction.getParent().getType());
+				System.out.println("role="+userInteraction.getParent().getRole());
+				interaction.put("id", userInteraction.getId());
+				interaction.put("process", userInteraction.getParent().getType());
+				interaction.put("role", userInteraction.getParent().getRole());
 				//interaction.put(ExposedDataConstants.NAME, userInteraction.getDisplayableName());
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -60,6 +64,8 @@ public class AvailableDataInteractionServlet extends HttpServlet {
 			userIntearctions.put(interaction);
 		}
 		String json = userIntearctions.toString();
+		System.out.println("json");
+		System.out.println(json);
 		response.setContentType(ExposedDataConstants.APPLICATION_JSON);
 		response.setCharacterEncoding(ExposedDataConstants.UTF_8);
 		response.getWriter().write(json);

@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import be.ac.fundp.precise.uiwsc.webClient.controller.ControllerConstants;
 import be.ac.fundp.precise.uiwsc.webClient.model.userManagment.UserActionManager;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class LoginAction.
  */
@@ -36,10 +35,10 @@ public class LoginAction extends HttpServlet {
 				.getParameter(ControllerConstants.CONTROLLER_LOGIN);
 		String password = request
 				.getParameter(ControllerConstants.CONTROLLER_PASSWORD);
-		String process = request
-				.getParameter(ControllerConstants.CONTROLLER_PROCESS);
+		//String process = request
+		//		.getParameter(ControllerConstants.CONTROLLER_PROCESS);
 		String action = request.getParameter("action");
-		String role = request.getParameter(ControllerConstants.CONTROLLER_ROLE);
+		//String role = request.getParameter(ControllerConstants.CONTROLLER_ROLE);
 
 		String forward = ActionConstants.PAGE_DEFAULT;
 
@@ -49,7 +48,7 @@ public class LoginAction extends HttpServlet {
 				requestURL.indexOf(LOGIN_MANAGER_TAG));
 
 		UserActionManager userManager = new UserActionManager(login, password,
-				process, role, servletHost, webContentPath);
+				servletHost, webContentPath);
 		boolean processOk = false;
 
 		if (action.equalsIgnoreCase(ActionConstants.ACTION_SUBSCRIBE))
@@ -57,12 +56,14 @@ public class LoginAction extends HttpServlet {
 		else if (action.equalsIgnoreCase(ActionConstants.ACTION_LOGIN))
 			processOk = userManager.login();
 		if (processOk) {
-			session.setAttribute(ControllerConstants.CONTROLLER_ROLE, role);
-			session.setAttribute(ControllerConstants.CONTROLLER_PROCESS,
-					process);
+			//session.setAttribute(ControllerConstants.CONTROLLER_ROLE, role);
+			//session.setAttribute(ControllerConstants.CONTROLLER_PROCESS,
+			//		process);
+			System.out.println("LOGADOOOOOO");
 			session.setAttribute(ControllerConstants.CONTROLLER_LOGIN, login);
 			forward = ActionConstants.PAGE_PROCESS_AVAILABLE;
 		} else {
+			System.out.println("DEU MERDA");
 			forward = ActionConstants.PAGE_ERROR;
 		}
 		String forwardURL = servletHost + forward;

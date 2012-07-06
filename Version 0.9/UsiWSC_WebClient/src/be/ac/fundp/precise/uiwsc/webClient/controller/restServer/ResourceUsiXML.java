@@ -69,6 +69,7 @@ public class ResourceUsiXML extends ServerResource {
 	@Put
 	public void newUserInteraction(Representation entity) throws ResourceException {
 		final String user = (String) getRequestAttributes().get(ControllerConstants.CONTROLLER_LOGIN);
+		final String role = (String) getRequestAttributes().get(ControllerConstants.CONTROLLER_ROLE);
 		final String processId = (String) getRequestAttributes().get(ControllerConstants.CONTROLLER_PROCESS_ID);
 		final String process = (String) getRequestAttributes().get(ControllerConstants.CONTROLLER_PROCESS);
 		final String cuiId = (String) getRequestAttributes().get(ControllerConstants.CONTROLLER_CUI_ID);
@@ -83,7 +84,7 @@ public class ResourceUsiXML extends ServerResource {
 			e.printStackTrace();
 			availableData = Collections.emptyList();
 		}
-		processManager.newInteraction(user, processId, process, cuiId, availableData);
+		processManager.newInteraction(user, processId, process, role, cuiId, availableData);
 	}
 
 	/**

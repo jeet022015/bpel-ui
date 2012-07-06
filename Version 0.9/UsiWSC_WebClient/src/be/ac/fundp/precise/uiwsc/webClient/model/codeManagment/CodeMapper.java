@@ -83,8 +83,9 @@ public class CodeMapper {
 		Representation fr = null;
 		InputStream inputStream = null;
 		OutputStream out = null;
+		ClientResource itemsResource = null;
 		try {
-			ClientResource itemsResource = new ClientResource(
+			itemsResource = new ClientResource(
 					ConnectionConstants.USI_WSC_MANAGER_HOST + "/" + processType
 							+ "/" + roleId + "/" + "code" + "/" + context);
 			fr = itemsResource.get();
@@ -110,6 +111,8 @@ public class CodeMapper {
 				out.close();
 			if (fr != null)
 				fr.release();
+			if (itemsResource != null)
+				itemsResource.release();
 		}
 	}
 
@@ -175,8 +178,9 @@ public class CodeMapper {
 			InterruptedException, CodeRetreivingException {
 		Map<String, String> cui2codeId = new HashMap<String, String>();
 		Representation fr = null;
+		ClientResource itemsResource = null;
 		try {
-			ClientResource itemsResource = new ClientResource(
+			itemsResource = new ClientResource(
 					ConnectionConstants.USI_WSC_MANAGER_HOST + "/" + process
 							+ "/" + role + "/" + "code" + "/" + contextId + "/"
 							+ "desc");
@@ -198,6 +202,8 @@ public class CodeMapper {
 		} finally {
 			if (fr != null)
 				fr.release();
+			if (itemsResource != null)
+				itemsResource.release();
 		}
 		return cui2codeId;
 	}
