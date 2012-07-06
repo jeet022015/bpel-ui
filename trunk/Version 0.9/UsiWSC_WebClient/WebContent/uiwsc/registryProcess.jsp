@@ -1,58 +1,17 @@
+<%@page import="be.ac.fundp.precise.uiwsc.webClient.controller.jsp.ProcessRoleAccess"%>
+<%@page import="java.util.List"%>
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="css/main.css">
+<%
+	ProcessRoleAccess access = new ProcessRoleAccess(); 
+%>
 <!--[if lt IE 9]>
  	 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<script type="text/javascript" src="js/jquery-1.7.2.js"></script>
-<script>
-
-	function displayDate() {
-		var div = $('#demo');
-		var process = 'TravelProcess'
-		var link = "../startingProcessActivity?process="+process;
-		$('<a>').text('Start Process').attr("href", link).appendTo(div);
-	};
-
-	function getProcesses () {
-		$.getJSON("/UsiWSC_WebClient/availableProcesses", function(data) {
-	    	var ul = $('#processDesc');
-	    	ul.text('');
-	    	$.each(data, function(i, product) {
-	    		getProcessli(product.id, product.name, product.interactions, ul);
-	    		
-	    	});
-		});
-	};
-
-	var interval = 1000 * 60 * 0.1;
-
-	setInterval(getProcesses, interval);
-	
-	function getProcessli(productId, productName, interactions, ul) {
-		var liProcess = $('<li>').attr("class", "headerbar").text(productName);
-		var liInteractions = $('<li>').attr("class", "normal");
-		var ulInteraction = $('<ul>');
-		interactionCounter = 0;
-		$.getJSON("/UsiWSC_WebClient/availableInteractions?processId="+productId, function(data) {
-	    	$.each(data, function(i, product) {
-	    		interactionCounter++;
-	    		var link = "../activityManager?processId="+productId;
-		    	var cuiLink = "&cuiId=";
-		    	var processLink = "&process=";
-		    	var roleLink = "&role=";
-	    		var liInteraction = $('<li>');
-	    		$('<a>').text('Interaction '+interactionCounter).attr("href", link+cuiLink+product.id+processLink+product.process+roleLink+product.role).appendTo(liInteraction);
-	    		ulInteraction.append(liInteraction);
-	    	});
-		});
-		var liNewInteraction = $('<li>').attr("class", "interaction").text("You have "+interactions+" new interaction(s) ");
-		liInteractions.append(ulInteraction);
-		ul.append(liProcess);
-		ul.append(liNewInteraction);
-		ul.append(liInteractions);
-	}
-</script>
 <head>
 <title>UsiWSC - Web Client</title>
 <meta charset="utf-8" />
@@ -100,17 +59,29 @@
 					<footer class="post-info">
 						<h1 class="entry-title">Processes</h1>
 					</footer>
-					<a href="./registryProcess.jsp">Registry process</a>
-					<a href="./startableProcess.jsp">Registry process</a>
 					<!-- /.post-info -->
 					<div class="entry-content">
 						<ul class="arrowlistmenu" id="processDesc">
-							
+							<%
+								for (String process: access.getProcesses()) {
+							%>
+							<li> <%=process%>
+								<ul class="arrowlistmenu" id="processDesc">
+								<%
+									for (String role: access.getRoles(process)) {
+								%>
+									<li><a href="../registryProcessAction?process=<%=process%>&role=<%=role%>"><%=role%></a></li>
+								<%
+									} 
+								%>
+								</ul>
+							</li>
+							<%
+								} 
+							%>
 						</ul>
 					</div>
-					<div class="entry-content" id="demo">
-						
-					</div>
+					
 					<!-- /.entry-content -->
 				</article>
 			</li>

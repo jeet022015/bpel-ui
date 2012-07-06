@@ -26,15 +26,9 @@ public class UserActionManager {
 	/** The login. */
 	private String login;
 	
-	/** The process id. */
-	private String processId;
-	
 	/** The password. */
 	private String password;
-	
-	/** The role id. */
-	private String roleId;
-	
+
 	/** The host root. */
 	private String hostRoot;
 	
@@ -52,12 +46,9 @@ public class UserActionManager {
 	 * @param webContentPath the web content path
 	 */
 	public UserActionManager(String login, String password,
-								String processId, String roleId,
 								String hostRoot, String webContentPath){
 		this.login = login;
 		this.password = password;
-		this.processId = processId;
-		this.roleId = roleId;
 		this.hostRoot = hostRoot;
 		this.webContentPath = webContentPath;
 	}
@@ -71,13 +62,14 @@ public class UserActionManager {
 		String returnMsg = null;
 		try {
 			returnMsg = connectServer(OPERATION_SUBSCRIBE);
-			System.out.println(returnMsg);
-			codeManager.retrieveCode(processId, roleId, webContentPath);
+			
+			return "subscribed".equals(returnMsg);
+			//System.out.println(returnMsg);
+			//codeManager.retrieveCode(processId, roleId, webContentPath);
 		} catch (Exception e) {
 			//e.printStackTrace();
 			return false;
 		}
-		return true;
 	}
 
 	/**
@@ -90,14 +82,13 @@ public class UserActionManager {
 		try {
 			returnMsg = connectServer(OPERATION_LOGIN);
 			System.out.println(returnMsg);
-			codeManager.retrieveCode(processId, roleId, webContentPath);
+			return "ok".equals(returnMsg);
+			//codeManager.retrieveCode(processId, roleId, webContentPath);
 		} catch (Exception e) {
 			//e.printStackTrace();
 			return false;
 		}
-		return true;
 	}
-	
 
 	/**
 	 * Connect server.
@@ -109,21 +100,22 @@ public class UserActionManager {
 	private String connectServer(String operation) throws IOException {
 		String hostAddress = UserManagmentUtil.adapt(hostRoot +
 				ServerConstants.FULL_SERVICE_TERMINATION);
+		ClientResource itemsResource = null;
 		Representation r = null;
 		try {
-			ClientResource itemsResource = new ClientResource(ConnectionConstants.USI_WSC_MANAGER_HOST +
-					"/"+ processId +
-					"/"+ roleId +
+			itemsResource = new ClientResource(ConnectionConstants.USI_WSC_MANAGER_HOST +
 					"/"+ operation +
 					"/"+ login +
 					"/"+ password +
-					"/"+ hostAddress);
+					"/"+ hostAddress +
+					"/"+ "rest_html");
 			r = itemsResource.get();
-			System.out.println("r="+r);
 			return r.getText();
 		} finally {
+			if (itemsResource != null)
+				itemsResource.release();
 			if (r != null)
-			r.release();
+				r.release();
 		}
 	}
 }

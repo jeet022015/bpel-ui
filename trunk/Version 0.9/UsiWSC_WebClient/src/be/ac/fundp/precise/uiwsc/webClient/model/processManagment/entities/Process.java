@@ -19,6 +19,8 @@ public class Process {
 	/** The process type. */
 	protected String type;
 	
+	protected String roleId;
+	
 	/** The displayable name. */
 	protected String displayableName;
 	
@@ -33,12 +35,14 @@ public class Process {
 	 *
 	 * @param processId the process id
 	 * @param processType the process type
+	 * @param userId2 
 	 * @param newUserId the user id
 	 */
-	public Process(String processId, String processType, String userId) {
+	public Process(String processId, String processType, String role, String userId) {
 		id = processId;
 		type = processType;
 		this.userId = userId;
+		roleId = role;
 		displayableName = processType +"-"+ sequence.next();
 	}
 
@@ -49,6 +53,10 @@ public class Process {
 	 */
 	public String getId() {
 		return id;
+	}
+	
+	public String getRole() {
+		return roleId;
 	}
 	
 	/**

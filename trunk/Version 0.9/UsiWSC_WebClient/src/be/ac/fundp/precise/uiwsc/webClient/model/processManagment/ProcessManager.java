@@ -49,12 +49,13 @@ public class ProcessManager {
 	 * @param processId the process id
 	 * @param processType the process type
 	 * @param cuiId the cui id
+	 * @param role 
 	 * @param availableData the available data
 	 */
 	public void newInteraction(String userId, String processId,
-			String processType, String cuiId, List<DataItem> availableData) {
+			String processType, String role, String cuiId, List<DataItem> availableData) {
 		createProcessMap(userId);
-		createProcess(userId, processId, processType);
+		createProcess(userId, processId, processType, role);
 		Map<String, Process> userProcess = processBinder.get(userId);
 		Process p = userProcess.get(processId);
 		p.addUserInteraction(cuiId, availableData);
@@ -77,12 +78,13 @@ public class ProcessManager {
 	 * @param userId the user id
 	 * @param processId the process id
 	 * @param processType the process type
+	 * @param role 
 	 */
 	private synchronized void createProcess(String userId, String processId,
-			String processType) {
+			String processType, String role) {
 		Map<String, Process> userProcess = processBinder.get(userId);
 		if (!userProcess.containsKey(processId)) {
-			userProcess.put(processId, new Process(processId, processType,
+			userProcess.put(processId, new Process(processId, processType, role,
 					userId));
 		}
 	}
@@ -169,8 +171,9 @@ public class ProcessManager {
 
 	public void startProcess(String login, String process) {
 		Representation r = null;
+		ClientResource itemsResource = null;
 		try {
-			ClientResource itemsResource = new ClientResource(ConnectionConstants.USI_WSC_MANAGER_HOST +
+			itemsResource = new ClientResource(ConnectionConstants.USI_WSC_MANAGER_HOST +
 					"/"+ process +
 					"/"+ login +
 					"/start");
@@ -179,6 +182,8 @@ public class ProcessManager {
 		} finally {
 			if (r != null)
 				r.release();
+			if (itemsResource != null)
+				itemsResource.release();
 		}
 	}
 }

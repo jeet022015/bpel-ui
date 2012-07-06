@@ -58,6 +58,9 @@ public class CodeManager {
 	public void retrieveCode(String processId, String roleId,
 			String webContentPath) throws IOException, JSONException,
 			InterruptedException, CodeRetreivingException {
+		System.out.println("processId="+processId);
+		System.out.println("roleId="+roleId);
+		System.out.println("context="+CONTEXT_HTML_DEFAULT);
 		CodeIndex index = new CodeIndex(processId, roleId, CONTEXT_HTML_DEFAULT);
 		CodeMapper codeMapper = new CodeMapper(processId, roleId,
 				CONTEXT_HTML_DEFAULT, webContentPath);

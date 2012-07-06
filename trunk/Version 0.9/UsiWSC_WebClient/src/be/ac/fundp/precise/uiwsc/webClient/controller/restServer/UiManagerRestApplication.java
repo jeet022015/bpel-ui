@@ -20,6 +20,7 @@ public class UiManagerRestApplication extends Application {
 		Router router = new Router(getContext());
 		router.attach("/"+ServerConstants.REST_SERVICE+
 					  "/{"+ControllerConstants.CONTROLLER_PROCESS+"}" +
+					  "/{"+ControllerConstants.CONTROLLER_ROLE+"}" +
 					  "/{"+ControllerConstants.CONTROLLER_PROCESS_ID+"}" +
 					  "/{"+ControllerConstants.CONTROLLER_LOGIN+"}" +
 					  "/{"+ControllerConstants.CONTROLLER_CUI_ID+"}", ResourceUsiXML.class);

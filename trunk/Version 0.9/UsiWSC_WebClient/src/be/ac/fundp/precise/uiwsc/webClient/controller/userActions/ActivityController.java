@@ -43,8 +43,8 @@ public class ActivityController  extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String process = (String) request.getSession().getAttribute(ControllerConstants.CONTROLLER_PROCESS);
-		String role = (String) request.getSession().getAttribute(ControllerConstants.CONTROLLER_ROLE);
+		String process = (String) request.getParameter(ControllerConstants.CONTROLLER_PROCESS);
+		String role = (String) request.getParameter(ControllerConstants.CONTROLLER_ROLE);
 		String user = (String) request.getSession().getAttribute(ControllerConstants.CONTROLLER_LOGIN);
 		String processInstanceId = (String) request.getParameter(ControllerConstants.CONTROLLER_PROCESS_ID);
 		String cuiId = (String) request.getParameter(ControllerConstants.CONTROLLER_CUI_ID);
