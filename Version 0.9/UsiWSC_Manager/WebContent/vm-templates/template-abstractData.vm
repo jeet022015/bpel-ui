@@ -50,10 +50,13 @@ if (role != null && processId != null && cuiId != null) {
 	<header id="banner" class="body">
     	<h1 class="logo"><img src="/UsiWSC_WebClient/uibpel/image/UsiWSCLogo.png" title="UsiWSC Logo" alt="UsiWSC Logo" align="left" /><span class="wsc">Usable User Interface for</span> Interactive Web Service Composition</h1>
 		<nav><ul>
-			<li class="active"><a href="#">home</a></li>
-			<li><a href="#">login</a></li>
-			<li><a href="#">subscription</a></li>
-			<li><a href="#">contact</a></li>
+			<li><a href="http://webapps.fundp.ac.be/usiwsc/index.html">Overview</a></li>
+			<li><a href="http://webapps.fundp.ac.be/usiwsc/Features.html">Features</a></li>
+			<li><a href="http://webapps.fundp.ac.be/usiwsc/Dowload.html">Download</a></li>
+			<li><a href="http://webapps.fundp.ac.be/usiwsc/Support.html">Support</a></li>
+			<li><a href="http://webapps.fundp.ac.be/usiwsc/AboutUs.html">About us</a></li>
+			<li class="active"><a href="http://localhost:8050/UsiWSC_WebClient/uiwsc/">Web Sign In
+			</a></li>
 		</ul></nav>
 	</header><!-- /#banner -->
 	
