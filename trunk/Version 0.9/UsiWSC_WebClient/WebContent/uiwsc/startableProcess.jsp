@@ -27,10 +27,13 @@
 		</h1>
 		<nav>
 			<ul>
-				<li class="active"><a href="#">home</a></li>
-				<li><a href="#">login</a></li>
-				<li><a href="#">subscription</a></li>
-				<li><a href="#">contact</a></li>
+				<li><a href="http://webapps.fundp.ac.be/usiwsc/index.html">Overview</a></li>
+				<li><a href="http://webapps.fundp.ac.be/usiwsc/Features.html">Features</a></li>
+				<li><a href="http://webapps.fundp.ac.be/usiwsc/Dowload.html">Download</a></li>
+				<li><a href="http://webapps.fundp.ac.be/usiwsc/Support.html">Support</a></li>
+				<li><a href="http://webapps.fundp.ac.be/usiwsc/AboutUs.html">About us</a></li>
+				<li class="active"><a href="http://localhost:8050/UsiWSC_WebClient/uiwsc/">Web Sign In
+				</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -44,12 +47,15 @@
 					<a href="#">UI-BPEL</a>
 				</h3>
 			</hgroup>
-			<p>This tool is the concept prove for our proposition. The
-				extension proposes a new type of interaction events that allow
-				processing of the user interaction. The user interaction
-				specification helps to generate a user interface for the Web service
-				composition which is made by transforming the described user
-				interactions to user interface components.</p>
+			<p> This demonstration presents the designing, deploying and execution of a Web service
+			 composition with user interactions based on UsiWSC Framework. The Web service composition
+			 on the UsiWSC framework are defined based on an
+			 extension of the BPEL: the UI-BPEL. For deployment, the framework allows the
+			 derivation of the UI based on the <a href="http://www.usixml.com">UsiXML standard</a>. Besides,
+			 the framework allows the derivation of an executable BPEL
+			 compositions for a specific user context. Finally, the UsiWSC framework allows the
+			 execution of the Web service composition, keeping the coordination of the
+			 control and data flows between the involved Web services and user interfaces.</p>
 		</article>
 	</aside>
 	<!-- /#featured -->
@@ -72,6 +78,7 @@
 								} 
 							%>
 						</ul>
+						<FORM><INPUT TYPE="button" VALUE="Back" onClick="history.go(-1);return true;"></FORM>
 					</div>
 					
 					<!-- /.entry-content -->
@@ -86,7 +93,7 @@
 		<img src="images/logo.png" title="UsiWSC Logo" alt="UsiWSC Logo"
 			align="left" /> <img src="images/logo3.png" title="UsiWSC Logo"
 			alt="UsiWSC Logo" align="right" />
-		<p>&copy; 2012 UsiXML</p>
+		<p>&copy; 2012 FUNDP</p>
 	</footer>
 	<!-- /#contentinfo -->
 </body>
