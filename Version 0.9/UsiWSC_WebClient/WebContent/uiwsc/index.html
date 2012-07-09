@@ -5,6 +5,17 @@
  	 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 
+<script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+
+<script type="text/javascript">
+
+$('input:submit').click(function(){
+	$('p').text("Submiting.....").addClass('submit');
+	$('input:submit').attr("disabled", true);	
+});
+ 
+</script>
+
 <head>
 	<title>UsiWSC - Web Client</title>
 	<meta charset="utf-8" />
@@ -73,7 +84,7 @@
 						<label>Role</label>
 			    	</li> -->
 			    	<li>
-			    		<input type="submit" value="Send" id="sendbutton" name="sendbutton"/>
+			    		<input type="submit" value="Send" id="sendbutton" name="sendbutton" onclick="this.disabled = 'disabled';submit();"/>
 			    	</li>
 			    </ul>
 			</form>
