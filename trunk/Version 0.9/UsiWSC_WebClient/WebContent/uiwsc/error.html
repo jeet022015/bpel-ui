@@ -50,9 +50,6 @@ function errorMsg(){
 				<h1 class="entry-title">Subscription Information</h1>
 			</header>
 			<form action="/UsiWSC_WebClient/loginAction" method="post">
-				<input type="hidden" name="process" value="TravelScenario">
-				<!-- <input type="hidden" name="role" value="employee"> -->
-				<input type="hidden" name="action" value="subscribe">
 			    <ul id="contactform">
 			        <li>
 			           <input type="text" name="login" id="login" value=""/>
@@ -62,22 +59,8 @@ function errorMsg(){
 			            <input type="password" name="password" id="password" value=""/>
 			            <label>Password</label>
 			        </li>
-			        <li>
-			    		<select name="process" class="styled-select">
-							<option value="TravelScenario">TravelScenario</option>
-						</select>
-						<label>Process</label>
-			    	</li>
-			        <li>
-			    		<select name="role" class="styled-select">
-							<option value="employee">Employee</option>
-							<option value="manager">Manager</option>
-							<option value="administrator">Administrator</option>
-						</select>
-						<label>Role</label>
-			    	</li>
 			    	<li>
-			    		<input type="submit" value="Send" id="sendbutton" name="sendbutton"/>
+			    		<input type="submit" value="Send" id="sendbutton" name="sendbutton" onclick="this.disabled = 'disabled';submit();"/>
 			    	</li>
 			    </ul>
 			</form>
