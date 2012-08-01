@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.bpel.common.ui.details.IDetailsAreaConstants;
 import org.eclipse.bpel.common.ui.flatui.FlatFormAttachment;
 import org.eclipse.bpel.common.ui.flatui.FlatFormData;
-import org.eclipse.bpel.ui.commands.CompoundCommand;
 import org.eclipse.bpel.ui.properties.BPELPropertySection;
 import org.eclipse.bpel.ui.util.BPELUtil;
 import org.eclipse.draw2d.FigureUtilities;
@@ -18,7 +17,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -45,11 +43,8 @@ public class UserRolePropertySection extends BPELPropertySection {
 	/** The parent composite. */
 	protected Composite parentComposite;
 	
-	/** The variable name. */
-	protected Label variableName;
-	
 	/** The variable browse button. */
-	protected Button variableBrowseButton;
+	protected Button createRoleButton;
 	
 	/** The main label. */
 	private Section mainLabel;
@@ -61,16 +56,16 @@ public class UserRolePropertySection extends BPELPropertySection {
 	private Button deleteRoleButton;
 	
 	/** The available data item buttons. */
-	private List<Button> availableDataItemButtons = new LinkedList<Button>();
+	private List<Button> availableUserRoleButtons = new LinkedList<Button>();
 	
 	/** The data items in button. */
-	private List<String> dataItemsInButton = new LinkedList<String>();
+	private List<String> userRolesInButton = new LinkedList<String>();
 	
 	/** The current data item button. */
-	private Button currentDataItemButton;
+	private Button currentUserRoleButton;
 	
-	/** The current data item. */
-	private UserRole currentDataItem;
+	/** The current User Role. */
+	private UserRole currentUserRole;
 
 	/**
 	 * Gets the activity.
@@ -93,39 +88,36 @@ public class UserRolePropertySection extends BPELPropertySection {
 		data = new FlatFormData();
 		data.left = new FlatFormAttachment(0, 0);
 		data.right = new FlatFormAttachment(100, 0);
-		//data.top = new FlatFormAttachment(composite, IDetailsAreaConstants.VSPACE);
 		data.top = new FlatFormAttachment(0, IDetailsAreaConstants.VSPACE);
 		composite.setLayoutData(data);
 		
 		mainLabel = fWidgetFactory.createSection(composite, SWT.NONE); //$NON-NLS-1$
 
 		mainLabel.setText("Roles:");
-		//g = fWidgetFactory.createGroup(composite, "group");
-		//Button button2 = fWidgetFactory.createButton(g, "", SWT.RADIO);
 		sectionClient = fWidgetFactory.createComposite(mainLabel);
 		sectionClient.setLayout(new GridLayout());
 		mainLabel.setClient(sectionClient);
 		
-		variableBrowseButton = fWidgetFactory.createButton(composite,
+		createRoleButton = fWidgetFactory.createButton(composite,
 				"Create Role", SWT.PUSH);
 		data = new FlatFormData();
 		data.left = new FlatFormAttachment(0, 0);
 		data.right = new FlatFormAttachment(10, 0);
 		data.top = new FlatFormAttachment(0, 0);
 		data.height = FigureUtilities.getTextExtents(
-				variableBrowseButton.getText(), variableBrowseButton.getFont()).height + 4;
+				createRoleButton.getText(), createRoleButton.getFont()).height + 4;
 		mainLabel.setLayoutData(data);
 
 		data = new FlatFormData();
 		data.top = new FlatFormAttachment(mainLabel, 0, SWT.TOP);
 		data.left = new FlatFormAttachment(50, -BPELUtil.calculateButtonWidth(
-				variableBrowseButton, SHORT_BUTTON_WIDTH)
+				createRoleButton, SHORT_BUTTON_WIDTH)
 				- IDetailsAreaConstants.CENTER_SPACE);
 		data.right = new FlatFormAttachment(50,
 				-IDetailsAreaConstants.CENTER_SPACE);
-		variableBrowseButton.setLayoutData(data);
+		createRoleButton.setLayoutData(data);
 		
-		variableBrowseButton.addSelectionListener(new SelectionListener() {
+		createRoleButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				Shell shell = composite.getShell();
 				// I need to create a command
@@ -162,16 +154,17 @@ public class UserRolePropertySection extends BPELPropertySection {
 
 			public void widgetSelected(SelectionEvent e) {
 				
-				CompoundCommand cmd = new CompoundCommand();
+				//CompoundCommand cmd = new CompoundCommand();
 				Command command = new RemoveUserRoleCommand(
-						getActivity(), currentDataItem);
-				cmd.add(command);
-				getCommandFramework().execute(wrapInShowContextCommand(cmd));
+						getActivity(), currentUserRole);
+				//cmd.add(command);
+				//getCommandFramework().execute(wrapInShowContextCommand(cmd));
+				getCommandFramework().execute(wrapInShowContextCommand(command));
 				
-				dataItemsInButton.remove(currentDataItem.getRoleId());
-				currentDataItemButton.setVisible(false);
-				availableDataItemButtons.add(currentDataItemButton);
-				currentDataItemButton = null;
+				userRolesInButton.remove(currentUserRole.getRoleId());
+				currentUserRoleButton.setVisible(false);
+				availableUserRoleButtons.add(currentUserRoleButton);
+				currentUserRoleButton = null;
 				updateVariableWidgets();
 			}
 
@@ -184,7 +177,7 @@ public class UserRolePropertySection extends BPELPropertySection {
 			Button button4 = fWidgetFactory.createButton(sectionClient,
 						"buttonName", SWT.RADIO);
 			button4.setVisible(false);
-			availableDataItemButtons.add(button4);
+			availableUserRoleButtons.add(button4);
 		}
 	}
 	
@@ -194,15 +187,15 @@ public class UserRolePropertySection extends BPELPropertySection {
 	public void updateVariableWidgets() {
 		if(getActivity() != null){
 			for (final UserRole dataItem : getActivity().getUserRoles()) {
-				if (dataItem.getRoleId() != null && !dataItemsInButton.contains(dataItem.getRoleId())){
+				if (dataItem.getRoleId() != null && !userRolesInButton.contains(dataItem.getRoleId())){
 					String name = dataItem.getRoleId();
-					dataItemsInButton.add(name);
-					final Button button4 = availableDataItemButtons.remove(0);
+					userRolesInButton.add(name);
+					final Button button4 = availableUserRoleButtons.remove(0);
 					button4.setText(name);
 					button4.addSelectionListener(new SelectionListener() {
 						public void widgetSelected(SelectionEvent e) {
-							currentDataItem = dataItem;
-							currentDataItemButton = button4;
+							currentUserRole = dataItem;
+							currentUserRoleButton = button4;
 						}
 	
 						public void widgetDefaultSelected(SelectionEvent e) {
