@@ -38,7 +38,29 @@ public class PopupActionAuiDeployment extends PopupActionWithProcessRepresentati
 		// load BPEL,WSDL,XSDs
 		Process process = loadBPEL();
 
-		createAuiModel(process);
+		try {
+			createAuiModel(process);
+		} catch (IOException e) {
+			MessageDialog.openInformation(getShell(), "BPEL Extensions UI Plug-in",
+					"ERROR: " + e.getMessage());
+			e.printStackTrace();
+			return;
+		} catch (ParserConfigurationException e) {
+			MessageDialog.openInformation(getShell(), "BPEL Extensions UI Plug-in",
+					"ERROR: " + e.getMessage());
+			e.printStackTrace();
+			return;
+		} catch (TransformerException e) {
+			MessageDialog.openInformation(getShell(), "BPEL Extensions UI Plug-in",
+					"ERROR: " + e.getMessage());
+			e.printStackTrace();
+			return;
+		} catch (CoreException e) {
+			MessageDialog.openInformation(getShell(), "BPEL Extensions UI Plug-in",
+					"ERROR: " + e.getMessage());
+			e.printStackTrace();
+			return;
+		}
 
 		MessageDialog.openInformation(getShell(), "BPEL Extensions UI Plug-in",
 				"Generated AUI for the Process: " + process.getName());
@@ -48,27 +70,21 @@ public class PopupActionAuiDeployment extends PopupActionWithProcessRepresentati
 	 * Creates the aui model.
 	 *
 	 * @param process the process
+	 * @throws CoreException 
+	 * @throws TransformerException 
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
 	 */
-	private void createAuiModel(Process process) {
+	private void createAuiModel(Process process) throws IOException, ParserConfigurationException, TransformerException, CoreException {
 		
 		IFile f = getBpelFile();
 		IFolder folder = (IFolder) f.getParent();
 		IProject project = f.getProject();
-		try {
-			AUIGenerator auiGen = new AUIGenerator(folder, process);
-			Map<String, File> path = auiGen.saveModels();
-			
-			AuiDeploymentManager aui = new AuiDeploymentManager(project.getName(), path, auiGen.getConf().getRolesMap());
-			aui.deploy();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+		AUIGenerator auiGen = new AUIGenerator(folder, process);
+		Map<String, File> path = auiGen.saveModels();
+		
+		AuiDeploymentManager aui = new AuiDeploymentManager(project.getName(), path, auiGen.getConf().getRolesMap());
+		aui.deploy();
 		
 	}
 }

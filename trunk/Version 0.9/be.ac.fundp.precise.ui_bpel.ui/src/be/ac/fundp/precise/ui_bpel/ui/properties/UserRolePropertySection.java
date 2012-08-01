@@ -30,7 +30,6 @@ import be.edu.fundp.precise.uibpel.model.UserRole;
 
 // TODO: Auto-generated Javadoc
 /*
- * Bug 120110
  * This class implements the detail property tab for the "elemental" extension activity.
  * This property detail tab allows the user to select a variable in scope for this activity.
  * 

@@ -51,21 +51,19 @@ public class UserRoleDialog  extends Dialog {
 	 * @return the user role
 	 */
 	public UserRole open() {
-		
-		UserRole newDataItem = ModelFactory.eINSTANCE.createUserRole();
-		
 		Shell parent = getParent();
 		final Shell shell = new Shell(parent, SWT.TITLE | SWT.BORDER
 				| SWT.APPLICATION_MODAL);
-		shell.setText("Input Data");
+		shell.setText("New Role");
 
 		shell.setLayout(new GridLayout(2, true));
 
 		Label label = new Label(shell, SWT.NULL);
-		label.setText("Data Input");
+		label.setText("Role Name");
+		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true));
 
 		final Text text = new Text(shell, SWT.SINGLE | SWT.BORDER);
-		text.setText("");
+		text.setText(value);
 
 		final Button buttonOK = new Button(shell, SWT.PUSH);
 		buttonOK.setText("OK");
@@ -94,6 +92,7 @@ public class UserRoleDialog  extends Dialog {
 
 		buttonCancel.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
+				value = null;
 				shell.dispose();
 			}
 		});
@@ -114,8 +113,13 @@ public class UserRoleDialog  extends Dialog {
 				display.sleep();
 		}
 
-		newDataItem.setRoleId(value);
-		return newDataItem;
+		if (value != null){
+			UserRole newDataItem = ModelFactory.eINSTANCE.createUserRole();
+			newDataItem.setRoleId(value);
+			return newDataItem;
+		} else {
+			return null;
+		}
 	}
 
 }

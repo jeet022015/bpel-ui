@@ -3,6 +3,10 @@
  */
 package be.ac.fundp.precise.ui_bpel.ui.properties;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.bpel.common.ui.details.IDetailsAreaConstants;
 import org.eclipse.bpel.common.ui.flatui.FlatFormAttachment;
 import org.eclipse.bpel.common.ui.flatui.FlatFormData;
@@ -90,7 +94,7 @@ abstract class AbstractDataPropertySection extends BPELPropertySection {
 
 			@Override
 			public void notify(Notification n) {
-
+				adjustDataItemList();
 				adjustCopyRulesList();
 				int indexDataItem = fixAdapter(n);
 				if (indexDataItem != -1)
@@ -100,6 +104,20 @@ abstract class AbstractDataPropertySection extends BPELPropertySection {
 		}, };
 	}
 	
+	protected void adjustDataItemList() {
+		EList<DataItem> inputItems = getDataItem();
+		List<String> dataItemIds = new LinkedList<String>();
+		for (Iterator<DataItem> iterator = inputItems.iterator(); iterator.hasNext();) {
+			DataItem dataItem = iterator.next();
+			String dataItemId = dataItem.getVariable().getName();
+			if (dataItemIds.contains(dataItemId)){
+				iterator.remove();
+			} else {
+				dataItemIds.add(dataItemId);
+			}
+		}
+	}
+
 	/**
 	 * Fix adapter to the current Data Item.
 	 *
@@ -296,8 +314,6 @@ abstract class AbstractDataPropertySection extends BPELPropertySection {
 		section.fNameFieldLabel = fWidgetFactory.createLabel(composite,"Name:");
 		section.fNameField = fWidgetFactory.createLabel(composite, "");
 		
-		//createChangeTrackers(section.fNameField);
-		
 		//Name Field
 		data = new FlatFormData();
 		data.left = new FlatFormAttachment(0, BPELUtil.calculateLabelWidth(
@@ -401,17 +417,12 @@ abstract class AbstractDataPropertySection extends BPELPropertySection {
 	 */
 	@Override
 	protected void basicSetInput(EObject newInput) {
-
 		saveUserContextToInput();
 
 		super.basicSetInput(newInput);
 		adjustCopyRulesList();
 
 		restoreUserContextFromInput();
-		
-//		if (fFromSection.fCurrent != null) {
-//			fFromSection.fCurrent.refresh();
-//		}
 
 	}
 
@@ -449,11 +460,6 @@ abstract class AbstractDataPropertySection extends BPELPropertySection {
 	@Override
 	public void aboutToBeHidden() {
 		super.aboutToBeHidden();
-
-//		if (fFromSection.fCurrent != null) {
-//			fFromSection.fCurrent.aboutToBeHidden();
-//		}
-
 	}
 
 	/**
@@ -464,9 +470,6 @@ abstract class AbstractDataPropertySection extends BPELPropertySection {
 	@Override
 	public void aboutToBeShown() {
 		super.aboutToBeShown();
-//		if (fFromSection.fCurrent != null) {
-//			fFromSection.fCurrent.aboutToBeShown();
-//		}
 	}
 
 	/**

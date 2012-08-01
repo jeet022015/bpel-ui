@@ -20,7 +20,6 @@ import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataType;
 import be.edu.fundp.precise.uibpel.model.ModelFactory;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DataItemDialog.
  *
@@ -33,18 +32,6 @@ public class DataItemDialog extends Dialog {
 	
 	/** The value. */
 	private String value = "NameDefault";
-	
-	/** The b1. */
-	private Button b1;
-	
-	/** The b2. */
-	private Button b2;
-	
-	/** The b3. */
-	private Button b3;
-	
-	/** The b4. */
-	private Button b4;
 
 	/**
 	 * Instantiates a new data item dialog.
@@ -72,21 +59,26 @@ public class DataItemDialog extends Dialog {
 	 */
 	public DataItem open() {
 		
-		DataItem newDataItem = ModelFactory.eINSTANCE.createDataItem();
-		
 		Shell parent = getParent();
 		final Shell shell = new Shell(parent, SWT.TITLE | SWT.BORDER
 				| SWT.APPLICATION_MODAL);
-		shell.setText("Input Data");
+		shell.setText("New Data Item");
 
-		shell.setLayout(new GridLayout(3, true));
+		GridLayout gl = new GridLayout(2, true);
+		gl.makeColumnsEqualWidth = false;
+		shell.setLayout(gl);
+		String[] availableTypes = {"DateType", DataType.INT_TYPE.getName(), 
+				DataType.STRING_TYPE.getName(), DataType.BOOLEAN_TYPE.getName()};
 
-		Label label = new Label(shell, SWT.NULL);
-		label.setText("Data Input");
-
+		Label nameFieldLabel = new Label(shell, SWT.NULL);
+		nameFieldLabel.setText("Name:");
+		nameFieldLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
 		final Text text = new Text(shell, SWT.SINGLE | SWT.BORDER);
-		text.setText("");
-		
+		text.setText(value);
+
+		Label typeLabel = new Label(shell, SWT.NULL);
+		typeLabel.setText("Type:");
+		typeLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
 		final Group g = new Group(shell, SWT.SINGLE | SWT.BORDER);
 
 		final Button buttonOK = new Button(shell, SWT.PUSH);
@@ -107,51 +99,29 @@ public class DataItemDialog extends Dialog {
 			}
 		});
 		
-		//g.setSize(110, 110);
-		g.setText("Types:");
-		b1 = new Button(g, SWT.RADIO);
-		b1.setBounds(10, 5, 75, 15);
-		//HAck
-		b1.setText("DateType");
-		
-		b2 = new Button(g, SWT.RADIO);
-		b2.setBounds(10, 20, 75, 15);
-		b2.setText(DataType.INT_TYPE.getName());
-		
-		b3 = new Button(g, SWT.RADIO);
-		b3.setBounds(10, 35, 80, 15);
-		b3.setText(DataType.STRING_TYPE.getName());
-		b3.setSelection(true);
-		
-		b4 = new Button(g, SWT.RADIO);
-		b4.setBounds(10, 50, 80, 15);
-		b4.setText(DataType.BOOLEAN_TYPE.getName());
+		//g.setText("Available Types");
+		final Button[] ButtonTypes = {new Button(g, SWT.RADIO), new Button(g, SWT.RADIO),
+				new Button(g, SWT.RADIO), new Button(g, SWT.RADIO)};
 
 		Listener myList = new Listener() {
 			public void handleEvent(Event event) {
 				try {
-					if (b2.getSelection())
-						type = b2.getText();
-					else if (b3.getSelection())
-						type = b3.getText();
-					else if (b4.getSelection())
-						type = b4.getText();
-					else type = b1.getText();
+					for (Button button : ButtonTypes) {
+						if (button.getSelection())
+							type = button.getText();
+					}
 				} catch (Exception e) {
 					buttonOK.setEnabled(false);
 				}
 			}
 		};
 		
-		b1.addListener(SWT.Selection,myList);
-		b2.addListener(SWT.Selection,myList);
-		b3.addListener(SWT.Selection,myList);
-		b4.addListener(SWT.Selection,myList);
-		
-//		VariableTypeSelector variableTypeSelector = new VariableTypeSelector(shell, 
-//				SWT.NONE, getBPELEditor(),
-//				t, new VariableTypeCallback());
-		
+		for (int i = 0; i < ButtonTypes.length; i++) {
+			Button button = ButtonTypes[i];
+			button.setText(availableTypes[i]);
+			button.setBounds(10, 5+i*15, 120, 15);
+			button.addListener(SWT.Selection,myList);
+		}
 
 		buttonOK.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -161,6 +131,7 @@ public class DataItemDialog extends Dialog {
 
 		buttonCancel.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
+				value = null;
 				shell.dispose();
 			}
 		});
@@ -181,17 +152,14 @@ public class DataItemDialog extends Dialog {
 				display.sleep();
 		}
 
+		if (value == null){
+			return null;
+		}
+		DataItem newDataItem = ModelFactory.eINSTANCE.createDataItem();
 		newDataItem.setType(DataType.get(type));
 		Variable v = BPELFactory.eINSTANCE.createVariable();
 		v.setName(value);
 		v.setType(XSDUtils.getPrimitive("string"));
-//		if (xsdType2 != null){
-//			v.setType(xsdType2);
-//		}else if (xsdElement2 != null){
-//			v.setXSDElement(xsdElement2);
-//		} else if(message2 != null){
-//			v.setMessageType(message2);
-//		}
 		newDataItem.setVariable(v);
 		return newDataItem;
 	}
