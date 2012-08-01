@@ -103,6 +103,9 @@ public class ProcessDeployerServiceStub extends org.apache.axis2.client.Stub {
 			org.apache.axis2.context.ConfigurationContext configurationContext)
 			throws org.apache.axis2.AxisFault {
 
+//		this(configurationContext,
+//				"http://138.48.32.93:8050/UsiWSC_Manager/services/ProcessDeployer");
+		
 		this(configurationContext,
 				"http://localhost:8050/UsiWSC_Manager/services/ProcessDeployer");
 
@@ -113,6 +116,7 @@ public class ProcessDeployerServiceStub extends org.apache.axis2.client.Stub {
 	 */
 	public ProcessDeployerServiceStub() throws org.apache.axis2.AxisFault {
 
+		//this("http://138.48.32.93:8050/UsiWSC_Manager/services/ProcessDeployer");
 		this("http://localhost:8050/UsiWSC_Manager/services/ProcessDeployer");
 
 	}
@@ -771,7 +775,7 @@ public class ProcessDeployerServiceStub extends org.apache.axis2.client.Stub {
 		return false;
 	}
 
-	// http://localhost:8050/UsiWSC_Manager/services/ProcessDeployer
+	// http://138.48.32.93:8050/UsiWSC_Manager/services/ProcessDeployer
 	public static class UiMappingType implements
 			org.apache.axis2.databinding.ADBBean {
 		/*
