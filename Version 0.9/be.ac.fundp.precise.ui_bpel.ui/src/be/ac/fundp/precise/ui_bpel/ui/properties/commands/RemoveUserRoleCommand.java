@@ -6,7 +6,6 @@ import org.eclipse.emf.common.util.EList;
 import be.edu.fundp.precise.uibpel.model.UserInteraction;
 import be.edu.fundp.precise.uibpel.model.UserRole;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class RemoveUserRoleCommand.
  *
@@ -15,14 +14,14 @@ import be.edu.fundp.precise.uibpel.model.UserRole;
 public class RemoveUserRoleCommand  extends RemoveFromListCommand {
 
 	/**
-	 * Instantiates a new removes the user role command.
+	 * Instantiates a new command to remove a user role.
 	 *
-	 * @param activity the activity
-	 * @param currentDataItem the current data item
+	 * @param activity the current User Interaction activity
+	 * @param currentUserRole the current user role
 	 */
 	public RemoveUserRoleCommand(UserInteraction activity,
-			UserRole currentDataItem) {
-		super(activity, currentDataItem,  "Remove User Role");
+			UserRole currentUserRole) {
+		super(activity, currentUserRole,  "Remove User Role");
 	}
 
 	/* (non-Javadoc)
