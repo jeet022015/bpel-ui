@@ -229,6 +229,8 @@ public class DeploymentManager {
 					Constants.Configuration.HTTP_METHOD_POST);
 			opts.setTo(new EndpointReference(
 					"http://localhost:8080/ode/processes/DeploymentService"));
+//			opts.setTo(new EndpointReference(
+//					"http://138.48.32.93:8080/ode/processes/DeploymentService"));
 
 			OMElement payload = null;
 			OMFactory omFactory = OMAbstractFactory.getOMFactory();
