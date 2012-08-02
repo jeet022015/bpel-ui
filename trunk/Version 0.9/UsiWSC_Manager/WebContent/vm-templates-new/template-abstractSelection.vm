@@ -105,8 +105,10 @@ function getParameter(name){
 									</select>
 						    	</li>
 #end
-								<li>
-									<input type="submit" value="Send" id="sendbutton" name="sendbutton"/>
+								<li><!-- <input type="submit" value="Send" id="sendbutton" name="sendbutton"/> -->
+#foreach ($element in $userEvents)
+									<input type="submit" value="$element" id="$element" name="$element"/>
+#end
 								</li>
 							</ul>
 						</form>
