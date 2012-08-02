@@ -11,7 +11,7 @@ package be.ac.fundp.precise.ui_bpel.transformation.aui.model.core;
 public class TriggerUI extends InteractionUnit{
 
 	/** The id of the trigger. */
-	protected String id = "";
+	private String id;
 	
 	/**
 	 * This method gets the id of the trigger.
@@ -20,6 +20,15 @@ public class TriggerUI extends InteractionUnit{
 	 */
 	public String getId() {
 		return id;
+	}
+	
+	/**
+	 * This method gets the id of the trigger.
+	 *
+	 * @return the id
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

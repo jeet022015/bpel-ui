@@ -13,6 +13,7 @@ import javax.xml.transform.TransformerException;
 
 import org.eclipse.bpel.model.Activity;
 import org.eclipse.bpel.model.ElseIf;
+import org.eclipse.bpel.model.EventHandler;
 import org.eclipse.bpel.model.Flow;
 import org.eclipse.bpel.model.ForEach;
 import org.eclipse.bpel.model.If;
@@ -34,6 +35,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
+import org.eclipse.wst.wsdl.WSDLElement;
 
 import be.ac.fundp.precise.ui_bpel.transformation.aui.model.AuiFactoryBuilder;
 import be.ac.fundp.precise.ui_bpel.transformation.aui.model.core.AbstractComponentIU;
@@ -46,6 +48,9 @@ import be.edu.fundp.precise.uibpel.model.DataInputUI;
 import be.edu.fundp.precise.uibpel.model.DataItem;
 import be.edu.fundp.precise.uibpel.model.DataOutputUI;
 import be.edu.fundp.precise.uibpel.model.DataSelectionUI;
+import be.edu.fundp.precise.uibpel.model.EventHandlerUI;
+import be.edu.fundp.precise.uibpel.model.OnUserEvent;
+import be.edu.fundp.precise.uibpel.model.ScopeUI;
 
 /**
  * The Class AUIGenerator.
@@ -124,12 +129,8 @@ public class AUIGenerator {
 			AbstractUIModel model = factory.createAbstractUIModel();
 			roleModels.put(role, model);
 		}
-		//String role = "defaultRole";
-		//roleModels.put(role, factory.createAbstractUIModel());
 		
 		activity2AUI(process.getActivity());
-		
-		//medConf.finalize();
 	}
 
 	/**
@@ -228,8 +229,8 @@ public class AUIGenerator {
 			dataComp.setDataType(item.getType().getName());
 			dataComp.setLabel(item.getVariable().getName());
 		}
-		
-		comp.createInnerAbstractTriggerIU();
+		comp.createInnerAbstractTriggerIU("Ok");
+		addCancelButton(comp, activity.getContainer());
 		
 		medConf.createDataSelectionConf(role, activity.getId(), comp.getId());
 	}
@@ -253,8 +254,8 @@ public class AUIGenerator {
 			dataComp.setDataType(item.getType().getName());
 			dataComp.setLabel(item.getVariable().getName());
 		}
-		
-		comp.createInnerAbstractTriggerIU();
+		comp.createInnerAbstractTriggerIU("Ok");
+		addCancelButton(comp, activity.getContainer());
 		
 		medConf.createDataOutputConf(role, activity.getId(), comp.getId());
 	}
@@ -277,9 +278,27 @@ public class AUIGenerator {
 			dataComp.setDataType(item.getType().getName());
 			dataComp.setLabel(item.getVariable().getName());
 		}
-		comp.createInnerAbstractTriggerIU();
+		comp.createInnerAbstractTriggerIU("Ok");
+		addCancelButton(comp, activity.getContainer());
 		
 		medConf.createDataInputConf(role, activity.getId(), comp.getId());
+	}
+
+	private void addCancelButton(AbstractComponentIU comp, WSDLElement container) {
+		if (container instanceof Process || container instanceof EventHandler)
+			return;
+		if (container instanceof ScopeUI){
+			ScopeUI scope = (ScopeUI)container;
+			EventHandler eventHander = scope.getEventHandlers();
+			if (eventHander instanceof EventHandlerUI){
+				EventHandlerUI eventHandlerUI = (EventHandlerUI)eventHander;
+				//TODO create a mechanism to make the difference between the events
+				if (!eventHandlerUI.getUserInteraction().isEmpty()){
+					comp.createInnerAbstractTriggerIU("Cancel");
+				}
+			}
+		}
+		addCancelButton(comp,container.getContainer());
 	}
 
 	/**
@@ -383,6 +402,16 @@ public class AUIGenerator {
 			EList<OnEvent> events = activity.getEventHandlers().getEvents();
 			for (OnEvent onEvent : events) {
 				activity2AUI (onEvent.getActivity());
+			}
+		}
+		if (activity instanceof ScopeUI){
+			ScopeUI scope = (ScopeUI)activity;
+			EventHandler eventHander = scope.getEventHandlers();
+			if (eventHander instanceof EventHandlerUI){
+				EventHandlerUI eventHandlerUI = (EventHandlerUI)eventHander;
+				for (OnUserEvent userEvent : eventHandlerUI.getUserInteraction()) {
+					activity2AUI (userEvent.getActivity());
+				}
 			}
 		}
 	}
