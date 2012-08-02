@@ -30,6 +30,9 @@ public class InteractionManager extends HttpServlet {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 	
+	private final static String CANCEL_BUTTON_ID = "Cancel";
+	private final static String OK_BUTTON_ID = "Ok";
+	
 	/** The process manager. */
 	protected ProcessManager processManager = ProcessManager.getInstance();
 
@@ -53,8 +56,7 @@ public class InteractionManager extends HttpServlet {
 		System.out.println("cuiId:"+cuiId);
 		UserInteraction cui = processManager.getUserInteraction(processId, login, cuiId);
 		String forward = ActionConstants.PAGE_PROCESS_AVAILABLE;
-		String cancelButton = "cancelbutton";
-		if (para.keySet().contains(cancelButton)) {
+		if (para.keySet().contains(CANCEL_BUTTON_ID)) {
 			cui.canceled();
 			String fullURL = request.getRequestURL().toString();
 			String myURL = fullURL.replaceAll(SERVLET_ID, forward);
@@ -63,7 +65,7 @@ public class InteractionManager extends HttpServlet {
 		}
 		List<DataItem> providedData = new LinkedList<DataItem>();
 		for (String key : para.keySet()) {
-			if (!key.equals(ControllerConstants.CONTROLLER_PROCESS_ID) && !key.equals(ControllerConstants.CONTROLLER_CUI_ID) && !key.equals("sendbutton")){
+			if (!key.equals(ControllerConstants.CONTROLLER_PROCESS_ID) && !key.equals(ControllerConstants.CONTROLLER_CUI_ID) && !key.equals(OK_BUTTON_ID)){
 				DataItem aDataItem = new DataItem();
 				aDataItem.setId(key);
 				aDataItem.setType("string");
