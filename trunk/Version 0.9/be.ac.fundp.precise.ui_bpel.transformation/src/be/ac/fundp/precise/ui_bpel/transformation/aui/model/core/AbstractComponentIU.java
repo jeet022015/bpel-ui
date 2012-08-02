@@ -100,8 +100,9 @@ public class AbstractComponentIU extends InteractionUnit{
 	 *
 	 * @return the trigger.
 	 */
-	public TriggerUI createInnerAbstractTriggerIU() {
+	public TriggerUI createInnerAbstractTriggerIU(String triggerId) {
 		TriggerUI trigger = new TriggerUI();
+		trigger.setId(triggerId);
 		interactionUnits.add(trigger);
 		return trigger;
 	}
@@ -119,5 +120,4 @@ public class AbstractComponentIU extends InteractionUnit{
 		input.setParentIU(this);
 		return input;
 	}
-
 }
