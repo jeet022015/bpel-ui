@@ -40,7 +40,9 @@ public class AuiAdapter {
 		AuiRoleMapper roleMapper = roleMapping.get(role);
 		if (roleMapper == null)
 			return null;
-		return codeGen.adapt(roleMapper, contextId);
+		String code = codeGen.adapt(roleMapper, contextId);
+		System.out.println(code);
+		return code;
 	}
 
 	/**

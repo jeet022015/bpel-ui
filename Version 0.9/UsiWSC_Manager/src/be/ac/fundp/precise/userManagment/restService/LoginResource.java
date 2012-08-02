@@ -27,8 +27,8 @@ public class LoginResource extends ServerResource {
     public Representation verifyUser() {
     	String login = (String) getRequestAttributes().get("login");
     	String password = (String) getRequestAttributes().get("password");
-    	String hostAdress = (String) getRequestAttributes().get("address");
-    	String newIpAddress = hostAdress.replaceAll("%3Chttp%3E", "http://").replaceAll("%3Cslash%3E", "/");
+    	//String hostAdress = (String) getRequestAttributes().get("address");
+    	//String newIpAddress = hostAdress.replaceAll("%3Chttp%3E", "http://").replaceAll("%3Cslash%3E", "/");
     	if (uiManager.verifyUser(login, password))
     		return new StringRepresentation("ok");
     	return new StringRepresentation("fail");

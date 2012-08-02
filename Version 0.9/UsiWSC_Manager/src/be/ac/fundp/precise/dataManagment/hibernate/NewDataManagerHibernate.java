@@ -2,7 +2,6 @@ package be.ac.fundp.precise.dataManagment.hibernate;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +72,6 @@ public class NewDataManagerHibernate {
 
 	public boolean verifyUser (String login, String password){
 		Session session = configureSessionFactory.openSession();
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		try {
 			User newUser = (User) session.get(User.class, login);
 			if (newUser == null) {
@@ -100,6 +98,7 @@ public class NewDataManagerHibernate {
 					break;
 				}
 			}
+			@SuppressWarnings("rawtypes")
 			List processBind = session
 					.createCriteria(RegistredProcess.class)
 					.add(Restrictions.eq("boundProcess", aProcess))
@@ -148,6 +147,7 @@ public class NewDataManagerHibernate {
 					.add(Restrictions.eq("role", userRole))
 					.add(Restrictions.eq("available", true));
 
+			@SuppressWarnings("rawtypes")
 			List processBind2 = processBindCriteria.list();
 			if (processBind2.size() > 0) {
 				RegistredProcess aRegistredProcess = (RegistredProcess) processBind2.get(0);
@@ -227,6 +227,7 @@ public class NewDataManagerHibernate {
 			if (userRole == null) {
 				throw new Exception("role id "+roleRealId+": Not created");
 			}
+			@SuppressWarnings("rawtypes")
 			List processBind = session
 					.createCriteria(BindingProcess.class)
 					.add(Restrictions.eq("user", aUser))
@@ -255,6 +256,7 @@ public class NewDataManagerHibernate {
 	public void createProcess (String processId, List<String> roles, List<String> startingRoles, Map<String, List<String>> interactionMapping) throws Exception {
 		Session session = configureSessionFactory.openSession();
 		try {
+			@SuppressWarnings("rawtypes")
 			List processes = session
 					.createCriteria(Process.class)
 					.add(Restrictions.eq("processId", processId)).list();
@@ -265,32 +267,31 @@ public class NewDataManagerHibernate {
 					session.delete(bdProcess);
 				}
 				session.getTransaction().commit();
-			} else {
-				session.beginTransaction();
-				Process newProcess = new Process();
-				newProcess.setProcessId(processId);
-				session.saveOrUpdate(newProcess);
-				session.getTransaction().commit();
-				
-				session.beginTransaction();
-				for (String roleId : roles) {
-					Role newRole = new Role();
-					newRole.setRoleId(roleId);
-					newRole.setStartable((Boolean)startingRoles.contains(roleId));
-					newProcess.getAllowedRole().add(newRole);
-					session.save(newRole);
-				}
-				for (String mappingId : interactionMapping.keySet()) {
-					Interaction newInteracion = new Interaction();
-					newInteracion.setInteractionId(mappingId);
-					List<String> mapping = interactionMapping.get(mappingId);
-					newInteracion.setAuiId(mapping.toArray(new String[0]));
-					newProcess.getInteractions().add(newInteracion);
-					session.save(newInteracion);
-				}
-				session.saveOrUpdate(newProcess);
-				session.getTransaction().commit();
 			}
+			session.beginTransaction();
+			Process newProcess = new Process();
+			newProcess.setProcessId(processId);
+			session.saveOrUpdate(newProcess);
+			session.getTransaction().commit();
+			
+			session.beginTransaction();
+			for (String roleId : roles) {
+				Role newRole = new Role();
+				newRole.setRoleId(roleId);
+				newRole.setStartable((Boolean)startingRoles.contains(roleId));
+				newProcess.getAllowedRole().add(newRole);
+				session.save(newRole);
+			}
+			for (String mappingId : interactionMapping.keySet()) {
+				Interaction newInteracion = new Interaction();
+				newInteracion.setInteractionId(mappingId);
+				List<String> mapping = interactionMapping.get(mappingId);
+				newInteracion.setAuiId(mapping.toArray(new String[0]));
+				newProcess.getInteractions().add(newInteracion);
+				session.save(newInteracion);
+			}
+			session.saveOrUpdate(newProcess);
+			session.getTransaction().commit();
 		} finally {
 			session.flush();
 			session.close();
@@ -334,11 +335,6 @@ public class NewDataManagerHibernate {
 					session.getTransaction().commit();
 				}
 			}
-//			String userId = getBindUser(roleId, processInstanceId);
-//			session.beginTransaction();
-//			User user = (User) session.get(User.class, userId);
-//			session.saveOrUpdate(user);
-//			session.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -423,6 +419,7 @@ public class NewDataManagerHibernate {
 		List<String> processesIds = new ArrayList<String>();
 		Session session = configureSessionFactory.openSession();
 		try {
+			@SuppressWarnings("rawtypes")
 			List processes = session
 					.createCriteria(Process.class).list();
 			for (Object objProcess : processes) {
@@ -467,6 +464,7 @@ public class NewDataManagerHibernate {
 		try {
 			ProcessInstance aProcess = (ProcessInstance) session.get(ProcessInstance.class, processInstanceId);
 			User aUser = (User) session.get(User.class, login);
+			@SuppressWarnings("rawtypes")
 			List processBind = session
 					.createCriteria(RegistredProcess.class)
 					.add(Restrictions.eq("boundProcess", aProcess.getOwnProcess()))
@@ -520,6 +518,7 @@ public class NewDataManagerHibernate {
 		Session session = configureSessionFactory.openSession();
 		Set<String> processes = new HashSet<String>();
 		User aUser = (User) session.get(User.class, userId);
+		@SuppressWarnings("rawtypes")
 		List processBind = session
 				.createCriteria(RegistredProcess.class)
 				.add(Restrictions.eq("ownerUser", aUser)).list();

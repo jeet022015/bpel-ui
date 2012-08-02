@@ -3,8 +3,9 @@ package be.ac.fundp.precise.clientAppMediation.userEvent.rest;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
-import be.ac.fundp.precise.processMediation.dataInteraction.webService.UserEventListener;
-import be.ac.fundp.precise.processMediation.dataInteraction.webService.UserEventListener_Service;
+import be.ac.fundp.precise.clientAppMediation.dispatcher.restDispatcher.RestDispatcherDataHolder;
+import be.ac.fundp.precise.processMediation.startProcess.webService.ProcessOperations;
+import be.ac.fundp.precise.processMediation.startProcess.webService.ProcessOperationsPortType;
 
 
 /**
@@ -16,6 +17,9 @@ import be.ac.fundp.precise.processMediation.dataInteraction.webService.UserEvent
  */
 public class UserEventListenerResource  extends ServerResource {
 
+	
+	protected RestDispatcherDataHolder dataHolder = RestDispatcherDataHolder.getInstance(); 
+	
     /**
      * This method retransmit a user event to the process execution.
      *
@@ -23,15 +27,18 @@ public class UserEventListenerResource  extends ServerResource {
      */
     @Get
     public String fireEvent() {
-    	String role = (String) getRequestAttributes().get("role");
+    	String login = (String) getRequestAttributes().get("login");
     	String processId = (String) getRequestAttributes().get("processId");
     	String cuiID = (String) getRequestAttributes().get("cuiId");
-    	System.out.println("role="+role);
+    	System.out.println("login="+login);
     	System.out.println("processId="+processId);
     	System.out.println("cuiID="+cuiID);
-    	UserEventListener_Service ss = new UserEventListener_Service();
-    	UserEventListener port = ss.getUserEventListenerSOAP();  
-        port.fireEvent(cuiID, processId);
+    	ProcessOperations ss = new ProcessOperations();
+    	ProcessOperationsPortType port = ss.getProcessOperationsSOAP11PortHttp();
+        port.fireEvent("cancel", processId);
+    	//UserEventListener_Service ss = new UserEventListener_Service();
+    	//UserEventListener port = ss.getUserEventListenerSOAP();  
+        //port.fireEvent(cuiID, processId);
         return "event fired";
     }
 

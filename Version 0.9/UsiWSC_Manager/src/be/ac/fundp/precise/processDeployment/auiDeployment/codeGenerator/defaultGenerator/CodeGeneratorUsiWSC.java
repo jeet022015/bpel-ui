@@ -36,6 +36,7 @@ import be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml.Abs
 import be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml.AbstractDataIUType;
 import be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml.AbstractInteractionUnit;
 import be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml.AbstractSelectionIU;
+import be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml.AbstractTriggerIU;
 import be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml.AbstractUIModel;
 import be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml.ObjectFactory;
 
@@ -77,6 +78,7 @@ public class CodeGeneratorUsiWSC implements CodeGenerator {
 
 		ArrayList<String> outputItems = new ArrayList<String>();
 		ArrayList<String> inputItems = new ArrayList<String>();
+		ArrayList<String> events = new ArrayList<String>();
 
 		Template t = ve.getTemplate(template);
 		List<AbstractInteractionUnit> inner = compound
@@ -89,11 +91,15 @@ public class CodeGeneratorUsiWSC implements CodeGenerator {
 				} else {
 					inputItems.add(dataUI.getId());
 				}
+			} else if (innerCompound instanceof AbstractTriggerIU) {
+				AbstractTriggerIU userTrigger = (AbstractTriggerIU) innerCompound;
+				events.add(userTrigger.getId());
 			}
 		}
 		VelocityContext context = new VelocityContext();
 		context.put( CodeGeneratorConstants.VELOCITY_PARAMETER_OUTPUT, outputItems);
 		context.put(CodeGeneratorConstants.VELOCITY_PARAMETER_INPUT, inputItems);
+		context.put("userEvents", events);
 		context.put(CodeGeneratorConstants.VELOCITY_PARAMETER_ACTION, "/UsiWSC_WebClient/interactionManager");
 
 		StringWriter writer = new StringWriter();
