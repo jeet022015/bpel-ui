@@ -32,8 +32,8 @@ public class UserActionManager {
 	/** The host root. */
 	private String hostRoot;
 	
-	/** The web content path. */
-	private String webContentPath;
+	///** The web content path. */
+	//private String webContentPath;
 
 	/**
 	 * Instantiates a new user action manager.
@@ -50,7 +50,7 @@ public class UserActionManager {
 		this.login = login;
 		this.password = password;
 		this.hostRoot = hostRoot;
-		this.webContentPath = webContentPath;
+		//this.webContentPath = webContentPath;
 	}
 
 	/**
