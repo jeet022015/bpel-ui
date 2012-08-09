@@ -376,6 +376,7 @@ public class BpelUIReader extends BPELReader {
 				.getAttribute(ModelPackage.eINSTANCE.getDataItem_Variable()
 						.getName());
 		if (inputVarName != null && !"".equals(inputVarName.trim())) {
+			
 			Variable v = getVariable(activity, inputVarName);
 			aDataItem.setVariable(v);
 		}
