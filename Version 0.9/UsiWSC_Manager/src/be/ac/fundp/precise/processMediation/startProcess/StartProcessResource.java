@@ -1,5 +1,9 @@
 package be.ac.fundp.precise.processMediation.startProcess;
 
+import java.net.URL;
+
+import javax.xml.namespace.QName;
+
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Get;
@@ -28,9 +32,18 @@ public class StartProcessResource extends ServerResource {
 	    	String processInstanceId;
 				processInstanceId = manager.createProcessInstance(process);
 	    	manager.bindStartingUser(login, processInstanceId);
-	    	ProcessOperations ss = new ProcessOperations();
-	    	ProcessOperationsPortType port = ss.getProcessOperationsSOAP11PortHttp();
+	    	QName service = new QName("http://precise.fundp.ac.be/ProcessOperations/", "ProcessOperations"+process);
+	    	String hostService = "http://localhost:8080/ode/processes/ProcessOperations"+process;
+	    	URL url = new URL(hostService+"?wsdl");
+	    	System.out.println("the host is: "+hostService);
+	    	ProcessOperations ss = new ProcessOperations(url, service);
+	    	ProcessOperationsPortType port = ss.getProcessOperationsSOAP11PortHttp(process);
 	        port.start(processInstanceId, process);
+//	    	ProcessOperations2Stub stub = new ProcessOperations2Stub(hostService);
+//			Start s = new Start();
+//			s.setProcessId(processInstanceId);
+//			s.setProcessType(process);
+//			stub.start(s);
 	        return new StringRepresentation("started");
     	} catch (Exception e) {
 			e.printStackTrace();
