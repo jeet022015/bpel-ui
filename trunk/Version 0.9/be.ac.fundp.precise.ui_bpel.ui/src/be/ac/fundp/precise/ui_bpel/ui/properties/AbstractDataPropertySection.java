@@ -417,6 +417,7 @@ abstract class AbstractDataPropertySection extends BPELPropertySection {
 	 */
 	@Override
 	protected void basicSetInput(EObject newInput) {
+		System.out.println("newInput="+newInput);
 		saveUserContextToInput();
 
 		super.basicSetInput(newInput);

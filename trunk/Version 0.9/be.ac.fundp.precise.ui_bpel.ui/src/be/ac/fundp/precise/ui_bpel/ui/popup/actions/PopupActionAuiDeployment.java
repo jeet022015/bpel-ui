@@ -10,7 +10,6 @@ import javax.xml.transform.TransformerException;
 import org.eclipse.bpel.model.Process;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -35,7 +34,6 @@ public class PopupActionAuiDeployment extends PopupActionWithProcessRepresentati
 	 */
 	public void run(IAction action) {
 
-		// load BPEL,WSDL,XSDs
 		Process process = loadBPEL();
 
 		try {
@@ -79,11 +77,10 @@ public class PopupActionAuiDeployment extends PopupActionWithProcessRepresentati
 		
 		IFile f = getBpelFile();
 		IFolder folder = (IFolder) f.getParent();
-		IProject project = f.getProject();
 		AUIGenerator auiGen = new AUIGenerator(folder, process);
 		Map<String, File> path = auiGen.saveModels();
-		
-		AuiDeploymentManager aui = new AuiDeploymentManager(project.getName(), path, auiGen.getConf().getRolesMap());
+
+		AuiDeploymentManager aui = new AuiDeploymentManager(process.getName(), path, auiGen.getConf().getRolesMap());
 		aui.deploy();
 		
 	}
