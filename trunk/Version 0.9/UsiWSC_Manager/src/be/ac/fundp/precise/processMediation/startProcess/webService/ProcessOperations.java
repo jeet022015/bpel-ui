@@ -57,6 +57,17 @@ public class ProcessOperations extends Service {
     public ProcessOperationsPortType getProcessOperationsSOAP11PortHttp() {
         return super.getPort(ProcessOperationsSOAP11PortHttp, ProcessOperationsPortType.class);
     }
+    
+    /**
+    *
+    * @return
+    *     returns ProcessOperationsPortType
+    */
+   @WebEndpoint(name = "ProcessOperationsSOAP11port_http")
+   public ProcessOperationsPortType getProcessOperationsSOAP11PortHttp(String processName) {
+	   QName ProcessOperationsSOAP11PortHttp = new QName("http://precise.fundp.ac.be/ProcessOperations/", "ProcessOperations"+processName+"SOAP11port_http");
+       return super.getPort(ProcessOperationsSOAP11PortHttp, ProcessOperationsPortType.class);
+   }
 
     /**
      * 
