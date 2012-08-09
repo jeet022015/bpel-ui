@@ -30,7 +30,7 @@ public class DeployFileTrans {
 		this.deployFile = deployFile;
 	}
 
-	public void setup(File outputFolder) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+	public void setup(File outputFolder, String processName) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		// Create instance of DocumentBuilderFactory
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -52,7 +52,8 @@ public class DeployFileTrans {
 
 		Element invokeElement = doc.createElement("invoke");
 		//invokeElement.setAttribute("partnerLink", "UiManagerPartnerLink");
-		invokeElement.setAttribute("partnerLink", "UiManager");
+		//invokeElement.setAttribute("partnerLink", "UiManager");
+		invokeElement.setAttribute("partnerLink", "UiManager"+processName);
 		Element serviceElement = doc.createElement("service");
 		serviceElement.setAttribute("name", "UiManager:UiManager");
 		serviceElement.setAttribute("port", "UiManagerSOAP");
@@ -60,13 +61,16 @@ public class DeployFileTrans {
 		processNode.appendChild(invokeElement);
 
 		Element provideElement = doc.createElement("provide");
-		provideElement.setAttribute("partnerLink", "ProcessOperation");
+		//provideElement.setAttribute("partnerLink", "ProcessOperation");
+		provideElement.setAttribute("partnerLink", "ProcessOperation"+processName);
 		// provideElement.setAttribute("partnerLink", "UserEventPartnerLink");
 		Element serviceProvideElement = doc.createElement("service");
 		// serviceProvideElement.setAttribute("name",
 		// "UserEventListener:UserEventListener");
+//		serviceProvideElement.setAttribute("name",
+//				"ProcessOperations:ProcessOperations");
 		serviceProvideElement.setAttribute("name",
-				"ProcessOperations:ProcessOperations");
+				"ProcessOperations:ProcessOperations"+processName);
 		// serviceProvideElement.setAttribute("port", "UserEventListenerSOAP");
 		serviceProvideElement.setAttribute("port", "ProcessOperationsSOAP");
 		provideElement.appendChild(serviceProvideElement);

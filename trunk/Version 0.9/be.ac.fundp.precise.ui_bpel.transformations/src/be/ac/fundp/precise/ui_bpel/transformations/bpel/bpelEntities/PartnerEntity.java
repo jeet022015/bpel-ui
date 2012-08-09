@@ -49,7 +49,6 @@ public class PartnerEntity {
 		} else {
 			partnerLink.setPartnerRole(role);
 		}
-
 		operationMap = getWsdlOperations(partnerDefinition);
 	}
 
@@ -76,7 +75,6 @@ public class PartnerEntity {
 			ExtensibilityElement element = iterator.next();
 			if (element instanceof Property) {
 				Property p = (Property) element;
-				// if (p.getName().equalsIgnoreCase("propertyId"))
 				if (p.getName().equalsIgnoreCase(property))
 					return p;
 			}
