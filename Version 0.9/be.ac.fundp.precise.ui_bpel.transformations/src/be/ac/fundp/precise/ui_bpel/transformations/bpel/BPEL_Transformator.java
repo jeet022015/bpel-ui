@@ -1,16 +1,20 @@
 package be.ac.fundp.precise.ui_bpel.transformations.bpel;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -41,11 +45,14 @@ public class BPEL_Transformator {
 	private File processOperationWsdl;
 
 	private Resource bpelResource;
+	
+	private static String newLine = System.getProperty("line.separator");
 
 	public BPEL_Transformator(String bpelPath) {
 		File bpelFile = new File(bpelPath);
 		originalFolder = bpelFile.getParentFile();
 		process = loadProcess(bpelPath);
+		String processName = process.getName();
 		for (Import anImport : process.getImports()) {
 			File importFile = new File(originalFolder + File.separator
 					+ anImport.getLocation());
@@ -55,23 +62,42 @@ public class BPEL_Transformator {
 				mainWsdl = importFile;
 		}
 		uiManagerWsdl = getWsdlManagerFromPlugin("/resources/",
-				"UiManager.wsdl");
+				"UiManager.wsdl", Collections.<String, String>emptyMap());
+		
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("ProcessOperations\"", "ProcessOperations"+processName+"\"");
+		//parameters.put("ExtendedFileName", processName);
 		processOperationWsdl = getWsdlManagerFromPlugin("/resources/",
-				"ProcessOperations.wsdl");
+				"ProcessOperations.wsdl", parameters);
 	}
 
-	private File getWsdlManagerFromPlugin(String root, String fileName) {
+	private File getWsdlManagerFromPlugin(String root, String fileName, Map<String, String> mappingContent) {
 		URL url = this.getClass().getResource(root + fileName);
 		File opwsdl = null;
 		try {
-			opwsdl = File.createTempFile(fileName, ".wsdl");
+			String fileExtention = mappingContent.get("ExtendedFileName");
+			if (fileExtention == null)
+				opwsdl = File.createTempFile(fileName, ".wsdl");
+			else {
+				opwsdl = File.createTempFile(fileName.replaceAll("ProcessOperations", "ProcessOperations"+fileExtention), ".wsdl");
+			}
 			InputStream inputStream = url.openStream();
+			InputStreamReader is = new InputStreamReader(inputStream);
+			BufferedReader br = new BufferedReader(is);
+			String read = br.readLine();
 			OutputStream outputStream = new FileOutputStream(opwsdl);
-
-			int read = 0;
-			byte[] bytes = new byte[1024];
-			while ((read = inputStream.read(bytes)) != -1) {
-				outputStream.write(bytes, 0, read);
+			
+			
+			while(read != null) {
+			    //System.out.println(read);
+				for (String parameter : mappingContent.keySet()) {
+					if (read.contains(parameter)){
+						read = read.replaceAll(parameter, mappingContent.get(parameter));
+					}
+				}
+				read += newLine;
+				outputStream.write(read.getBytes());
+			    read =br.readLine();
 			}
 
 			inputStream.close();
@@ -108,15 +134,15 @@ public class BPEL_Transformator {
 		}
 		try {
 			copyExternalWsdls(outputFolder);
-			
+			String processName = process.getName();
 			File f = new File(originalFolder+ File.separator+"deploy.xml");
 			DeployFileTrans dft = new DeployFileTrans(f);
-			dft.setup(outputFolder);
+			dft.setup(outputFolder, process.getName());
 			
 			File newUiManagerWsdl = copyUiBPELWsdl(outputFolder, uiManagerWsdl,
 					"UiManager.wsdl");
 			File newProcessOperationWsdl = copyUiBPELWsdl(outputFolder,
-					processOperationWsdl, "ProcessOperations.wsdl");
+					processOperationWsdl, "ProcessOperations"+processName+".wsdl");
 
 			ProcessWsdlManager wsdlManager = new ProcessWsdlManager(process,
 					mainWsdl);
@@ -129,8 +155,8 @@ public class BPEL_Transformator {
 					+ File.separator + process.getName() + ".bpel");
 			UI_BPELWriter writer = new UI_BPELWriter(process.getName(), newProcessWsdl,
 					(BPELResource) bpelResource);
-			writer.addPartner("UiManager", newUiManagerWsdl, false);
-			writer.addPartner("ProcessOperation", newProcessOperationWsdl,
+			writer.addPartner("UiManager"+processName, newUiManagerWsdl, false);
+			writer.addPartner("ProcessOperation"+processName, newProcessOperationWsdl,
 					true);
 			writer.write(outputStream, Collections.<String, String> emptyMap());
 		} catch (IOException e) {

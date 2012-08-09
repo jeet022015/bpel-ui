@@ -72,7 +72,7 @@ public class ProcessWsdlManager {
 			System.out.println("Location="+relatedWSDl.getLocation());
 			WSDLImportHelperUI.addImportAndNamespace(processWSDl, relatedWSDl);
 			saveProcessWSDL(processWSDl);
-			dataOp.addPartnerLinkType(paternKey, relatedWSDl);
+			dataOp.addPartnerLinkType(paternKey+process.getName(), relatedWSDl);
 		}
 
 		saveProcessWSDL(processWSDl);
