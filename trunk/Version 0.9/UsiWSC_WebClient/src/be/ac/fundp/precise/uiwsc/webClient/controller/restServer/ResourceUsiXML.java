@@ -38,7 +38,6 @@ public class ResourceUsiXML extends ServerResource {
 	public Representation retrieve() {
 		final String user = (String) getRequestAttributes().get(ControllerConstants.CONTROLLER_LOGIN);
 		final String processId = (String) getRequestAttributes().get(ControllerConstants.CONTROLLER_PROCESS_ID);
-		//final String process = (String) getRequestAttributes().get(ControllerConstants.CONTROLLER_PROCESS);
 		final String cuiId = (String) getRequestAttributes().get(ControllerConstants.CONTROLLER_CUI_ID);
 		List<DataItem> providedData = processManager.getProvidedData(user, processId, cuiId);
 		JSONObject obj = new JSONObject();

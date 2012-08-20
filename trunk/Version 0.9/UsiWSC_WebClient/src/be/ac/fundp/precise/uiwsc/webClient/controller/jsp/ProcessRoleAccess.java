@@ -13,9 +13,21 @@ import org.restlet.resource.ResourceException;
 
 import be.ac.fundp.precise.uiwsc.webClient.model.ConnectionConstants;
 
+
+/**
+ * The Class ProcessRoleAccess.
+ */
 public class ProcessRoleAccess {
 
 	
+	/**
+	 * Gets the processes.
+	 *
+	 * @return the processes
+	 * @throws ResourceException the resource exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws JSONException the jSON exception
+	 */
 	public List<String> getProcesses() throws ResourceException, IOException, JSONException{
 		List<String> processes = new ArrayList<String>();
 		ClientResource itemsResource = null;
@@ -39,6 +51,15 @@ public class ProcessRoleAccess {
 		return processes;
 	}
 	
+	/**
+	 * Gets the roles.
+	 *
+	 * @param processId the process id
+	 * @return the roles
+	 * @throws ResourceException the resource exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws JSONException the jSON exception
+	 */
 	public List<String> getRoles(String processId) throws ResourceException, IOException, JSONException{
 		List<String> roles = new ArrayList<String>();
 		ClientResource itemsResource = null;

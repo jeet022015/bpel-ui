@@ -17,17 +17,28 @@ import be.ac.fundp.precise.uiwsc.webClient.model.exception.CodeRetreivingExcepti
 import be.ac.fundp.precise.uiwsc.webClient.model.processManagment.ProcessManager;
 import be.ac.fundp.precise.uiwsc.webClient.model.userManagment.ProcessRegistationManager;
 
+/**
+ * The Class RegistryProcessAction.
+ */
 @WebServlet("/registryProcessAction")
 public class RegistryProcessAction extends HttpServlet {
 	
 
+	/** The Constant SERVLET_ID. */
 	private static final String SERVLET_ID = "/registryProcessAction";
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The process manager. */
 	protected ProcessManager processManager = ProcessManager.getInstance();
+	
+	/** The code manager. */
 	protected CodeManager codeManager = CodeManager.getInstance();
 
+    /**
+     * Instantiates a new registry process action.
+     */
     public RegistryProcessAction() {
         super();
     }
@@ -41,9 +52,6 @@ public class RegistryProcessAction extends HttpServlet {
 		String processId = para.get("process")[0];
 		String role = para.get("role")[0];
 		String webContentPath = getServletContext().getRealPath("/WebContent");
-		System.out.println("processId:"+processId);
-		System.out.println("login:"+login);
-		System.out.println("role:"+role);
 		String forward = ActionConstants.PAGE_PROCESS_AVAILABLE;
 		
 		ProcessRegistationManager.register(processId, role, login);

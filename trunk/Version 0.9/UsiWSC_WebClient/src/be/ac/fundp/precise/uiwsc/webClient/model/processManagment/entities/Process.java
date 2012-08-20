@@ -5,6 +5,7 @@ import java.util.List;
 
 import be.ac.fundp.precise.uiwsc.webClient.model.processManagment.ProcessPrefix;
 
+
 /**
  * The Class Process.
  */
@@ -19,6 +20,7 @@ public class Process {
 	/** The process type. */
 	protected String type;
 	
+	/** The role id. */
 	protected String roleId;
 	
 	/** The displayable name. */
@@ -35,8 +37,8 @@ public class Process {
 	 *
 	 * @param processId the process id
 	 * @param processType the process type
-	 * @param userId2 
-	 * @param newUserId the user id
+	 * @param role the role
+	 * @param userId the user id
 	 */
 	public Process(String processId, String processType, String role, String userId) {
 		id = processId;
@@ -55,6 +57,11 @@ public class Process {
 		return id;
 	}
 	
+	/**
+	 * Gets the role.
+	 *
+	 * @return the role
+	 */
 	public String getRole() {
 		return roleId;
 	}
@@ -91,13 +98,10 @@ public class Process {
 	 */
 	public void addUserInteraction(String cuiId, List<DataItem> availableData) {
 		UserInteraction innerInterac = getUserInteraction(cuiId);
-		System.out.println("is created?");
 		if (innerInterac != null)
 			return;
-		System.out.println("is created=====");
 		innerInterac = new UserInteraction(this, cuiId);
 		innerInterac.setAvailableData(availableData);
-		System.out.println("innerInterac="+innerInterac);
 		innerInteractions.add(innerInterac);
 	}
 
