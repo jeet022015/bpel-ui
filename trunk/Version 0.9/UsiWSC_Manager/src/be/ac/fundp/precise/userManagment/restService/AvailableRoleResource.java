@@ -14,10 +14,20 @@ import org.restlet.resource.ServerResource;
 import be.ac.fundp.precise.dataManagment.DataManagerFactory;
 import be.ac.fundp.precise.dataManagment.hibernate.NewDataManagerHibernate;
 
+/**
+ * The Class AvailableRoleResource represents a Rest Resource to identify
+ * all available role in a specific process.
+ */
 public class AvailableRoleResource extends ServerResource {
 
+	/** The ui manager. */
 	protected NewDataManagerHibernate uiManager = DataManagerFactory.hibernateDataManager();
 
+    /**
+     * Gets the role.
+     *
+     * @return the available roles
+     */
     @Get
     public Representation getRole() {
     	String processId = (String) getRequestAttributes().get("process");

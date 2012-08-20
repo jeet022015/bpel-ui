@@ -3,9 +3,9 @@ package be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.contex
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ContextMapper.
+ * The Class ContextMapper is responsible to provide the relevant information
+ * to generate the code for a specific context.
  */
 public class ContextMapper {
 
@@ -17,7 +17,7 @@ public class ContextMapper {
 	}
 	
 	/**
-	 * Map.
+	 * Map a context id for a specific UserContext.
 	 *
 	 * @param contextId the context id
 	 * @return the user context

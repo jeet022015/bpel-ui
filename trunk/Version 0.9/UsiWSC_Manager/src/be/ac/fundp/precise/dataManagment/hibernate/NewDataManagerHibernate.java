@@ -26,6 +26,9 @@ import be.ac.fundp.precise.dataManagment.hibernate.daos.RegistredProcess;
 import be.ac.fundp.precise.dataManagment.hibernate.daos.Role;
 import be.ac.fundp.precise.dataManagment.hibernate.daos.User;
 
+/**
+ * The Class NewDataManagerHibernate.
+ */
 public class NewDataManagerHibernate {
 
 	static {
@@ -38,8 +41,17 @@ public class NewDataManagerHibernate {
 				.buildSessionFactory(serviceRegistry);
 	}
 
+	/** The configure session factory. */
 	public static SessionFactory configureSessionFactory;
 
+	/**
+	 * Subscribe user.
+	 *
+	 * @param login the login
+	 * @param password the password
+	 * @param hostAdress the host adress
+	 * @throws Exception the exception
+	 */
 	public void subscribeUser (String login, String password, String hostAdress) throws Exception {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -70,6 +82,13 @@ public class NewDataManagerHibernate {
 		}
 	}
 
+	/**
+	 * Verify user.
+	 *
+	 * @param login the login
+	 * @param password the password
+	 * @return true, if successful
+	 */
 	public boolean verifyUser (String login, String password){
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -84,6 +103,13 @@ public class NewDataManagerHibernate {
 		}
 	}
 	
+	/**
+	 * Registry user in process.
+	 *
+	 * @param login the login
+	 * @param roleId the role id
+	 * @param processId the process id
+	 */
 	public void registryUserInProcess (String login, String roleId, String processId) {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -121,6 +147,14 @@ public class NewDataManagerHibernate {
 		}
 	}
 
+	/**
+	 * Gets the bind user.
+	 *
+	 * @param role the role
+	 * @param processInstanceId the process instance id
+	 * @return the bind user
+	 * @throws Exception the exception
+	 */
 	public String getBindUser (String role, String processInstanceId) throws Exception {
 		String userId = null;
 		int roleId = -1;
@@ -179,6 +213,13 @@ public class NewDataManagerHibernate {
 		return userId;
 	}
 
+	/**
+	 * Gets the bound user.
+	 *
+	 * @param role the role
+	 * @param processInstanceId the process instance id
+	 * @return the bound user
+	 */
 	private String getBoundUser(String role, String processInstanceId) {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -211,6 +252,15 @@ public class NewDataManagerHibernate {
 		}
 	}
 
+	/**
+	 * Bind user.
+	 *
+	 * @param userId the user id
+	 * @param roleRealId the role real id
+	 * @param processInstanceId the process instance id
+	 * @param registredProcessId the registred process id
+	 * @throws Exception the exception
+	 */
 	public void bindUser(String userId, int roleRealId, String processInstanceId, int registredProcessId) throws Exception {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -253,6 +303,15 @@ public class NewDataManagerHibernate {
 		}
 	}
 
+	/**
+	 * Creates the process.
+	 *
+	 * @param processId the process id
+	 * @param roles the roles
+	 * @param startingRoles the starting roles
+	 * @param interactionMapping the interaction mapping
+	 * @throws Exception the exception
+	 */
 	public void createProcess (String processId, List<String> roles, List<String> startingRoles, Map<String, List<String>> interactionMapping) throws Exception {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -298,6 +357,13 @@ public class NewDataManagerHibernate {
 		}
 	}
 
+	/**
+	 * Creates the process instance.
+	 *
+	 * @param processId the process id
+	 * @return the string
+	 * @throws Exception the exception
+	 */
 	public String createProcessInstance (String processId) throws Exception {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -322,6 +388,12 @@ public class NewDataManagerHibernate {
 		}
 	}
 
+	/**
+	 * Release role.
+	 *
+	 * @param roleId the role id
+	 * @param processInstanceId the process instance id
+	 */
 	public void releaseRole(String roleId, String processInstanceId) {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -343,6 +415,13 @@ public class NewDataManagerHibernate {
 		}
 	}
 
+	/**
+	 * Sets the user context.
+	 *
+	 * @param login the login
+	 * @param host the host
+	 * @param protocolType the protocol type
+	 */
 	public void setUserContext(String login, String host, ProtocolType protocolType) {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -363,6 +442,13 @@ public class NewDataManagerHibernate {
 		}
 	}
 
+	/**
+	 * Gets the user protocol type.
+	 *
+	 * @param login the login
+	 * @return the user protocol type
+	 * @throws Exception the exception
+	 */
 	public ProtocolType getUserProtocolType(String login) throws Exception {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -378,6 +464,13 @@ public class NewDataManagerHibernate {
 		}
 	}
 
+	/**
+	 * Gets the ip address.
+	 *
+	 * @param login the login
+	 * @return the ip address
+	 * @throws Exception the exception
+	 */
 	public String getIpAddress(String login) throws Exception {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -393,6 +486,12 @@ public class NewDataManagerHibernate {
 		}
 	}
 
+	/**
+	 * Finish process.
+	 *
+	 * @param processInsntanceId the process insntance id
+	 * @throws Exception the exception
+	 */
 	public void finishProcess(String processInsntanceId) throws Exception {
 		Session session = configureSessionFactory.openSession();
 		try {
@@ -415,6 +514,12 @@ public class NewDataManagerHibernate {
 		}
 	}
 
+	/**
+	 * Gets the available processes.
+	 *
+	 * @return the available processes
+	 * @throws Exception the exception
+	 */
 	public List<String> getAvailableProcesses() throws Exception {
 		List<String> processesIds = new ArrayList<String>();
 		Session session = configureSessionFactory.openSession();
@@ -436,6 +541,13 @@ public class NewDataManagerHibernate {
 		return processesIds;
 	}
 
+	/**
+	 * Gets the starting roles.
+	 *
+	 * @param processId the process id
+	 * @return the starting roles
+	 * @throws Exception the exception
+	 */
 	public List<String> getStartingRoles(String processId) throws Exception {
 		List<String> roleIds = new ArrayList<String>();
 		Session session = configureSessionFactory.openSession();
@@ -457,6 +569,13 @@ public class NewDataManagerHibernate {
 		return roleIds;
 	}
 
+	/**
+	 * Bind starting user.
+	 *
+	 * @param login the login
+	 * @param processInstanceId the process instance id
+	 * @throws Exception the exception
+	 */
 	public void bindStartingUser(String login, String processInstanceId) throws Exception {
 		Session session = configureSessionFactory.openSession();
 		int roleId;
@@ -494,6 +613,13 @@ public class NewDataManagerHibernate {
 		bindUser(login, roleId, processInstanceId, registredProcessId);
 	}
 
+	/**
+	 * Gets the available role.
+	 *
+	 * @param processId the process id
+	 * @return the available role
+	 * @throws Exception the exception
+	 */
 	public List<String> getAvailableRole(String processId) throws Exception {
 		Session session = configureSessionFactory.openSession();
 		List<String> roles = new ArrayList<String>();
@@ -514,6 +640,12 @@ public class NewDataManagerHibernate {
 		return roles;
 	}
 
+	/**
+	 * Gets the startable process.
+	 *
+	 * @param userId the user id
+	 * @return the startable process
+	 */
 	public Collection<String> getStartableProcess(String userId) {
 		Session session = configureSessionFactory.openSession();
 		Set<String> processes = new HashSet<String>();
@@ -530,6 +662,12 @@ public class NewDataManagerHibernate {
 		return processes;
 	}
 
+	/**
+	 * Gets the process id.
+	 *
+	 * @param processInstanceId the process instance id
+	 * @return the process id
+	 */
 	public String getProcessId(String processInstanceId) {
 		Session session = configureSessionFactory.openSession();
 		try {

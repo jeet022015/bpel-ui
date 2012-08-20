@@ -20,7 +20,6 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * 
  * 				Specifies a set of events with relationships between them. The events are represented by

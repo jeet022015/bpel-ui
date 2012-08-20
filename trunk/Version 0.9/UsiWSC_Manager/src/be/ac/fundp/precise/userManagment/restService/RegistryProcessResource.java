@@ -8,10 +8,20 @@ import org.restlet.resource.ServerResource;
 import be.ac.fundp.precise.dataManagment.DataManagerFactory;
 import be.ac.fundp.precise.dataManagment.hibernate.NewDataManagerHibernate;
 
+/**
+ * The Class RegistryProcessResource represents a Rest resource that registering
+ * a process.
+ */
 public class RegistryProcessResource extends ServerResource {
 
+	/** The ui manager. */
 	protected NewDataManagerHibernate uiManager = DataManagerFactory.hibernateDataManager();
 
+    /**
+     * Gets the role.
+     *
+     * @return the role
+     */
     @Get
     public Representation getRole() {
     	String processId = (String) getRequestAttributes().get("process");

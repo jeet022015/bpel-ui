@@ -3,9 +3,9 @@ package be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.contex
 import java.util.Map;
 
 
-// TODO: Auto-generated Javadoc
 /**
- * The Interface UserContext.
+ * The Interface UserContext defines the methods necessaries to provide the information to 
+ * generate the code for the UsiXML pattern.
  */
 public interface UserContext {
 	
@@ -31,14 +31,14 @@ public interface UserContext {
 	String getDataSelectionTemplate();
 
 	/**
-	 * Gets the aux entries.
+	 * Gets the aux entries to configure the Velocity framework.
 	 *
 	 * @return the aux entries
 	 */
 	Map<String, String> getAuxEntries();
 
 	/**
-	 * Gets the termination.
+	 * Gets the file termination.
 	 *
 	 * @return the termination
 	 */

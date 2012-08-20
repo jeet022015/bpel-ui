@@ -14,10 +14,19 @@ import org.restlet.resource.ServerResource;
 import be.ac.fundp.precise.dataManagment.DataManagerFactory;
 import be.ac.fundp.precise.dataManagment.hibernate.NewDataManagerHibernate;
 
+/**
+ * The Class UserStartableProcessResource.
+ */
 public class UserStartableProcessResource extends ServerResource {
 
+	/** The ui manager. */
 	protected NewDataManagerHibernate uiManager = DataManagerFactory.hibernateDataManager();
 
+    /**
+     * Gets the code.
+     *
+     * @return the code
+     */
     @Get
     public Representation getCode() {
     	Collection<String> testList;

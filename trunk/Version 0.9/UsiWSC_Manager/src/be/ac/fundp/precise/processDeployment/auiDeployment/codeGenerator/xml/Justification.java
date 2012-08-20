@@ -19,7 +19,6 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * 
  * 				The justification is a kind of motivation for the ECA rules, it is not used for describing

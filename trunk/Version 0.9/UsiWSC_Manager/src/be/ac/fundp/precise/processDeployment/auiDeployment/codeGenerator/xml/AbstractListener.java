@@ -22,7 +22,6 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * Entity used to describe the behavior of the AbstractInteractionUnit by using
  * Event-Condition-Action (ECA) rules.

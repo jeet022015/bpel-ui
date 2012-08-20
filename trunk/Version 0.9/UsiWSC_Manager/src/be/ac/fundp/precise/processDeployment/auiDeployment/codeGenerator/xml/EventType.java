@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for EventType.
  * 

@@ -5,28 +5,28 @@ import java.util.Map;
 
 import be.ac.fundp.precise.processDeployment.auiDeployment.AuiRoleMapper;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Interface CodeGenerator.
+ * The Interface CodeGenerator defines all methods necessaries to generate code.
  */
 public interface CodeGenerator {
 
 	/**
-	 * Adapt.
+	 * This method adapt an AUI for a specific role in a specific context.
 	 *
-	 * @param roleMapper the role mapper
+	 * @param roleMapper the AUIRoleMapper
 	 * @param contextId the context id
-	 * @return the string
+	 * @return the path to the folder with all final codes.
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	String adapt(AuiRoleMapper roleMapper, String contextId)  throws IOException;
 
+	//TODO Is this method necessary?
 	/**
-	 * Code adaptation.
+	 * This method adapt an AUI for a specific role in a specific context.
 	 *
-	 * @param roleMapper the role mapper
+	 * @param roleMapper the AUIRoleMapper
 	 * @param contextId the context id
-	 * @return the map
+	 * @return a map identifying the path of each UI generated for an entry in the AUI description.
 	 */
 	Map<String, String> codeAdaptation(AuiRoleMapper roleMapper,
 			String contextId);

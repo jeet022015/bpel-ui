@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * 
  * 				Special type of AbstractCompoundIU representing a way to interact with the interface

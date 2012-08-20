@@ -2,27 +2,27 @@ package be.ac.fundp.precise.processDeployment.auiDeployment;
 
 import java.util.Map;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class AuiRoleMapper.
+ * The Class AuiRoleMapper is responsible to keep the information about
+ * one specific role in the UI-BPEL process.
  */
 public class AuiRoleMapper {
 
-	/** The role. */
+	/** The role id in the UI-BPEL process. */
 	private String role;
 	
-	/** The role aui file. */
+	/** The file name to the corresponding AUI description. */
 	private String roleAuiFile;
 	
-	/** The ui mapping. */
+	/** The dictionary that maps a user interaction to an entry in the AUI description. */
 	private Map<String, String> uiMapping;
 
 	/**
-	 * Instantiates a new aui role mapper.
+	 * Instantiates a new AuiRoleMapper.
 	 *
-	 * @param role the role
-	 * @param roleAuiFile the role aui file
-	 * @param uiMapping the ui mapping
+	 * @param role the role id
+	 * @param roleAuiFile the AUI file name
+	 * @param uiMapping the dictionary that maps a user interaction to an entry in the AUI description
 	 */
 	public AuiRoleMapper(String role, String roleAuiFile,
 			Map<String, String> uiMapping) {
@@ -57,5 +57,4 @@ public class AuiRoleMapper {
 	public Map<String, String> getUiMapper() {
 		return uiMapping;
 	}
-
 }

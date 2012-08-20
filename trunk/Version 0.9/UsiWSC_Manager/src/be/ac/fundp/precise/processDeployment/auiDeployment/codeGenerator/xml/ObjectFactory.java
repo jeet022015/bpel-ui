@@ -11,7 +11,6 @@ package be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml;
 import javax.xml.bind.annotation.XmlRegistry;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 

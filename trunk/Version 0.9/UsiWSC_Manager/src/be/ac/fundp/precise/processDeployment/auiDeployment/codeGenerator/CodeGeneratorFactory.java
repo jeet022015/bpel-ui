@@ -2,14 +2,13 @@ package be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator;
 
 import be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.defaultGenerator.CodeGeneratorUsiWSC;
 
-// TODO: Auto-generated Javadoc
 /**
  * A factory for creating CodeGenerator objects.
  */
 public class CodeGeneratorFactory {
 	
 	/**
-	 * Code gen usi wsc.
+	 * Create a code generator for the UsiXML Code Generator.
 	 *
 	 * @return the code generator
 	 */

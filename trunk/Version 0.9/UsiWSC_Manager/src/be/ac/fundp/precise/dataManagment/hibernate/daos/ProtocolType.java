@@ -1,14 +1,13 @@
 package be.ac.fundp.precise.dataManagment.hibernate.daos;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Enum ProtocolType.
  */
 public enum ProtocolType {
 
-	/** The SOAP. */
+	/** The SOAP Protocol. */
 	SOAP,
 	
-	/** The Rest. */
+	/** The Rest Protocol. */
 	Rest;
 }

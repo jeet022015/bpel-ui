@@ -10,16 +10,12 @@ import be.ac.fundp.precise.dataManagment.hibernate.NewDataManagerHibernate;
  */
 public class DataManagerFactory {
 
-//	/**
-//	 * Hibernate data manager.
-//	 * 
-//	 * @return the default hibernate data manager
-//	 */
-//	public static DataManager hibernateDataManager() {
-//		return new DataManagerHibernate();
-//	}
-	
-	public static NewDataManagerHibernate hibernateDataManager() {
+/**
+ * Hibernate data manager.
+ *
+ * @return the new data manager hibernate
+ */
+public static NewDataManagerHibernate hibernateDataManager() {
 		return new NewDataManagerHibernate();
 	}
 
