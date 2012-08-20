@@ -16,21 +16,23 @@ import be.ac.fundp.precise.uiwsc.webClient.model.processManagment.ProcessManager
 import be.ac.fundp.precise.uiwsc.webClient.model.processManagment.entities.DataItem;
 import be.ac.fundp.precise.uiwsc.webClient.model.processManagment.entities.UserInteraction;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class InteractionManager.
+ * The Class InteractionManager its a servlet that receives the interaction from the user
+ * and transmits the provided information to the UsiWSC Manager.
  */
 @WebServlet("/interactionManager")
-public class InteractionManager extends HttpServlet {
-	
+public class InteractionManager extends HttpServlet {	
 
 	/** The Constant SERVLET_ID. */
 	private static final String SERVLET_ID = "/interactionManager";
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	
+
+	/** The Constant CANCEL_BUTTON_ID. */
 	private final static String CANCEL_BUTTON_ID = "Cancel";
+
+	/** The Constant OK_BUTTON_ID. */
 	private final static String OK_BUTTON_ID = "Ok";
 	
 	/** The process manager. */
@@ -51,9 +53,6 @@ public class InteractionManager extends HttpServlet {
 		String login = (String) request.getSession().getAttribute(ControllerConstants.CONTROLLER_LOGIN);
 		String processId = para.get(ControllerConstants.CONTROLLER_PROCESS_ID)[0];
 		String cuiId = para.get(ControllerConstants.CONTROLLER_CUI_ID)[0];
-		System.out.println("processId:"+processId);
-		System.out.println("login:"+login);
-		System.out.println("cuiId:"+cuiId);
 		UserInteraction cui = processManager.getUserInteraction(processId, login, cuiId);
 		String forward = ActionConstants.PAGE_PROCESS_AVAILABLE;
 		if (para.keySet().contains(CANCEL_BUTTON_ID)) {
@@ -73,7 +72,7 @@ public class InteractionManager extends HttpServlet {
 				providedData.add(aDataItem);
 			}
 		}
-		System.out.println("cui:"+cui);
+		//System.out.println("cui:"+cui);
 		cui.setProvidedData(providedData);
 		String fullURL = request.getRequestURL().toString();
 		String myURL = fullURL.replaceAll(SERVLET_ID, forward);

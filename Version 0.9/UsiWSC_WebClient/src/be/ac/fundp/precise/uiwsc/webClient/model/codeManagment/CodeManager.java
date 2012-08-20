@@ -11,10 +11,10 @@ import be.ac.fundp.precise.uiwsc.webClient.model.exception.CodeRetreivingExcepti
 /**
  * The Class CodeManager this class is responsible to:
  * <li>
- * 	<ul> get the correct code regarding the context id <ul>
- *  <ul> save the code in the correct folder<ul> 
- *  <ul> allow the access to the code<ul>
- * </li>
+ * <ul> get the correct code regarding the context id <ul>
+ * <ul> save the code in the correct folder<ul>
+ * <ul> allow the access to the code<ul>
+ * </li>.
  */
 public class CodeManager {
 

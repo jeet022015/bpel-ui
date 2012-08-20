@@ -14,19 +14,18 @@ import be.ac.fundp.precise.uiwsc.webClient.model.processManagment.ProcessManager
 import be.ac.fundp.precise.uiwsc.webClient.model.processManagment.entities.DataItem;
 import be.ac.fundp.precise.uiwsc.webClient.model.processManagment.entities.UserInteraction;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ActivityController.
  */
-@WebServlet(value="/activityManager", name="ActivityServlet")
-public class ActivityController  extends HttpServlet{
+@WebServlet(value = "/activityManager", name = "ActivityServlet")
+public class ActivityController extends HttpServlet {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The code manager. */
 	protected CodeManager codeManager = CodeManager.getInstance();
-	
+
 	/** The process manager. */
 	protected ProcessManager processManager = ProcessManager.getInstance();
 
@@ -37,34 +36,42 @@ public class ActivityController  extends HttpServlet{
 		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest
+	 * , javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String process = (String) request.getParameter(ControllerConstants.CONTROLLER_PROCESS);
-		String role = (String) request.getParameter(ControllerConstants.CONTROLLER_ROLE);
-		String user = (String) request.getSession().getAttribute(ControllerConstants.CONTROLLER_LOGIN);
-		String processInstanceId = (String) request.getParameter(ControllerConstants.CONTROLLER_PROCESS_ID);
-		String cuiId = (String) request.getParameter(ControllerConstants.CONTROLLER_CUI_ID);
+		String process = (String) request
+				.getParameter(ControllerConstants.CONTROLLER_PROCESS);
+		String role = (String) request
+				.getParameter(ControllerConstants.CONTROLLER_ROLE);
+		String user = (String) request.getSession().getAttribute(
+				ControllerConstants.CONTROLLER_LOGIN);
+		String processInstanceId = (String) request
+				.getParameter(ControllerConstants.CONTROLLER_PROCESS_ID);
+		String cuiId = (String) request
+				.getParameter(ControllerConstants.CONTROLLER_CUI_ID);
 
-		System.out.println("process="+process);
-		System.out.println("role="+role);
-		System.out.println("processInstanceId="+processInstanceId);
-		System.out.println("cuiId="+cuiId);
-		
 		String page = codeManager.getCodeAddress(process, role, cuiId);
-		
-		String forward = page + "?"+ControllerConstants.CONTROLLER_PROCESS_ID+"=" + processInstanceId + "&"+ControllerConstants.CONTROLLER_CUI_ID+"=" + cuiId + "&"+ControllerConstants.CONTROLLER_PROCESS+"=" + process;
-		
-		UserInteraction ui = processManager.getUserInteraction(processInstanceId, user, cuiId);
 
-		System.out.println("ui="+ui);
+		String forward = page + "?" + ControllerConstants.CONTROLLER_PROCESS_ID
+				+ "=" + processInstanceId + "&"
+				+ ControllerConstants.CONTROLLER_CUI_ID + "=" + cuiId + "&"
+				+ ControllerConstants.CONTROLLER_PROCESS + "=" + process;
+
+		UserInteraction ui = processManager.getUserInteraction(
+				processInstanceId, user, cuiId);
+
+		System.out.println("ui=" + ui);
 		for (DataItem anItem : ui.getAvailableData()) {
-			forward += "&"+anItem.getId()+"="+anItem.getContent();
+			forward += "&" + anItem.getId() + "=" + anItem.getContent();
 		}
-		
+
 		String fullURL = request.getRequestURL().toString();
 		String myURL = fullURL.replaceAll("/activityManager", forward);
 		response.sendRedirect(myURL);

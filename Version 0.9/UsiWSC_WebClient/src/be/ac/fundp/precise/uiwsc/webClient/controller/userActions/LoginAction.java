@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import be.ac.fundp.precise.uiwsc.webClient.controller.ControllerConstants;
 import be.ac.fundp.precise.uiwsc.webClient.model.userManagment.UserActionManager;
 
+
 /**
  * The Class LoginAction.
  */
@@ -56,14 +57,9 @@ public class LoginAction extends HttpServlet {
 		else if (action.equalsIgnoreCase(ActionConstants.ACTION_LOGIN))
 			processOk = userManager.login();
 		if (processOk) {
-			//session.setAttribute(ControllerConstants.CONTROLLER_ROLE, role);
-			//session.setAttribute(ControllerConstants.CONTROLLER_PROCESS,
-			//		process);
-			System.out.println("LOGADOOOOOO");
 			session.setAttribute(ControllerConstants.CONTROLLER_LOGIN, login);
 			forward = ActionConstants.PAGE_PROCESS_AVAILABLE;
 		} else {
-			System.out.println("DEU MERDA");
 			forward = ActionConstants.PAGE_ERROR;
 		}
 		String forwardURL = servletHost + forward;

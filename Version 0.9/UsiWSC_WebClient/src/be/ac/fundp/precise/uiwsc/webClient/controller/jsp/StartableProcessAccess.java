@@ -13,9 +13,21 @@ import org.restlet.resource.ResourceException;
 
 import be.ac.fundp.precise.uiwsc.webClient.model.ConnectionConstants;
 
+/**
+ * The Class StartableProcessAccess.
+ */
 public class StartableProcessAccess {
 
 	
+	/**
+	 * Gets the startable processes.
+	 *
+	 * @param login the login
+	 * @return the startable processes
+	 * @throws ResourceException the resource exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws JSONException the jSON exception
+	 */
 	public static List<String> getStartableProcesses(String login) throws ResourceException, IOException, JSONException{
 		List<String> processes = new ArrayList<String>();
 		ClientResource itemsResource = null;

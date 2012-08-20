@@ -20,7 +20,7 @@ public class ProcessPrefix extends AbstractIterator<String> {
 	    /**
     	 * Alpha.
     	 *
-    	 * @param i the i
+    	 * @param i the integer
     	 * @return the string builder
     	 */
     	private StringBuilder alpha(int i){

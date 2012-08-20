@@ -48,8 +48,8 @@ public class ProcessManager {
 	 * @param userId the user id
 	 * @param processId the process id
 	 * @param processType the process type
+	 * @param role the role
 	 * @param cuiId the cui id
-	 * @param role 
 	 * @param availableData the available data
 	 */
 	public void newInteraction(String userId, String processId,
@@ -78,7 +78,7 @@ public class ProcessManager {
 	 * @param userId the user id
 	 * @param processId the process id
 	 * @param processType the process type
-	 * @param role 
+	 * @param role the role
 	 */
 	private synchronized void createProcess(String userId, String processId,
 			String processType, String role) {
@@ -169,6 +169,12 @@ public class ProcessManager {
 		return pendingProcess;
 	}
 
+	/**
+	 * Start process.
+	 *
+	 * @param login the login
+	 * @param process the process
+	 */
 	public void startProcess(String login, String process) {
 		Representation r = null;
 		ClientResource itemsResource = null;
@@ -178,7 +184,6 @@ public class ProcessManager {
 					"/"+ login +
 					"/start");
 			r = itemsResource.get();
-			System.out.println("r="+r);
 		} finally {
 			if (r != null)
 				r.release();

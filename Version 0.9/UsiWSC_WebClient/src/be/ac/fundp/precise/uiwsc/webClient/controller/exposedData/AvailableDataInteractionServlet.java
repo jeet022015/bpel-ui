@@ -44,7 +44,6 @@ public class AvailableDataInteractionServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		//String role = (String) request.getSession().getAttribute("role");
 		String login = (String) request.getSession().getAttribute(ControllerConstants.CONTROLLER_LOGIN);
 		String processId = request.getParameter(ControllerConstants.CONTROLLER_PROCESS_ID);
 		JSONArray userIntearctions = new JSONArray();
@@ -52,20 +51,15 @@ public class AvailableDataInteractionServlet extends HttpServlet {
 		for (UserInteraction userInteraction : products) {
 			JSONObject interaction = new JSONObject();
 			try {
-				System.out.println("parent Id="+userInteraction.getParent().getType());
-				System.out.println("role="+userInteraction.getParent().getRole());
 				interaction.put("id", userInteraction.getId());
 				interaction.put("process", userInteraction.getParent().getType());
 				interaction.put("role", userInteraction.getParent().getRole());
-				//interaction.put(ExposedDataConstants.NAME, userInteraction.getDisplayableName());
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 			userIntearctions.put(interaction);
 		}
 		String json = userIntearctions.toString();
-		System.out.println("json");
-		System.out.println(json);
 		response.setContentType(ExposedDataConstants.APPLICATION_JSON);
 		response.setCharacterEncoding(ExposedDataConstants.UTF_8);
 		response.getWriter().write(json);

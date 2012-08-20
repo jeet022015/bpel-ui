@@ -24,7 +24,7 @@ import be.ac.fundp.precise.uiwsc.webClient.model.processManagment.entities.Proce
 @WebServlet(value = "/availableProcesses", name = "AvailableProcesses")
 public class AvailableProcessServlet extends HttpServlet {
 
-	/** The cont. */
+	/** The conter. */
 	static int cont = 0;
 	
 	/** The process manager. */
@@ -75,5 +75,4 @@ public class AvailableProcessServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }
