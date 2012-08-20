@@ -19,7 +19,6 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for Rule complex type.
  * 

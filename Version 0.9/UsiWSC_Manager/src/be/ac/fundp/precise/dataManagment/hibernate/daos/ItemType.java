@@ -1,7 +1,7 @@
 package be.ac.fundp.precise.dataManagment.hibernate.daos;
 
 /**
- * The Enum ItemType.
+ * The Enum ItemType represents an item of the UI in a hibernate DB..
  */
 public enum ItemType {
 

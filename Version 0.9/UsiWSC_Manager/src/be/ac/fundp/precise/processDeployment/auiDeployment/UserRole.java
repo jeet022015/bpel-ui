@@ -2,7 +2,6 @@ package be.ac.fundp.precise.processDeployment.auiDeployment;
 
 import java.util.Map;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UserRole.
  */
@@ -49,7 +48,8 @@ public class UserRole {
 	}
 
 	/**
-	 * Gets the ui mapping.
+	 * This method gets return a dictionary that maps an entry in the AUI description
+	 * to the final code.
 	 *
 	 * @return the ui mapping
 	 */

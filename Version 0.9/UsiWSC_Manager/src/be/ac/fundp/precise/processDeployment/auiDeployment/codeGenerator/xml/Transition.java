@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * 
  * 				Is related to State by two relationships meaning that a transition has source state and a

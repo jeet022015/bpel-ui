@@ -4,8 +4,6 @@
 // Any modifications to this file will be lost upon recompilation of the source schema. 
 // Generated on: 2012.03.01 at 09:52:26 AM CET 
 //
-
-
 package be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml;
 
 import java.util.ArrayList;
@@ -17,16 +15,17 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * 
- * 				Composition of one or several AbstractInteractionUnit
- * 			
+ * Composition of one or several AbstractInteractionUnit
  * 
- * <p>Java class for AbstractCompoundIU complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * Java class for AbstractCompoundIU complex type.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="AbstractCompoundIU">
@@ -43,48 +42,41 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "http://UsiXML-XSD/AbstractUIModel",
-         name = "AbstractCompoundIU", propOrder = {
-    "abstractInteractionUnit"
-})
-@XmlSeeAlso({
-    AbstractSelectionIU.class
-})
-public class AbstractCompoundIU
-    extends AbstractInteractionUnit
-{
+@XmlType(namespace = "http://UsiXML-XSD/AbstractUIModel", name = "AbstractCompoundIU", propOrder = { "abstractInteractionUnit" })
+@XmlSeeAlso({ AbstractSelectionIU.class })
+public class AbstractCompoundIU extends AbstractInteractionUnit {
 
 	/** The abstract interaction unit. */
-	@XmlElement(namespace = "http://UsiXML-XSD/AbstractUIModel",required = true)
-    protected List<AbstractInteractionUnit> abstractInteractionUnit;
+	@XmlElement(namespace = "http://UsiXML-XSD/AbstractUIModel", required = true)
+	protected List<AbstractInteractionUnit> abstractInteractionUnit;
 
-    /**
-     * Gets the value of the abstractInteractionUnit property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the abstractInteractionUnit property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     * getAbstractInteractionUnit().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     *
-     * @return the abstract interaction unit
-     * {@link AbstractInteractionUnit }
-     */
-    public List<AbstractInteractionUnit> getAbstractInteractionUnit() {
-        if (abstractInteractionUnit == null) {
-            abstractInteractionUnit = new ArrayList<AbstractInteractionUnit>();
-        }
-        return this.abstractInteractionUnit;
-    }
+	/**
+	 * Gets the value of the abstractInteractionUnit property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the abstractInteractionUnit property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getAbstractInteractionUnit().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * 
+	 * @return the abstract interaction unit {@link AbstractInteractionUnit }
+	 */
+	public List<AbstractInteractionUnit> getAbstractInteractionUnit() {
+		if (abstractInteractionUnit == null) {
+			abstractInteractionUnit = new ArrayList<AbstractInteractionUnit>();
+		}
+		return this.abstractInteractionUnit;
+	}
 
 }

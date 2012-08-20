@@ -22,7 +22,7 @@ public interface DataManager {
 	 * @param roleId the role id
 	 * @param processId the process id
 	 * @return the bound user
-	 * @throws Exception 
+	 * @throws Exception the exception
 	 */
 	String getBoundUser(String roleId, String processId) throws Exception;
 
@@ -104,17 +104,51 @@ public interface DataManager {
 	 */
 	void addRole(String processName, String roleName);
 
+	/**
+	 * Gets the available processes.
+	 *
+	 * @return the available processes
+	 */
 	List<String> getAvailableProcesses();
 
+	/**
+	 * Gets the starting roles.
+	 *
+	 * @param process the process
+	 * @return the starting roles
+	 */
 	List<String> getStartingRoles(String process);
 
+	/**
+	 * Bind user to process.
+	 *
+	 * @param userId the user id
+	 * @param process the process
+	 * @param processId the process id
+	 * @return the string
+	 * @throws InterruptedException the interrupted exception
+	 */
 	String bindUserToProcess(String userId, String process, String processId)
 			throws InterruptedException;
 
+	/**
+	 * Creates the process.
+	 *
+	 * @param processId the process id
+	 * @param roles the roles
+	 * @param startingRoles the starting roles
+	 * @param interactionMapping the interaction mapping
+	 * @throws Exception the exception
+	 */
 	void createProcess(String processId, List<String> roles,
 			List<String> startingRoles,
 			Map<String, List<String>> interactionMapping) throws Exception;
 
+	/**
+	 * Creates the process type.
+	 *
+	 * @param processType the process type
+	 */
 	void createProcessType(String processType);
 
 }

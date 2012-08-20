@@ -14,20 +14,30 @@ import org.restlet.resource.ServerResource;
 import be.ac.fundp.precise.dataManagment.DataManagerFactory;
 import be.ac.fundp.precise.dataManagment.hibernate.NewDataManagerHibernate;
 
+/**
+ * The Class AvailableProcessResource represents a Rest Resource for identifing
+ * the available processes.
+ */
 public class AvailableProcessResource extends ServerResource {
 
+	/** The ui manager. */
 	protected NewDataManagerHibernate uiManager = DataManagerFactory.hibernateDataManager();
 
+    /**
+     * Gets the code.
+     *
+     * @return the code
+     */
     @Get
     public Representation getCode() {
-    	List<String> testList;
+    	List<String> availableProcessList;
 		try {
-			testList = uiManager.getAvailableProcesses();
+			availableProcessList = uiManager.getAvailableProcesses();
 		} catch (Exception e1) {
 			e1.printStackTrace();
-			testList = Collections.emptyList();
+			availableProcessList = Collections.emptyList();
 		}
-    	JSONArray array = new JSONArray(testList);
+    	JSONArray array = new JSONArray(availableProcessList);
     	JSONObject o = new JSONObject();
     	try {
 			o.put("processes", array);

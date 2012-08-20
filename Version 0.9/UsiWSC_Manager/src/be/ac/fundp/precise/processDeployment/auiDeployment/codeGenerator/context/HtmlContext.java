@@ -6,10 +6,8 @@ import java.util.Map;
 
 import be.ac.fundp.precise.FileManager;
 
-
-// TODO: Auto-generated Javadoc
 /**
- * The Class HtmlContext.
+ * The Class HtmlContext specifies the information relevant to generate html Code.
  */
 public class HtmlContext implements UserContext{
 	

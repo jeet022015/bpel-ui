@@ -82,7 +82,7 @@ public class DataItem {
 	/**
 	 * Sets the type.
 	 *
-	 * @param type the new type
+	 * @param parent the new parent
 	 */
 	public void setParent(Interaction parent) {
 		this.parent = parent;

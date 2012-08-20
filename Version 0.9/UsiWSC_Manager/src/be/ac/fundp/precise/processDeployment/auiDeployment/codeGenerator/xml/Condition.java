@@ -19,7 +19,6 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * 
  * 				Logical test that, if satisfied or evaluates to true, causes the action to be carried out.

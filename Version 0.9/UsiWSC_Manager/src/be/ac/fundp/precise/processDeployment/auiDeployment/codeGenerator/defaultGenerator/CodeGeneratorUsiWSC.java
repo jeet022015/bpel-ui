@@ -40,9 +40,8 @@ import be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml.Abs
 import be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml.AbstractUIModel;
 import be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml.ObjectFactory;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class CodeGeneratorUsiWSC.
+ * The Class CodeGeneratorUsiWSC generates code for the pattern of UsiXML.
  */
 public class CodeGeneratorUsiWSC implements CodeGenerator {
 	
@@ -61,12 +60,12 @@ public class CodeGeneratorUsiWSC implements CodeGenerator {
 	}
 
 	/**
-	 * Parses the.
+	 * Parses an AbstractCompoundIU in the AUI Description to its corresponding code.
 	 *
-	 * @param compound the compound
-	 * @param templatePath the template path
-	 * @param template the template
-	 * @return the string
+	 * @param compound the AbstractCompoundIU in the AUI Description
+	 * @param templatePath the path for the Velocity framework
+	 * @param template the specific template id of the Velocity framework
+	 * @return the final code
 	 */
 	private String parse(AbstractCompoundIU compound, String templatePath,
 			String template) {
@@ -122,46 +121,46 @@ public class CodeGeneratorUsiWSC implements CodeGenerator {
 		for (String codeName : codes.keySet()) {
 			String code = codes.get(codeName);
 			InputStream in1 = new ByteArrayInputStream(code.getBytes( Charset.defaultCharset()));
-			newEntry(out, in1, codeName);
+			newZipEntry(out, in1, codeName);
 		}
 		Map<String, String> auxFiles = userContext.getAuxEntries();
 		for (String newEntry : auxFiles.keySet()) {
 			InputStream in1 = new FileInputStream(auxFiles.get(newEntry));
-			newEntry(out, in1, newEntry);
+			newZipEntry(out, in1, newEntry);
 		}
 		out.close();
 		return zipCodeFile.getCanonicalPath();
 	}
 
 	/**
-	 * New entry.
+	 * This method creates a new entry in the zip file with the generated code.
 	 *
-	 * @param out the out
-	 * @param in1 the in1
-	 * @param codeName the code name
+	 * @param zipOutputStream the zip outstream
+	 * @param inputStream the input stream that shall be saved in the zip file
+	 * @param codeName the name of the entry where the inputstream shall be saved.
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws FileNotFoundException the file not found exception
 	 */
-	private void newEntry(ZipOutputStream out, InputStream in1,
+	private void newZipEntry(ZipOutputStream zipOutputStream, InputStream inputStream,
 			String codeName) throws IOException,
 			FileNotFoundException {
 		byte[] buf = new byte[2048];
-		out.putNextEntry(new ZipEntry(codeName));
+		zipOutputStream.putNextEntry(new ZipEntry(codeName));
 		
 		int len;
-		while ((len = in1.read(buf)) > 0) {
-			out.write(buf, 0, len);
+		while ((len = inputStream.read(buf)) > 0) {
+			zipOutputStream.write(buf, 0, len);
 		}
-		out.closeEntry();
-		in1.close();
+		zipOutputStream.closeEntry();
+		inputStream.close();
 	}
 
 	/**
-	 * Creates the codes.
+	 * Creates the codes for a specific role.
 	 *
-	 * @param roleMapper the role mapper
+	 * @param roleMapper the AuiRoleMapper
 	 * @param userContext the user context
-	 * @return the map
+	 * @return the dictionary that maps the file name to is code.
 	 */
 	private Map<String, String> createCodes(AuiRoleMapper roleMapper, UserContext userContext) {
 		Map<String, String> codes = new HashMap<String, String>();
@@ -182,7 +181,6 @@ public class CodeGeneratorUsiWSC implements CodeGenerator {
 					activityCode = parse(compound,
 							getTemplateFolderPath(userContext),
 							userContext.getDataInteractionTemplate());
-				//System.out.println("activityCode="+activityCode);
 				codes.put(compound.getId() + userContext.getTermination(), activityCode);
 			}
 			return codes;

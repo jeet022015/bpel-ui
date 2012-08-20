@@ -5,7 +5,6 @@
 // Generated on: 2012.03.01 at 09:52:26 AM CET 
 //
 
-
 package be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.xml;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,17 +12,18 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * 
- * 				Interaction unit allowing to link data from the Domain Model with elements of the abstract
- * 				user interface.
- * 			
+ * Interaction unit allowing to link data from the Domain Model with elements of
+ * the abstract user interface.
  * 
- * <p>Java class for AbstractDataIU complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * Java class for AbstractDataIU complex type.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="AbstractDataIU">
@@ -48,254 +48,221 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "http://UsiXML-XSD/AbstractUIModel",
-		 name = "AbstractDataIU", propOrder = {
-    "domainReference",
-    "defaultValue",
-    "dataFormat"
-})
-public class AbstractDataIU
-    extends AbstractElementaryIU
-{
+@XmlType(namespace = "http://UsiXML-XSD/AbstractUIModel", name = "AbstractDataIU", propOrder = {
+		"domainReference", "defaultValue", "dataFormat" })
+public class AbstractDataIU extends AbstractElementaryIU {
 
-    /** The domain reference. */
-    protected String domainReference;
-    
-    /** The default value. */
-    protected String defaultValue;
-    
-    /** The data format. */
-    protected String dataFormat;
-    
-    /** The max cardinality. */
-    @XmlAttribute
-    protected Integer maxCardinality;
-    
-    /** The min cardinality. */
-    @XmlAttribute
-    protected Integer minCardinality;
-    
-    /** The data type. */
-    @XmlAttribute
-    protected DataTypeType dataType;
-    
-    /** The data length. */
-    @XmlAttribute
-    protected Integer dataLength;
-    
-    /** The is dynamic. */
-    @XmlAttribute
-    protected Boolean isDynamic;
-    
-    /** The data iu type. */
-    @XmlAttribute
-    protected AbstractDataIUType dataIUType;
+	/** The domain reference. */
+	protected String domainReference;
 
-    /**
-     * Gets the value of the domainReference property.
-     *
-     * @return the domain reference
-     * possible object is
-     * {@link String }
-     */
-    public String getDomainReference() {
-        return domainReference;
-    }
+	/** The default value. */
+	protected String defaultValue;
 
-    /**
-     * Sets the value of the domainReference property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDomainReference(String value) {
-        this.domainReference = value;
-    }
+	/** The data format. */
+	protected String dataFormat;
 
-    /**
-     * Gets the value of the defaultValue property.
-     *
-     * @return the default value
-     * possible object is
-     * {@link String }
-     */
-    public String getDefaultValue() {
-        return defaultValue;
-    }
+	/** The max cardinality. */
+	@XmlAttribute
+	protected Integer maxCardinality;
 
-    /**
-     * Sets the value of the defaultValue property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDefaultValue(String value) {
-        this.defaultValue = value;
-    }
+	/** The min cardinality. */
+	@XmlAttribute
+	protected Integer minCardinality;
 
-    /**
-     * Gets the value of the dataFormat property.
-     *
-     * @return the data format
-     * possible object is
-     * {@link String }
-     */
-    public String getDataFormat() {
-        return dataFormat;
-    }
+	/** The data type. */
+	@XmlAttribute
+	protected DataTypeType dataType;
 
-    /**
-     * Sets the value of the dataFormat property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDataFormat(String value) {
-        this.dataFormat = value;
-    }
+	/** The data length. */
+	@XmlAttribute
+	protected Integer dataLength;
 
-    /**
-     * Gets the value of the maxCardinality property.
-     *
-     * @return the max cardinality
-     * possible object is
-     * {@link Integer }
-     */
-    public Integer getMaxCardinality() {
-        return maxCardinality;
-    }
+	/** The is dynamic. */
+	@XmlAttribute
+	protected Boolean isDynamic;
 
-    /**
-     * Sets the value of the maxCardinality property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
-     */
-    public void setMaxCardinality(Integer value) {
-        this.maxCardinality = value;
-    }
+	/** The data iu type. */
+	@XmlAttribute
+	protected AbstractDataIUType dataIUType;
 
-    /**
-     * Gets the value of the minCardinality property.
-     *
-     * @return the min cardinality
-     * possible object is
-     * {@link Integer }
-     */
-    public Integer getMinCardinality() {
-        return minCardinality;
-    }
+	/**
+	 * Gets the value of the domainReference property.
+	 * 
+	 * @return the domain reference possible object is {@link String }
+	 */
+	public String getDomainReference() {
+		return domainReference;
+	}
 
-    /**
-     * Sets the value of the minCardinality property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
-     */
-    public void setMinCardinality(Integer value) {
-        this.minCardinality = value;
-    }
+	/**
+	 * Sets the value of the domainReference property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setDomainReference(String value) {
+		this.domainReference = value;
+	}
 
-    /**
-     * Gets the value of the dataType property.
-     *
-     * @return the data type
-     * possible object is
-     * {@link DataTypeType }
-     */
-    public DataTypeType getDataType() {
-        return dataType;
-    }
+	/**
+	 * Gets the value of the defaultValue property.
+	 * 
+	 * @return the default value possible object is {@link String }
+	 */
+	public String getDefaultValue() {
+		return defaultValue;
+	}
 
-    /**
-     * Sets the value of the dataType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link DataTypeType }
-     *     
-     */
-    public void setDataType(DataTypeType value) {
-        this.dataType = value;
-    }
+	/**
+	 * Sets the value of the defaultValue property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setDefaultValue(String value) {
+		this.defaultValue = value;
+	}
 
-    /**
-     * Gets the value of the dataLength property.
-     *
-     * @return the data length
-     * possible object is
-     * {@link Integer }
-     */
-    public Integer getDataLength() {
-        return dataLength;
-    }
+	/**
+	 * Gets the value of the dataFormat property.
+	 * 
+	 * @return the data format possible object is {@link String }
+	 */
+	public String getDataFormat() {
+		return dataFormat;
+	}
 
-    /**
-     * Sets the value of the dataLength property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
-     */
-    public void setDataLength(Integer value) {
-        this.dataLength = value;
-    }
+	/**
+	 * Sets the value of the dataFormat property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setDataFormat(String value) {
+		this.dataFormat = value;
+	}
 
-    /**
-     * Gets the value of the isDynamic property.
-     *
-     * @return the boolean
-     * possible object is
-     * {@link Boolean }
-     */
-    public Boolean isIsDynamic() {
-        return isDynamic;
-    }
+	/**
+	 * Gets the value of the maxCardinality property.
+	 * 
+	 * @return the max cardinality possible object is {@link Integer }
+	 */
+	public Integer getMaxCardinality() {
+		return maxCardinality;
+	}
 
-    /**
-     * Sets the value of the isDynamic property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsDynamic(Boolean value) {
-        this.isDynamic = value;
-    }
+	/**
+	 * Sets the value of the maxCardinality property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Integer }
+	 * 
+	 */
+	public void setMaxCardinality(Integer value) {
+		this.maxCardinality = value;
+	}
 
-    /**
-     * Gets the value of the dataIUType property.
-     *
-     * @return the data iu type
-     * possible object is
-     * {@link AbstractDataIUType }
-     */
-    public AbstractDataIUType getDataIUType() {
-        return dataIUType;
-    }
+	/**
+	 * Gets the value of the minCardinality property.
+	 * 
+	 * @return the min cardinality possible object is {@link Integer }
+	 */
+	public Integer getMinCardinality() {
+		return minCardinality;
+	}
 
-    /**
-     * Sets the value of the dataIUType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link AbstractDataIUType }
-     *     
-     */
-    public void setDataIUType(AbstractDataIUType value) {
-        this.dataIUType = value;
-    }
+	/**
+	 * Sets the value of the minCardinality property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Integer }
+	 * 
+	 */
+	public void setMinCardinality(Integer value) {
+		this.minCardinality = value;
+	}
+
+	/**
+	 * Gets the value of the dataType property.
+	 * 
+	 * @return the data type possible object is {@link DataTypeType }
+	 */
+	public DataTypeType getDataType() {
+		return dataType;
+	}
+
+	/**
+	 * Sets the value of the dataType property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link DataTypeType }
+	 * 
+	 */
+	public void setDataType(DataTypeType value) {
+		this.dataType = value;
+	}
+
+	/**
+	 * Gets the value of the dataLength property.
+	 * 
+	 * @return the data length possible object is {@link Integer }
+	 */
+	public Integer getDataLength() {
+		return dataLength;
+	}
+
+	/**
+	 * Sets the value of the dataLength property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Integer }
+	 * 
+	 */
+	public void setDataLength(Integer value) {
+		this.dataLength = value;
+	}
+
+	/**
+	 * Gets the value of the isDynamic property.
+	 * 
+	 * @return the boolean possible object is {@link Boolean }
+	 */
+	public Boolean isIsDynamic() {
+		return isDynamic;
+	}
+
+	/**
+	 * Sets the value of the isDynamic property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Boolean }
+	 * 
+	 */
+	public void setIsDynamic(Boolean value) {
+		this.isDynamic = value;
+	}
+
+	/**
+	 * Gets the value of the dataIUType property.
+	 * 
+	 * @return the data iu type possible object is {@link AbstractDataIUType }
+	 */
+	public AbstractDataIUType getDataIUType() {
+		return dataIUType;
+	}
+
+	/**
+	 * Sets the value of the dataIUType property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link AbstractDataIUType }
+	 * 
+	 */
+	public void setDataIUType(AbstractDataIUType value) {
+		this.dataIUType = value;
+	}
 
 }

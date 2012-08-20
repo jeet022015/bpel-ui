@@ -12,11 +12,20 @@ import org.restlet.resource.ServerResource;
 import be.ac.fundp.precise.dataManagment.DataManagerFactory;
 import be.ac.fundp.precise.dataManagment.hibernate.NewDataManagerHibernate;
 
+/**
+ * The Class AvailableStartingRoleResource represents a Rest Resource that identifies
+ * all the roles that can start a process.
+ */
 public class AvailableStartingRoleResource extends ServerResource {
 
-	//protected DataManager uiManager = DataManagerFactory.hibernateDataManager();
+	/** The ui manager. */
 	protected NewDataManagerHibernate uiManager = DataManagerFactory.hibernateDataManager();
 
+    /**
+     * Gets the Available Starting Roles.
+     *
+     * @return the Available Starting Roles
+     */
     @Get
     public Representation getCode() {
     	String process = (String) getRequestAttributes().get("process");

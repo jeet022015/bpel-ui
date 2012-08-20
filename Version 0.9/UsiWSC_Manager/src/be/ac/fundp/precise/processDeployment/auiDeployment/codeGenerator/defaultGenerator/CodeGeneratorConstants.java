@@ -1,6 +1,5 @@
 package be.ac.fundp.precise.processDeployment.auiDeployment.codeGenerator.defaultGenerator;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class CodeGeneratorConstants.
  */

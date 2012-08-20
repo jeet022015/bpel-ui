@@ -14,6 +14,9 @@ import be.ac.fundp.precise.dataManagment.hibernate.NewDataManagerHibernate;
 import be.ac.fundp.precise.processMediation.startProcess.webService.ProcessOperations;
 import be.ac.fundp.precise.processMediation.startProcess.webService.ProcessOperationsPortType;
 
+/**
+ * The Class StartProcessResource.
+ */
 public class StartProcessResource extends ServerResource {
 	/** The AuiDeploymentManager singleton. */
 	protected NewDataManagerHibernate manager = DataManagerFactory.hibernateDataManager();
@@ -22,7 +25,7 @@ public class StartProcessResource extends ServerResource {
      * Subscribe a user.
      *
      * @return the description of the subscription
-     * @throws InterruptedException 
+     * @throws InterruptedException the interrupted exception
      */
     @Get
     public Representation startProcess() throws InterruptedException {
@@ -39,11 +42,6 @@ public class StartProcessResource extends ServerResource {
 	    	ProcessOperations ss = new ProcessOperations(url, service);
 	    	ProcessOperationsPortType port = ss.getProcessOperationsSOAP11PortHttp(process);
 	        port.start(processInstanceId, process);
-//	    	ProcessOperations2Stub stub = new ProcessOperations2Stub(hostService);
-//			Start s = new Start();
-//			s.setProcessId(processInstanceId);
-//			s.setProcessType(process);
-//			stub.start(s);
 	        return new StringRepresentation("started");
     	} catch (Exception e) {
 			e.printStackTrace();
